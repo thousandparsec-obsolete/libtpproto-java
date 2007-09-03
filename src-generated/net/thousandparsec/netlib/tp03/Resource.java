@@ -1,0 +1,187 @@
+package net.thousandparsec.netlib.tp03;
+
+import net.thousandparsec.netlib.*;
+
+import java.io.IOException;
+
+/**
+ * Resource Description
+ */
+public class Resource extends Response
+{
+	protected Resource(int id)
+	{
+		super(id);
+	}
+
+	public Resource()
+	{
+		super(23);
+	}
+
+	private int id;
+
+	public int getId()
+	{
+		return this.id;
+	}
+
+	public void setId(int value)
+	{
+		this.id=value;
+	}
+
+	private String singularname=new String();
+
+	public String getSingularname()
+	{
+		return this.singularname;
+	}
+
+	public void setSingularname(String value)
+	{
+		this.singularname=value;
+	}
+
+	private String pluralname=new String();
+
+	public String getPluralname()
+	{
+		return this.pluralname;
+	}
+
+	public void setPluralname(String value)
+	{
+		this.pluralname=value;
+	}
+
+	private String singularunitname=new String();
+
+	public String getSingularunitname()
+	{
+		return this.singularunitname;
+	}
+
+	public void setSingularunitname(String value)
+	{
+		this.singularunitname=value;
+	}
+
+	private String pluralunitname=new String();
+
+	public String getPluralunitname()
+	{
+		return this.pluralunitname;
+	}
+
+	public void setPluralunitname(String value)
+	{
+		this.pluralunitname=value;
+	}
+
+	private String description=new String();
+
+	public String getDescription()
+	{
+		return this.description;
+	}
+
+	public void setDescription(String value)
+	{
+		this.description=value;
+	}
+
+	private int weight;
+
+	public int getWeight()
+	{
+		return this.weight;
+	}
+
+	public void setWeight(int value)
+	{
+		this.weight=value;
+	}
+
+	private int size;
+
+	public int getSize()
+	{
+		return this.size;
+	}
+
+	public void setSize(int value)
+	{
+		this.size=value;
+	}
+
+	/**
+	 * The time at which this resource was last modified.
+	 */
+	private long modtime;
+
+	public long getModtime()
+	{
+		return this.modtime;
+	}
+
+	public void setModtime(long value)
+	{
+		this.modtime=value;
+	}
+
+	@Override
+	public void visit(TP03Visitor visitor)
+	{
+		visitor.handle(this);
+	}
+
+	@Override
+	public int findByteLength()
+	{
+		return super.findByteLength()
+			 + 4
+			 + findByteLength(this.singularname)
+			 + findByteLength(this.pluralname)
+			 + findByteLength(this.singularunitname)
+			 + findByteLength(this.pluralunitname)
+			 + findByteLength(this.description)
+			 + 4
+			 + 4
+			 + 8;
+	}
+
+	@Override
+	public void write(TPDataOutput out, Connection<TP03Decoder, TP03Visitor> conn) throws IOException
+	{
+		super.write(out, conn);
+		out.writeInteger(this.id);
+		out.writeString(this.singularname);
+		out.writeString(this.pluralname);
+		out.writeString(this.singularunitname);
+		out.writeString(this.pluralunitname);
+		out.writeString(this.description);
+		out.writeInteger(this.weight);
+		out.writeInteger(this.size);
+		out.writeInteger(this.modtime);
+	}
+
+	/**
+	 * A special "internal" constructor that reads contents from a stream.
+	 */
+	@SuppressWarnings("unused")
+	Resource(int id, TPDataInput in) throws IOException
+	{
+		super(id, in);
+		this.id=in.readInteger32();
+		this.singularname=in.readString();
+		this.pluralname=in.readString();
+		this.singularunitname=in.readString();
+		this.pluralunitname=in.readString();
+		this.description=in.readString();
+		this.weight=in.readInteger32();
+		this.size=in.readInteger32();
+		this.modtime=in.readInteger64();
+	}
+
+}
