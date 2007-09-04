@@ -14,12 +14,11 @@ import java.util.concurrent.Future;
 import net.thousandparsec.netlib.Connection;
 import net.thousandparsec.netlib.Frame;
 import net.thousandparsec.netlib.FrameDecoder;
+import net.thousandparsec.netlib.tp03.GetMessage;
 import net.thousandparsec.netlib.tp03.Login;
-import net.thousandparsec.netlib.tp03.Object;
 import net.thousandparsec.netlib.tp03.TP03Decoder;
 import net.thousandparsec.netlib.tp03.TP03Visitor;
-import net.thousandparsec.netlib.tp03.Object.PosType;
-import net.thousandparsec.netlib.tp03.Object.VelType;
+import net.thousandparsec.netlib.tp03.GetWithIDSlot.SlotsType;
 
 public class TestLoopback extends TP03Visitor
 {
@@ -40,18 +39,15 @@ public class TestLoopback extends TP03Visitor
 						conn.sendFrame(new Login());
 						System.out.println("Frame sent");
 
-						Object object=new Object();
-						object.setId(50);
-						object.setModtime(System.currentTimeMillis());
-						object.setName("Dupa Blada - ¯ó³æ ¯ó³wia");
-						object.setOrders(5);
-						object.setOtype(13);
-						object.setPos(new PosType(1, 2, 3));
-						object.setVel(new VelType(30, 40, 50));
-						object.getContains().addAll(Arrays.asList(new Object.ContainsType(13), new Object.ContainsType(14), new Object.ContainsType(15)));
-						object.getOrdertypes().addAll(Arrays.asList(new Object.OrdertypesType(666), new Object.OrdertypesType(667), new Object.OrdertypesType(668), new Object.OrdertypesType(669)));
-						object.setSize(10000000000l);
-						object.setPadding(new byte[] {13, 13, 13, 13, 13, 13, 13, 13});
+						GetMessage object=new GetMessage();
+						object.setId(5);
+						object.getSlots().addAll(Arrays.asList(
+							new SlotsType(13),
+							new SlotsType(14),
+							new SlotsType(15),
+							new SlotsType(16),
+							new SlotsType(17),
+							new SlotsType(18)));
 						for (int i=0; i < 100; i++)
 						{
 							conn.sendFrame(object);
@@ -102,8 +98,8 @@ public class TestLoopback extends TP03Visitor
 	}
 
 	@Override
-	public void frame(Object o)
+	public void frame(GetMessage o)
 	{
-		System.out.println("VISIT Object!");
+		System.out.println("VISIT GetMessage!");
 	}
 }
