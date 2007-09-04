@@ -19,6 +19,17 @@ public class StarSystem<V extends Visitor<V>> extends GameObject<V>
 		super(2, in);
 	}
 
+	protected StarSystem(StarSystem<?> copy)
+	{
+		this();
+	}
+
+	@Override
+	public StarSystem<V> copy()
+	{
+		return new StarSystem<V>(this);
+	}
+
 	@Override
 	public int findByteLength()
 	{

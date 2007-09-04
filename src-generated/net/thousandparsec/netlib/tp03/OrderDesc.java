@@ -141,6 +141,16 @@ public class OrderDesc extends Response
 		}
 
 		/**
+		 * A copy constructor for (among others) deep-copying groups and lists.
+		 */
+		public ParametersType(ParametersType copy)
+		{
+			setName(copy.getName());
+			setType(copy.getType());
+			setDescription(copy.getDescription());
+		}
+
+		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
 		@SuppressWarnings("unused")
@@ -158,6 +168,13 @@ public class OrderDesc extends Response
 	public java.util.List<ParametersType> getParameters()
 	{
 		return this.parameters;
+	}
+
+	@SuppressWarnings("unused")
+	private void setParameters(java.util.List<ParametersType> value)
+	{
+		for (ParametersType object : value)
+			this.parameters.add(new ParametersType(object));
 	}
 
 	/**

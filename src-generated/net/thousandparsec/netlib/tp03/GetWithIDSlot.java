@@ -74,6 +74,14 @@ public abstract class GetWithIDSlot extends Request
 		}
 
 		/**
+		 * A copy constructor for (among others) deep-copying groups and lists.
+		 */
+		public SlotsType(SlotsType copy)
+		{
+			setSlot(copy.getSlot());
+		}
+
+		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
 		@SuppressWarnings("unused")
@@ -89,6 +97,13 @@ public abstract class GetWithIDSlot extends Request
 	public java.util.List<SlotsType> getSlots()
 	{
 		return this.slots;
+	}
+
+	@SuppressWarnings("unused")
+	private void setSlots(java.util.List<SlotsType> value)
+	{
+		for (SlotsType object : value)
+			this.slots.add(new SlotsType(object));
 	}
 
 	@Override

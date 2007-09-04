@@ -59,6 +59,14 @@ public abstract class GetWithID extends Request
 		}
 
 		/**
+		 * A copy constructor for (among others) deep-copying groups and lists.
+		 */
+		public IdsType(IdsType copy)
+		{
+			setId(copy.getId());
+		}
+
+		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
 		@SuppressWarnings("unused")
@@ -74,6 +82,13 @@ public abstract class GetWithID extends Request
 	public java.util.List<IdsType> getIds()
 	{
 		return this.ids;
+	}
+
+	@SuppressWarnings("unused")
+	private void setIds(java.util.List<IdsType> value)
+	{
+		for (IdsType object : value)
+			this.ids.add(new IdsType(object));
 	}
 
 	@Override

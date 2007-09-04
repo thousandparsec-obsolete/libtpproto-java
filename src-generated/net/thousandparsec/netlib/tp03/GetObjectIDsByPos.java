@@ -94,6 +94,16 @@ public class GetObjectIDsByPos extends Request
 		}
 
 		/**
+		 * A copy constructor for (among others) deep-copying groups and lists.
+		 */
+		public PosType(PosType copy)
+		{
+			setX(copy.getX());
+			setY(copy.getY());
+			setZ(copy.getZ());
+		}
+
+		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
 		@SuppressWarnings("unused")
@@ -115,7 +125,7 @@ public class GetObjectIDsByPos extends Request
 
 	public void setPos(PosType value)
 	{
-		this.pos=value;
+		this.pos=new PosType(value);
 	}
 
 	/**

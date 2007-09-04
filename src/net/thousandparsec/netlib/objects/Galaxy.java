@@ -19,6 +19,17 @@ public class Galaxy<V extends Visitor<V>> extends GameObject<V>
 		super(1, in);
 	}
 
+	protected Galaxy(Galaxy<?> copy)
+	{
+		this();
+	}
+
+	@Override
+	public Galaxy<V> copy()
+	{
+		return new Galaxy<V>(this);
+	}
+
 	@Override
 	public int findByteLength()
 	{

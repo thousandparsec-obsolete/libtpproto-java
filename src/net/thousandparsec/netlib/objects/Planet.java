@@ -26,6 +26,14 @@ public class Planet<V extends Visitor<V>> extends GameObject<V>
 			this.resources.add(new ResourcesType(in));
 	}
 
+	protected Planet(Planet<?> copy)
+	{
+		this();
+		this.owner=copy.getOwner();
+		for (ResourcesType object : copy.getResources())
+			this.resources.add(new ResourcesType(object));
+	}
+
 	private int owner;
 
 	public int getOwner()
@@ -41,6 +49,14 @@ public class Planet<V extends Visitor<V>> extends GameObject<V>
 			this.units=in.readInteger32();
 			this.unitsMinable=in.readInteger32();
 			this.unitsInaccessible=in.readInteger32();
+		}
+
+		ResourcesType(ResourcesType copy)
+		{
+			this.resourceId=copy.getResourceId();
+			this.units=copy.getUnits();
+			this.unitsMinable=copy.getUnitsMinable();
+			this.unitsInaccessible=copy.getUnitsInaccessible();
 		}
 
 		private int resourceId;
@@ -93,6 +109,12 @@ public class Planet<V extends Visitor<V>> extends GameObject<V>
 	public List<ResourcesType> getResources()
 	{
 		return Collections.unmodifiableList(resources);
+	}
+
+	@Override
+	public Planet<V> copy()
+	{
+		return new Planet<V>(this);
 	}
 
 	@Override

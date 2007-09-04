@@ -91,6 +91,14 @@ public class Property extends Response
 		}
 
 		/**
+		 * A copy constructor for (among others) deep-copying groups and lists.
+		 */
+		public CategoriesType(CategoriesType copy)
+		{
+			setCategory(copy.getCategory());
+		}
+
+		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
 		@SuppressWarnings("unused")
@@ -106,6 +114,13 @@ public class Property extends Response
 	public java.util.List<CategoriesType> getCategories()
 	{
 		return this.categories;
+	}
+
+	@SuppressWarnings("unused")
+	private void setCategories(java.util.List<CategoriesType> value)
+	{
+		for (CategoriesType object : value)
+			this.categories.add(new CategoriesType(object));
 	}
 
 	private int rank;

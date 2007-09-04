@@ -20,11 +20,23 @@ public class Universe<V extends Visitor<V>> extends GameObject<V>
 		this.age=in.readInteger32();
 	}
 
+	protected Universe(Universe<?> copy)
+	{
+		this();
+		this.age=copy.getAge();
+	}
+
 	private int age;
 
 	public int getAge()
 	{
 		return age;
+	}
+
+	@Override
+	public Universe<V> copy()
+	{
+		return new Universe<V>(this);
 	}
 
 	@Override

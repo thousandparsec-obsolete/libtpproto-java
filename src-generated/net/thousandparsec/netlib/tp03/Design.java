@@ -88,6 +88,14 @@ public class Design extends Response
 		}
 
 		/**
+		 * A copy constructor for (among others) deep-copying groups and lists.
+		 */
+		public CategoriesType(CategoriesType copy)
+		{
+			setCategory(copy.getCategory());
+		}
+
+		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
 		@SuppressWarnings("unused")
@@ -103,6 +111,13 @@ public class Design extends Response
 	public java.util.List<CategoriesType> getCategories()
 	{
 		return this.categories;
+	}
+
+	@SuppressWarnings("unused")
+	private void setCategories(java.util.List<CategoriesType> value)
+	{
+		for (CategoriesType object : value)
+			this.categories.add(new CategoriesType(object));
 	}
 
 	private String name=new String();
@@ -210,6 +225,15 @@ public class Design extends Response
 		}
 
 		/**
+		 * A copy constructor for (among others) deep-copying groups and lists.
+		 */
+		public ComponentsType(ComponentsType copy)
+		{
+			setComponentid(copy.getComponentid());
+			setComponentnum(copy.getComponentnum());
+		}
+
+		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
 		@SuppressWarnings("unused")
@@ -226,6 +250,13 @@ public class Design extends Response
 	public java.util.List<ComponentsType> getComponents()
 	{
 		return this.components;
+	}
+
+	@SuppressWarnings("unused")
+	private void setComponents(java.util.List<ComponentsType> value)
+	{
+		for (ComponentsType object : value)
+			this.components.add(new ComponentsType(object));
 	}
 
 	private String feedback=new String();
@@ -300,6 +331,15 @@ public class Design extends Response
 		}
 
 		/**
+		 * A copy constructor for (among others) deep-copying groups and lists.
+		 */
+		public PropertiesType(PropertiesType copy)
+		{
+			setId(copy.getId());
+			setValue(copy.getValue());
+		}
+
+		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
 		@SuppressWarnings("unused")
@@ -316,6 +356,13 @@ public class Design extends Response
 	public java.util.List<PropertiesType> getProperties()
 	{
 		return this.properties;
+	}
+
+	@SuppressWarnings("unused")
+	private void setProperties(java.util.List<PropertiesType> value)
+	{
+		for (PropertiesType object : value)
+			this.properties.add(new PropertiesType(object));
 	}
 
 	@Override

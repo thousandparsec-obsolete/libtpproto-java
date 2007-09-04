@@ -110,6 +110,15 @@ public abstract class IDSequence extends Response
 		}
 
 		/**
+		 * A copy constructor for (among others) deep-copying groups and lists.
+		 */
+		public ModtimesType(ModtimesType copy)
+		{
+			setID(copy.getID());
+			setModtime(copy.getModtime());
+		}
+
+		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
 		@SuppressWarnings("unused")
@@ -126,6 +135,13 @@ public abstract class IDSequence extends Response
 	public java.util.List<ModtimesType> getModtimes()
 	{
 		return this.modtimes;
+	}
+
+	@SuppressWarnings("unused")
+	private void setModtimes(java.util.List<ModtimesType> value)
+	{
+		for (ModtimesType object : value)
+			this.modtimes.add(new ModtimesType(object));
 	}
 
 	@Override

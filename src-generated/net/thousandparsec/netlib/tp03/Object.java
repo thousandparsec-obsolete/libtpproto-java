@@ -152,6 +152,16 @@ public class Object extends Response
 		}
 
 		/**
+		 * A copy constructor for (among others) deep-copying groups and lists.
+		 */
+		public PosType(PosType copy)
+		{
+			setX(copy.getX());
+			setY(copy.getY());
+			setZ(copy.getZ());
+		}
+
+		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
 		@SuppressWarnings("unused")
@@ -173,7 +183,7 @@ public class Object extends Response
 
 	public void setPos(PosType value)
 	{
-		this.pos=value;
+		this.pos=new PosType(value);
 	}
 
 	public static class VelType extends TPObject<TP03Visitor>
@@ -248,6 +258,16 @@ public class Object extends Response
 		}
 
 		/**
+		 * A copy constructor for (among others) deep-copying groups and lists.
+		 */
+		public VelType(VelType copy)
+		{
+			setX(copy.getX());
+			setY(copy.getY());
+			setZ(copy.getZ());
+		}
+
+		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
 		@SuppressWarnings("unused")
@@ -269,7 +289,7 @@ public class Object extends Response
 
 	public void setVel(VelType value)
 	{
-		this.vel=value;
+		this.vel=new VelType(value);
 	}
 
 	/**
@@ -320,6 +340,14 @@ public class Object extends Response
 		}
 
 		/**
+		 * A copy constructor for (among others) deep-copying groups and lists.
+		 */
+		public ContainsType(ContainsType copy)
+		{
+			setID(copy.getID());
+		}
+
+		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
 		@SuppressWarnings("unused")
@@ -335,6 +363,13 @@ public class Object extends Response
 	public java.util.List<ContainsType> getContains()
 	{
 		return this.contains;
+	}
+
+	@SuppressWarnings("unused")
+	private void setContains(java.util.List<ContainsType> value)
+	{
+		for (ContainsType object : value)
+			this.contains.add(new ContainsType(object));
 	}
 
 	/**
@@ -385,6 +420,14 @@ public class Object extends Response
 		}
 
 		/**
+		 * A copy constructor for (among others) deep-copying groups and lists.
+		 */
+		public OrdertypesType(OrdertypesType copy)
+		{
+			setID(copy.getID());
+		}
+
+		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
 		@SuppressWarnings("unused")
@@ -400,6 +443,13 @@ public class Object extends Response
 	public java.util.List<OrdertypesType> getOrdertypes()
 	{
 		return this.ordertypes;
+	}
+
+	@SuppressWarnings("unused")
+	private void setOrdertypes(java.util.List<OrdertypesType> value)
+	{
+		for (OrdertypesType object : value)
+			this.ordertypes.add(new OrdertypesType(object));
 	}
 
 	/**
@@ -450,6 +500,12 @@ public class Object extends Response
 	public GameObject<TP03Visitor> getObject()
 	{
 		return this.object;
+	}
+
+	@SuppressWarnings("unused")
+	private void setObject(GameObject<TP03Visitor> value)
+	{
+		this.object=value.copy();
 	}
 
 	@Override

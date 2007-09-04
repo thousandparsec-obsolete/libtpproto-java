@@ -71,6 +71,12 @@ public class Order extends Response
 		return this.turns;
 	}
 
+	@SuppressWarnings("unused")
+	private void setTurns(int value)
+	{
+		this.turns=value;
+	}
+
 	/**
 	 * Resources needed to complete this order.
 	 */
@@ -93,6 +99,12 @@ public class Order extends Response
 			return this.id;
 		}
 
+		@SuppressWarnings("unused")
+		private void setId(int value)
+		{
+			this.id=value;
+		}
+
 		/**
 		 * The units of that resource required
 		 */
@@ -101,6 +113,12 @@ public class Order extends Response
 		public int getAmount()
 		{
 			return this.amount;
+		}
+
+		@SuppressWarnings("unused")
+		private void setAmount(int value)
+		{
+			this.amount=value;
 		}
 
 		@Override
@@ -115,6 +133,15 @@ public class Order extends Response
 		{
 			out.writeInteger(this.id);
 			out.writeInteger(this.amount);
+		}
+
+		/**
+		 * A copy constructor for (among others) deep-copying groups and lists.
+		 */
+		public ResourcesType(ResourcesType copy)
+		{
+			setId(copy.getId());
+			setAmount(copy.getAmount());
 		}
 
 		/**
@@ -134,6 +161,13 @@ public class Order extends Response
 	public java.util.List<ResourcesType> getResources()
 	{
 		return java.util.Collections.unmodifiableList(resources);
+	}
+
+	@SuppressWarnings("unused")
+	private void setResources(java.util.List<ResourcesType> value)
+	{
+		for (ResourcesType object : value)
+			this.resources.add(new ResourcesType(object));
 	}
 
 	@Override

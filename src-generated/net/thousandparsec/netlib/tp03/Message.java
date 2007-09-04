@@ -94,6 +94,14 @@ public class Message extends Response
 		}
 
 		/**
+		 * A copy constructor for (among others) deep-copying groups and lists.
+		 */
+		public MsgtypelistType(MsgtypelistType copy)
+		{
+			setMsgtype(copy.getMsgtype());
+		}
+
+		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
 		@SuppressWarnings("unused")
@@ -109,6 +117,13 @@ public class Message extends Response
 	public java.util.List<MsgtypelistType> getMsgtypelist()
 	{
 		return this.msgtypelist;
+	}
+
+	@SuppressWarnings("unused")
+	private void setMsgtypelist(java.util.List<MsgtypelistType> value)
+	{
+		for (MsgtypelistType object : value)
+			this.msgtypelist.add(new MsgtypelistType(object));
 	}
 
 	private String subject=new String();
@@ -213,6 +228,15 @@ public class Message extends Response
 		}
 
 		/**
+		 * A copy constructor for (among others) deep-copying groups and lists.
+		 */
+		public ReferencesType(ReferencesType copy)
+		{
+			setType(copy.getType());
+			setId(copy.getId());
+		}
+
+		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
 		@SuppressWarnings("unused")
@@ -229,6 +253,13 @@ public class Message extends Response
 	public java.util.List<ReferencesType> getReferences()
 	{
 		return this.references;
+	}
+
+	@SuppressWarnings("unused")
+	private void setReferences(java.util.List<ReferencesType> value)
+	{
+		for (ReferencesType object : value)
+			this.references.add(new ReferencesType(object));
 	}
 
 	@Override

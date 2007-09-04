@@ -152,6 +152,14 @@ public class Features extends Response
 		}
 
 		/**
+		 * A copy constructor for (among others) deep-copying groups and lists.
+		 */
+		public FeaturesType(FeaturesType copy)
+		{
+			setFeature(copy.getFeature());
+		}
+
+		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
 		@SuppressWarnings("unused")
@@ -176,6 +184,13 @@ public class Features extends Response
 	public java.util.List<FeaturesType> getFeatures()
 	{
 		return this.features;
+	}
+
+	@SuppressWarnings("unused")
+	private void setFeatures(java.util.List<FeaturesType> value)
+	{
+		for (FeaturesType object : value)
+			this.features.add(new FeaturesType(object));
 	}
 
 	@Override

@@ -253,10 +253,10 @@ public class JavaOutputGenerator implements OutputGenerator
 		for (Property p : properties)
 			if (!p.readOnly)
 				writableProperties.add(p);
+		Indent indent=new Indent(level);
+
 		if (!writableProperties.isEmpty())
 		{
-			Indent indent=new Indent(level);
-
 			out.printf("%s	/**%n", indent);
 			out.printf("%s	 * A convenience constructor for easy initialisation of non-read only fields.%n", indent);
 			out.printf("%s	 */%n", indent);
@@ -264,20 +264,33 @@ public class JavaOutputGenerator implements OutputGenerator
 			for (Iterator<Property> pit=writableProperties.iterator(); pit.hasNext(); )
 			{
 				Property p=pit.next();
-				out.printf("%s %s", p.targetType, p.name);
+				if (p.type == PropertyType.list)
+					out.printf("java.util.List<%s> %s", p.targetType, p.name);
+				else
+					out.printf("%s %s", p.targetType, p.name);
 				if (pit.hasNext())
 					out.print(", ");
 			}
 			out.println(")");
 
 			out.printf("%s	{%n", indent);
-			for (Property p : writableProperties)
-				out.printf("%s		%s(%s);%n", indent, camelPrefix("set", p.name), p.name);
+			for (Property property : writableProperties)
+				out.printf("%s		%s(%s);%n", indent, camelPrefix("set", property.name), property.name);
 			out.printf("%s	}%n", indent);
 			out.println();
-
 			checkError(out);
 		}
+
+		out.printf("%s	/**%n", indent);
+		out.printf("%s	 * A copy constructor for (among others) deep-copying groups and lists.%n", indent);
+		out.printf("%s	 */%n", indent);
+		out.printf("%s	public %s(%s copy)%n", indent, typeName, typeName);
+		out.printf("%s	{%n", indent);
+		for (Property property : properties)
+			out.printf("%s		%s(%s.%s());%n", indent, camelPrefix("set", property.name), "copy", camelPrefix("get", property.name));
+		out.printf("%s	}%n", indent);
+		out.println();
+		checkError(out);
 	}
 
 	private void printInputConstructor(int level, String typeName, List<Property> properties, boolean overrides) throws IOException
@@ -565,28 +578,49 @@ public class JavaOutputGenerator implements OutputGenerator
 	public void printPropertySetter(int level, Property property) throws IOException
 	{
 		//to modify list property use the getter and modify the List
-		if (!property.readOnly && property.type != StructureHandler.PropertyType.list)
+		Indent indent=new Indent(level);
+
+		boolean isPublic=!property.readOnly && property.type != PropertyType.list;
+		if (!isPublic)
+			out.printf("%s@SuppressWarnings(\"unused\")%n", indent);
+		out.printf("%s%s void %s(%s value)%n",
+			indent,
+			isPublic
+				? "public"
+				: "private",
+			camelPrefix("set", property.name),
+			property.type != PropertyType.list
+				? property.targetType
+				: String.format("java.util.List<%s>", property.targetType));
+		out.printf("%s{%n", indent);
+		switch (property.type)
 		{
-			Indent indent=new Indent(level);
+			case character:
+				//will bail if the source doesn't have enough bytes
+				out.printf("%s	System.arraycopy(value, 0, this.%s, 0, this.%s.length);%n", indent, property.name, property.name);
+				break;
 
-			out.printf("%spublic void %s(%s value)%n", indent, camelPrefix("set", property.name), property.targetType);
-			out.printf("%s{%n", indent);
-			switch (property.type)
-			{
-				case character:
-					//will bail if the source doesn't have enough bytes
-					out.printf("%s	System.arraycopy(value, 0, this.%s, 0, this.%s.length);%n", indent, property.name, property.name);
-					break;
+			case list:
+				out.printf("%s	for (%s object : value)%n", indent, property.targetType);
+				out.printf("%s		this.%s.add(new %s(object));%n", indent, property.name, property.targetType);
+				break;
 
-				default:
-					out.printf("%s	this.%s=value;%n", indent, property.name);
-					break;
-			}
-			out.printf("%s}%n", indent);
-			out.println();
+			case group:
+				out.printf("%s	this.%s=new %s(value);%n", indent, property.name, property.targetType);
+				break;
 
-			checkError(out);
+			case object: //special case
+				out.printf("%s	this.%s=value.copy();%n", indent, property.name);
+				break;
+
+			default:
+				out.printf("%s	this.%s=value;%n", indent, property.name);
+				break;
 		}
+		out.printf("%s}%n", indent);
+		out.println();
+
+		checkError(out);
 	}
 
 	public void startEnum(int level, String enumName, String valueType) throws IOException

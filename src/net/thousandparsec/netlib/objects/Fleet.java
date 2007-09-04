@@ -27,6 +27,15 @@ public class Fleet<V extends Visitor<V>> extends GameObject<V>
 		this.damage=in.readInteger32();
 	}
 
+	protected Fleet(Fleet<?> copy)
+	{
+		this();
+		this.owner=copy.getOwner();
+		for (ShipsType object : copy.getShips())
+			this.ships.add(new ShipsType(object));
+		this.damage=copy.getDamage();
+	}
+
 	private int owner;
 
 	public int getOwner()
@@ -40,6 +49,12 @@ public class Fleet<V extends Visitor<V>> extends GameObject<V>
 		{
 			this.type=in.readInteger32();
 			this.count=in.readInteger32();
+		}
+
+		ShipsType(ShipsType copy)
+		{
+			this.type=copy.type;
+			this.count=copy.count;
 		}
 
 		private int type;
@@ -81,6 +96,12 @@ public class Fleet<V extends Visitor<V>> extends GameObject<V>
 	public int getDamage()
 	{
 		return damage;
+	}
+
+	@Override
+	public Fleet<V> copy()
+	{
+		return new Fleet<V>(this);
 	}
 
 	@Override

@@ -46,6 +46,8 @@ public abstract class GameObject<V extends Visitor<V>> implements Writable, Visi
 		//nothing to read
 	}
 
+	public abstract GameObject<V> copy();
+
 	public int getObjectType()
 	{
 		return id;
