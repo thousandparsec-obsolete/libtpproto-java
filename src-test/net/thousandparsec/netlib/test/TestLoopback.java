@@ -36,27 +36,35 @@ public class TestLoopback extends TP03Visitor
 				{
 					public Void call() throws Exception
 					{
-						conn.sendFrame(new Login());
-						System.out.println("Frame sent");
-
-						GetMessage object=new GetMessage();
-						object.setId(5);
-						object.getSlots().addAll(Arrays.asList(
-							new SlotsType(13),
-							new SlotsType(14),
-							new SlotsType(15),
-							new SlotsType(16),
-							new SlotsType(17),
-							new SlotsType(18)));
-						for (int i=0; i < 100; i++)
+						try
 						{
-							conn.sendFrame(object);
+							conn.sendFrame(new Login());
 							System.out.println("Frame sent");
+
+							GetMessage object=new GetMessage();
+							object.setId(5);
+							object.getSlots().addAll(Arrays.asList(
+								new SlotsType(13),
+								new SlotsType(14),
+								new SlotsType(15),
+								new SlotsType(16),
+								new SlotsType(17),
+								new SlotsType(18)));
+							for (int i=0; i < 100; i++)
+							{
+								conn.sendFrame(object);
+								System.out.println("Frame sent");
+							}
+
+							conn.close();
+
+							return null;
 						}
-
-						conn.close();
-
-						return null;
+						catch (Exception ex)
+						{
+							ex.printStackTrace(System.err);
+							throw ex;
+						}
 					}
 				});
 
@@ -64,14 +72,22 @@ public class TestLoopback extends TP03Visitor
 				{
 					public List<Frame<TP03Visitor>> call() throws Exception
 					{
-						List<Frame<TP03Visitor>> ret=new ArrayList<Frame<TP03Visitor>>();
-						Frame<TP03Visitor> frame;
-						while ((frame=conn.receiveFrame()) != null)
+						try
 						{
-							System.out.println("Got frame");
-							ret.add(frame);
+							List<Frame<TP03Visitor>> ret=new ArrayList<Frame<TP03Visitor>>();
+							Frame<TP03Visitor> frame;
+							while ((frame=conn.receiveFrame()) != null)
+							{
+								System.out.println("Got frame");
+								ret.add(frame);
+							}
+							return ret;
 						}
-						return ret;
+						catch (Exception ex)
+						{
+							ex.printStackTrace(System.err);
+							throw ex;
+						}
 					}
 				});
 
