@@ -325,7 +325,8 @@ public class Connection<V extends Visitor<V>>
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 
-	private final Object lock=new Object();
+	private final Object lockSend=new Object();
+	private final Object lockRecv=new Object();
 	private final FrameDecoder<V> frameDecoder;
 	private final Socket socket;
 	private final InputStream in;
@@ -404,7 +405,7 @@ public class Connection<V extends Visitor<V>>
 	 */
 	public void sendFrame(Frame<V> frame) throws IOException
 	{
-		synchronized (lock)
+		synchronized (lockSend)
 		{
 			TPOutputStream tpout=getOutputStream();
 			frame.write(tpout, this);
@@ -433,10 +434,13 @@ public class Connection<V extends Visitor<V>>
 		 * senders and receivers; in other words ensure that the next frame
 		 * received will be the response to this frame
 		 */
-		synchronized (lock)
+		synchronized (lockSend)
 		{
-			sendFrame(frame);
-			receiveFrame().visit(responseVisitor);
+			synchronized (lockRecv)
+			{
+				sendFrame(frame);
+				receiveFrame().visit(responseVisitor);
+			}
 		}
 	}
 
@@ -453,7 +457,7 @@ public class Connection<V extends Visitor<V>>
 	 */
 	public Frame<V> receiveFrame() throws EOFException, IOException
 	{
-		synchronized (lock)
+		synchronized (lockRecv)
 		{
 			Frame.Header h=Frame.Header.readHeader(getInputStream(), getCompatibility());
 			return h == null ? null : frameDecoder.decodeFrame(h.id, getInputStream(h.length));
@@ -490,7 +494,7 @@ public class Connection<V extends Visitor<V>>
 	 */
 	public void close() throws IOException
 	{
-		synchronized (lock)
+		synchronized (lockSend)
 		{
 			socket.shutdownOutput();
 		}
