@@ -4,319 +4,319 @@ import net.thousandparsec.netlib.Visitor;
 
 public class TP03Visitor extends Visitor<TP03Visitor>
 {
-	public void handle(Okay packet)
+	public void frame(Okay packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(Fail packet)
+	public void frame(Fail packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(Sequence packet)
+	public void frame(Sequence packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(Redirect packet)
+	public void frame(Redirect packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(Connect packet)
+	public void frame(Connect packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(Login packet)
+	public void frame(Login packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(CreateAccount packet)
+	public void frame(CreateAccount packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(GetFeatures packet)
+	public void frame(GetFeatures packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(Features packet)
+	public void frame(Features packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(Ping packet)
+	public void frame(Ping packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(GetObjectsByID packet)
+	public void frame(GetObjectsByID packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(GetObjectsByPos packet)
+	public void frame(GetObjectsByPos packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(Object packet)
+	public void frame(Object packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(GetObjectIDs packet)
+	public void frame(GetObjectIDs packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(GetObjectIDsByPos packet)
+	public void frame(GetObjectIDsByPos packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(GetObjectIDsByContainer packet)
+	public void frame(GetObjectIDsByContainer packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(ObjectIDs packet)
+	public void frame(ObjectIDs packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(GetOrderDesc packet)
+	public void frame(GetOrderDesc packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(OrderDesc packet)
+	public void frame(OrderDesc packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(GetOrderDescIDs packet)
+	public void frame(GetOrderDescIDs packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(OrderDescIDs packet)
+	public void frame(OrderDescIDs packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(GetOrder packet)
+	public void frame(GetOrder packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(RemoveOrder packet)
+	public void frame(RemoveOrder packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(Order packet)
+	public void frame(Order packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(OrderInsert packet)
+	public void frame(OrderInsert packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(OrderProbe packet)
+	public void frame(OrderProbe packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(GetTimeRemaining packet)
+	public void frame(GetTimeRemaining packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(TimeRemaining packet)
+	public void frame(TimeRemaining packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(GetBoards packet)
+	public void frame(GetBoards packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(Board packet)
+	public void frame(Board packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(GetBoardIDs packet)
+	public void frame(GetBoardIDs packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(BoardIDs packet)
+	public void frame(BoardIDs packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(GetMessage packet)
+	public void frame(GetMessage packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(Message packet)
+	public void frame(Message packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(PostMessage packet)
+	public void frame(PostMessage packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(RemoveMessage packet)
+	public void frame(RemoveMessage packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(GetResource packet)
+	public void frame(GetResource packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(Resource packet)
+	public void frame(Resource packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(GetResourceIDs packet)
+	public void frame(GetResourceIDs packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(ResourceIDs packet)
+	public void frame(ResourceIDs packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(GetPlayer packet)
+	public void frame(GetPlayer packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(Player packet)
+	public void frame(Player packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(GetCategory packet)
+	public void frame(GetCategory packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(RemoveCategory packet)
+	public void frame(RemoveCategory packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(Category packet)
+	public void frame(Category packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(AddCategory packet)
+	public void frame(AddCategory packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(GetCategoryIDs packet)
+	public void frame(GetCategoryIDs packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(CategoryIDs packet)
+	public void frame(CategoryIDs packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(GetDesign packet)
+	public void frame(GetDesign packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(RemoveDesign packet)
+	public void frame(RemoveDesign packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(Design packet)
+	public void frame(Design packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(AddDesign packet)
+	public void frame(AddDesign packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(ModifyDesign packet)
+	public void frame(ModifyDesign packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(GetDesignIDs packet)
+	public void frame(GetDesignIDs packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(DesignIDs packet)
+	public void frame(DesignIDs packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(GetComponent packet)
+	public void frame(GetComponent packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(Component packet)
+	public void frame(Component packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(GetComponentIDs packet)
+	public void frame(GetComponentIDs packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(ComponentIDs packet)
+	public void frame(ComponentIDs packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(GetProperty packet)
+	public void frame(GetProperty packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(Property packet)
+	public void frame(Property packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(GetPropertyIDs packet)
+	public void frame(GetPropertyIDs packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
-	public void handle(PropertyIDs packet)
+	public void frame(PropertyIDs packet)
 	{
-		handleUnhandled(packet);
+		unhandledFrame(packet);
 	}
 
 }

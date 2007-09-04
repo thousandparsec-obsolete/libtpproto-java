@@ -19,7 +19,7 @@ public class OrderInsert extends Order
 	@Override
 	public void visit(TP03Visitor visitor)
 	{
-		visitor.handle(this);
+		visitor.frame(this);
 	}
 
 	@Override

@@ -143,7 +143,7 @@ public class JavaOutputGenerator implements OutputGenerator
 		out.printf("%s	public void visit(TP%02dVisitor visitor)%n", indent, compat);
 		out.printf("%s	{%n", indent);
 		if (id != -1)
-			out.printf("%s		visitor.handle(this);%n", indent);
+			out.printf("%s		visitor.frame(this);%n", indent);
 		else
 			out.printf("%s		//NOP (not a leaf class)%n", indent);
 		out.printf("%s	}%n", indent);
@@ -337,9 +337,9 @@ public class JavaOutputGenerator implements OutputGenerator
 			for (Packet packet : packets)
 				if (packet.id != -1)
 				{
-					visitor.printf("	public void handle(%s packet)%n", packet.name);
+					visitor.printf("	public void frame(%s packet)%n", packet.name);
 					visitor.println("	{");
-					visitor.println("		handleUnhandled(packet);");
+					visitor.println("		unhandledFrame(packet);");
 					visitor.println("	}");
 					visitor.println();
 				}

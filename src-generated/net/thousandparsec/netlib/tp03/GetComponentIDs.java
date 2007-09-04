@@ -22,7 +22,7 @@ public class GetComponentIDs extends GetIDSequence
 	@Override
 	public void visit(TP03Visitor visitor)
 	{
-		visitor.handle(this);
+		visitor.frame(this);
 	}
 
 	@Override

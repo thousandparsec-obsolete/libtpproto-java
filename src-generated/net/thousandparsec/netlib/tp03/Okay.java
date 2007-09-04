@@ -34,7 +34,7 @@ public class Okay extends Response
 	@Override
 	public void visit(TP03Visitor visitor)
 	{
-		visitor.handle(this);
+		visitor.frame(this);
 	}
 
 	@Override

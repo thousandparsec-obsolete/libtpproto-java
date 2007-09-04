@@ -37,7 +37,7 @@ public class GetObjectIDsByContainer extends Request
 	@Override
 	public void visit(TP03Visitor visitor)
 	{
-		visitor.handle(this);
+		visitor.frame(this);
 	}
 
 	@Override
