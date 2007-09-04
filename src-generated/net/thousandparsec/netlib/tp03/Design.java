@@ -46,7 +46,7 @@ public class Design extends Response
 		this.modtime=value;
 	}
 
-	public static class CategoriesType extends TPObject<TP03Decoder, TP03Visitor>
+	public static class CategoriesType extends TPObject<TP03Visitor>
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -74,7 +74,7 @@ public class Design extends Response
 				 + 4;
 		}
 
-		public void write(TPDataOutput out, Connection<TP03Decoder, TP03Visitor> conn) throws IOException
+		public void write(TPDataOutput out, Connection<?> conn) throws IOException
 		{
 			out.writeInteger(this.category);
 		}
@@ -153,7 +153,7 @@ public class Design extends Response
 		this.owner=value;
 	}
 
-	public static class ComponentsType extends TPObject<TP03Decoder, TP03Visitor>
+	public static class ComponentsType extends TPObject<TP03Visitor>
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -194,7 +194,7 @@ public class Design extends Response
 				 + 4;
 		}
 
-		public void write(TPDataOutput out, Connection<TP03Decoder, TP03Visitor> conn) throws IOException
+		public void write(TPDataOutput out, Connection<?> conn) throws IOException
 		{
 			out.writeInteger(this.componentid);
 			out.writeInteger(this.componentnum);
@@ -240,7 +240,7 @@ public class Design extends Response
 		this.feedback=value;
 	}
 
-	public static class PropertiesType extends TPObject<TP03Decoder, TP03Visitor>
+	public static class PropertiesType extends TPObject<TP03Visitor>
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -284,7 +284,7 @@ public class Design extends Response
 				 + findByteLength(this.value);
 		}
 
-		public void write(TPDataOutput out, Connection<TP03Decoder, TP03Visitor> conn) throws IOException
+		public void write(TPDataOutput out, Connection<?> conn) throws IOException
 		{
 			out.writeInteger(this.id);
 			out.writeString(this.value);
@@ -341,7 +341,7 @@ public class Design extends Response
 	}
 
 	@Override
-	public void write(TPDataOutput out, Connection<TP03Decoder, TP03Visitor> conn) throws IOException
+	public void write(TPDataOutput out, Connection<?> conn) throws IOException
 	{
 		super.write(out, conn);
 		out.writeInteger(this.id);

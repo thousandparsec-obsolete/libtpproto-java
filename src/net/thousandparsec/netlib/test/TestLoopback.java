@@ -25,10 +25,10 @@ public class TestLoopback extends TP03Visitor
 {
 	public static void main(String[] args) throws IOException, InterruptedException, ExecutionException
 	{
-		FrameDecoder<TP03Decoder, TP03Visitor> ff=new TP03Decoder();
+		FrameDecoder<TP03Visitor> ff=new TP03Decoder();
 
 		ExecutorService exec=Executors.newFixedThreadPool(2);
-		final Connection<TP03Decoder, TP03Visitor> conn=new Connection<TP03Decoder, TP03Visitor>(ff, new DebugSocket());
+		final Connection<TP03Visitor> conn=new Connection<TP03Visitor>(ff, new DebugSocket());
 
 		try
 		{
@@ -64,11 +64,11 @@ public class TestLoopback extends TP03Visitor
 					}
 				});
 
-			Future<List<Frame<TP03Decoder, TP03Visitor>>> futureResult=exec.submit(new Callable<List<Frame<TP03Decoder, TP03Visitor>>>()
+			Future<List<Frame<TP03Visitor>>> futureResult=exec.submit(new Callable<List<Frame<TP03Visitor>>>()
 				{
-					public List<Frame<TP03Decoder, TP03Visitor>> call() throws Exception
+					public List<Frame<TP03Visitor>> call() throws Exception
 					{
-						List<Frame<TP03Decoder, TP03Visitor>> ret=new ArrayList<Frame<TP03Decoder,TP03Visitor>>();
+						List<Frame<TP03Visitor>> ret=new ArrayList<Frame<TP03Visitor>>();
 						while (true)
 							try
 							{
@@ -83,9 +83,9 @@ public class TestLoopback extends TP03Visitor
 					}
 				});
 
-			List<Frame<TP03Decoder,TP03Visitor>> frames=futureResult.get();
+			List<Frame<TP03Visitor>> frames=futureResult.get();
 			TP03Visitor visitor=new TestLoopback();
-			for (Frame<TP03Decoder,TP03Visitor> frame : frames)
+			for (Frame<TP03Visitor> frame : frames)
 				frame.visit(visitor);
 		}
 		finally
@@ -96,7 +96,7 @@ public class TestLoopback extends TP03Visitor
 	}
 
 	@Override
-	public void handleUnhandled(Frame<TP03Decoder, TP03Visitor> frame)
+	public void handleUnhandled(Frame<TP03Visitor> frame)
 	{
 		System.out.println("Unhandled frame: "+frame.getFrameType()+" ("+frame+")");
 	}

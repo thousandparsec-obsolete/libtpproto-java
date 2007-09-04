@@ -6,9 +6,9 @@ import net.thousandparsec.netlib.Frame;
 import net.thousandparsec.netlib.FrameDecoder;
 import net.thousandparsec.netlib.TPDataInput;
 
-public class TP03Decoder implements FrameDecoder<TP03Decoder, TP03Visitor>
+public class TP03Decoder implements FrameDecoder<TP03Visitor>
 {
-	public Frame<TP03Decoder, TP03Visitor> decodeFrame(int id, TPDataInput in) throws IOException
+	public Frame<TP03Visitor> decodeFrame(int id, TPDataInput in) throws IOException
 	{
 		switch (id)
 		{

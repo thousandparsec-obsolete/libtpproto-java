@@ -74,7 +74,7 @@ public class Order extends Response
 	/**
 	 * Resources needed to complete this order.
 	 */
-	public static class ResourcesType extends TPObject<TP03Decoder, TP03Visitor>
+	public static class ResourcesType extends TPObject<TP03Visitor>
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -111,7 +111,7 @@ public class Order extends Response
 				 + 4;
 		}
 
-		public void write(TPDataOutput out, Connection<TP03Decoder, TP03Visitor> conn) throws IOException
+		public void write(TPDataOutput out, Connection<?> conn) throws IOException
 		{
 			out.writeInteger(this.id);
 			out.writeInteger(this.amount);
@@ -154,7 +154,7 @@ public class Order extends Response
 	}
 
 	@Override
-	public void write(TPDataOutput out, Connection<TP03Decoder, TP03Visitor> conn) throws IOException
+	public void write(TPDataOutput out, Connection<?> conn) throws IOException
 	{
 		super.write(out, conn);
 		out.writeInteger(this.id);

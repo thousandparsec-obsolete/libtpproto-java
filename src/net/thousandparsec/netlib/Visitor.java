@@ -13,9 +13,9 @@ package net.thousandparsec.netlib;
  * 
  * @author ksobolewski
  */
-public abstract class Visitor<F extends FrameDecoder<F, V>, V extends Visitor<F, V>>
+public abstract class Visitor<V extends Visitor<V>>
 {
-	public void handleUnhandled(Frame<F, V> frame)
+	public void handleUnhandled(Frame<V> frame)
 	{
 		//NOP here
 	}

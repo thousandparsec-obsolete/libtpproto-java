@@ -17,7 +17,7 @@ import java.util.Arrays;
  * @see Connection
  * @author ksobolewski
  */
-public abstract class Frame<F extends FrameDecoder<F, V>, V extends Visitor<F, V>> extends TPObject<F, V> implements Visitable<F, V>
+public abstract class Frame<V extends Visitor<V>> extends TPObject<V> implements Visitable<V>
 {
 	private final int id;
 
@@ -31,7 +31,7 @@ public abstract class Frame<F extends FrameDecoder<F, V>, V extends Visitor<F, V
 		this(id);
 	}
 
-	public void write(TPDataOutput out, Connection<F, V> conn) throws IOException
+	public void write(TPDataOutput out, Connection<?> conn) throws IOException
 	{
 		switch (conn.getCompatibility())
 		{

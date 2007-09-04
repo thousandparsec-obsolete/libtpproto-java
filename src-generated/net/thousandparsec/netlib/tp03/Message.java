@@ -49,7 +49,7 @@ public class Message extends Response
 		this.slot=value;
 	}
 
-	public static class MsgtypelistType extends TPObject<TP03Decoder, TP03Visitor>
+	public static class MsgtypelistType extends TPObject<TP03Visitor>
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -80,7 +80,7 @@ public class Message extends Response
 				 + 4;
 		}
 
-		public void write(TPDataOutput out, Connection<TP03Decoder, TP03Visitor> conn) throws IOException
+		public void write(TPDataOutput out, Connection<?> conn) throws IOException
 		{
 			out.writeInteger(this.msgtype);
 		}
@@ -153,7 +153,7 @@ public class Message extends Response
 	/**
 	 * A list of as described in the Generic Reference System
 	 */
-	public static class ReferencesType extends TPObject<TP03Decoder, TP03Visitor>
+	public static class ReferencesType extends TPObject<TP03Visitor>
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -197,7 +197,7 @@ public class Message extends Response
 				 + 4;
 		}
 
-		public void write(TPDataOutput out, Connection<TP03Decoder, TP03Visitor> conn) throws IOException
+		public void write(TPDataOutput out, Connection<?> conn) throws IOException
 		{
 			out.writeInteger(this.type);
 			out.writeInteger(this.id);
@@ -251,7 +251,7 @@ public class Message extends Response
 	}
 
 	@Override
-	public void write(TPDataOutput out, Connection<TP03Decoder, TP03Visitor> conn) throws IOException
+	public void write(TPDataOutput out, Connection<?> conn) throws IOException
 	{
 		super.write(out, conn);
 		out.writeInteger(this.id);

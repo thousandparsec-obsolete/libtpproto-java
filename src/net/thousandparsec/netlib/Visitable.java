@@ -8,7 +8,7 @@ package net.thousandparsec.netlib;
  * 
  * @author ksobolewski
  */
-public interface Visitable<F extends FrameDecoder<F, V>, V extends Visitor<F, V>>
+public interface Visitable<V extends Visitor<V>>
 {
 	void visit(V v);
 }

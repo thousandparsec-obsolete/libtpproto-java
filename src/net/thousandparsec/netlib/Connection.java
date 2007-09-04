@@ -23,7 +23,7 @@ import javax.net.ssl.SSLSocketFactory;
  * 
  * @author ksobolewski
  */
-public class Connection<F extends FrameDecoder<F, V>, V extends Visitor<F, V>>
+public class Connection<V extends Visitor<V>>
 {
 	/**
 	 * An enumeration of available TP protocol connection methods. Each enum
@@ -82,8 +82,8 @@ public class Connection<F extends FrameDecoder<F, V>, V extends Visitor<F, V>>
 	 * @throws IOException
 	 *             on a I/O error
 	 */
-	public static <F extends FrameDecoder<F, V>, V extends Visitor<F, V>> Connection<F, V>
-		makeConnection(FrameDecoder<F, V> frameDecoder, String serverUri)
+	public static <V extends Visitor<V>> Connection<V>
+		makeConnection(FrameDecoder<V> frameDecoder, String serverUri)
 		throws URISyntaxException, UnknownHostException, IOException
 	{
 		return makeConnection(frameDecoder, new URI(serverUri));
@@ -104,8 +104,8 @@ public class Connection<F extends FrameDecoder<F, V>, V extends Visitor<F, V>>
 	 * @throws IOException
 	 *             on a I/O error
 	 */
-	public static <F extends FrameDecoder<F, V>, V extends Visitor<F, V>> Connection<F, V>
-		makeConnection(FrameDecoder<F, V> frameDecoder, URI serverUri)
+	public static <V extends Visitor<V>> Connection<V>
+		makeConnection(FrameDecoder<V> frameDecoder, URI serverUri)
 		throws UnknownHostException, IOException
 	{
 		int port=serverUri.getPort();
@@ -126,8 +126,8 @@ public class Connection<F extends FrameDecoder<F, V>, V extends Visitor<F, V>>
 	 * @throws IOException
 	 *             on a I/O error
 	 */
-	public static <F extends FrameDecoder<F, V>, V extends Visitor<F, V>> Connection<F, V>
-		makeConnection(FrameDecoder<F, V> frameDecoder, String host, Method method)
+	public static <V extends Visitor<V>> Connection<V>
+		makeConnection(FrameDecoder<V> frameDecoder, String host, Method method)
 		throws UnknownHostException, IOException
 	{
 		return makeConnection(frameDecoder, host, method, method.defaultPort);
@@ -146,8 +146,8 @@ public class Connection<F extends FrameDecoder<F, V>, V extends Visitor<F, V>>
 	 * @throws IOException
 	 *             on a I/O error
 	 */
-	public static <F extends FrameDecoder<F, V>, V extends Visitor<F, V>> Connection<F, V>
-		makeConnection(FrameDecoder<F, V> frameDecoder, String host, Method method, int port)
+	public static <V extends Visitor<V>> Connection<V>
+		makeConnection(FrameDecoder<V> frameDecoder, String host, Method method, int port)
 		throws UnknownHostException, IOException
 	{
 		switch (method)
@@ -177,8 +177,8 @@ public class Connection<F extends FrameDecoder<F, V>, V extends Visitor<F, V>>
 	 * @throws IOException
 	 *             on a I/O error
 	 */
-	public static <F extends FrameDecoder<F, V>, V extends Visitor<F, V>> Connection<F, V>
-		makeTPConnection(FrameDecoder<F, V> frameDecoder, String host)
+	public static <V extends Visitor<V>> Connection<V>
+		makeTPConnection(FrameDecoder<V> frameDecoder, String host)
 		throws UnknownHostException, IOException
 	{
 		return makeTPConnection(frameDecoder, host, Method.tp.defaultPort);
@@ -196,11 +196,11 @@ public class Connection<F extends FrameDecoder<F, V>, V extends Visitor<F, V>>
 	 * @throws IOException
 	 *             on a I/O error
 	 */
-	public static <F extends FrameDecoder<F, V>, V extends Visitor<F, V>> Connection<F, V>
-		makeTPConnection(FrameDecoder<F, V> frameDecoder, String host, int port)
+	public static <V extends Visitor<V>> Connection<V>
+		makeTPConnection(FrameDecoder<V> frameDecoder, String host, int port)
 		throws UnknownHostException, IOException
 	{
-		return new Connection<F, V>(frameDecoder, new Socket(host, port));
+		return new Connection<V>(frameDecoder, new Socket(host, port));
 	}
 
 	/**
@@ -215,8 +215,8 @@ public class Connection<F extends FrameDecoder<F, V>, V extends Visitor<F, V>>
 	 * @throws IOException
 	 *             on a I/O error
 	 */
-	public static <F extends FrameDecoder<F, V>, V extends Visitor<F, V>> Connection<F, V>
-		makeTPSConnection(FrameDecoder<F, V> frameDecoder, String host)
+	public static <V extends Visitor<V>> Connection<V>
+		makeTPSConnection(FrameDecoder<V> frameDecoder, String host)
 		throws UnknownHostException, IOException
 	{
 		return makeTPSConnection(frameDecoder, host, Method.tps.defaultPort);
@@ -235,11 +235,11 @@ public class Connection<F extends FrameDecoder<F, V>, V extends Visitor<F, V>>
 	 * @throws IOException
 	 *             on a I/O error
 	 */
-	public static <F extends FrameDecoder<F, V>, V extends Visitor<F, V>> Connection<F, V>
-		makeTPSConnection(FrameDecoder<F, V> frameDecoder, String host, int port)
+	public static <V extends Visitor<V>> Connection<V>
+		makeTPSConnection(FrameDecoder<V> frameDecoder, String host, int port)
 		throws UnknownHostException, IOException
 	{
-		return new Connection<F, V>(frameDecoder, SSLSocketFactory.getDefault().createSocket(host, port));
+		return new Connection<V>(frameDecoder, SSLSocketFactory.getDefault().createSocket(host, port));
 	}
 
 	/**
@@ -254,8 +254,8 @@ public class Connection<F extends FrameDecoder<F, V>, V extends Visitor<F, V>>
 	 * @throws IOException
 	 *             on a I/O error
 	 */
-	public static <F extends FrameDecoder<F, V>, V extends Visitor<F, V>> Connection<F, V>
-		makeHTTPConnection(FrameDecoder<F, V> frameDecoder, String host)
+	public static <V extends Visitor<V>> Connection<V>
+		makeHTTPConnection(FrameDecoder<V> frameDecoder, String host)
 		throws UnknownHostException, IOException
 	{
 		return makeHTTPConnection(frameDecoder, host, Method.http.defaultPort);
@@ -275,8 +275,8 @@ public class Connection<F extends FrameDecoder<F, V>, V extends Visitor<F, V>>
 	 *             on a I/O error
 	 */
 	@SuppressWarnings("unused")
-	public static <F extends FrameDecoder<F, V>, V extends Visitor<F, V>> Connection<F, V>
-		makeHTTPConnection(FrameDecoder<F, V> frameDecoder, String host, int port)
+	public static <V extends Visitor<V>> Connection<V>
+		makeHTTPConnection(FrameDecoder<V> frameDecoder, String host, int port)
 		throws UnknownHostException, IOException
 	{
 //		return null;
@@ -296,8 +296,8 @@ public class Connection<F extends FrameDecoder<F, V>, V extends Visitor<F, V>>
 	 * @throws IOException
 	 *             on a I/O error
 	 */
-	public static <F extends FrameDecoder<F, V>, V extends Visitor<F, V>> Connection<F, V>
-		makeHTTPSConnection(FrameDecoder<F, V> frameDecoder, String host)
+	public static <V extends Visitor<V>> Connection<V>
+		makeHTTPSConnection(FrameDecoder<V> frameDecoder, String host)
 		throws UnknownHostException, IOException
 	{
 		return makeHTTPSConnection(frameDecoder, host, Method.https.defaultPort);
@@ -317,15 +317,15 @@ public class Connection<F extends FrameDecoder<F, V>, V extends Visitor<F, V>>
 	 *             on a I/O error
 	 */
 	@SuppressWarnings("unused")
-	public static <F extends FrameDecoder<F, V>, V extends Visitor<F, V>> Connection<F, V>
-		makeHTTPSConnection(FrameDecoder<F, V> frameDecoder, String host, int port)
+	public static <V extends Visitor<V>> Connection<V>
+		makeHTTPSConnection(FrameDecoder<V> frameDecoder, String host, int port)
 		throws UnknownHostException, IOException
 	{
 //		return null;
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 
-	private final FrameDecoder<F, V> frameDecoder;
+	private final FrameDecoder<V> frameDecoder;
 	private final Socket socket;
 	private final InputStream in;
 	private final TPInputStream tpin;
@@ -346,7 +346,7 @@ public class Connection<F extends FrameDecoder<F, V>, V extends Visitor<F, V>>
 	 * @throws IOException
 	 *             on any I/O error during connection setup
 	 */
-	public Connection(FrameDecoder<F, V> frameDecoder, Socket socket) throws IOException
+	public Connection(FrameDecoder<V> frameDecoder, Socket socket) throws IOException
 	{
 		this.frameDecoder=frameDecoder;
 		this.socket=socket;
@@ -401,7 +401,7 @@ public class Connection<F extends FrameDecoder<F, V>, V extends Visitor<F, V>>
 	 * @throws IOException
 	 *             on any I/O error
 	 */
-	public void sendFrame(Frame<F, V> frame) throws IOException
+	public void sendFrame(Frame<V> frame) throws IOException
 	{
 		TPOutputStream tpout=getOutputStream();
 		frame.write(tpout, this);
@@ -419,7 +419,7 @@ public class Connection<F extends FrameDecoder<F, V>, V extends Visitor<F, V>>
 	 * @throws IOException
 	 *             on any other I/O error
 	 */
-	public Frame<F, V> receiveFrame() throws EOFException, IOException
+	public Frame<V> receiveFrame() throws EOFException, IOException
 	{
 		Frame.Header h=new Frame.Header(getInputStream(), getCompatibility());
 		return frameDecoder.decodeFrame(h.id, getInputStream(h.length));

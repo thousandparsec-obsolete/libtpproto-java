@@ -4,7 +4,7 @@ import net.thousandparsec.netlib.*;
 
 import java.io.IOException;
 
-public abstract class Response extends Frame<TP03Decoder, TP03Visitor>
+public abstract class Response extends Frame<TP03Visitor>
 {
 	protected Response(int id)
 	{
@@ -23,7 +23,7 @@ public abstract class Response extends Frame<TP03Decoder, TP03Visitor>
 	}
 
 	@Override
-	public void write(TPDataOutput out, Connection<TP03Decoder, TP03Visitor> conn) throws IOException
+	public void write(TPDataOutput out, Connection<?> conn) throws IOException
 	{
 		super.write(out, conn);
 	}

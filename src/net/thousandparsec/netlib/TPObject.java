@@ -3,7 +3,7 @@ package net.thousandparsec.netlib;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-public abstract class TPObject<F extends FrameDecoder<F, V>, V extends Visitor<F, V>> implements Writable<F, V>
+public abstract class TPObject<V extends Visitor<V>> implements Writable
 {
 	/**
 	 * @param s
@@ -32,15 +32,15 @@ public abstract class TPObject<F extends FrameDecoder<F, V>, V extends Visitor<F
 		return findByteLength(getStringBytes(string));
 	}
 
-	protected static int findByteLength(TPObject<?, ?> object)
+	protected static int findByteLength(TPObject<?> object)
 	{
 		return object.findByteLength();
 	}
 
-	protected static int findByteLength(List<? extends TPObject<?, ?>> objects)
+	protected static int findByteLength(List<? extends TPObject<?>> objects)
 	{
 		int total=0;
-		for (TPObject<?, ?> object : objects)
+		for (TPObject<?> object : objects)
 			total += findByteLength(object);
 		return total + 4;
 	}

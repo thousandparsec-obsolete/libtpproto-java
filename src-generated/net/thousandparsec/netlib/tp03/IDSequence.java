@@ -47,7 +47,7 @@ public abstract class IDSequence extends Response
 	/**
 	 * Modification Times of each ID
 	 */
-	public static class ModtimesType extends TPObject<TP03Decoder, TP03Visitor>
+	public static class ModtimesType extends TPObject<TP03Visitor>
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -94,7 +94,7 @@ public abstract class IDSequence extends Response
 				 + 8;
 		}
 
-		public void write(TPDataOutput out, Connection<TP03Decoder, TP03Visitor> conn) throws IOException
+		public void write(TPDataOutput out, Connection<?> conn) throws IOException
 		{
 			out.writeInteger(this.ID);
 			out.writeInteger(this.modtime);
@@ -144,7 +144,7 @@ public abstract class IDSequence extends Response
 	}
 
 	@Override
-	public void write(TPDataOutput out, Connection<TP03Decoder, TP03Visitor> conn) throws IOException
+	public void write(TPDataOutput out, Connection<?> conn) throws IOException
 	{
 		super.write(out, conn);
 		out.writeInteger(this.key);

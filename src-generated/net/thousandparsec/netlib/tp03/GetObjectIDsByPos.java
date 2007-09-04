@@ -22,7 +22,7 @@ public class GetObjectIDsByPos extends Request
 	/**
 	 * The center of a sphere.
 	 */
-	public static class PosType extends TPObject<TP03Decoder, TP03Visitor>
+	public static class PosType extends TPObject<TP03Visitor>
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -76,7 +76,7 @@ public class GetObjectIDsByPos extends Request
 				 + 8;
 		}
 
-		public void write(TPDataOutput out, Connection<TP03Decoder, TP03Visitor> conn) throws IOException
+		public void write(TPDataOutput out, Connection<?> conn) throws IOException
 		{
 			out.writeInteger(this.x);
 			out.writeInteger(this.y);
@@ -148,7 +148,7 @@ public class GetObjectIDsByPos extends Request
 	}
 
 	@Override
-	public void write(TPDataOutput out, Connection<TP03Decoder, TP03Visitor> conn) throws IOException
+	public void write(TPDataOutput out, Connection<?> conn) throws IOException
 	{
 		super.write(out, conn);
 		this.pos.write(out, conn);

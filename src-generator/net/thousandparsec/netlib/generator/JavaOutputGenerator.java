@@ -185,7 +185,7 @@ public class JavaOutputGenerator implements OutputGenerator
 
 		if (overrides)
 			out.printf("%s	@Override%n", indent);
-		out.printf("%s	public void write(TPDataOutput out, Connection<TP%02dDecoder, TP%02dVisitor> conn) throws IOException%n", indent, compat, compat);
+		out.printf("%s	public void write(TPDataOutput out, Connection<?> conn) throws IOException%n", indent);
 		out.printf("%s	{%n", indent);
 		if (overrides)
 			out.printf("%s		super.write(out, conn);%n", indent);
@@ -333,7 +333,7 @@ public class JavaOutputGenerator implements OutputGenerator
 			visitor.printf("import %s.Visitor;%n", TARGET_BASE_PACKAGE);
 			visitor.println();
 
-			visitor.printf("public class TP%02dVisitor extends Visitor<TP%02dDecoder, TP%02dVisitor>%n", compat, compat, compat);
+			visitor.printf("public class TP%02dVisitor extends Visitor<TP%02dVisitor>%n", compat, compat);
 			visitor.println("{");
 			for (Packet packet : packets)
 				if (packet.id != -1)
@@ -369,10 +369,10 @@ public class JavaOutputGenerator implements OutputGenerator
 			frameDecoder.printf("import %s.TPDataInput;%n", TARGET_BASE_PACKAGE);
 			frameDecoder.println();
 
-			frameDecoder.printf("public class TP%02dDecoder implements FrameDecoder<TP%02dDecoder, TP%02dVisitor>%n", compat, compat, compat);
+			frameDecoder.printf("public class TP%02dDecoder implements FrameDecoder<TP%02dVisitor>%n", compat, compat);
 			frameDecoder.println("{");
 
-			frameDecoder.printf("	public Frame<TP%02dDecoder, TP%02dVisitor> decodeFrame(int id, TPDataInput in) throws IOException%n", compat, compat);
+			frameDecoder.printf("	public Frame<TP%02dVisitor> decodeFrame(int id, TPDataInput in) throws IOException%n", compat);
 			frameDecoder.println("	{");
 			frameDecoder.println("		switch (id)");
 			frameDecoder.println("		{");
@@ -384,7 +384,7 @@ public class JavaOutputGenerator implements OutputGenerator
 			frameDecoder.println("	}");
 			frameDecoder.println();
 
-			frameDecoder.println("	public int getCompat()");
+			frameDecoder.println("	public int getCompatibility()");
 			frameDecoder.println("	{");
 			frameDecoder.printf("		return %d;%n", compat);
 			frameDecoder.println("	}");
@@ -416,7 +416,7 @@ public class JavaOutputGenerator implements OutputGenerator
 		out.write("public ");
 		if (id == -1)
 			out.write("abstract ");
-		out.printf("class %s extends %s%n", packetName, basePacket == null ? String.format("Frame<TP%02dDecoder, TP%02dVisitor>", compat, compat) : basePacket);
+		out.printf("class %s extends %s%n", packetName, basePacket == null ? String.format("Frame<TP%02dVisitor>", compat) : basePacket);
 		out.println("{");
 
 		printConstructors();
@@ -593,7 +593,7 @@ public class JavaOutputGenerator implements OutputGenerator
 	public void startInnerType(int level, String name) throws IOException
 	{
 		Indent indent=new Indent(level);
-		out.printf("%spublic static class %s extends TPObject<TP%02dDecoder, TP%02dVisitor>%n", indent, name, compat, compat);
+		out.printf("%spublic static class %s extends TPObject<TP%02dVisitor>%n", indent, name, compat);
 		out.printf("%s{%n", indent);
 		out.printf("%s	/**%n", indent);
 		out.printf("%s	 * A default constructor which initialises properties to their defaults.%n", indent);

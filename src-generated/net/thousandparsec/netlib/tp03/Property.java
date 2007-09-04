@@ -49,7 +49,7 @@ public class Property extends Response
 		this.modtime=value;
 	}
 
-	public static class CategoriesType extends TPObject<TP03Decoder, TP03Visitor>
+	public static class CategoriesType extends TPObject<TP03Visitor>
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -77,7 +77,7 @@ public class Property extends Response
 				 + 4;
 		}
 
-		public void write(TPDataOutput out, Connection<TP03Decoder, TP03Visitor> conn) throws IOException
+		public void write(TPDataOutput out, Connection<?> conn) throws IOException
 		{
 			out.writeInteger(this.category);
 		}
@@ -211,7 +211,7 @@ public class Property extends Response
 	}
 
 	@Override
-	public void write(TPDataOutput out, Connection<TP03Decoder, TP03Visitor> conn) throws IOException
+	public void write(TPDataOutput out, Connection<?> conn) throws IOException
 	{
 		super.write(out, conn);
 		out.writeInteger(this.id);

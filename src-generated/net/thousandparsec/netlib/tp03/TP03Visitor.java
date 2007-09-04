@@ -2,7 +2,7 @@ package net.thousandparsec.netlib.tp03;
 
 import net.thousandparsec.netlib.Visitor;
 
-public class TP03Visitor extends Visitor<TP03Decoder, TP03Visitor>
+public class TP03Visitor extends Visitor<TP03Visitor>
 {
 	public void handle(Okay packet)
 	{

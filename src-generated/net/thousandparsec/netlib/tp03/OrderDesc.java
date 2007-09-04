@@ -62,7 +62,7 @@ public class OrderDesc extends Response
 		this.description=value;
 	}
 
-	public static class ParametersType extends TPObject<TP03Decoder, TP03Visitor>
+	public static class ParametersType extends TPObject<TP03Visitor>
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -123,7 +123,7 @@ public class OrderDesc extends Response
 				 + findByteLength(this.description);
 		}
 
-		public void write(TPDataOutput out, Connection<TP03Decoder, TP03Visitor> conn) throws IOException
+		public void write(TPDataOutput out, Connection<?> conn) throws IOException
 		{
 			out.writeString(this.name);
 			out.writeInteger(this.type);
@@ -193,7 +193,7 @@ public class OrderDesc extends Response
 	}
 
 	@Override
-	public void write(TPDataOutput out, Connection<TP03Decoder, TP03Visitor> conn) throws IOException
+	public void write(TPDataOutput out, Connection<?> conn) throws IOException
 	{
 		super.write(out, conn);
 		out.writeInteger(this.id);

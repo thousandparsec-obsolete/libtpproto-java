@@ -5,10 +5,14 @@ import java.io.IOException;
 /**
  * An interface of objects that can be written to a TP protocol
  * {@link TPDataOutput output}.
+ * <p>
+ * Please note that the {@link Visitor} type is not necessary to write data to a
+ * stream (from inside an object), and that's why it is not a type parameter of
+ * this interface.
  * 
  * @author ksobolewski
  */
-public interface Writable<F extends FrameDecoder<F, V>, V extends Visitor<F, V>>
+public interface Writable
 {
 	/**
 	 * Writes this object as a stream of primitive values to the given
@@ -21,5 +25,5 @@ public interface Writable<F extends FrameDecoder<F, V>, V extends Visitor<F, V>>
 	 * @throws IOException
 	 *             on I/O error
 	 */
-	void write(TPDataOutput out, Connection<F, V> conn) throws IOException;
+	void write(TPDataOutput out, Connection<?> conn) throws IOException;
 }

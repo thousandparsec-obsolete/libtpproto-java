@@ -79,7 +79,7 @@ public class Object extends Response
 		this.size=value;
 	}
 
-	public static class PosType extends TPObject<TP03Decoder, TP03Visitor>
+	public static class PosType extends TPObject<TP03Visitor>
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -133,7 +133,7 @@ public class Object extends Response
 				 + 8;
 		}
 
-		public void write(TPDataOutput out, Connection<TP03Decoder, TP03Visitor> conn) throws IOException
+		public void write(TPDataOutput out, Connection<?> conn) throws IOException
 		{
 			out.writeInteger(this.x);
 			out.writeInteger(this.y);
@@ -175,7 +175,7 @@ public class Object extends Response
 		this.pos=value;
 	}
 
-	public static class VelType extends TPObject<TP03Decoder, TP03Visitor>
+	public static class VelType extends TPObject<TP03Visitor>
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -229,7 +229,7 @@ public class Object extends Response
 				 + 8;
 		}
 
-		public void write(TPDataOutput out, Connection<TP03Decoder, TP03Visitor> conn) throws IOException
+		public void write(TPDataOutput out, Connection<?> conn) throws IOException
 		{
 			out.writeInteger(this.x);
 			out.writeInteger(this.y);
@@ -274,7 +274,7 @@ public class Object extends Response
 	/**
 	 * IDs of the objects contained by this object.
 	 */
-	public static class ContainsType extends TPObject<TP03Decoder, TP03Visitor>
+	public static class ContainsType extends TPObject<TP03Visitor>
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -305,7 +305,7 @@ public class Object extends Response
 				 + 4;
 		}
 
-		public void write(TPDataOutput out, Connection<TP03Decoder, TP03Visitor> conn) throws IOException
+		public void write(TPDataOutput out, Connection<?> conn) throws IOException
 		{
 			out.writeInteger(this.ID);
 		}
@@ -339,7 +339,7 @@ public class Object extends Response
 	/**
 	 * The order types that a player can send to this object.
 	 */
-	public static class OrdertypesType extends TPObject<TP03Decoder, TP03Visitor>
+	public static class OrdertypesType extends TPObject<TP03Visitor>
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -370,7 +370,7 @@ public class Object extends Response
 				 + 4;
 		}
 
-		public void write(TPDataOutput out, Connection<TP03Decoder, TP03Visitor> conn) throws IOException
+		public void write(TPDataOutput out, Connection<?> conn) throws IOException
 		{
 			out.writeInteger(this.ID);
 		}
@@ -468,7 +468,7 @@ public class Object extends Response
 	}
 
 	@Override
-	public void write(TPDataOutput out, Connection<TP03Decoder, TP03Visitor> conn) throws IOException
+	public void write(TPDataOutput out, Connection<?> conn) throws IOException
 	{
 		super.write(out, conn);
 		out.writeInteger(this.id);

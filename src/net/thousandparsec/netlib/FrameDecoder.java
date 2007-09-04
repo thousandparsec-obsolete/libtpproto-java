@@ -9,9 +9,9 @@ import java.io.IOException;
  * @see Connection
  * @author ksobolewski
  */
-public interface FrameDecoder<F extends FrameDecoder<F, V>, V extends Visitor<F, V>>
+public interface FrameDecoder<V extends Visitor<V>>
 {
 	int getCompatibility();
 
-	Frame<F, V> decodeFrame(int id, TPDataInput in) throws IOException;
+	Frame<V> decodeFrame(int id, TPDataInput in) throws IOException;
 }
