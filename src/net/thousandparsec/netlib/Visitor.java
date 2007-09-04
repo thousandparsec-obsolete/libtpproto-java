@@ -36,26 +36,26 @@ public abstract class Visitor<V extends Visitor<V>>
 
 	public void gameObject(Universe<V> object)
 	{
-		//NOP here
+		unhandledGameObject(object);
 	}
 
 	public void gameObject(Galaxy<V> object)
 	{
-		//NOP here
+		unhandledGameObject(object);
 	}
 
 	public void gameObject(StarSystem<V> object)
 	{
-		//NOP here
+		unhandledGameObject(object);
 	}
 
 	public void gameObject(Planet<V> object)
 	{
-		//NOP here
+		unhandledGameObject(object);
 	}
 
 	public void gameObject(Fleet<V> object)
 	{
-		//NOP here
+		unhandledGameObject(object);
 	}
 }
