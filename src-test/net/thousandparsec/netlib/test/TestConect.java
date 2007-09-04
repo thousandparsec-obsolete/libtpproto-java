@@ -10,13 +10,18 @@ import java.util.concurrent.Executors;
 
 import net.thousandparsec.netlib.Connection;
 import net.thousandparsec.netlib.Frame;
+import net.thousandparsec.netlib.objects.GameObject;
+import net.thousandparsec.netlib.objects.Universe;
 import net.thousandparsec.netlib.tp03.Connect;
 import net.thousandparsec.netlib.tp03.Fail;
+import net.thousandparsec.netlib.tp03.GetObjectsByID;
 import net.thousandparsec.netlib.tp03.Login;
+import net.thousandparsec.netlib.tp03.Object;
 import net.thousandparsec.netlib.tp03.Okay;
 import net.thousandparsec.netlib.tp03.Ping;
 import net.thousandparsec.netlib.tp03.TP03Decoder;
 import net.thousandparsec.netlib.tp03.TP03Visitor;
+import net.thousandparsec.netlib.tp03.GetWithID.IdsType;
 
 public class TestConect extends TP03Visitor implements Callable<Void>
 {
@@ -51,6 +56,10 @@ public class TestConect extends TP03Visitor implements Callable<Void>
 
 		conn.sendFrame(new Ping());
 
+		GetObjectsByID getObj=new GetObjectsByID();
+		getObj.getIds().add(new IdsType(0));
+		conn.sendFrame(getObj);
+
 		exec.shutdown();
 		conn.close();
 	}
@@ -72,7 +81,7 @@ public class TestConect extends TP03Visitor implements Callable<Void>
 	@Override
 	public void unhandledFrame(Frame<TP03Visitor> frame)
 	{
-		System.out.println("Got frame: "+frame);
+		System.out.printf("Got frame: %s%n",frame);
 	}
 
 	@Override
@@ -85,5 +94,23 @@ public class TestConect extends TP03Visitor implements Callable<Void>
 	public void frame(Fail frame)
 	{
 		System.out.printf("Fail: %d (%s)%n", frame.getCode().value, frame.getResult());
+	}
+
+	@Override
+	public void frame(Object frame)
+	{
+		frame.getObject().visit(this);
+	}
+
+	@Override
+	public void unhandledGameObject(GameObject<TP03Visitor> object)
+	{
+		System.out.printf("Got game object: %s%n", object);
+	}
+
+	@Override
+	public void gameObject(Universe<TP03Visitor> object)
+	{
+		System.out.printf("Got Universe: age %d%n", object.getAge());
 	}
 }
