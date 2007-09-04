@@ -1,6 +1,5 @@
 package net.thousandparsec.netlib.test;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -66,16 +65,12 @@ public class TestLoopback extends TP03Visitor
 					public List<Frame<TP03Visitor>> call() throws Exception
 					{
 						List<Frame<TP03Visitor>> ret=new ArrayList<Frame<TP03Visitor>>();
-						while (true)
-							try
-							{
-								ret.add(conn.receiveFrame());
-								System.out.println("Got frame");
-							}
-							catch (EOFException eof)
-							{
-								break;
-							}
+						Frame<TP03Visitor> frame;
+						while ((frame=conn.receiveFrame()) != null)
+						{
+							System.out.println("Got frame");
+							ret.add(frame);
+						}
 						return ret;
 					}
 				});

@@ -1,5 +1,6 @@
 package net.thousandparsec.netlib;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -91,52 +92,81 @@ public abstract class Frame<V extends Visitor<V>> extends TPObject<V> implements
 		private static final byte[] MAGIC_TP03=new byte[] {'T', 'P', '0', '3'};
 		private static final byte[] MAGIC_TP04=new byte[] {'T', 'P', 4};
 
-		final int compat;
-		final int framever;
-		final int seq;
-		final int id;
-		final int length;
-
-		Header(TPInputStream in, int compat) throws IOException
+		private static boolean checkMagic(TPInputStream in, byte[] buf, byte[] template) throws IOException
 		{
-			this.compat=compat;
+			try
+			{
+				in.readCharacter(buf, 0, template.length);
+				if (!Arrays.equals(buf, template))
+					throw new IOException("Not a start of a frame");
+				return true;
+			}
+			catch (EOFException ex)
+			{
+				//exceptions for flow control are bad, yes, but it's the only way
+				//EOF on magic means that the connection was properly closed
+				return false;
+			}
+		}
+
+		static Header readHeader(TPInputStream in, int compat) throws IOException
+		{
+			int framever;
+			int seq;
+			int id;
+			int length;
 
 			byte[] buf=new byte[4];
 			switch (compat)
 			{
 				case 3:
 					//magic
-					in.readCharacter(buf, 0, MAGIC_TP03.length);
-					if (!Arrays.equals(buf, MAGIC_TP03))
-						throw new IOException("Not a start of a frame");
+					if (!checkMagic(in, buf, MAGIC_TP03))
+						return null;
 					//frameversion (not in this compat)
-					this.framever=-1;
+					framever=-1;
 					//sequence
-					this.seq=in.readInteger32();
+					seq=in.readInteger32();
 					//type
-					this.id=in.readInteger32();
+					id=in.readInteger32();
 					//payload length
-					this.length=in.readInteger32();
+					length=in.readInteger32();
 					break;
 
 				case 4:
 					//magic
-					in.readCharacter(buf, 0, MAGIC_TP04.length);
-					if (!Arrays.equals(buf, MAGIC_TP04))
-						throw new IOException("Not a start of a frame");
+					if (!checkMagic(in, buf, MAGIC_TP04))
+						return null;
 					//frameversion (not in this compat)
-					this.framever=in.readInteger32();
+					framever=in.readInteger32();
 					//sequence
-					this.seq=in.readInteger32();
+					seq=in.readInteger32();
 					//type
-					this.id=in.readInteger32();
+					id=in.readInteger32();
 					//payload length
-					this.length=in.readInteger32();
+					length=in.readInteger32();
 					break;
 
 				default:
 					throw new IllegalArgumentException("Unsupported protocol version: "+compat);
 			}
+
+			return new Header(compat, framever, seq, id, length);
+		}
+
+		final int compat;
+		final int framever;
+		final int seq;
+		final int id;
+		final int length;
+
+		private Header(int compat, int framever, int seq, int id, int length)
+		{
+			this.compat=compat;
+			this.framever=framever;
+			this.seq=seq;
+			this.id=id;
+			this.length=length;
 		}
 	}
 }

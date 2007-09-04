@@ -409,20 +409,20 @@ public class Connection<V extends Visitor<V>>
 	}
 
 	/**
-	 * Reads (and returns) next {@link Frame} from this connection. Will throw
-	 * {@link EOFException} if the socket is closed by the server (in other
-	 * words, if there are no more frames).
+	 * Reads (and returns) next {@link Frame} from this connection. Will return
+	 * {@code null} if there are no more frames (the connection was gracefully
+	 * closed).
 	 * 
-	 * @return next {@link Frame}
+	 * @return next {@link Frame} of {@code null} on end of stream
 	 * @throws EOFException
-	 *             if there are no more frames
+	 *             if the connection is closed in the middle of frame
 	 * @throws IOException
 	 *             on any other I/O error
 	 */
 	public Frame<V> receiveFrame() throws EOFException, IOException
 	{
-		Frame.Header h=new Frame.Header(getInputStream(), getCompatibility());
-		return frameDecoder.decodeFrame(h.id, getInputStream(h.length));
+		Frame.Header h=Frame.Header.readHeader(getInputStream(), getCompatibility());
+		return h == null ? null : frameDecoder.decodeFrame(h.id, getInputStream(h.length));
 	}
 
 	/**
