@@ -2,6 +2,7 @@ package net.thousandparsec.netlib.test;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -101,5 +102,15 @@ public class TestLoopback extends TP03Visitor
 	public void frame(GetMessage o)
 	{
 		System.out.println("VISIT GetMessage!");
+	}
+
+	private static class DebugSocket extends Socket
+	{
+		DebugSocket() throws IOException
+		{
+			super();
+			bind(null);
+			connect(getLocalSocketAddress());
+		}
 	}
 }
