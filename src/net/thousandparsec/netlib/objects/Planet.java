@@ -8,9 +8,10 @@ import java.util.List;
 import net.thousandparsec.netlib.Connection;
 import net.thousandparsec.netlib.TPDataInput;
 import net.thousandparsec.netlib.TPDataOutput;
+import net.thousandparsec.netlib.Visitor;
 import net.thousandparsec.netlib.Writable;
 
-public class Planet extends GameObject
+public class Planet<V extends Visitor<V>> extends GameObject<V>
 {
 	protected Planet()
 	{
@@ -110,5 +111,10 @@ public class Planet extends GameObject
 		out.writeInteger(this.resources.size());
 		for (ResourcesType object : this.resources)
 			object.write(out, conn);
+	}
+
+	public void visit(V v)
+	{
+		v.gameObject(this);
 	}
 }

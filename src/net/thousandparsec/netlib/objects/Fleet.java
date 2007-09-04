@@ -8,9 +8,10 @@ import java.util.List;
 import net.thousandparsec.netlib.Connection;
 import net.thousandparsec.netlib.TPDataInput;
 import net.thousandparsec.netlib.TPDataOutput;
+import net.thousandparsec.netlib.Visitor;
 import net.thousandparsec.netlib.Writable;
 
-public class Fleet extends GameObject
+public class Fleet<V extends Visitor<V>> extends GameObject<V>
 {
 	protected Fleet()
 	{
@@ -100,5 +101,10 @@ public class Fleet extends GameObject
 		for (ShipsType object : this.ships)
 			object.write(out, conn);
 		out.writeInteger(this.damage);
+	}
+
+	public void visit(V v)
+	{
+		v.gameObject(this);
 	}
 }

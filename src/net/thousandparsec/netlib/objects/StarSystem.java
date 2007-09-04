@@ -5,8 +5,9 @@ import java.io.IOException;
 import net.thousandparsec.netlib.Connection;
 import net.thousandparsec.netlib.TPDataInput;
 import net.thousandparsec.netlib.TPDataOutput;
+import net.thousandparsec.netlib.Visitor;
 
-public class StarSystem extends GameObject
+public class StarSystem<V extends Visitor<V>> extends GameObject<V>
 {
 	protected StarSystem()
 	{
@@ -28,5 +29,10 @@ public class StarSystem extends GameObject
 	public void write(TPDataOutput out, Connection<?> conn) throws IOException
 	{
 		super.write(out, conn);
+	}
+
+	public void visit(V v)
+	{
+		v.gameObject(this);
 	}
 }

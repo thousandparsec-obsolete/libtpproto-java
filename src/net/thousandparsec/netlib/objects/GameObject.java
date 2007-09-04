@@ -6,19 +6,21 @@ import java.util.List;
 import net.thousandparsec.netlib.Connection;
 import net.thousandparsec.netlib.TPDataInput;
 import net.thousandparsec.netlib.TPDataOutput;
+import net.thousandparsec.netlib.Visitable;
+import net.thousandparsec.netlib.Visitor;
 import net.thousandparsec.netlib.Writable;
 
-public abstract class GameObject implements Writable
+public abstract class GameObject<V extends Visitor<V>> implements Writable, Visitable<V>
 {
-	public static GameObject createGameObject(int id, TPDataInput in) throws IOException
+	public static <V extends Visitor<V>> GameObject<V> createGameObject(int id, TPDataInput in) throws IOException
 	{
 		switch (id)
 		{
-			case 0: return new Universe(in);
-			case 1: return new Galaxy(in);
-			case 2: return new StarSystem(in);
-			case 3: return new Planet(in);
-			case 4: return new Fleet(in);
+			case 0: return new Universe<V>(in);
+			case 1: return new Galaxy<V>(in);
+			case 2: return new StarSystem<V>(in);
+			case 3: return new Planet<V>(in);
+			case 4: return new Fleet<V>(in);
 			default: throw new IllegalArgumentException("Invalid GameObject id: "+id);
 		}
 	}

@@ -1,5 +1,12 @@
 package net.thousandparsec.netlib;
 
+import net.thousandparsec.netlib.objects.Fleet;
+import net.thousandparsec.netlib.objects.Galaxy;
+import net.thousandparsec.netlib.objects.GameObject;
+import net.thousandparsec.netlib.objects.Planet;
+import net.thousandparsec.netlib.objects.StarSystem;
+import net.thousandparsec.netlib.objects.Universe;
+
 /**
  * A target in the visitor/double-dispatch pattern. The implementations of the
  * {@link Visitable} interface are supposed to call back to this class'
@@ -15,7 +22,39 @@ package net.thousandparsec.netlib;
  */
 public abstract class Visitor<V extends Visitor<V>>
 {
+	/* frames */
 	public void unhandledFrame(Frame<V> frame)
+	{
+		//NOP here
+	}
+
+	/* game objects */
+	public void unhandledGameObject(GameObject<V> object)
+	{
+		//NOP here
+	}
+
+	public void gameObject(Universe<V> object)
+	{
+		//NOP here
+	}
+
+	public void gameObject(Galaxy<V> object)
+	{
+		//NOP here
+	}
+
+	public void gameObject(StarSystem<V> object)
+	{
+		//NOP here
+	}
+
+	public void gameObject(Planet<V> object)
+	{
+		//NOP here
+	}
+
+	public void gameObject(Fleet<V> object)
 	{
 		//NOP here
 	}
