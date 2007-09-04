@@ -10,7 +10,10 @@ import java.util.concurrent.Executors;
 
 import net.thousandparsec.netlib.Connection;
 import net.thousandparsec.netlib.Frame;
+import net.thousandparsec.netlib.tp03.Connect;
 import net.thousandparsec.netlib.tp03.Fail;
+import net.thousandparsec.netlib.tp03.Login;
+import net.thousandparsec.netlib.tp03.Okay;
 import net.thousandparsec.netlib.tp03.Ping;
 import net.thousandparsec.netlib.tp03.TP03Decoder;
 import net.thousandparsec.netlib.tp03.TP03Visitor;
@@ -24,6 +27,13 @@ public class TestConect extends TP03Visitor implements Callable<Void>
 		ExecutorService exec=Executors.newSingleThreadExecutor();
 		exec.submit(new TestConect(conn));
 
+		Connect connect=new Connect();
+		connect.setString("libtpproto-java-test");
+		conn.sendFrame(connect);
+		Login login=new Login();
+		login.setUsername("guest");
+		login.setPassword("guest");
+		conn.sendFrame(login);
 		conn.sendFrame(new Ping());
 
 		exec.shutdown();
@@ -57,6 +67,12 @@ public class TestConect extends TP03Visitor implements Callable<Void>
 	public void unhandledFrame(Frame<TP03Visitor> frame)
 	{
 		System.out.println("Got frame: "+frame);
+	}
+
+	@Override
+	public void frame(Okay frame)
+	{
+		System.out.printf("OK: %s%n", frame.getResult());
 	}
 
 	@Override
