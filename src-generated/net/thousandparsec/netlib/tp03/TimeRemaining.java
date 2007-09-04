@@ -35,7 +35,7 @@ public class TimeRemaining extends Response
 	}
 
 	@Override
-	public void visit(TP03Visitor visitor)
+	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);
 	}

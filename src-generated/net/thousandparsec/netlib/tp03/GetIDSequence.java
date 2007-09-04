@@ -60,7 +60,7 @@ public abstract class GetIDSequence extends Request
 	}
 
 	@Override
-	public void visit(TP03Visitor visitor)
+	public void visit(TP03Visitor visitor) throws TPException
 	{
 		//NOP (not a leaf class)
 	}

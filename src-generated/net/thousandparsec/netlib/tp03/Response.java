@@ -11,7 +11,7 @@ public abstract class Response extends Frame<TP03Visitor>
 		super(id);
 	}
 
-	public void visit(TP03Visitor visitor)
+	public void visit(TP03Visitor visitor) throws TPException
 	{
 		//NOP (not a leaf class)
 	}

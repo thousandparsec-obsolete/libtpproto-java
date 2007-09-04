@@ -8,6 +8,7 @@ import java.util.List;
 import net.thousandparsec.netlib.Connection;
 import net.thousandparsec.netlib.TPDataInput;
 import net.thousandparsec.netlib.TPDataOutput;
+import net.thousandparsec.netlib.TPException;
 import net.thousandparsec.netlib.Visitor;
 import net.thousandparsec.netlib.Writable;
 
@@ -135,7 +136,7 @@ public class Planet<V extends Visitor<V>> extends GameObject<V>
 			object.write(out, conn);
 	}
 
-	public void visit(V v)
+	public void visit(V v) throws TPException
 	{
 		v.gameObject(this);
 	}

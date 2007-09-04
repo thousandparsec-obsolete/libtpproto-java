@@ -10,6 +10,7 @@ import java.util.concurrent.Executors;
 
 import net.thousandparsec.netlib.Connection;
 import net.thousandparsec.netlib.Frame;
+import net.thousandparsec.netlib.TPException;
 import net.thousandparsec.netlib.objects.GameObject;
 import net.thousandparsec.netlib.objects.Universe;
 import net.thousandparsec.netlib.tp03.Connect;
@@ -97,7 +98,7 @@ public class TestConect extends TP03Visitor implements Callable<Void>
 	}
 
 	@Override
-	public void frame(Object frame)
+	public void frame(Object frame) throws TPException
 	{
 		frame.getObject().visit(this);
 	}

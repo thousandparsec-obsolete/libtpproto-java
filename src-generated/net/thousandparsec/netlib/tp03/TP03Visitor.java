@@ -1,320 +1,321 @@
 package net.thousandparsec.netlib.tp03;
 
 import net.thousandparsec.netlib.Visitor;
+import net.thousandparsec.netlib.TPException;
 
 public class TP03Visitor extends Visitor<TP03Visitor>
 {
-	public void frame(Okay packet)
+	public void frame(Okay packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(Fail packet)
+	public void frame(Fail packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(Sequence packet)
+	public void frame(Sequence packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(Redirect packet)
+	public void frame(Redirect packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(Connect packet)
+	public void frame(Connect packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(Login packet)
+	public void frame(Login packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(CreateAccount packet)
+	public void frame(CreateAccount packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(GetFeatures packet)
+	public void frame(GetFeatures packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(Features packet)
+	public void frame(Features packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(Ping packet)
+	public void frame(Ping packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(GetObjectsByID packet)
+	public void frame(GetObjectsByID packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(GetObjectsByPos packet)
+	public void frame(GetObjectsByPos packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(Object packet)
+	public void frame(Object packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(GetObjectIDs packet)
+	public void frame(GetObjectIDs packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(GetObjectIDsByPos packet)
+	public void frame(GetObjectIDsByPos packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(GetObjectIDsByContainer packet)
+	public void frame(GetObjectIDsByContainer packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(ObjectIDs packet)
+	public void frame(ObjectIDs packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(GetOrderDesc packet)
+	public void frame(GetOrderDesc packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(OrderDesc packet)
+	public void frame(OrderDesc packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(GetOrderDescIDs packet)
+	public void frame(GetOrderDescIDs packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(OrderDescIDs packet)
+	public void frame(OrderDescIDs packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(GetOrder packet)
+	public void frame(GetOrder packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(RemoveOrder packet)
+	public void frame(RemoveOrder packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(Order packet)
+	public void frame(Order packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(OrderInsert packet)
+	public void frame(OrderInsert packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(OrderProbe packet)
+	public void frame(OrderProbe packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(GetTimeRemaining packet)
+	public void frame(GetTimeRemaining packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(TimeRemaining packet)
+	public void frame(TimeRemaining packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(GetBoards packet)
+	public void frame(GetBoards packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(Board packet)
+	public void frame(Board packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(GetBoardIDs packet)
+	public void frame(GetBoardIDs packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(BoardIDs packet)
+	public void frame(BoardIDs packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(GetMessage packet)
+	public void frame(GetMessage packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(Message packet)
+	public void frame(Message packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(PostMessage packet)
+	public void frame(PostMessage packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(RemoveMessage packet)
+	public void frame(RemoveMessage packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(GetResource packet)
+	public void frame(GetResource packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(Resource packet)
+	public void frame(Resource packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(GetResourceIDs packet)
+	public void frame(GetResourceIDs packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(ResourceIDs packet)
+	public void frame(ResourceIDs packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(GetPlayer packet)
+	public void frame(GetPlayer packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(Player packet)
+	public void frame(Player packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(GetCategory packet)
+	public void frame(GetCategory packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(RemoveCategory packet)
+	public void frame(RemoveCategory packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(Category packet)
+	public void frame(Category packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(AddCategory packet)
+	public void frame(AddCategory packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(GetCategoryIDs packet)
+	public void frame(GetCategoryIDs packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(CategoryIDs packet)
+	public void frame(CategoryIDs packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(GetDesign packet)
+	public void frame(GetDesign packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(RemoveDesign packet)
+	public void frame(RemoveDesign packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(Design packet)
+	public void frame(Design packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(AddDesign packet)
+	public void frame(AddDesign packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(ModifyDesign packet)
+	public void frame(ModifyDesign packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(GetDesignIDs packet)
+	public void frame(GetDesignIDs packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(DesignIDs packet)
+	public void frame(DesignIDs packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(GetComponent packet)
+	public void frame(GetComponent packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(Component packet)
+	public void frame(Component packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(GetComponentIDs packet)
+	public void frame(GetComponentIDs packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(ComponentIDs packet)
+	public void frame(ComponentIDs packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(GetProperty packet)
+	public void frame(GetProperty packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(Property packet)
+	public void frame(Property packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(GetPropertyIDs packet)
+	public void frame(GetPropertyIDs packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}
 
-	public void frame(PropertyIDs packet)
+	public void frame(PropertyIDs packet) throws TPException
 	{
 		unhandledFrame(packet);
 	}

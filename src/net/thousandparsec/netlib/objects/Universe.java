@@ -5,6 +5,7 @@ import java.io.IOException;
 import net.thousandparsec.netlib.Connection;
 import net.thousandparsec.netlib.TPDataInput;
 import net.thousandparsec.netlib.TPDataOutput;
+import net.thousandparsec.netlib.TPException;
 import net.thousandparsec.netlib.Visitor;
 
 public class Universe<V extends Visitor<V>> extends GameObject<V>
@@ -53,7 +54,7 @@ public class Universe<V extends Visitor<V>> extends GameObject<V>
 		out.writeInteger(this.age);
 	}
 
-	public void visit(V v)
+	public void visit(V v) throws TPException
 	{
 		v.gameObject(this);
 	}

@@ -14,6 +14,7 @@ import java.util.concurrent.Future;
 import net.thousandparsec.netlib.Connection;
 import net.thousandparsec.netlib.Frame;
 import net.thousandparsec.netlib.FrameDecoder;
+import net.thousandparsec.netlib.TPException;
 import net.thousandparsec.netlib.tp03.GetMessage;
 import net.thousandparsec.netlib.tp03.Login;
 import net.thousandparsec.netlib.tp03.TP03Decoder;
@@ -22,7 +23,7 @@ import net.thousandparsec.netlib.tp03.GetWithIDSlot.SlotsType;
 
 public class TestLoopback extends TP03Visitor
 {
-	public static void main(String[] args) throws IOException, InterruptedException, ExecutionException
+	public static void main(String[] args) throws IOException, InterruptedException, ExecutionException, TPException
 	{
 		FrameDecoder<TP03Visitor> ff=new TP03Decoder();
 

@@ -107,7 +107,7 @@ public abstract class GetWithIDSlot extends Request
 	}
 
 	@Override
-	public void visit(TP03Visitor visitor)
+	public void visit(TP03Visitor visitor) throws TPException
 	{
 		//NOP (not a leaf class)
 	}

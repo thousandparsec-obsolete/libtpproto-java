@@ -23,38 +23,40 @@ import net.thousandparsec.netlib.objects.Universe;
 public abstract class Visitor<V extends Visitor<V>>
 {
 	/* frames */
-	public void unhandledFrame(Frame<V> frame)
+	@SuppressWarnings("unused")
+	public void unhandledFrame(Frame<V> frame) throws TPException
 	{
 		//NOP here
 	}
 
 	/* game objects */
-	public void unhandledGameObject(GameObject<V> object)
+	@SuppressWarnings("unused")
+	public void unhandledGameObject(GameObject<V> object) throws TPException
 	{
 		//NOP here
 	}
 
-	public void gameObject(Universe<V> object)
+	public void gameObject(Universe<V> object) throws TPException
 	{
 		unhandledGameObject(object);
 	}
 
-	public void gameObject(Galaxy<V> object)
+	public void gameObject(Galaxy<V> object) throws TPException
 	{
 		unhandledGameObject(object);
 	}
 
-	public void gameObject(StarSystem<V> object)
+	public void gameObject(StarSystem<V> object) throws TPException
 	{
 		unhandledGameObject(object);
 	}
 
-	public void gameObject(Planet<V> object)
+	public void gameObject(Planet<V> object) throws TPException
 	{
 		unhandledGameObject(object);
 	}
 
-	public void gameObject(Fleet<V> object)
+	public void gameObject(Fleet<V> object) throws TPException
 	{
 		unhandledGameObject(object);
 	}

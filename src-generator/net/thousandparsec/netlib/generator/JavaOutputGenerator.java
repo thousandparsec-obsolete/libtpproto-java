@@ -163,7 +163,7 @@ public class JavaOutputGenerator implements OutputGenerator
 
 		if (basePacket != null)
 			out.printf("%s	@Override%n", indent);
-		out.printf("%s	public void visit(TP%02dVisitor visitor)%n", indent, compat);
+		out.printf("%s	public void visit(TP%02dVisitor visitor) throws TPException%n", indent, compat);
 		out.printf("%s	{%n", indent);
 		if (id != -1)
 			out.printf("%s		visitor.frame(this);%n", indent);
@@ -374,6 +374,7 @@ public class JavaOutputGenerator implements OutputGenerator
 			visitor.println();
 
 			visitor.printf("import %s.Visitor;%n", TARGET_BASE_PACKAGE);
+			visitor.printf("import %s.TPException;%n", TARGET_BASE_PACKAGE);
 			visitor.println();
 
 			visitor.printf("public class TP%02dVisitor extends Visitor<TP%02dVisitor>%n", compat, compat);
@@ -381,7 +382,7 @@ public class JavaOutputGenerator implements OutputGenerator
 			for (Packet packet : packets)
 				if (packet.id != -1)
 				{
-					visitor.printf("	public void frame(%s packet)%n", packet.name);
+					visitor.printf("	public void frame(%s packet) throws TPException%n", packet.name);
 					visitor.println("	{");
 					visitor.println("		unhandledFrame(packet);");
 					visitor.println("	}");

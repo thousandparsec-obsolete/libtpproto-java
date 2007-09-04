@@ -17,7 +17,7 @@ public class OrderInsert extends Order
 	}
 
 	@Override
-	public void visit(TP03Visitor visitor)
+	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);
 	}

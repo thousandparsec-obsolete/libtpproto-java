@@ -426,8 +426,10 @@ public class Connection<V extends Visitor<V>>
 	 *            the {@link Visitor} which will be used to accept the response
 	 * @throws IOException
 	 *             on any I/O error
+	 * @throws TPException
+	 *             thrown by the {@link Visitor}'s handler methods
 	 */
-	public void sendFrame(Frame<V> frame, V responseVisitor) throws IOException
+	public void sendFrame(Frame<V> frame, V responseVisitor) throws IOException, TPException
 	{
 		/*
 		 * synchronize to eliminate race conditions if there are many concurrent
@@ -477,8 +479,10 @@ public class Connection<V extends Visitor<V>>
 	 *             if the connection is closed in the middle of frame
 	 * @throws IOException
 	 *             on any other I/O error
+	 * @throws TPException
+	 *             thrown by the {@link Visitor}'s handler methods
 	 */
-	public void receiveFrames(V visitor) throws EOFException, IOException
+	public void receiveFrames(V visitor) throws EOFException, IOException, TPException
 	{
 		Frame<V> frame;
 		while ((frame=receiveFrame()) != null)

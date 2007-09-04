@@ -10,5 +10,5 @@ package net.thousandparsec.netlib;
  */
 public interface Visitable<V extends Visitor<V>>
 {
-	void visit(V v);
+	void visit(V v) throws TPException;
 }
