@@ -576,7 +576,7 @@ public class Object extends Response
 		this.orders=in.readInteger32();
 		this.modtime=in.readInteger64();
 		in.readCharacter(this.padding);
-		this.object=GameObject.createGameObject(id, in);
+		this.object=GameObject.createGameObject(this.otype, in);
 	}
 
 }

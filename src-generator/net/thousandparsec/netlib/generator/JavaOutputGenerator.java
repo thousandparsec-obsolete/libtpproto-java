@@ -318,7 +318,7 @@ public class JavaOutputGenerator implements OutputGenerator
 					break;
 
 				case object: //special case
-					out.printf("%s		this.%s=GameObject.createGameObject(id, in);%n", indent, p.name, p.targetType);
+					out.printf("%s		this.%s=GameObject.createGameObject(this.otype, in);%n", indent, p.name, p.targetType);
 					break;
 
 				case list:
