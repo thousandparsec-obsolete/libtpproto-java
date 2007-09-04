@@ -1,6 +1,7 @@
 package net.thousandparsec.netlib.tp03;
 
 import net.thousandparsec.netlib.*;
+import net.thousandparsec.netlib.objects.*;
 
 import java.io.IOException;
 
@@ -444,6 +445,13 @@ public class Object extends Response
 		System.arraycopy(value, 0, this.padding, 0, this.padding.length);
 	}
 
+	private GameObject<TP03Visitor> object;
+
+	public GameObject<TP03Visitor> getObject()
+	{
+		return this.object;
+	}
+
 	@Override
 	public void visit(TP03Visitor visitor)
 	{
@@ -464,7 +472,8 @@ public class Object extends Response
 			 + findByteLength(this.ordertypes)
 			 + 4
 			 + 8
-			 + 8;
+			 + 8
+			 + findByteLength(this.object);
 	}
 
 	@Override
@@ -486,6 +495,7 @@ public class Object extends Response
 		out.writeInteger(this.orders);
 		out.writeInteger(this.modtime);
 		out.writeCharacter(this.padding);
+		this.object.write(out, conn);
 	}
 
 	/**
@@ -510,6 +520,7 @@ public class Object extends Response
 		this.orders=in.readInteger32();
 		this.modtime=in.readInteger64();
 		in.readCharacter(this.padding);
+		this.object=GameObject.createGameObject(id, in);
 	}
 
 }

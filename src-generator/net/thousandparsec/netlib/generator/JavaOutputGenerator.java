@@ -8,6 +8,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Formattable;
 import java.util.Formatter;
 import java.util.Iterator;
@@ -101,6 +102,9 @@ public class JavaOutputGenerator implements OutputGenerator
 		out.println();
 
 		out.printf("import %s.*;%n", TARGET_BASE_PACKAGE);
+		//ugly special case
+		if (packetName.equals("Object"))
+			out.printf("import %s.objects.*;%n", TARGET_BASE_PACKAGE);
 		out.println();
 		out.println("import java.io.IOException;");
 		out.println();
@@ -112,6 +116,25 @@ public class JavaOutputGenerator implements OutputGenerator
 	{
 		try
 		{
+			//ugly special cases (ugh!)
+			if (packetName.equals("Object"))
+			{
+				Property objectProp=new Property(
+					"object",
+					PropertyType.object,
+					String.format("GameObject<TP%02dVisitor>", compat),
+					null,
+					0,
+					true);
+				properties=new ConcatenationList<Property>(
+					properties,
+					Collections.singletonList(objectProp));
+
+				printPropertyDef(1, objectProp);
+				printPropertyGetter(1, objectProp);
+				printPropertySetter(1, objectProp);
+			}
+
 			printVisitorMethod(0);
 			printFindLengthMethod(0, properties);
 			printWriteMethod(0, properties, true);
@@ -193,19 +216,23 @@ public class JavaOutputGenerator implements OutputGenerator
 			switch (p.type)
 			{
 				case group:
+				case object: //special case
 					out.printf("%s		this.%s.write(out, conn);%n", indent, p.name);
 					break;
+
 				case list:
 					out.printf("%s		out.writeInteger(this.%s.size());%n", indent, p.name);
 					out.printf("%s		for (%s object : this.%s)%n", indent, p.targetType, p.name);
 					out.printf("%s			object.write(out, conn);%n", indent);
 					break;
+
 				case enumeration:
 					if (p.size < 0)
 						out.printf("%s		out.writeInteger(this.%s);%n", indent, p.name);
 					else
 						out.printf("%s		out.writeInteger(this.%s.value);%n", indent, p.name);
 					break;
+
 				default:
 					//integer and enumeration are the same type physically, so fold enumeration to integer
 					out.printf("%s		out.%s(this.%s);%n", indent,
@@ -275,6 +302,10 @@ public class JavaOutputGenerator implements OutputGenerator
 			{
 				case group:
 					out.printf("%s		this.%s=new %s(in);%n", indent, p.name, p.targetType);
+					break;
+
+				case object: //special case
+					out.printf("%s		this.%s=GameObject.createGameObject(id, in);%n", indent, p.name, p.targetType);
 					break;
 
 				case list:
@@ -486,6 +517,7 @@ public class JavaOutputGenerator implements OutputGenerator
 
 			case integer:
 			case enumeration:
+			case object: //special case
 				out.printf("%sprivate %s %s;%n", indent, property.targetType, property.name);
 				break;
 
@@ -532,10 +564,11 @@ public class JavaOutputGenerator implements OutputGenerator
 
 	public void printPropertySetter(int level, Property property) throws IOException
 	{
-		Indent indent=new Indent(level);
 		//to modify list property use the getter and modify the List
-		if (property.type != StructureHandler.PropertyType.list)
+		if (!property.readOnly && property.type != StructureHandler.PropertyType.list)
 		{
+			Indent indent=new Indent(level);
+
 			out.printf("%spublic void %s(%s value)%n", indent, camelPrefix("set", property.name), property.targetType);
 			out.printf("%s{%n", indent);
 			switch (property.type)

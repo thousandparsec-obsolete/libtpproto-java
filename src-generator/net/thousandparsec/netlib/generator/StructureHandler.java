@@ -107,10 +107,16 @@ class StructureHandler<P extends StructuredElementHandler<?>> extends StackedHan
 				//DTD says that group is never read only, hmm
 				return new GroupHandler(parent, group, booleanFromString(xmlAtts.getValue("readonly")));
 			}
-		};
+		},
+		//special case for "Object" packet's object property
+		object;
 //		useparameters,
 //		descparameter
 
-		abstract <P extends StructuredElementHandler<?>> PropertyHandler makeHandler(StructureHandler<P> parent, PacketHandler packet, Attributes xmlAtts) throws NumberFormatException, SAXException;
+		@SuppressWarnings("unused") //stupid Eclipse :P
+		<P extends StructuredElementHandler<?>> PropertyHandler makeHandler(StructureHandler<P> parent, PacketHandler packet, Attributes xmlAtts) throws NumberFormatException, SAXException
+		{
+			return null;
+		}
 	}
 }
