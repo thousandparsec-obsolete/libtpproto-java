@@ -23,21 +23,7 @@ public class TestConect extends TP03Visitor implements Callable<Void>
 	public static void main(String... args) throws UnknownHostException, IOException, URISyntaxException
 	{
 		Connection<TP03Visitor> conn=Connection.makeConnection(new TP03Decoder(), new URI("tp://guest:guest@demo1.thousandparsec.net/tp"));
-
-		ExecutorService exec=Executors.newSingleThreadExecutor();
-		exec.submit(new TestConect(conn));
-
-		Connect connect=new Connect();
-		connect.setString("libtpproto-java-test");
-		conn.sendFrame(connect);
-		Login login=new Login();
-		login.setUsername("guest");
-		login.setPassword("guest");
-		conn.sendFrame(login);
-		conn.sendFrame(new Ping());
-
-		exec.shutdown();
-		conn.close();
+		new TestConect(conn).start();
 	}
 
 	private final Connection<TP03Visitor> conn;
@@ -45,6 +31,26 @@ public class TestConect extends TP03Visitor implements Callable<Void>
 	public TestConect(Connection<TP03Visitor> conn)
 	{
 		this.conn=conn;
+	}
+
+	private void start() throws UnknownHostException, IOException
+	{
+		ExecutorService exec=Executors.newSingleThreadExecutor();
+		exec.submit(this);
+
+		Connect connect=new Connect();
+		connect.setString("libtpproto-java-test");
+		conn.sendFrame(connect);
+
+		Login login=new Login();
+		login.setUsername("guest");
+		login.setPassword("guest");
+		conn.sendFrame(login);
+
+		conn.sendFrame(new Ping());
+
+		exec.shutdown();
+		conn.close();
 	}
 
 	public Void call() throws Exception
