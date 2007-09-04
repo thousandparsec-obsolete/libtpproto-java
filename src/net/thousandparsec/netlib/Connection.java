@@ -325,6 +325,7 @@ public class Connection<V extends Visitor<V>>
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 
+	private final Object lock=new Object();
 	private final FrameDecoder<V> frameDecoder;
 	private final Socket socket;
 	private final InputStream in;
@@ -394,7 +395,7 @@ public class Connection<V extends Visitor<V>>
 	}
 
 	/**
-	 * Sends a {@link Frame} to the server via this connection.
+	 * Asynchronously sends a {@link Frame} to the server via this connection.
 	 * 
 	 * @param frame
 	 *            the {@link Frame} to send
@@ -403,15 +404,46 @@ public class Connection<V extends Visitor<V>>
 	 */
 	public void sendFrame(Frame<V> frame) throws IOException
 	{
-		TPOutputStream tpout=getOutputStream();
-		frame.write(tpout, this);
-		tpout.flush();
+		synchronized (lock)
+		{
+			TPOutputStream tpout=getOutputStream();
+			frame.write(tpout, this);
+			tpout.flush();
+		}
 	}
 
 	/**
-	 * Reads (and returns) next {@link Frame} from this connection. Will return
-	 * {@code null} if there are no more frames (the connection was gracefully
-	 * closed).
+	 * Synchronously sends a {@link Frame} to the server via this connection and
+	 * sends a response to the specified {@link Visitor}. Note that what this
+	 * does is very dumb: it simply waits for next frame from the server, so if
+	 * the frame sent does not expect a response, you get stuck (becasue the
+	 * operation is synchronised and you won't be able to send anything else).
+	 * 
+	 * @param frame
+	 *            the {@link Frame} to send
+	 * @param responseVisitor
+	 *            the {@link Visitor} which will be used to accept the response
+	 * @throws IOException
+	 *             on any I/O error
+	 */
+	public void sendFrame(Frame<V> frame, V responseVisitor) throws IOException
+	{
+		/*
+		 * synchronize to eliminate race conditions if there are many concurrent
+		 * senders and receivers; in other words ensure that the next frame
+		 * received will be the response to this frame
+		 */
+		synchronized (lock)
+		{
+			sendFrame(frame);
+			receiveFrame().visit(responseVisitor);
+		}
+	}
+
+	/**
+	 * Asynchronously reads (and returns) next {@link Frame} from this
+	 * connection. Will return {@code null} if there are no more frames (the
+	 * connection was gracefully closed).
 	 * 
 	 * @return next {@link Frame} of {@code null} on end of stream
 	 * @throws EOFException
@@ -421,8 +453,32 @@ public class Connection<V extends Visitor<V>>
 	 */
 	public Frame<V> receiveFrame() throws EOFException, IOException
 	{
-		Frame.Header h=Frame.Header.readHeader(getInputStream(), getCompatibility());
-		return h == null ? null : frameDecoder.decodeFrame(h.id, getInputStream(h.length));
+		synchronized (lock)
+		{
+			Frame.Header h=Frame.Header.readHeader(getInputStream(), getCompatibility());
+			return h == null ? null : frameDecoder.decodeFrame(h.id, getInputStream(h.length));
+		}
+	}
+
+	/**
+	 * Asynchronously reads {@link Frame}s from this connection until end of
+	 * stream and sends them to the given {@link Visitor}.
+	 * <p>
+	 * Note that this is mostly incompatible with
+	 * {@link #sendFrame(Frame, Visitor) visitor variant of sendFrame()},
+	 * because of synchronisation; don't use them at the same time if you don't
+	 * want unexpected behaviour.
+	 * 
+	 * @throws EOFException
+	 *             if the connection is closed in the middle of frame
+	 * @throws IOException
+	 *             on any other I/O error
+	 */
+	public void receiveFrames(V visitor) throws EOFException, IOException
+	{
+		Frame<V> frame;
+		while ((frame=receiveFrame()) != null)
+			frame.visit(visitor);
 	}
 
 	/**
@@ -434,6 +490,9 @@ public class Connection<V extends Visitor<V>>
 	 */
 	public void close() throws IOException
 	{
-		socket.shutdownOutput();
+		synchronized (lock)
+		{
+			socket.shutdownOutput();
+		}
 	}
 }

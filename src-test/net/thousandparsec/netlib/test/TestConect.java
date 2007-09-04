@@ -59,9 +59,7 @@ public class TestConect extends TP03Visitor implements Callable<Void>
 	{
 		try
 		{
-			Frame<TP03Visitor> frame;
-			while ((frame=conn.receiveFrame()) != null)
-				frame.visit(this);
+			conn.receiveFrames(this);
 		}
 		catch (Exception ex)
 		{
