@@ -32,15 +32,15 @@ public abstract class TPObject<V extends Visitor<V>> implements Writable
 		return findByteLength(getStringBytes(string));
 	}
 
-	protected static int findByteLength(TPObject<?> object)
+	protected static int findByteLength(Writable object)
 	{
 		return object.findByteLength();
 	}
 
-	protected static int findByteLength(List<? extends TPObject<?>> objects)
+	protected static int findByteLength(List<? extends Writable> objects)
 	{
 		int total=0;
-		for (TPObject<?> object : objects)
+		for (Writable object : objects)
 			total += findByteLength(object);
 		return total + 4;
 	}
