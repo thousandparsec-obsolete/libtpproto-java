@@ -22,7 +22,9 @@ public class TestConect extends TP03Visitor implements Callable<Void>
 {
 	public static void main(String... args) throws UnknownHostException, IOException, URISyntaxException
 	{
-		Connection<TP03Visitor> conn=Connection.makeConnection(new TP03Decoder(), new URI("tp://guest:guest@demo1.thousandparsec.net/tp"));
+		Connection<TP03Visitor> conn=Connection.makeConnection(
+			new TP03Decoder(),
+			new URI(args.length > 0 ? args[0] : "tp://guest:guest@demo1.thousandparsec.net/tp"));
 		new TestConect(conn).start();
 	}
 
