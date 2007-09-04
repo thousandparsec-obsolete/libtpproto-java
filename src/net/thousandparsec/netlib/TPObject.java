@@ -45,11 +45,8 @@ public abstract class TPObject<V extends Visitor<V>> implements Writable
 		return total + 4;
 	}
 
-	/**
-	 * Calculates the byte length of this object in bytes as encoded for the TP
-	 * protocol.
-	 * 
-	 * @return byte length of this object
-	 */
-	public abstract int findByteLength();
+	public int findByteLength()
+	{
+		return 0;
+	}
 }

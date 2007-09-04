@@ -70,7 +70,7 @@ public class GetObjectIDsByPos extends Request
 		@Override
 		public int findByteLength()
 		{
-			return 0
+			return super.findByteLength()
 				 + 8
 				 + 8
 				 + 8;

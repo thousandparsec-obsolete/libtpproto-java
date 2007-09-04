@@ -106,7 +106,7 @@ public class Order extends Response
 		@Override
 		public int findByteLength()
 		{
-			return 0
+			return super.findByteLength()
 				 + 4
 				 + 4;
 		}

@@ -127,7 +127,7 @@ public class Object extends Response
 		@Override
 		public int findByteLength()
 		{
-			return 0
+			return super.findByteLength()
 				 + 8
 				 + 8
 				 + 8;
@@ -223,7 +223,7 @@ public class Object extends Response
 		@Override
 		public int findByteLength()
 		{
-			return 0
+			return super.findByteLength()
 				 + 8
 				 + 8
 				 + 8;
@@ -301,7 +301,7 @@ public class Object extends Response
 		@Override
 		public int findByteLength()
 		{
-			return 0
+			return super.findByteLength()
 				 + 4;
 		}
 
@@ -366,7 +366,7 @@ public class Object extends Response
 		@Override
 		public int findByteLength()
 		{
-			return 0
+			return super.findByteLength()
 				 + 4;
 		}
 

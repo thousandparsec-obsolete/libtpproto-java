@@ -15,6 +15,14 @@ import java.io.IOException;
 public interface Writable
 {
 	/**
+	 * Calculates the byte length of this object in bytes as encoded for the TP
+	 * protocol.
+	 * 
+	 * @return byte length of this object
+	 */
+	int findByteLength();
+
+	/**
 	 * Writes this object as a stream of primitive values to the given
 	 * {@link TPDataOutput target}.
 	 * 

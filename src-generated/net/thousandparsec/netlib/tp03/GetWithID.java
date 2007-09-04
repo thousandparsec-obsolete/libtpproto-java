@@ -41,7 +41,7 @@ public abstract class GetWithID extends Request
 		@Override
 		public int findByteLength()
 		{
-			return 0
+			return super.findByteLength()
 				 + 4;
 		}
 

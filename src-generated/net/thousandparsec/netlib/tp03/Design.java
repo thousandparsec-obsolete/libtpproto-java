@@ -70,7 +70,7 @@ public class Design extends Response
 		@Override
 		public int findByteLength()
 		{
-			return 0
+			return super.findByteLength()
 				 + 4;
 		}
 
@@ -189,7 +189,7 @@ public class Design extends Response
 		@Override
 		public int findByteLength()
 		{
-			return 0
+			return super.findByteLength()
 				 + 4
 				 + 4;
 		}
@@ -279,7 +279,7 @@ public class Design extends Response
 		@Override
 		public int findByteLength()
 		{
-			return 0
+			return super.findByteLength()
 				 + 4
 				 + findByteLength(this.value);
 		}

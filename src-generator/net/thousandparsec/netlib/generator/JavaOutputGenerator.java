@@ -113,7 +113,7 @@ public class JavaOutputGenerator implements OutputGenerator
 		try
 		{
 			printVisitorMethod(0);
-			printFindLengthMethod(0, properties, true);
+			printFindLengthMethod(0, properties);
 			printWriteMethod(0, properties, true);
 
 			printInputConstructor(0, packetName, properties, true);
@@ -152,7 +152,7 @@ public class JavaOutputGenerator implements OutputGenerator
 		checkError(out);
 	}
 
-	private void printFindLengthMethod(int level, List<Property> properties, boolean overrides) throws IOException
+	private void printFindLengthMethod(int level, List<Property> properties) throws IOException
 	{
 		Indent indent=new Indent(level);
 
@@ -160,8 +160,7 @@ public class JavaOutputGenerator implements OutputGenerator
 		out.printf("%s	public int findByteLength()%n", indent);
 		out.printf("%s	{%n", indent);
 
-		out.printf("%s		return ", indent);
-		out.printf(overrides ? "super.findByteLength()" : "0"); //we like zeros
+		out.printf("%s		return super.findByteLength()", indent);
 		for (Property p : properties)
 		{
 			out.printf("%n%s			 + ", indent);
@@ -610,7 +609,7 @@ public class JavaOutputGenerator implements OutputGenerator
 	{
 		Indent indent=new Indent(level);
 
-		printFindLengthMethod(level, properties, false);
+		printFindLengthMethod(level, properties);
 		printWriteMethod(level, properties, false);
 
 		printConvenienceConstructor(level, name, properties);

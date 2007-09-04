@@ -117,7 +117,7 @@ public class OrderDesc extends Response
 		@Override
 		public int findByteLength()
 		{
-			return 0
+			return super.findByteLength()
 				 + findByteLength(this.name)
 				 + 4
 				 + findByteLength(this.description);
