@@ -108,6 +108,7 @@ public class Connection<V extends Visitor<V>>
 		makeConnection(FrameDecoder<V> frameDecoder, URI serverUri)
 		throws UnknownHostException, IOException
 	{
+		//FIXME: make use of the authority and path parts if the URI to automagically login to a game?
 		int port=serverUri.getPort();
 		return port == -1
 			? makeConnection(frameDecoder, serverUri.getHost(), Method.valueOf(serverUri.getScheme()))
@@ -418,7 +419,9 @@ public class Connection<V extends Visitor<V>>
 	 * sends a response to the specified {@link Visitor}. Note that what this
 	 * does is very dumb: it simply waits for next frame from the server, so if
 	 * the frame sent does not expect a response, you get stuck (becasue the
-	 * operation is synchronised and you won't be able to send anything else).
+	 * operation is synchronised and you won't be able to send anything else),
+	 * and if the response consists of more than one frame (like the "Sequence"
+	 * response), this will only handle the first one.
 	 * 
 	 * @param frame
 	 *            the {@link Frame} to send
