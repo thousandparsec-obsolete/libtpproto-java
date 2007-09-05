@@ -417,7 +417,7 @@ public class JavaOutputGenerator implements OutputGenerator
 			frameDecoder.printf("public class TP%02dDecoder implements FrameDecoder<TP%02dVisitor>%n", compat, compat);
 			frameDecoder.println("{");
 			//we're of course assuming that the Okay and Fail frame will be generated along with this file ;)
-			frameDecoder.printf("	private static final TP%02dVisitor CHECK_LOGIN_VISITOR=new TP03Visitor()%n", compat);
+			frameDecoder.printf("	private static final TP%02dVisitor CHECK_LOGIN_VISITOR=new TP%02dVisitor()%n", compat, compat);
 			frameDecoder.println("		{");
 			frameDecoder.println("			@Override");
 			frameDecoder.println("			public void unhandledFrame(Frame<?> frame) throws TPException");
