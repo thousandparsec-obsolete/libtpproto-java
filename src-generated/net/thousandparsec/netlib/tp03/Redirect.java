@@ -9,6 +9,8 @@ import java.io.IOException;
  */
 public class Redirect extends Response
 {
+	public static final int FRAME_ID=24;
+
 	protected Redirect(int id)
 	{
 		super(id);
@@ -16,7 +18,7 @@ public class Redirect extends Response
 
 	public Redirect()
 	{
-		super(24);
+		super(FRAME_ID);
 	}
 
 	/**

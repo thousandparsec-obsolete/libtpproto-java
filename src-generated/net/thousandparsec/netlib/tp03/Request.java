@@ -6,6 +6,8 @@ import java.io.IOException;
 
 public abstract class Request extends Frame<TP03Visitor>
 {
+	public static final int FRAME_ID=-1;
+
 	protected Request(int id)
 	{
 		super(id);

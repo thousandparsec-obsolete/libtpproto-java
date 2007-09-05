@@ -9,6 +9,8 @@ import java.io.IOException;
  */
 public class Ping extends Request
 {
+	public static final int FRAME_ID=27;
+
 	protected Ping(int id)
 	{
 		super(id);
@@ -16,7 +18,7 @@ public class Ping extends Request
 
 	public Ping()
 	{
-		super(27);
+		super(FRAME_ID);
 	}
 
 	@Override

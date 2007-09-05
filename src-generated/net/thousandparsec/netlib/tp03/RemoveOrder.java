@@ -9,6 +9,8 @@ import java.io.IOException;
  */
 public class RemoveOrder extends GetWithIDSlot
 {
+	public static final int FRAME_ID=13;
+
 	protected RemoveOrder(int id)
 	{
 		super(id);
@@ -16,7 +18,7 @@ public class RemoveOrder extends GetWithIDSlot
 
 	public RemoveOrder()
 	{
-		super(13);
+		super(FRAME_ID);
 	}
 
 	@Override

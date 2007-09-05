@@ -9,6 +9,8 @@ import java.io.IOException;
  */
 public class Design extends Response
 {
+	public static final int FRAME_ID=48;
+
 	protected Design(int id)
 	{
 		super(id);
@@ -16,7 +18,7 @@ public class Design extends Response
 
 	public Design()
 	{
-		super(48);
+		super(FRAME_ID);
 	}
 
 	private int id;

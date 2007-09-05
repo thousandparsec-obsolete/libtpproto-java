@@ -9,6 +9,8 @@ import java.io.IOException;
  */
 public class CreateAccount extends Request
 {
+	public static final int FRAME_ID=62;
+
 	protected CreateAccount(int id)
 	{
 		super(id);
@@ -16,7 +18,7 @@ public class CreateAccount extends Request
 
 	public CreateAccount()
 	{
-		super(62);
+		super(FRAME_ID);
 	}
 
 	/**

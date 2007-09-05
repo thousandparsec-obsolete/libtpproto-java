@@ -9,6 +9,8 @@ import java.io.IOException;
  */
 public class Resource extends Response
 {
+	public static final int FRAME_ID=23;
+
 	protected Resource(int id)
 	{
 		super(id);
@@ -16,7 +18,7 @@ public class Resource extends Response
 
 	public Resource()
 	{
-		super(23);
+		super(FRAME_ID);
 	}
 
 	private int id;

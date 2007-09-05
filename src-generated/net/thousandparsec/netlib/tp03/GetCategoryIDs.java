@@ -9,6 +9,8 @@ import java.io.IOException;
  */
 public class GetCategoryIDs extends GetIDSequence
 {
+	public static final int FRAME_ID=45;
+
 	protected GetCategoryIDs(int id)
 	{
 		super(id);
@@ -16,7 +18,7 @@ public class GetCategoryIDs extends GetIDSequence
 
 	public GetCategoryIDs()
 	{
-		super(45);
+		super(FRAME_ID);
 	}
 
 	@Override

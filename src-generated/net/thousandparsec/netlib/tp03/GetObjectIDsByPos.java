@@ -9,6 +9,8 @@ import java.io.IOException;
  */
 public class GetObjectIDsByPos extends Request
 {
+	public static final int FRAME_ID=29;
+
 	protected GetObjectIDsByPos(int id)
 	{
 		super(id);
@@ -16,7 +18,7 @@ public class GetObjectIDsByPos extends Request
 
 	public GetObjectIDsByPos()
 	{
-		super(29);
+		super(FRAME_ID);
 	}
 
 	/**

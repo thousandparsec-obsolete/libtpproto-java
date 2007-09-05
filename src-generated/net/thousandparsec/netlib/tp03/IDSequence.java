@@ -9,6 +9,8 @@ import java.io.IOException;
  */
 public abstract class IDSequence extends Response
 {
+	public static final int FRAME_ID=-1;
+
 	protected IDSequence(int id)
 	{
 		super(id);

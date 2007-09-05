@@ -9,6 +9,8 @@ import java.io.IOException;
  */
 public class Message extends Response
 {
+	public static final int FRAME_ID=19;
+
 	protected Message(int id)
 	{
 		super(id);
@@ -16,7 +18,7 @@ public class Message extends Response
 
 	public Message()
 	{
-		super(19);
+		super(FRAME_ID);
 	}
 
 	/**

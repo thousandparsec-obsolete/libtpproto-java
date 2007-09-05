@@ -9,6 +9,8 @@ import java.io.IOException;
  */
 public class ModifyDesign extends Design
 {
+	public static final int FRAME_ID=50;
+
 	protected ModifyDesign(int id)
 	{
 		super(id);
@@ -16,7 +18,7 @@ public class ModifyDesign extends Design
 
 	public ModifyDesign()
 	{
-		super(50);
+		super(FRAME_ID);
 	}
 
 	@Override

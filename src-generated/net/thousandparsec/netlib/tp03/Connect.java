@@ -9,6 +9,8 @@ import java.io.IOException;
  */
 public class Connect extends Request
 {
+	public static final int FRAME_ID=3;
+
 	protected Connect(int id)
 	{
 		super(id);
@@ -16,7 +18,7 @@ public class Connect extends Request
 
 	public Connect()
 	{
-		super(3);
+		super(FRAME_ID);
 	}
 
 	/**

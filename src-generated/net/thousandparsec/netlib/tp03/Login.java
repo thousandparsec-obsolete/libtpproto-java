@@ -9,6 +9,8 @@ import java.io.IOException;
  */
 public class Login extends Request
 {
+	public static final int FRAME_ID=4;
+
 	protected Login(int id)
 	{
 		super(id);
@@ -16,7 +18,7 @@ public class Login extends Request
 
 	public Login()
 	{
-		super(4);
+		super(FRAME_ID);
 	}
 
 	/**

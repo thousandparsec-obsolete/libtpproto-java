@@ -9,6 +9,8 @@ import java.io.IOException;
  */
 public class PostMessage extends Message
 {
+	public static final int FRAME_ID=20;
+
 	protected PostMessage(int id)
 	{
 		super(id);
@@ -16,7 +18,7 @@ public class PostMessage extends Message
 
 	public PostMessage()
 	{
-		super(20);
+		super(FRAME_ID);
 	}
 
 	@Override

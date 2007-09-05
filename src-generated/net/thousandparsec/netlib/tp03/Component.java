@@ -9,6 +9,8 @@ import java.io.IOException;
  */
 public class Component extends Response
 {
+	public static final int FRAME_ID=55;
+
 	protected Component(int id)
 	{
 		super(id);
@@ -16,7 +18,7 @@ public class Component extends Response
 
 	public Component()
 	{
-		super(55);
+		super(FRAME_ID);
 	}
 
 	private int id;

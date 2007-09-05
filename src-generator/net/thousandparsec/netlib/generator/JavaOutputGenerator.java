@@ -471,7 +471,7 @@ public class JavaOutputGenerator implements OutputGenerator
 			frameDecoder.println("		{");
 			for (Packet packet : packets)
 				if (packet.id != -1)
-					frameDecoder.printf("			case %d: return new %s(id, in);%n", packet.id, packet.name);
+					frameDecoder.printf("			case %s.FRAME_ID: return new %s(id, in);%n", packet.name, packet.name);
 			frameDecoder.println("			default: throw new IllegalArgumentException(\"Invalid Frame id: \"+id);");
 			frameDecoder.println("		}");
 			frameDecoder.println("	}");
@@ -511,6 +511,8 @@ public class JavaOutputGenerator implements OutputGenerator
 			out.write("abstract ");
 		out.printf("class %s extends %s%n", packetName, basePacket == null ? String.format("Frame<TP%02dVisitor>", compat) : basePacket);
 		out.println("{");
+		out.printf("	public static final int FRAME_ID=%d;%n", id);
+		out.println();
 
 		printConstructors();
 
@@ -532,7 +534,7 @@ public class JavaOutputGenerator implements OutputGenerator
 		{
 			out.printf("	public %s()%n", packetName);
 			out.println("	{");
-			out.printf("		super(%d);%n", id);
+			out.println("		super(FRAME_ID);");
 			out.println("	}");
 			out.println();
 		}

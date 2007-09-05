@@ -10,14 +10,16 @@ import net.thousandparsec.netlib.Visitor;
 
 public class StarSystem<V extends Visitor> extends GameObject<V>
 {
+	public static final int OBJECT_ID=2;
+
 	protected StarSystem()
 	{
-		super(2);
+		super(OBJECT_ID);
 	}
 
 	StarSystem(TPDataInput in)
 	{
-		super(2, in);
+		super(OBJECT_ID, in);
 	}
 
 	protected StarSystem(StarSystem<?> copy)

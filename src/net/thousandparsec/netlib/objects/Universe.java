@@ -10,14 +10,16 @@ import net.thousandparsec.netlib.Visitor;
 
 public class Universe<V extends Visitor> extends GameObject<V>
 {
+	public static final int OBJECT_ID=0;
+
 	protected Universe()
 	{
-		super(0);
+		super(OBJECT_ID);
 	}
 
 	Universe(TPDataInput in) throws IOException
 	{
-		super(0, in);
+		super(OBJECT_ID, in);
 		this.age=in.readInteger32();
 	}
 

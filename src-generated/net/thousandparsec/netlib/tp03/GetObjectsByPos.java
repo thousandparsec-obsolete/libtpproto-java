@@ -9,6 +9,8 @@ import java.io.IOException;
  */
 public class GetObjectsByPos extends Request
 {
+	public static final int FRAME_ID=6;
+
 	protected GetObjectsByPos(int id)
 	{
 		super(id);
@@ -16,7 +18,7 @@ public class GetObjectsByPos extends Request
 
 	public GetObjectsByPos()
 	{
-		super(6);
+		super(FRAME_ID);
 	}
 
 	@Override

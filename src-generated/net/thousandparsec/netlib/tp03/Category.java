@@ -9,6 +9,8 @@ import java.io.IOException;
  */
 public class Category extends Response
 {
+	public static final int FRAME_ID=42;
+
 	protected Category(int id)
 	{
 		super(id);
@@ -16,7 +18,7 @@ public class Category extends Response
 
 	public Category()
 	{
-		super(42);
+		super(FRAME_ID);
 	}
 
 	private int id;

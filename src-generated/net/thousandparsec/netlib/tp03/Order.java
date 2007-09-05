@@ -9,6 +9,8 @@ import java.io.IOException;
  */
 public class Order extends Response
 {
+	public static final int FRAME_ID=11;
+
 	protected Order(int id)
 	{
 		super(id);
@@ -16,7 +18,7 @@ public class Order extends Response
 
 	public Order()
 	{
-		super(11);
+		super(FRAME_ID);
 	}
 
 	/**

@@ -9,6 +9,8 @@ import java.io.IOException;
  */
 public class RemoveCategory extends GetCategory
 {
+	public static final int FRAME_ID=44;
+
 	protected RemoveCategory(int id)
 	{
 		super(id);
@@ -16,7 +18,7 @@ public class RemoveCategory extends GetCategory
 
 	public RemoveCategory()
 	{
-		super(44);
+		super(FRAME_ID);
 	}
 
 	@Override

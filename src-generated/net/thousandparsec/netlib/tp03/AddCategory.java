@@ -9,6 +9,8 @@ import java.io.IOException;
  */
 public class AddCategory extends Category
 {
+	public static final int FRAME_ID=43;
+
 	protected AddCategory(int id)
 	{
 		super(id);
@@ -16,7 +18,7 @@ public class AddCategory extends Category
 
 	public AddCategory()
 	{
-		super(43);
+		super(FRAME_ID);
 	}
 
 	@Override

@@ -9,6 +9,8 @@ import java.io.IOException;
  */
 public class GetMessage extends GetWithIDSlot
 {
+	public static final int FRAME_ID=18;
+
 	protected GetMessage(int id)
 	{
 		super(id);
@@ -16,7 +18,7 @@ public class GetMessage extends GetWithIDSlot
 
 	public GetMessage()
 	{
-		super(18);
+		super(FRAME_ID);
 	}
 
 	@Override

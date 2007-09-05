@@ -6,6 +6,8 @@ import java.io.IOException;
 
 public class Sequence extends Response
 {
+	public static final int FRAME_ID=2;
+
 	protected Sequence(int id)
 	{
 		super(id);
@@ -13,7 +15,7 @@ public class Sequence extends Response
 
 	public Sequence()
 	{
-		super(2);
+		super(FRAME_ID);
 	}
 
 	/**

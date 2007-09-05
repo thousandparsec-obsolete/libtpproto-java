@@ -14,14 +14,16 @@ import net.thousandparsec.netlib.Writable;
 
 public class Fleet<V extends Visitor> extends GameObject<V>
 {
+	public static final int OBJECT_ID=4;
+
 	protected Fleet()
 	{
-		super(0);
+		super(OBJECT_ID);
 	}
 
 	Fleet(TPDataInput in) throws IOException
 	{
-		super(0, in);
+		super(OBJECT_ID, in);
 		this.owner=in.readInteger32();
 		for (int length=in.readInteger32(); length > 0; length--)
 			this.ships.add(new ShipsType(in));

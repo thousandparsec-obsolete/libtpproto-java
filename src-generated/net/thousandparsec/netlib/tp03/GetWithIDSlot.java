@@ -9,6 +9,8 @@ import java.io.IOException;
  */
 public abstract class GetWithIDSlot extends Request
 {
+	public static final int FRAME_ID=-1;
+
 	protected GetWithIDSlot(int id)
 	{
 		super(id);

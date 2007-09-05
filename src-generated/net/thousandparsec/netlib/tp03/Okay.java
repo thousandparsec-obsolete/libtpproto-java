@@ -6,6 +6,8 @@ import java.io.IOException;
 
 public class Okay extends Response
 {
+	public static final int FRAME_ID=0;
+
 	protected Okay(int id)
 	{
 		super(id);
@@ -13,7 +15,7 @@ public class Okay extends Response
 
 	public Okay()
 	{
-		super(0);
+		super(FRAME_ID);
 	}
 
 	/**

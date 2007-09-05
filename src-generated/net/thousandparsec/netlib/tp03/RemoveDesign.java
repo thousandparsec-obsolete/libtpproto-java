@@ -9,6 +9,8 @@ import java.io.IOException;
  */
 public class RemoveDesign extends GetDesign
 {
+	public static final int FRAME_ID=51;
+
 	protected RemoveDesign(int id)
 	{
 		super(id);
@@ -16,7 +18,7 @@ public class RemoveDesign extends GetDesign
 
 	public RemoveDesign()
 	{
-		super(51);
+		super(FRAME_ID);
 	}
 
 	@Override

@@ -9,6 +9,8 @@ import java.io.IOException;
  */
 public class Features extends Response
 {
+	public static final int FRAME_ID=26;
+
 	protected Features(int id)
 	{
 		super(id);
@@ -16,7 +18,7 @@ public class Features extends Response
 
 	public Features()
 	{
-		super(26);
+		super(FRAME_ID);
 	}
 
 	/**
