@@ -4,9 +4,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import net.thousandparsec.netlib.Connection;
 import net.thousandparsec.netlib.Frame;
@@ -24,7 +21,7 @@ import net.thousandparsec.netlib.tp03.TP03Decoder;
 import net.thousandparsec.netlib.tp03.TP03Visitor;
 import net.thousandparsec.netlib.tp03.GetWithID.IdsType;
 
-public class TestConect extends TP03Visitor implements Callable<Void>
+public class TestConect extends TP03Visitor
 {
 	public static void main(String... args) throws UnknownHostException, IOException, URISyntaxException
 	{
@@ -43,8 +40,7 @@ public class TestConect extends TP03Visitor implements Callable<Void>
 
 	private void start() throws UnknownHostException, IOException
 	{
-		ExecutorService exec=Executors.newSingleThreadExecutor();
-		exec.submit(this);
+		conn.receiveFramesAsync(this);
 
 		Connect connect=new Connect();
 		connect.setString("libtpproto-java-test");
@@ -61,22 +57,7 @@ public class TestConect extends TP03Visitor implements Callable<Void>
 		getObj.getIds().add(new IdsType(0));
 		conn.sendFrame(getObj);
 
-		exec.shutdown();
 		conn.close();
-	}
-
-	public Void call() throws Exception
-	{
-		try
-		{
-			conn.receiveFrames(this);
-		}
-		catch (Exception ex)
-		{
-			ex.printStackTrace(System.err);
-			throw ex;
-		}
-		return null;
 	}
 
 	@Override

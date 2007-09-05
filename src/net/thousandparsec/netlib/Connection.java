@@ -8,6 +8,10 @@ import java.net.Socket;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import javax.net.ssl.SSLSocketFactory;
 
@@ -450,9 +454,10 @@ public class Connection<V extends Visitor<V>>
 	}
 
 	/**
-	 * Asynchronously reads (and returns) next {@link Frame} from this
-	 * connection. Will return {@code null} if there are no more frames (the
-	 * connection was gracefully closed).
+	 * Synchronously reads (and returns) next {@link Frame} from this
+	 * connection; it will block if the frame is not immediately available. Will
+	 * return {@code null} if there are no more frames (the connection was
+	 * gracefully closed).
 	 * 
 	 * @return next {@link Frame} of {@code null} on end of stream
 	 * @throws EOFException
@@ -470,7 +475,7 @@ public class Connection<V extends Visitor<V>>
 	}
 
 	/**
-	 * Asynchronously reads {@link Frame}s from this connection until end of
+	 * Synchronously reads {@link Frame}s from this connection until end of
 	 * stream and sends them to the given {@link Visitor}.
 	 * <p>
 	 * Note that this is mostly incompatible with
@@ -490,6 +495,40 @@ public class Connection<V extends Visitor<V>>
 		Frame<V> frame;
 		while ((frame=receiveFrame()) != null)
 			frame.visit(visitor);
+	}
+
+	/**
+	 * Asynchronously reads {@link Frame}s from this connection until end of
+	 * stream and sends them to the given {@link Visitor} in another thread. The
+	 * returned {@link Future} can be used to {@link Future#get() wait} for the
+	 * task to finish, to {@link Future#cancel(boolean) cancel} it, and to
+	 * inspect if there were errors during the asnychronous processing when the
+	 * task quits (by catching {@link java.util.concurrent.ExecutionException}
+	 * trown by {@link Future#get()}).
+	 * <p>
+	 * Note that this is mostly incompatible with
+	 * {@link #sendFrame(Frame, Visitor) visitor variant of sendFrame()},
+	 * because of synchronisation; don't use them at the same time if you don't
+	 * want unexpected behaviour.
+	 */
+	public Future<Void> receiveFramesAsync(final V visitor)
+	{
+		final ExecutorService exec=Executors.newSingleThreadExecutor();
+		return exec.submit(new Callable<Void>()
+			{
+				public Void call() throws Exception
+				{
+					try
+					{
+						receiveFrames(visitor);
+						return null;
+					}
+					finally
+					{
+						exec.shutdown();
+					}
+				}
+			});
 	}
 
 	/**
