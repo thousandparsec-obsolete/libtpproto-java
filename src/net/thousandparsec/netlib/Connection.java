@@ -504,7 +504,8 @@ public class Connection<V extends Visitor<V>>
 	 * task to finish, to {@link Future#cancel(boolean) cancel} it, and to
 	 * inspect if there were errors during the asnychronous processing when the
 	 * task quits (by catching {@link java.util.concurrent.ExecutionException}
-	 * trown by {@link Future#get()}).
+	 * thrown by {@link Future#get()}). This task does not close the connection
+	 * when it quits.
 	 * <p>
 	 * Note that this is mostly incompatible with
 	 * {@link #sendFrame(Frame, Visitor) visitor variant of sendFrame()},
