@@ -71,12 +71,10 @@ public class Connection<V extends Visitor>
 
 	/**
 	 * A convenience method that creates a {@link Connection} connected to a
-	 * server specified in a URI as a {@link String}. The server part of the
-	 * URI names the server to connect to; the scheme can be "tp" for plain
-	 * conection, "tps" for secure (by SSL/TLS) connection, "http" for a plain
-	 * connection via HTTP tunnel, or "https" for a secure connection via HTTPS
-	 * tunnel; the port part overrides default port for the connection method.
+	 * server specified in a URI as a {@link String}. See
+	 * {@link #makeConnection(FrameDecoder, URI)} for details.
 	 * 
+	 * @see #makeConnection(FrameDecoder, URI)
 	 * @return the {@link Connection} instance conected to a server described by
 	 *         the connection URI
 	 * @throws URISyntaxException
@@ -112,7 +110,6 @@ public class Connection<V extends Visitor>
 		makeConnection(FrameDecoder<V> frameDecoder, URI serverUri)
 		throws UnknownHostException, IOException
 	{
-		//FIXME: make use of the authority and path parts if the URI to automagically login to a game?
 		int port=serverUri.getPort();
 		return port == -1
 			? makeConnection(frameDecoder, serverUri.getHost(), Method.valueOf(serverUri.getScheme()))

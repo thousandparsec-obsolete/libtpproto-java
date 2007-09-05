@@ -2,12 +2,60 @@ package net.thousandparsec.netlib.tp03;
 
 import java.io.IOException;
 
-import net.thousandparsec.netlib.Frame;
-import net.thousandparsec.netlib.FrameDecoder;
-import net.thousandparsec.netlib.TPDataInput;
+import java.net.URI;
+import java.net.UnknownHostException;
+
+import net.thousandparsec.netlib.*;
 
 public class TP03Decoder implements FrameDecoder<TP03Visitor>
 {
+	private static final TP03Visitor CHECK_LOGIN_VISITOR=new TP03Visitor()
+		{
+			@Override
+			public void unhandledFrame(Frame<?> frame) throws TPException
+			{
+				throw new TPException(String.format("Unexpected frame type %d", frame.getFrameType()));
+			}
+
+			@Override
+			public void frame(Okay frame)
+			{
+				//all's good, capt'n!
+			}
+
+			@Override
+			public void frame(Fail frame) throws TPException
+			{
+				throw new TPException(String.format("Server said 'Fail': %d (%s)", frame.getCode().value, frame.getResult()));
+			}
+		};
+
+	public Connection<TP03Visitor>
+		makeConnection(URI serverUri, boolean autologin)
+		throws UnknownHostException, IOException, TPException
+	{
+		Connection<TP03Visitor> connection=Connection.makeConnection(this, serverUri);
+		if (autologin)
+		{
+			String userInfo=serverUri.getUserInfo();
+			if (userInfo == null)
+				throw new TPException("Autologin enabled but no login info provided in the URI");
+			String[] data=userInfo.split(":", -1);
+			if (data.length != 2)
+				throw new TPException("Autologin enabled but login info provided in the URI is invalid");
+
+			Connect connect=new Connect();
+			connect.setString("libtpproto-java-test");
+			connection.sendFrame(connect, CHECK_LOGIN_VISITOR);
+			Login login=new Login();
+			login.setUsername(data[0]);
+			login.setPassword(data[1]);
+			connection.sendFrame(login, CHECK_LOGIN_VISITOR);
+			//if we're here, all's fine!
+		}
+		return connection;
+	}
+
 	public Frame<TP03Visitor> decodeFrame(int id, TPDataInput in) throws IOException
 	{
 		switch (id)

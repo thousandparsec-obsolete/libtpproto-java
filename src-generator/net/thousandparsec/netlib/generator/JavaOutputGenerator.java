@@ -193,7 +193,7 @@ public class JavaOutputGenerator implements OutputGenerator
 			else
 				out.printf("findByteLength(this.%s)", p.name);
 		}
-		out.printf(";%n");
+		out.println(";");
 
 		out.printf("%s	}%n", indent);
 		out.println();
@@ -408,13 +408,62 @@ public class JavaOutputGenerator implements OutputGenerator
 
 			frameDecoder.println("import java.io.IOException;");
 			frameDecoder.println();
-			frameDecoder.printf("import %s.Frame;%n", TARGET_BASE_PACKAGE);
-			frameDecoder.printf("import %s.FrameDecoder;%n", TARGET_BASE_PACKAGE);
-			frameDecoder.printf("import %s.TPDataInput;%n", TARGET_BASE_PACKAGE);
+			frameDecoder.println("import java.net.URI;");
+			frameDecoder.println("import java.net.UnknownHostException;");
+			frameDecoder.println();
+			frameDecoder.printf("import %s.*;%n", TARGET_BASE_PACKAGE);
 			frameDecoder.println();
 
 			frameDecoder.printf("public class TP%02dDecoder implements FrameDecoder<TP%02dVisitor>%n", compat, compat);
 			frameDecoder.println("{");
+			//we're of course assuming that the Okay and Fail frame will be generated along with this file ;)
+			frameDecoder.printf("	private static final TP%02dVisitor CHECK_LOGIN_VISITOR=new TP03Visitor()%n", compat);
+			frameDecoder.println("		{");
+			frameDecoder.println("			@Override");
+			frameDecoder.println("			public void unhandledFrame(Frame<?> frame) throws TPException");
+			frameDecoder.println("			{");
+			frameDecoder.println("				throw new TPException(String.format(\"Unexpected frame type %d\", frame.getFrameType()));");
+			frameDecoder.println("			}");
+			frameDecoder.println();
+			frameDecoder.println("			@Override");
+			frameDecoder.println("			public void frame(Okay frame)");
+			frameDecoder.println("			{");
+			frameDecoder.println("				//all's good, capt'n!");
+			frameDecoder.println("			}");
+			frameDecoder.println();
+			frameDecoder.println("			@Override");
+			frameDecoder.println("			public void frame(Fail frame) throws TPException");
+			frameDecoder.println("			{");
+			frameDecoder.println("				throw new TPException(String.format(\"Server said 'Fail': %d (%s)\", frame.getCode().value, frame.getResult()));");
+			frameDecoder.println("			}");
+			frameDecoder.println("		};");
+			frameDecoder.println();
+			frameDecoder.printf("	public Connection<TP%02dVisitor>%n", compat);
+			frameDecoder.printf("		makeConnection(URI serverUri, boolean autologin)%n", compat);
+			frameDecoder.println("		throws UnknownHostException, IOException, TPException");
+			frameDecoder.println("	{");
+			frameDecoder.printf("		Connection<TP%02dVisitor> connection=Connection.makeConnection(this, serverUri);%n", compat);
+			frameDecoder.println("		if (autologin)");
+			frameDecoder.println("		{");
+			frameDecoder.println("			String userInfo=serverUri.getUserInfo();");
+			frameDecoder.println("			if (userInfo == null)");
+			frameDecoder.println("				throw new TPException(\"Autologin enabled but no login info provided in the URI\");");
+			frameDecoder.println("			String[] data=userInfo.split(\":\", -1);");
+			frameDecoder.println("			if (data.length != 2)");
+			frameDecoder.println("				throw new TPException(\"Autologin enabled but login info provided in the URI is invalid\");");
+			frameDecoder.println();
+			frameDecoder.println("			Connect connect=new Connect();");
+			frameDecoder.println("			connect.setString(\"libtpproto-java-test\");");
+			frameDecoder.println("			connection.sendFrame(connect, CHECK_LOGIN_VISITOR);");
+			frameDecoder.println("			Login login=new Login();");
+			frameDecoder.println("			login.setUsername(data[0]);");
+			frameDecoder.println("			login.setPassword(data[1]);");
+			frameDecoder.println("			connection.sendFrame(login, CHECK_LOGIN_VISITOR);");
+			frameDecoder.println("			//if we're here, all's fine!");
+			frameDecoder.println("		}");
+			frameDecoder.println("		return connection;");
+			frameDecoder.println("	}");
+			frameDecoder.println();
 
 			frameDecoder.printf("	public Frame<TP%02dVisitor> decodeFrame(int id, TPDataInput in) throws IOException%n", compat);
 			frameDecoder.println("	{");

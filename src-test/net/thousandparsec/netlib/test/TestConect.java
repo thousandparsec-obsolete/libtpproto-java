@@ -12,10 +12,8 @@ import net.thousandparsec.netlib.Frame;
 import net.thousandparsec.netlib.TPException;
 import net.thousandparsec.netlib.objects.GameObject;
 import net.thousandparsec.netlib.objects.Universe;
-import net.thousandparsec.netlib.tp03.Connect;
 import net.thousandparsec.netlib.tp03.Fail;
 import net.thousandparsec.netlib.tp03.GetObjectsByID;
-import net.thousandparsec.netlib.tp03.Login;
 import net.thousandparsec.netlib.tp03.Object;
 import net.thousandparsec.netlib.tp03.Okay;
 import net.thousandparsec.netlib.tp03.Ping;
@@ -25,11 +23,12 @@ import net.thousandparsec.netlib.tp03.GetWithID.IdsType;
 
 public class TestConect extends TP03Visitor
 {
-	public static void main(String... args) throws UnknownHostException, IOException, URISyntaxException, InterruptedException
+	public static void main(String... args) throws UnknownHostException, IOException, URISyntaxException, InterruptedException, TPException
 	{
-		Connection<TP03Visitor> conn=Connection.makeConnection(
-			new TP03Decoder(),
-			new URI(args.length > 0 ? args[0] : "tp://guest:guest@demo1.thousandparsec.net/tp"));
+		TP03Decoder decoder=new TP03Decoder();
+		Connection<TP03Visitor> conn=decoder.makeConnection(
+			new URI(args.length > 0 ? args[0] : "tp://guest:guestx@demo1.thousandparsec.net/tp"),
+			true);
 		new TestConect(conn).start();
 	}
 
@@ -46,15 +45,6 @@ public class TestConect extends TP03Visitor
 
 		try
 		{
-			Connect connect=new Connect();
-			connect.setString("libtpproto-java-test");
-			conn.sendFrame(connect);
-
-			Login login=new Login();
-			login.setUsername("guest");
-			login.setPassword("guest");
-			conn.sendFrame(login);
-
 			conn.sendFrame(new Ping());
 
 			GetObjectsByID getObj=new GetObjectsByID();
