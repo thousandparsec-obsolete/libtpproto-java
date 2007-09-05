@@ -48,7 +48,7 @@ public class TestConnect extends TP03Visitor
 			conn.sendFrame(new Ping());
 
 			GetObjectsByID getObj=new GetObjectsByID();
-			getObj.getIds().add(new IdsType(0));
+			getObj.getIds().add(new IdsType(Universe.OBJECT_ID));
 			conn.sendFrame(getObj);
 		}
 		finally
