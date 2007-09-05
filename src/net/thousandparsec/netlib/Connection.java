@@ -453,8 +453,8 @@ public class Connection<V extends Visitor>
 	/**
 	 * Synchronously reads (and returns) next {@link Frame} from this
 	 * connection; it will block if the frame is not immediately available. Will
-	 * return {@code null} if there are no more frames (the connection was
-	 * gracefully closed).
+	 * return {@code null} if there are no more frames to read (the connection
+	 * was gracefully closed).
 	 * 
 	 * @return next {@link Frame} of {@code null} on end of stream
 	 * @throws EOFException
@@ -469,6 +469,34 @@ public class Connection<V extends Visitor>
 			Frame.Header h=Frame.Header.readHeader(getInputStream(), getCompatibility());
 			return h == null ? null : frameDecoder.decodeFrame(h.id, getInputStream(h.length));
 		}
+	}
+
+	/**
+	 * Synchronously reads next {@link Frame} from this connection and sends it
+	 * to the given {@link Visitor}; it will block if the frame is not
+	 * immediately available. Will throw {@link EOFException} if there are no
+	 * more frames to read (it is assumed that the caller expects the frame to
+	 * be there, so it's abnormal to reach end of stream here).
+	 * <p>
+	 * Note that this is mostly incompatible with
+	 * {@link #sendFrame(Frame, Visitor) visitor variant of sendFrame()},
+	 * because of synchronisation; don't use them at the same time if you don't
+	 * want unexpected behaviour.
+	 * 
+	 * @throws EOFException
+	 *             if the connection is closed in the middle of frame or there
+	 *             are no more frames to read
+	 * @throws IOException
+	 *             on any other I/O error
+	 * @throws TPException
+	 *             thrown by the {@link Visitor}'s handler methods
+	 */
+	public void receiveFrame(V visitor) throws EOFException, IOException, TPException
+	{
+		Frame<V> frame=receiveFrame();
+		if (frame == null)
+			throw new EOFException();
+		frame.visit(visitor);
 	}
 
 	/**
@@ -487,7 +515,7 @@ public class Connection<V extends Visitor>
 	 * @throws TPException
 	 *             thrown by the {@link Visitor}'s handler methods
 	 */
-	public void receiveFrames(V visitor) throws EOFException, IOException, TPException
+	public void receiveAllFrames(V visitor) throws EOFException, IOException, TPException
 	{
 		Frame<V> frame;
 		while ((frame=receiveFrame()) != null)
@@ -518,7 +546,7 @@ public class Connection<V extends Visitor>
 				{
 					try
 					{
-						receiveFrames(visitor);
+						receiveAllFrames(visitor);
 						return null;
 					}
 					finally
