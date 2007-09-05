@@ -8,7 +8,7 @@ package net.thousandparsec.netlib;
  * 
  * @author ksobolewski
  */
-public interface Visitable<V extends Visitor<V>>
+public interface Visitable<V extends Visitor>
 {
 	void visit(V v) throws TPException;
 }

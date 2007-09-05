@@ -18,7 +18,7 @@ import java.util.Arrays;
  * @see Connection
  * @author ksobolewski
  */
-public abstract class Frame<V extends Visitor<V>> extends TPObject<V> implements Visitable<V>
+public abstract class Frame<V extends Visitor> extends TPObject<V> implements Visitable<V>
 {
 	private final int id;
 

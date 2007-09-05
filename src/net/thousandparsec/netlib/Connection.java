@@ -27,7 +27,7 @@ import javax.net.ssl.SSLSocketFactory;
  * 
  * @author ksobolewski
  */
-public class Connection<V extends Visitor<V>>
+public class Connection<V extends Visitor>
 {
 	/**
 	 * An enumeration of available TP protocol connection methods. Each enum
@@ -86,7 +86,7 @@ public class Connection<V extends Visitor<V>>
 	 * @throws IOException
 	 *             on a I/O error
 	 */
-	public static <V extends Visitor<V>> Connection<V>
+	public static <V extends Visitor> Connection<V>
 		makeConnection(FrameDecoder<V> frameDecoder, String serverUri)
 		throws URISyntaxException, UnknownHostException, IOException
 	{
@@ -108,7 +108,7 @@ public class Connection<V extends Visitor<V>>
 	 * @throws IOException
 	 *             on a I/O error
 	 */
-	public static <V extends Visitor<V>> Connection<V>
+	public static <V extends Visitor> Connection<V>
 		makeConnection(FrameDecoder<V> frameDecoder, URI serverUri)
 		throws UnknownHostException, IOException
 	{
@@ -131,7 +131,7 @@ public class Connection<V extends Visitor<V>>
 	 * @throws IOException
 	 *             on a I/O error
 	 */
-	public static <V extends Visitor<V>> Connection<V>
+	public static <V extends Visitor> Connection<V>
 		makeConnection(FrameDecoder<V> frameDecoder, String host, Method method)
 		throws UnknownHostException, IOException
 	{
@@ -151,7 +151,7 @@ public class Connection<V extends Visitor<V>>
 	 * @throws IOException
 	 *             on a I/O error
 	 */
-	public static <V extends Visitor<V>> Connection<V>
+	public static <V extends Visitor> Connection<V>
 		makeConnection(FrameDecoder<V> frameDecoder, String host, Method method, int port)
 		throws UnknownHostException, IOException
 	{
@@ -182,7 +182,7 @@ public class Connection<V extends Visitor<V>>
 	 * @throws IOException
 	 *             on a I/O error
 	 */
-	public static <V extends Visitor<V>> Connection<V>
+	public static <V extends Visitor> Connection<V>
 		makeTPConnection(FrameDecoder<V> frameDecoder, String host)
 		throws UnknownHostException, IOException
 	{
@@ -201,7 +201,7 @@ public class Connection<V extends Visitor<V>>
 	 * @throws IOException
 	 *             on a I/O error
 	 */
-	public static <V extends Visitor<V>> Connection<V>
+	public static <V extends Visitor> Connection<V>
 		makeTPConnection(FrameDecoder<V> frameDecoder, String host, int port)
 		throws UnknownHostException, IOException
 	{
@@ -220,7 +220,7 @@ public class Connection<V extends Visitor<V>>
 	 * @throws IOException
 	 *             on a I/O error
 	 */
-	public static <V extends Visitor<V>> Connection<V>
+	public static <V extends Visitor> Connection<V>
 		makeTPSConnection(FrameDecoder<V> frameDecoder, String host)
 		throws UnknownHostException, IOException
 	{
@@ -240,7 +240,7 @@ public class Connection<V extends Visitor<V>>
 	 * @throws IOException
 	 *             on a I/O error
 	 */
-	public static <V extends Visitor<V>> Connection<V>
+	public static <V extends Visitor> Connection<V>
 		makeTPSConnection(FrameDecoder<V> frameDecoder, String host, int port)
 		throws UnknownHostException, IOException
 	{
@@ -259,7 +259,7 @@ public class Connection<V extends Visitor<V>>
 	 * @throws IOException
 	 *             on a I/O error
 	 */
-	public static <V extends Visitor<V>> Connection<V>
+	public static <V extends Visitor> Connection<V>
 		makeHTTPConnection(FrameDecoder<V> frameDecoder, String host)
 		throws UnknownHostException, IOException
 	{
@@ -280,7 +280,7 @@ public class Connection<V extends Visitor<V>>
 	 *             on a I/O error
 	 */
 	@SuppressWarnings("unused")
-	public static <V extends Visitor<V>> Connection<V>
+	public static <V extends Visitor> Connection<V>
 		makeHTTPConnection(FrameDecoder<V> frameDecoder, String host, int port)
 		throws UnknownHostException, IOException
 	{
@@ -301,7 +301,7 @@ public class Connection<V extends Visitor<V>>
 	 * @throws IOException
 	 *             on a I/O error
 	 */
-	public static <V extends Visitor<V>> Connection<V>
+	public static <V extends Visitor> Connection<V>
 		makeHTTPSConnection(FrameDecoder<V> frameDecoder, String host)
 		throws UnknownHostException, IOException
 	{
@@ -322,7 +322,7 @@ public class Connection<V extends Visitor<V>>
 	 *             on a I/O error
 	 */
 	@SuppressWarnings("unused")
-	public static <V extends Visitor<V>> Connection<V>
+	public static <V extends Visitor> Connection<V>
 		makeHTTPSConnection(FrameDecoder<V> frameDecoder, String host, int port)
 		throws UnknownHostException, IOException
 	{

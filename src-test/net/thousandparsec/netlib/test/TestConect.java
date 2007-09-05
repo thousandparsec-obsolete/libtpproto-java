@@ -61,7 +61,7 @@ public class TestConect extends TP03Visitor
 	}
 
 	@Override
-	public void unhandledFrame(Frame<TP03Visitor> frame)
+	public void unhandledFrame(Frame<?> frame)
 	{
 		System.out.printf("Got frame: %s%n",frame);
 	}
@@ -85,13 +85,13 @@ public class TestConect extends TP03Visitor
 	}
 
 	@Override
-	public void unhandledGameObject(GameObject<TP03Visitor> object)
+	public void unhandledGameObject(GameObject<?> object)
 	{
 		System.out.printf("Got game object: %s%n", object);
 	}
 
 	@Override
-	public void gameObject(Universe<TP03Visitor> object)
+	public void gameObject(Universe<?> object)
 	{
 		System.out.printf("Got Universe: age %d%n", object.getAge());
 	}

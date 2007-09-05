@@ -105,7 +105,7 @@ public class TestLoopback extends TP03Visitor
 	}
 
 	@Override
-	public void unhandledFrame(Frame<TP03Visitor> frame)
+	public void unhandledFrame(Frame<?> frame)
 	{
 		System.out.println("Unhandled frame: "+frame.getFrameType()+" ("+frame+")");
 	}

@@ -10,9 +10,9 @@ import net.thousandparsec.netlib.Visitable;
 import net.thousandparsec.netlib.Visitor;
 import net.thousandparsec.netlib.Writable;
 
-public abstract class GameObject<V extends Visitor<V>> implements Writable, Visitable<V>
+public abstract class GameObject<V extends Visitor> implements Writable, Visitable<V>
 {
-	public static <V extends Visitor<V>> GameObject<V> createGameObject(int id, TPDataInput in) throws IOException
+	public static <V extends Visitor> GameObject<V> createGameObject(int id, TPDataInput in) throws IOException
 	{
 		switch (id)
 		{

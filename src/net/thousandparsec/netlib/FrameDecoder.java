@@ -9,7 +9,7 @@ import java.io.IOException;
  * @see Connection
  * @author ksobolewski
  */
-public interface FrameDecoder<V extends Visitor<V>>
+public interface FrameDecoder<V extends Visitor>
 {
 	int getCompatibility();
 

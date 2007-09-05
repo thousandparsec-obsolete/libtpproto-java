@@ -12,7 +12,7 @@ import net.thousandparsec.netlib.TPException;
 import net.thousandparsec.netlib.Visitor;
 import net.thousandparsec.netlib.Writable;
 
-public class Planet<V extends Visitor<V>> extends GameObject<V>
+public class Planet<V extends Visitor> extends GameObject<V>
 {
 	protected Planet()
 	{

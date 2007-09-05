@@ -377,7 +377,7 @@ public class JavaOutputGenerator implements OutputGenerator
 			visitor.printf("import %s.TPException;%n", TARGET_BASE_PACKAGE);
 			visitor.println();
 
-			visitor.printf("public class TP%02dVisitor extends Visitor<TP%02dVisitor>%n", compat, compat);
+			visitor.printf("public class TP%02dVisitor extends Visitor%n", compat);
 			visitor.println("{");
 			for (Packet packet : packets)
 				if (packet.id != -1)

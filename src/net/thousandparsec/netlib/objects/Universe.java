@@ -8,7 +8,7 @@ import net.thousandparsec.netlib.TPDataOutput;
 import net.thousandparsec.netlib.TPException;
 import net.thousandparsec.netlib.Visitor;
 
-public class Universe<V extends Visitor<V>> extends GameObject<V>
+public class Universe<V extends Visitor> extends GameObject<V>
 {
 	protected Universe()
 	{

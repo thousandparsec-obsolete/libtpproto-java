@@ -3,7 +3,7 @@ package net.thousandparsec.netlib.tp03;
 import net.thousandparsec.netlib.Visitor;
 import net.thousandparsec.netlib.TPException;
 
-public class TP03Visitor extends Visitor<TP03Visitor>
+public class TP03Visitor extends Visitor
 {
 	public void frame(Okay packet) throws TPException
 	{

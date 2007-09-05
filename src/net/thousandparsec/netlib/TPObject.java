@@ -3,7 +3,7 @@ package net.thousandparsec.netlib;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-public abstract class TPObject<V extends Visitor<V>> implements Writable
+public abstract class TPObject<V extends Visitor> implements Writable
 {
 	/**
 	 * @param s
