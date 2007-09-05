@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public abstract class Response extends Frame<TP03Visitor>
 {
-	public static final int FRAME_ID=-1;
+	public static final int FRAME_TYPE=-1;
 
 	protected Response(int id)
 	{

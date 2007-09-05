@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class Fail extends Response
 {
-	public static final int FRAME_ID=1;
+	public static final int FRAME_TYPE=1;
 
 	protected Fail(int id)
 	{
@@ -15,7 +15,7 @@ public class Fail extends Response
 
 	public Fail()
 	{
-		super(FRAME_ID);
+		super(FRAME_TYPE);
 	}
 
 	/**

@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public class GetObjectIDsByContainer extends Request
 {
-	public static final int FRAME_ID=30;
+	public static final int FRAME_TYPE=30;
 
 	protected GetObjectIDsByContainer(int id)
 	{
@@ -18,7 +18,7 @@ public class GetObjectIDsByContainer extends Request
 
 	public GetObjectIDsByContainer()
 	{
-		super(FRAME_ID);
+		super(FRAME_TYPE);
 	}
 
 	/**

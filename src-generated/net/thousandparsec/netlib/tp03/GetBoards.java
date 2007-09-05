@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public class GetBoards extends GetWithID
 {
-	public static final int FRAME_ID=16;
+	public static final int FRAME_TYPE=16;
 
 	protected GetBoards(int id)
 	{
@@ -18,7 +18,7 @@ public class GetBoards extends GetWithID
 
 	public GetBoards()
 	{
-		super(FRAME_ID);
+		super(FRAME_TYPE);
 	}
 
 	@Override

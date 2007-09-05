@@ -10,7 +10,7 @@ import java.io.IOException;
  */
 public class Object extends Response
 {
-	public static final int FRAME_ID=7;
+	public static final int FRAME_TYPE=7;
 
 	protected Object(int id)
 	{
@@ -19,7 +19,7 @@ public class Object extends Response
 
 	public Object()
 	{
-		super(FRAME_ID);
+		super(FRAME_TYPE);
 	}
 
 	/**

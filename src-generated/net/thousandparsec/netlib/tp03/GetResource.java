@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public class GetResource extends GetWithID
 {
-	public static final int FRAME_ID=22;
+	public static final int FRAME_TYPE=22;
 
 	protected GetResource(int id)
 	{
@@ -18,7 +18,7 @@ public class GetResource extends GetWithID
 
 	public GetResource()
 	{
-		super(FRAME_ID);
+		super(FRAME_TYPE);
 	}
 
 	@Override

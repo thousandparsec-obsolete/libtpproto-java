@@ -14,16 +14,16 @@ import net.thousandparsec.netlib.Writable;
 
 public class Planet<V extends Visitor> extends GameObject<V>
 {
-	public static final int OBJECT_ID=3;
+	static final int OBJECT_TYPE=3;
 
 	protected Planet()
 	{
-		super(OBJECT_ID);
+		super(OBJECT_TYPE);
 	}
 
 	Planet(TPDataInput in) throws IOException
 	{
-		super(OBJECT_ID, in);
+		super(OBJECT_TYPE, in);
 		this.owner=in.readInteger32();
 		for (int length=in.readInteger32(); length > 0; length--)
 			this.resources.add(new ResourcesType(in));

@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public class Redirect extends Response
 {
-	public static final int FRAME_ID=24;
+	public static final int FRAME_TYPE=24;
 
 	protected Redirect(int id)
 	{
@@ -18,7 +18,7 @@ public class Redirect extends Response
 
 	public Redirect()
 	{
-		super(FRAME_ID);
+		super(FRAME_TYPE);
 	}
 
 	/**

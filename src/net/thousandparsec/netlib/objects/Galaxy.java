@@ -10,16 +10,16 @@ import net.thousandparsec.netlib.Visitor;
 
 public class Galaxy<V extends Visitor> extends GameObject<V>
 {
-	public static final int OBJECT_ID=1;
+	static final int OBJECT_TYPE=1;
 
 	protected Galaxy()
 	{
-		super(OBJECT_ID);
+		super(OBJECT_TYPE);
 	}
 
 	Galaxy(TPDataInput in)
 	{
-		super(OBJECT_ID, in);
+		super(OBJECT_TYPE, in);
 	}
 
 	protected Galaxy(Galaxy<?> copy)

@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public class Category extends Response
 {
-	public static final int FRAME_ID=42;
+	public static final int FRAME_TYPE=42;
 
 	protected Category(int id)
 	{
@@ -18,7 +18,7 @@ public class Category extends Response
 
 	public Category()
 	{
-		super(FRAME_ID);
+		super(FRAME_TYPE);
 	}
 
 	private int id;

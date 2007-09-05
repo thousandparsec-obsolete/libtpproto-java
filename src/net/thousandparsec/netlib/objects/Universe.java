@@ -12,14 +12,16 @@ public class Universe<V extends Visitor> extends GameObject<V>
 {
 	public static final int OBJECT_ID=0;
 
+	static final int OBJECT_TYPE=0;
+
 	protected Universe()
 	{
-		super(OBJECT_ID);
+		super(OBJECT_TYPE);
 	}
 
 	Universe(TPDataInput in) throws IOException
 	{
-		super(OBJECT_ID, in);
+		super(OBJECT_TYPE, in);
 		this.age=in.readInteger32();
 	}
 

@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public class GetPlayer extends GetWithID
 {
-	public static final int FRAME_ID=39;
+	public static final int FRAME_TYPE=39;
 
 	protected GetPlayer(int id)
 	{
@@ -18,7 +18,7 @@ public class GetPlayer extends GetWithID
 
 	public GetPlayer()
 	{
-		super(FRAME_ID);
+		super(FRAME_TYPE);
 	}
 
 	@Override

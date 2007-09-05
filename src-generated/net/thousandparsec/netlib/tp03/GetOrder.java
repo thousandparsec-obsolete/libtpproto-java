@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public class GetOrder extends GetWithIDSlot
 {
-	public static final int FRAME_ID=10;
+	public static final int FRAME_TYPE=10;
 
 	protected GetOrder(int id)
 	{
@@ -18,7 +18,7 @@ public class GetOrder extends GetWithIDSlot
 
 	public GetOrder()
 	{
-		super(FRAME_ID);
+		super(FRAME_TYPE);
 	}
 
 	@Override

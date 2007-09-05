@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public class RemoveMessage extends GetMessage
 {
-	public static final int FRAME_ID=21;
+	public static final int FRAME_TYPE=21;
 
 	protected RemoveMessage(int id)
 	{
@@ -18,7 +18,7 @@ public class RemoveMessage extends GetMessage
 
 	public RemoveMessage()
 	{
-		super(FRAME_ID);
+		super(FRAME_TYPE);
 	}
 
 	@Override

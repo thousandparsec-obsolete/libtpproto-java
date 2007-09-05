@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public class GetFeatures extends Request
 {
-	public static final int FRAME_ID=25;
+	public static final int FRAME_TYPE=25;
 
 	protected GetFeatures(int id)
 	{
@@ -18,7 +18,7 @@ public class GetFeatures extends Request
 
 	public GetFeatures()
 	{
-		super(FRAME_ID);
+		super(FRAME_TYPE);
 	}
 
 	@Override

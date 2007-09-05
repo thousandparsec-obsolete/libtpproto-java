@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public abstract class IDSequence extends Response
 {
-	public static final int FRAME_ID=-1;
+	public static final int FRAME_TYPE=-1;
 
 	protected IDSequence(int id)
 	{

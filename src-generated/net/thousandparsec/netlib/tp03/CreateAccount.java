@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public class CreateAccount extends Request
 {
-	public static final int FRAME_ID=62;
+	public static final int FRAME_TYPE=62;
 
 	protected CreateAccount(int id)
 	{
@@ -18,7 +18,7 @@ public class CreateAccount extends Request
 
 	public CreateAccount()
 	{
-		super(FRAME_ID);
+		super(FRAME_TYPE);
 	}
 
 	/**

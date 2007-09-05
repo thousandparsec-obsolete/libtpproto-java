@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public class GetDesignIDs extends GetIDSequence
 {
-	public static final int FRAME_ID=52;
+	public static final int FRAME_TYPE=52;
 
 	protected GetDesignIDs(int id)
 	{
@@ -18,7 +18,7 @@ public class GetDesignIDs extends GetIDSequence
 
 	public GetDesignIDs()
 	{
-		super(FRAME_ID);
+		super(FRAME_TYPE);
 	}
 
 	@Override

@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public class GetComponent extends GetWithID
 {
-	public static final int FRAME_ID=54;
+	public static final int FRAME_TYPE=54;
 
 	protected GetComponent(int id)
 	{
@@ -18,7 +18,7 @@ public class GetComponent extends GetWithID
 
 	public GetComponent()
 	{
-		super(FRAME_ID);
+		super(FRAME_TYPE);
 	}
 
 	@Override

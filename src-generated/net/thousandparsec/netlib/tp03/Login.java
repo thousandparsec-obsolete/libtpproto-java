@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public class Login extends Request
 {
-	public static final int FRAME_ID=4;
+	public static final int FRAME_TYPE=4;
 
 	protected Login(int id)
 	{
@@ -18,7 +18,7 @@ public class Login extends Request
 
 	public Login()
 	{
-		super(FRAME_ID);
+		super(FRAME_TYPE);
 	}
 
 	/**

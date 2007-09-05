@@ -16,11 +16,11 @@ public abstract class GameObject<V extends Visitor> implements Writable, Visitab
 	{
 		switch (id)
 		{
-			case Universe.OBJECT_ID: return new Universe<V>(in);
-			case Galaxy.OBJECT_ID: return new Galaxy<V>(in);
-			case StarSystem.OBJECT_ID: return new StarSystem<V>(in);
-			case Planet.OBJECT_ID: return new Planet<V>(in);
-			case Fleet.OBJECT_ID: return new Fleet<V>(in);
+			case Universe.OBJECT_TYPE: return new Universe<V>(in);
+			case Galaxy.OBJECT_TYPE: return new Galaxy<V>(in);
+			case StarSystem.OBJECT_TYPE: return new StarSystem<V>(in);
+			case Planet.OBJECT_TYPE: return new Planet<V>(in);
+			case Fleet.OBJECT_TYPE: return new Fleet<V>(in);
 			default: throw new IllegalArgumentException("Invalid GameObject id: "+id);
 		}
 	}

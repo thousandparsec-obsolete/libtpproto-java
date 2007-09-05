@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public class OrderProbe extends Order
 {
-	public static final int FRAME_ID=34;
+	public static final int FRAME_TYPE=34;
 
 	protected OrderProbe(int id)
 	{
@@ -18,7 +18,7 @@ public class OrderProbe extends Order
 
 	public OrderProbe()
 	{
-		super(FRAME_ID);
+		super(FRAME_TYPE);
 	}
 
 	@Override

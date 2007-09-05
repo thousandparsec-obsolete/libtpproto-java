@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public class Property extends Response
 {
-	public static final int FRAME_ID=59;
+	public static final int FRAME_TYPE=59;
 
 	protected Property(int id)
 	{
@@ -18,7 +18,7 @@ public class Property extends Response
 
 	public Property()
 	{
-		super(FRAME_ID);
+		super(FRAME_TYPE);
 	}
 
 	/**

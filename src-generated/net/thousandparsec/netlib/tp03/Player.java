@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public class Player extends Response
 {
-	public static final int FRAME_ID=40;
+	public static final int FRAME_TYPE=40;
 
 	protected Player(int id)
 	{
@@ -18,7 +18,7 @@ public class Player extends Response
 
 	public Player()
 	{
-		super(FRAME_ID);
+		super(FRAME_TYPE);
 	}
 
 	private int id;

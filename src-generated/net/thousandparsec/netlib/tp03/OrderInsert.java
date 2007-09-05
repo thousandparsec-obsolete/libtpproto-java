@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class OrderInsert extends Order
 {
-	public static final int FRAME_ID=12;
+	public static final int FRAME_TYPE=12;
 
 	protected OrderInsert(int id)
 	{
@@ -15,7 +15,7 @@ public class OrderInsert extends Order
 
 	public OrderInsert()
 	{
-		super(FRAME_ID);
+		super(FRAME_TYPE);
 	}
 
 	@Override

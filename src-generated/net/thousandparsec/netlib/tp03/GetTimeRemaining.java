@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public class GetTimeRemaining extends Request
 {
-	public static final int FRAME_ID=14;
+	public static final int FRAME_TYPE=14;
 
 	protected GetTimeRemaining(int id)
 	{
@@ -18,7 +18,7 @@ public class GetTimeRemaining extends Request
 
 	public GetTimeRemaining()
 	{
-		super(FRAME_ID);
+		super(FRAME_TYPE);
 	}
 
 	@Override

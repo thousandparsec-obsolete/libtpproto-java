@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public class Board extends Response
 {
-	public static final int FRAME_ID=17;
+	public static final int FRAME_TYPE=17;
 
 	protected Board(int id)
 	{
@@ -18,7 +18,7 @@ public class Board extends Response
 
 	public Board()
 	{
-		super(FRAME_ID);
+		super(FRAME_TYPE);
 	}
 
 	/**

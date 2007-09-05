@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public class BoardIDs extends IDSequence
 {
-	public static final int FRAME_ID=36;
+	public static final int FRAME_TYPE=36;
 
 	protected BoardIDs(int id)
 	{
@@ -18,7 +18,7 @@ public class BoardIDs extends IDSequence
 
 	public BoardIDs()
 	{
-		super(FRAME_ID);
+		super(FRAME_TYPE);
 	}
 
 	@Override
