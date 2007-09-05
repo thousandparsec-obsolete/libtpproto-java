@@ -35,7 +35,7 @@ public class JavaOutputGenerator implements OutputGenerator
 	private PrintWriter out;
 	private String basePacket;
 	private String packetName;
-	private int id;
+	private int packetType;
 	private int compat;
 
 	/**
@@ -85,13 +85,13 @@ public class JavaOutputGenerator implements OutputGenerator
 		this.compat=compat;
 	}
 
-	public void startPacket(File targetDir, String basePacket, String packetName, int id) throws IOException
+	public void startPacket(File targetDir, String basePacket, String packetName, int packetType) throws IOException
 	{
 		this.targetDir=createTargetDir(targetDir);
 		this.out=createTargetFile(new File(this.targetDir, packetName+".java"));
 		this.basePacket=basePacket;
 		this.packetName=packetName;
-		this.id=id;
+		this.packetType=packetType;
 
 		printPreamble(basePacket);
 	}
@@ -149,7 +149,7 @@ public class JavaOutputGenerator implements OutputGenerator
 			this.targetDir=null;
 			this.out=null;
 			this.packetName=null;
-			this.id=0;
+			this.packetType=0;
 			this.basePacket=null;
 
 			bak.close();
@@ -165,7 +165,7 @@ public class JavaOutputGenerator implements OutputGenerator
 			out.printf("%s	@Override%n", indent);
 		out.printf("%s	public void visit(TP%02dVisitor visitor) throws TPException%n", indent, compat);
 		out.printf("%s	{%n", indent);
-		if (id != -1)
+		if (packetType != -1)
 			out.printf("%s		visitor.frame(this);%n", indent);
 		else
 			out.printf("%s		//NOP (not a leaf class)%n", indent);
@@ -507,11 +507,11 @@ public class JavaOutputGenerator implements OutputGenerator
 	public void startPacketType() throws IOException
 	{
 		out.write("public ");
-		if (id == -1)
+		if (packetType == -1)
 			out.write("abstract ");
 		out.printf("class %s extends %s%n", packetName, basePacket == null ? String.format("Frame<TP%02dVisitor>", compat) : basePacket);
 		out.println("{");
-		out.printf("	public static final int FRAME_ID=%d;%n", id);
+		out.printf("	public static final int FRAME_ID=%d;%n", packetType);
 		out.println();
 
 		printConstructors();
@@ -530,7 +530,7 @@ public class JavaOutputGenerator implements OutputGenerator
 
 		//(note: id == -1 is no id is a base class for other packets)
 		//(but then, it should not have readonly properties...)
-		if (id != -1)
+		if (packetType != -1)
 		{
 			out.printf("	public %s()%n", packetName);
 			out.println("	{");
