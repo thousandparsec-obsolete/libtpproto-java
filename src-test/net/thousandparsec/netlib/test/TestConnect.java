@@ -21,20 +21,20 @@ import net.thousandparsec.netlib.tp03.TP03Decoder;
 import net.thousandparsec.netlib.tp03.TP03Visitor;
 import net.thousandparsec.netlib.tp03.GetWithID.IdsType;
 
-public class TestConect extends TP03Visitor
+public class TestConnect extends TP03Visitor
 {
 	public static void main(String... args) throws UnknownHostException, IOException, URISyntaxException, InterruptedException, TPException
 	{
 		TP03Decoder decoder=new TP03Decoder();
 		Connection<TP03Visitor> conn=decoder.makeConnection(
-			new URI(args.length > 0 ? args[0] : "tp://guest:guestx@demo1.thousandparsec.net/tp"),
+			new URI(args.length > 0 ? args[0] : "tp://guest:guest@demo1.thousandparsec.net/tp"),
 			true);
-		new TestConect(conn).start();
+		new TestConnect(conn).start();
 	}
 
 	private final Connection<TP03Visitor> conn;
 
-	public TestConect(Connection<TP03Visitor> conn)
+	public TestConnect(Connection<TP03Visitor> conn)
 	{
 		this.conn=conn;
 	}
