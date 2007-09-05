@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import net.thousandparsec.netlib.Connection;
 import net.thousandparsec.netlib.Frame;
@@ -23,7 +25,7 @@ import net.thousandparsec.netlib.tp03.GetWithID.IdsType;
 
 public class TestConect extends TP03Visitor
 {
-	public static void main(String... args) throws UnknownHostException, IOException, URISyntaxException
+	public static void main(String... args) throws UnknownHostException, IOException, URISyntaxException, InterruptedException
 	{
 		Connection<TP03Visitor> conn=Connection.makeConnection(
 			new TP03Decoder(),
@@ -38,26 +40,41 @@ public class TestConect extends TP03Visitor
 		this.conn=conn;
 	}
 
-	private void start() throws UnknownHostException, IOException
+	private void start() throws UnknownHostException, IOException, InterruptedException
 	{
-		conn.receiveFramesAsync(this);
+		Future<Void> asyncTask=conn.receiveFramesAsync(this);
 
-		Connect connect=new Connect();
-		connect.setString("libtpproto-java-test");
-		conn.sendFrame(connect);
+		try
+		{
+			Connect connect=new Connect();
+			connect.setString("libtpproto-java-test");
+			conn.sendFrame(connect);
 
-		Login login=new Login();
-		login.setUsername("guest");
-		login.setPassword("guest");
-		conn.sendFrame(login);
+			Login login=new Login();
+			login.setUsername("guest");
+			login.setPassword("guest");
+			conn.sendFrame(login);
 
-		conn.sendFrame(new Ping());
+			conn.sendFrame(new Ping());
 
-		GetObjectsByID getObj=new GetObjectsByID();
-		getObj.getIds().add(new IdsType(0));
-		conn.sendFrame(getObj);
-
-		conn.close();
+			GetObjectsByID getObj=new GetObjectsByID();
+			getObj.getIds().add(new IdsType(0));
+			conn.sendFrame(getObj);
+		}
+		finally
+		{
+			try {conn.close();} catch (IOException ignore) {}
+			//get the null from task just to see if there was an exception
+			try
+			{
+				//but don't swallow the exception that could bring us to this finally block
+				asyncTask.get();
+			}
+			catch (ExecutionException ex)
+			{
+				ex.getCause().printStackTrace(System.err);
+			}
+		}
 	}
 
 	@Override
