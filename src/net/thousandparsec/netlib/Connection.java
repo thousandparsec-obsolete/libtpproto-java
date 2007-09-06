@@ -453,10 +453,10 @@ public class Connection<V extends Visitor>
 	/**
 	 * Synchronously reads (and returns) next {@link Frame} from this
 	 * connection; it will block if the frame is not immediately available. Will
-	 * return {@code null} if there are no more frames to read (the connection
+	 * return {@literal null} if there are no more frames to read (the connection
 	 * was gracefully closed).
 	 * 
-	 * @return next {@link Frame} of {@code null} on end of stream
+	 * @return next {@link Frame} of {@literal null} on end of stream
 	 * @throws EOFException
 	 *             if the connection is closed in the middle of frame
 	 * @throws IOException
