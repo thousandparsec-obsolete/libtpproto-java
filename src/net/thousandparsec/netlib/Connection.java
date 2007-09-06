@@ -24,6 +24,10 @@ import javax.net.ssl.SSLSocketFactory;
  * connection; unfortunately this is very rigid and to support another protocol
  * version the code has to be duplicated (reimplemented) with frame objects
  * generated for this protocol version.
+ * <p>
+ * The {@link Connection} object and all of the protocol version implementation
+ * will guarantee that any lists and object returned by {@link Frame} objects
+ * will not be modified by the library and are safe to use without copying.
  * 
  * @author ksobolewski
  */
