@@ -41,7 +41,7 @@ public class TestConnect extends TP03Visitor
 
 	private void start() throws UnknownHostException, IOException, InterruptedException
 	{
-		Future<Void> asyncTask=conn.receiveFramesAsync(this);
+		Future<Void> asyncTask=conn.receiveAllFramesAsync(this);
 
 		try
 		{

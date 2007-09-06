@@ -22,7 +22,7 @@ public class TestLoopback extends TP03Visitor
 		FrameDecoder<TP03Visitor> ff=new TP03Decoder();
 		Connection<TP03Visitor> conn=new Connection<TP03Visitor>(ff, new DebugSocket());
 
-		Future<Void> asyncTask=conn.receiveFramesAsync(new TestLoopback());
+		Future<Void> asyncTask=conn.receiveAllFramesAsync(new TestLoopback());
 
 		try
 		{

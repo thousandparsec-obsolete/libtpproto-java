@@ -537,7 +537,7 @@ public class Connection<V extends Visitor>
 	 * because of synchronisation; don't use them at the same time if you don't
 	 * want unexpected behaviour.
 	 */
-	public Future<Void> receiveFramesAsync(final V visitor)
+	public Future<Void> receiveAllFramesAsync(final V visitor)
 	{
 		final ExecutorService exec=Executors.newSingleThreadExecutor();
 		return exec.submit(new Callable<Void>()
