@@ -31,18 +31,47 @@ import net.thousandparsec.netlib.objects.Universe;
  */
 public abstract class Visitor
 {
+	private final boolean errorOnUnhandled;
+
+	/**
+	 * Creates a visitor that will not throw exception on unhandled frames and
+	 * game objects.
+	 * 
+	 * @see #Visitor(boolean)
+	 */
+	public Visitor()
+	{
+		this(false);
+	}
+
+	/**
+	 * Creates a visitor with specified behaviour on unhandled frames and game
+	 * objects. If the {@code errorOnUnhandled} parameter is {@literal true},
+	 * the default handler for {@link #unhandledFrame(Frame) frames} and
+	 * {@link #unhandledGameObject(GameObject) game objects} will throw
+	 * {@link TPException} with the message that this frame/object was
+	 * unexpected.
+	 * 
+	 * @param errorOnUnhandled
+	 *            whether to throw an exception on unhandled frames and objects .
+	 */
+	public Visitor(boolean errorOnUnhandled)
+	{
+		this.errorOnUnhandled=errorOnUnhandled;
+	}
+
 	/* frames */
-	@SuppressWarnings("unused")
 	public void unhandledFrame(Frame<?> frame) throws TPException
 	{
-		//NOP here
+		if (errorOnUnhandled)
+			throw new TPException(String.format("Unexpected frame: type %d (%s)", frame.getFrameType(), frame.getClass().getName()));
 	}
 
 	/* game objects */
-	@SuppressWarnings("unused")
 	public void unhandledGameObject(GameObject<?> object) throws TPException
 	{
-		//NOP here
+		if (errorOnUnhandled)
+			throw new TPException(String.format("Unexpected game object: type %d (%s)", object.getObjectType(), object.getClass().getName()));
 	}
 
 	public void gameObject(Universe<?> object) throws TPException

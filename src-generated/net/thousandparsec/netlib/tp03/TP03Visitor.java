@@ -5,6 +5,21 @@ import net.thousandparsec.netlib.TPException;
 
 public class TP03Visitor extends Visitor
 {
+	/**
+	 * @see Visitor#Visitor()
+	 */
+	public TP03Visitor()
+	{
+	}
+
+	/**
+	 * @see Visitor#Visitor(boolean)
+	 */
+	public TP03Visitor(boolean errorOnUnhandled)
+	{
+		super(errorOnUnhandled);
+	}
+
 	public void frame(Okay packet) throws TPException
 	{
 		unhandledFrame(packet);

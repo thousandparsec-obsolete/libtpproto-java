@@ -379,6 +379,21 @@ public class JavaOutputGenerator implements OutputGenerator
 
 			visitor.printf("public class TP%02dVisitor extends Visitor%n", compat);
 			visitor.println("{");
+			visitor.println("	/**");
+			visitor.println("	 * @see Visitor#Visitor()");
+			visitor.println("	 */");
+			visitor.printf("	public TP%02dVisitor()%n", compat);
+			visitor.println("	{");
+			visitor.println("	}");
+			visitor.println();
+			visitor.println("	/**");
+			visitor.println("	 * @see Visitor#Visitor(boolean)");
+			visitor.println("	 */");
+			visitor.printf("	public TP%02dVisitor(boolean errorOnUnhandled)%n", compat);
+			visitor.println("	{");
+			visitor.println("		super(errorOnUnhandled);");
+			visitor.println("	}");
+			visitor.println();
 			for (Packet packet : packets)
 				if (packet.id != -1)
 				{
