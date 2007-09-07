@@ -18,12 +18,19 @@ import net.thousandparsec.util.AbstractIterator;
  */
 public class SimpleObjectIterator extends AbstractIterator<ModtimesType>
 {
+	public static final int DEFAULT_CHUNK_SIZE=100;
+
 	private final Connection<TP03Visitor> conn;
 	private final int chunkSize;
 	private Iterator<ModtimesType> idsIter;
 	private int key=-1;
 	private int lastId=0;
 	private int remaining;
+
+	public SimpleObjectIterator(Connection<TP03Visitor> conn)
+	{
+		this(conn, DEFAULT_CHUNK_SIZE);
+	}
 
 	public SimpleObjectIterator(Connection<TP03Visitor> conn, int chunkSize)
 	{
@@ -93,7 +100,7 @@ public class SimpleObjectIterator extends AbstractIterator<ModtimesType>
 		Connection<TP03Visitor> conn=new TP03Decoder().makeConnection(new URI("tp://guest:guest@demo1.thousandparsec.net/tp"), true);
 		try
 		{
-			for (Iterator<ModtimesType> oit=new SimpleObjectIterator(conn, 10); oit.hasNext(); )
+			for (Iterator<ModtimesType> oit=new SimpleObjectIterator(conn, DEFAULT_CHUNK_SIZE); oit.hasNext(); )
 			{
 				ModtimesType object=oit.next();
 				System.out.printf("id=%d, time=%d%n", object.getID(), object.getModtime());
