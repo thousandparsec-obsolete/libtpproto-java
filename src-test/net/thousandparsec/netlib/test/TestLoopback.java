@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -58,16 +59,17 @@ public class TestLoopback extends TP03Visitor
 		}
 	}
 
-	private final List<Frame<TP03Visitor>> frames;
+	private final Iterator<Frame<TP03Visitor>> frames;
 
 	public TestLoopback(List<Frame<TP03Visitor>> frames)
 	{
-		this.frames=frames;
+		this.frames=frames.iterator();
 	}
 
 	@Override
 	public void unhandledFrame(Frame<?> frame)
 	{
+		assert frame.getFrameType() == frames.next().getFrameType();
 		System.out.println("Received frame: "+frame.getFrameType()+" ("+frame+")");
 	}
 
