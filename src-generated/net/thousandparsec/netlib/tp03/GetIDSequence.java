@@ -9,8 +9,6 @@ import java.io.IOException;
  */
 public abstract class GetIDSequence extends Request
 {
-	public static final int FRAME_TYPE=-1;
-
 	protected GetIDSequence(int id)
 	{
 		super(id);

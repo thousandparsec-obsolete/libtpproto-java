@@ -526,8 +526,11 @@ public class JavaOutputGenerator implements OutputGenerator
 			out.write("abstract ");
 		out.printf("class %s extends %s%n", packetName, basePacket == null ? String.format("Frame<TP%02dVisitor>", compat) : basePacket);
 		out.println("{");
-		out.printf("	public static final int FRAME_TYPE=%d;%n", packetType);
-		out.println();
+		if (packetType != -1)
+		{
+			out.printf("	public static final int FRAME_TYPE=%d;%n", packetType);
+			out.println();
+		}
 
 		printConstructors();
 
