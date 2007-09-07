@@ -10,7 +10,7 @@ import net.thousandparsec.netlib.Visitor;
 
 public class Galaxy<V extends Visitor> extends GameObject<V>
 {
-	static final int OBJECT_TYPE=1;
+	public static final int OBJECT_TYPE=1;
 
 	protected Galaxy()
 	{

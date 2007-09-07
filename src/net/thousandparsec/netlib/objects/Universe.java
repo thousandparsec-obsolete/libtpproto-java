@@ -12,7 +12,7 @@ public class Universe<V extends Visitor> extends GameObject<V>
 {
 	public static final int OBJECT_ID=0;
 
-	static final int OBJECT_TYPE=0;
+	public static final int OBJECT_TYPE=0;
 
 	protected Universe()
 	{

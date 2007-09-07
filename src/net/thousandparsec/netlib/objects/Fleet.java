@@ -14,7 +14,7 @@ import net.thousandparsec.netlib.Writable;
 
 public class Fleet<V extends Visitor> extends GameObject<V>
 {
-	static final int OBJECT_TYPE=4;
+	public static final int OBJECT_TYPE=4;
 
 	protected Fleet()
 	{

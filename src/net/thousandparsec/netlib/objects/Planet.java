@@ -14,7 +14,7 @@ import net.thousandparsec.netlib.Writable;
 
 public class Planet<V extends Visitor> extends GameObject<V>
 {
-	static final int OBJECT_TYPE=3;
+	public static final int OBJECT_TYPE=3;
 
 	protected Planet()
 	{

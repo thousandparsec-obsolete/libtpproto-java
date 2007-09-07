@@ -10,7 +10,7 @@ import net.thousandparsec.netlib.Visitor;
 
 public class StarSystem<V extends Visitor> extends GameObject<V>
 {
-	static final int OBJECT_TYPE=2;
+	public static final int OBJECT_TYPE=2;
 
 	protected StarSystem()
 	{
