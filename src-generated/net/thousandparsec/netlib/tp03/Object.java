@@ -497,7 +497,7 @@ public class Object extends Response
 		System.arraycopy(value, 0, this.padding, 0, this.padding.length);
 	}
 
-	private GameObject<TP03Visitor> object;
+	private GameObject<TP03Visitor> object=new NullObject<TP03Visitor>();
 
 	public GameObject<TP03Visitor> getObject()
 	{

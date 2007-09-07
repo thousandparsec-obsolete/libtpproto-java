@@ -597,8 +597,11 @@ public class JavaOutputGenerator implements OutputGenerator
 
 			case integer:
 			case enumeration:
-			case object: //special case
 				out.printf("%sprivate %s %s;%n", indent, property.targetType, property.name);
+				break;
+
+			case object: //special case
+				out.printf("%sprivate %s %s=new NullObject<TP%02dVisitor>();%n", indent, property.targetType, property.name, compat);
 				break;
 
 			default:
