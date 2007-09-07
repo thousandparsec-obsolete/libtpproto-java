@@ -608,7 +608,12 @@ public class JavaOutputGenerator implements OutputGenerator
 				break;
 
 			case object: //special case
-				out.printf("%sprivate %s %s=new NullObject<TP%02dVisitor>();%n", indent, property.targetType, property.name, compat);
+				out.printf("%s/*%n", indent);
+				out.printf("%s * somehow we know that Universe is type 0 :)%n", indent);
+				out.printf("%s * [it has to be in sync with otype property, which is inited to 0 if not created by server]%n", indent);
+				out.printf("%s * (and use subversive inner class construct to exploit protected constructor ;))%n", indent);
+				out.printf("%s */%n", indent);
+				out.printf("%sprivate %s %s=new Universe<TP%02dVisitor>() {};%n", indent, property.targetType, property.name, compat);
 				break;
 
 			default:

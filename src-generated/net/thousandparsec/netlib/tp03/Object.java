@@ -497,7 +497,12 @@ public class Object extends Response
 		System.arraycopy(value, 0, this.padding, 0, this.padding.length);
 	}
 
-	private GameObject<TP03Visitor> object=new NullObject<TP03Visitor>();
+	/*
+	 * somehow we know that Universe is type 0 :)
+	 * [it has to be in sync with otype property, which is inited to 0 if not created by server]
+	 * (and use subversive inner class construct to exploit protected constructor ;))
+	 */
+	private GameObject<TP03Visitor> object=new Universe<TP03Visitor>() {};
 
 	public GameObject<TP03Visitor> getObject()
 	{
