@@ -5,7 +5,7 @@ import java.net.URI;
 import java.net.UnknownHostException;
 
 /**
- * This is an inerface for frame decoders automatically generated for a specific
+ * This is an interface for frame decoders automatically generated for a specific
  * protocol version.
  * 
  * @see Connection

@@ -7,7 +7,7 @@ import java.io.IOException;
  * write several primitive types, such as 8-bit integer(s), 32-bit integer,
  * 64-bit integer and a {@link String} (properly encoded). The integer values
  * can be either signed or unsigned or semi-signed (where there's only one
- * negative value, {@value -1}, encoded as a maximum allowable value for a
+ * negative value, {@literal -1}, encoded as a maximum allowable value for a
  * given type) as their binary representation is always the same (but remember
  * that Java's integer types are always signed, so you have to treat unsigned
  * values carefully).
