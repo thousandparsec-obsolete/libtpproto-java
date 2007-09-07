@@ -3,7 +3,18 @@ package net.thousandparsec.util;
 import java.util.Iterator;
 
 /**
- * FIXME: javadoc
+ * A base class for custom {@link Iterator}s which faciliates computation model
+ * similar to {@code yield} constructs from other languages. The only method
+ * required to be implemented is {@link #fetchNext()}, which is supposed to
+ * look for the next element, in whatever way applicable. If this method
+ * determines that there's nothing to return, it should call {@link #finished()}
+ * (the return value is ignored after that).
+ * <p>
+ * This iterator is by definition read-only and its {@link #remove()} method
+ * always throws {@link UnsupportedOperationException}. That's because this
+ * iterator's "logical" and "psysical" positions do not match and it would be
+ * rather difficult to track which element should be removed by
+ * {@link #remove()}.
  * <p>
  * (This class is taken verbatim from jezuch-utils project by the same author)
  * 
