@@ -3,10 +3,8 @@
 	<property name="version" value="0.1"/>
 	<property name="version.micro" value="0.1.0"/>
 
-<!--
 	<property name="libs.dir" value="lib"/>
-	<property name="libs.testng" value="${libs.dir}/testng-5.0-jdk15.jar"/>
--->
+	<property name="libs.testng" value="${libs.dir}/testng-5.6-jdk15.jar"/>
 
 	<property name="src.core" value="src"/>
 	<property name="src.generated" value="src-generated"/>
@@ -24,10 +22,9 @@
 	<property name="manifest.proto-tp03" value="${classes.proto-tp03}/META-INF/MANIFEST.MF"/>
 	<property name="manifest.generator" value="${classes.generator}/META-INF/MANIFEST.MF"/>
 
-<!--
 	<property name="test-results.dir" value="test-output"/>
 	<property name="test-results.core" value="${test-results.dir}/core"/>
--->
+	<property name="test-results.proto-tp03" value="${test-results.dir}/proto-tp03"/>
 
 	<property name="jar.dir" value="jars"/>
 	<property name="jar.core.name" value="libtpproto-java-core_${version.micro}.jar"/>
@@ -39,9 +36,7 @@
 
 	<property name="javadoc.dir" value="doc"/>
 
-<!--
 	<taskdef resource="testngtasks" classpath="${libs.testng}"/>
--->
 
 	<target name="compile.all" depends="compile.core,compile.proto-tp03,compile.generator"/>
 	<target name="compile.core">
@@ -145,15 +140,16 @@
 		</manifest>
 	</target>
 
-	<target name="compile.core.test" depends="compile.core,compile.proto-tp03">
+	<target name="compile.test" depends="compile.core,compile.proto-tp03">
 		<mkdir dir="${classes.test}"/>
-		<javac source="1.5" target="1.5" sourcepath="" destdir="${classes.core.test}">
+		<javac source="1.5" target="1.5" sourcepath="" destdir="${classes.test}">
 			<src>
 				<path path="${src.test}"/>
 			</src>
 			<classpath>
 				<path path="${classes.core}"/>
 				<path path="${classes.proto-tp03}"/>
+				<path path="${libs.testng}"/>
 			</classpath>
 			<include name="**"/>
 		</javac>
@@ -164,18 +160,27 @@
 		</copy>
 	</target>
 
-<!--
-	<target name="test.all" depends="test.core"/>
-	<target name="test.core" depends="compile.core,compile.proto-tp03">
-		<testng outputdir="${test-results.core}" target="1.5">
+	<target name="test.all" depends="test.core,test.proto-tp03"/>
+	<target name="test.core" depends="compile.core,compile.test">
+		<testng outputdir="${test-results.core}" groups="net.thousandparsec.netlib">
 			<classpath>
 				<path path="${classes.core}"/>
 				<path path="${classes.proto-tp03}"/>
+				<path path="${classes.test}"/>
 			</classpath>
 			<classfileset dir="${classes.test}" includes="**/*.class"/>
 		</testng>
 	</target>
--->
+	<target name="test.proto-tp03" depends="compile.core,compile.proto-tp03,compile.test">
+		<testng outputdir="${test-results.proto-tp03}" groups="net.thousandparsec.netlib.tp03">
+			<classpath>
+				<path path="${classes.core}"/>
+				<path path="${classes.proto-tp03}"/>
+				<path path="${classes.test}"/>
+			</classpath>
+			<classfileset dir="${classes.test}" includes="**/*.class"/>
+		</testng>
+	</target>
 
 	<target name="jar.all" depends="jar.core,jar.proto-tp03,jar.generator"/>
 	<target name="jar.core" depends="compile.core">

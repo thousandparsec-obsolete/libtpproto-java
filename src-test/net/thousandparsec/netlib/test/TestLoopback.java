@@ -9,17 +9,22 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import org.testng.annotations.Test;
+
 import net.thousandparsec.netlib.Connection;
 import net.thousandparsec.netlib.Frame;
 import net.thousandparsec.netlib.FrameDecoder;
 import net.thousandparsec.netlib.tp03.TP03Decoder;
 import net.thousandparsec.netlib.tp03.TP03Visitor;
 
-public class TestLoopback extends TP03Visitor
+public class TestLoopback
 {
+	@Test(groups={"net.thousandparsec.netlib.tp03"})
 	@SuppressWarnings("unchecked")
-	public static void main(String[] args) throws IOException, InterruptedException, InstantiationException, IllegalAccessException, ExecutionException
+	public void sendAndReceiveAllFrames() throws IOException, InterruptedException, InstantiationException, IllegalAccessException, ExecutionException
 	{
+		//this could be converted to TextNG's data provides,
+		//but it's array based, which doesn't mix with generics...
 		List<Frame<TP03Visitor>> frames=new ArrayList<Frame<TP03Visitor>>();
 		for (Method m : TP03Visitor.class.getMethods())
 		{
@@ -34,7 +39,7 @@ public class TestLoopback extends TP03Visitor
 		FrameDecoder<TP03Visitor> ff=new TP03Decoder();
 		Connection<TP03Visitor> conn=new Connection<TP03Visitor>(ff, new DebugSocket());
 
-		Future<Void> asyncTask=conn.receiveAllFramesAsync(new TestLoopback(frames));
+		Future<Void> asyncTask=conn.receiveAllFramesAsync(new Sink(frames));
 
 		try
 		{
@@ -59,18 +64,21 @@ public class TestLoopback extends TP03Visitor
 		}
 	}
 
-	private final Iterator<Frame<TP03Visitor>> frames;
-
-	public TestLoopback(List<Frame<TP03Visitor>> frames)
+	private static class Sink extends TP03Visitor
 	{
-		this.frames=frames.iterator();
-	}
+		private final Iterator<Frame<TP03Visitor>> frames;
 
-	@Override
-	public void unhandledFrame(Frame<?> frame)
-	{
-		assert frame.getFrameType() == frames.next().getFrameType();
-		System.out.println("Received frame: "+frame.getFrameType()+" ("+frame+")");
+		public Sink(List<Frame<TP03Visitor>> frames)
+		{
+			this.frames=frames.iterator();
+		}
+
+		@Override
+		public void unhandledFrame(Frame<?> frame)
+		{
+			assert frame.getFrameType() == frames.next().getFrameType();
+			System.out.println("Received frame: "+frame.getFrameType()+" ("+frame+")");
+		}
 	}
 
 	private static class DebugSocket extends Socket
