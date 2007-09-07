@@ -596,8 +596,15 @@ public class JavaOutputGenerator implements OutputGenerator
 				break;
 
 			case integer:
-			case enumeration:
 				out.printf("%sprivate %s %s;%n", indent, property.targetType, property.name);
+				break;
+
+			case enumeration:
+				if (property.size < 0)
+					out.printf("%sprivate %s %s;%n", indent, property.targetSubtype, property.name);
+				else
+					out.printf("%sprivate %s %s=%s.$none$;%n", indent, property.targetType, property.name, property.targetType);
+					
 				break;
 
 			case object: //special case
@@ -698,6 +705,10 @@ public class JavaOutputGenerator implements OutputGenerator
 		Indent indent=new Indent(level);
 		out.printf("%spublic enum %s%n", indent, enumName);
 		out.printf("%s{%n", indent);
+
+		//print the "null-object" enum value
+		//assume that no enumeration has a value with @id=-1 (so far it's true)
+		printEnumValue(level, "$none$", "-1");
 
 		checkError(out);
 	}

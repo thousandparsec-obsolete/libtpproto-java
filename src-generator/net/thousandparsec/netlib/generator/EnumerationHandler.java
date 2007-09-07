@@ -19,14 +19,12 @@ import org.xml.sax.SAXException;
  */
 class EnumerationHandler extends PropertyHandler
 {
-	private final boolean isMask;
 	private String lastName, lastValue;
 	private String camelName;
 
 	EnumerationHandler(StructureHandler<?> parent, String valueType, int size, String style, boolean readOnly)
 	{
-		super(parent, StructureHandler.PropertyType.enumeration, null, valueType, style.equals("mask") ? -size : size, readOnly);
-		this.isMask=style.equals("mask");
+		super(parent, StructureHandler.PropertyType.enumeration, valueType, valueType, style.equals("mask") ? -size : size, readOnly);
 	}
 
 	@Override
@@ -72,11 +70,7 @@ class EnumerationHandler extends PropertyHandler
 			{
 				super.endElement(uri, localName, name);
 				if (localName.equals("name"))
-				{
-					//for masks retain original type
-					if (!isMask)
-						setValueType(camelName=getName().substring(0, 1).toUpperCase()+getName().substring(1));
-				}
+					setValueType(camelName=getName().substring(0, 1).toUpperCase()+getName().substring(1));
 				else if (localName.equals("values"))
 					parent.packet.parent.parent.generator.endEnum(parent.level, camelName, getValueSubtype());
 			}

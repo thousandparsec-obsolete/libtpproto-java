@@ -38,6 +38,8 @@ public class Features extends Response
 		 */
 		public enum Feature
 		{
+			$none$(-1),
+
 			/**
 			 * Secure Connection available on this port.
 			 */
@@ -121,7 +123,7 @@ public class Features extends Response
 			}
 		}
 
-		private Feature feature;
+		private Feature feature=Feature.$none$;
 
 		public Feature getFeature()
 		{

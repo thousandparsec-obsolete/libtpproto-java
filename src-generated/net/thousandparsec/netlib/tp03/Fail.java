@@ -23,6 +23,8 @@ public class Fail extends Response
 	 */
 	public enum Code
 	{
+		$none$(-1),
+
 		/**
 		 * Protocol Error, Something went wrong with the protocol
 		 */
@@ -61,7 +63,7 @@ public class Fail extends Response
 		}
 	}
 
-	private Code code;
+	private Code code=Code.$none$;
 
 	public Code getCode()
 	{
