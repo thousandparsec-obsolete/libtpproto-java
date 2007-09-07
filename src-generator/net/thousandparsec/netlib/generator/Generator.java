@@ -28,7 +28,7 @@ public class Generator extends StackedHandler<StackedHandler<?>>
 			System.out.println("Usage:");
 			System.out.println("$0 <protocol-def> <target-dir>");
 			System.out.println("where <protocol-def> is an XML file with protocol definition");
-			System.out.println("and <target-dir> is base directory to which soyrce file will be written.");
+			System.out.println("and <target-dir> is base directory to which source file will be written.");
 			System.exit(1);
 		}
 
