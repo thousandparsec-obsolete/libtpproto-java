@@ -39,13 +39,10 @@ public class ObjectIterator extends AbstractIterator<Object>
 		this.objIds=new SimpleObjectIterator(conn, chunkSize);
 	}
 
-	void addNext(Object next)
-	{
-		this.next.add(next);
-	}
-
 	private boolean fetchObjects() throws IOException, TPException
 	{
+		assert next.isEmpty();
+
 		GetObjectsByID getObj=new GetObjectsByID();
 		int count;
 		for (count=0; count < chunkSize && objIds.hasNext(); count++)
@@ -53,26 +50,11 @@ public class ObjectIterator extends AbstractIterator<Object>
 		if (count == 0)
 			return false;
 
-		final int toGet=count;
-		conn.sendFrame(getObj, new TP03Visitor(true)
-			{
-				@Override
-				public void frame(Sequence frame)
-				{
-					assert frame.getNumber() == toGet;
-				}
-			});
-		assert next.isEmpty();
-		for (int i=0; i < toGet; i++)
-			conn.receiveFrame(new TP03Visitor(true)
-				{
-					@Override
-					public void frame(Object frame)
-					{
-						addNext(frame);
-					}
-				});
-		assert next.size() == toGet;
+		Sequence result=conn.sendFrame(getObj, Sequence.class);
+		assert result.getNumber() == count;
+
+		for (int i=0; i < count; i++)
+			next.add(conn.receiveFrame(Object.class));
 
 		nextIter=next.iterator();
 		return true;

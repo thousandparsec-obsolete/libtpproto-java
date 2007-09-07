@@ -423,7 +423,7 @@ public class Connection<V extends Visitor>
 	 * Synchronously sends a {@link Frame} to the server via this connection and
 	 * sends a response to the specified {@link Visitor}. Note that what this
 	 * does is very dumb: it simply waits for next frame from the server, so if
-	 * the frame sent does not expect a response, you get stuck (becasue the
+	 * the frame sent does not expect a response, you get stuck (because the
 	 * operation is synchronised and you won't be able to send anything else),
 	 * and if the response consists of more than one frame (like the "Sequence"
 	 * response), this will only handle the first one.
@@ -450,6 +450,40 @@ public class Connection<V extends Visitor>
 			{
 				sendFrame(frame);
 				receiveFrame().visit(responseVisitor);
+			}
+		}
+	}
+
+	/**
+	 * Synchronously sends a {@link Frame} to the server via this connection and
+	 * returns a response if it is of a specified, expected type. This is a
+	 * simple composition of {@link #sendFrame(Frame)} and
+	 * {@link #receiveFrame(Class)}, inheriting exceptional conditions and
+	 * return values of the latter.
+	 * 
+	 * @see #receiveFrame(Class)
+	 * @param frame
+	 *            the {@link Frame} to send
+	 * @param responseClass
+	 *            the {@link Class} of the expected response frame
+	 * @throws IOException
+	 *             on any I/O error
+	 * @throws TPException
+	 *             thrown by the {@link Visitor}'s handler methods
+	 */
+	public <F extends Frame<V>> F sendFrame(Frame<V> frame, Class<F> responseClass) throws IOException, TPException
+	{
+		/*
+		 * synchronize to eliminate race conditions if there are many concurrent
+		 * senders and receivers; in other words ensure that the next frame
+		 * received will be the response to this frame
+		 */
+		synchronized (lockSend)
+		{
+			synchronized (lockRecv)
+			{
+				sendFrame(frame);
+				return receiveFrame(responseClass);
 			}
 		}
 	}
@@ -501,6 +535,34 @@ public class Connection<V extends Visitor>
 		if (frame == null)
 			throw new EOFException();
 		frame.visit(visitor);
+	}
+
+	/**
+	 * Synchronously reads (and returns) next {@link Frame} from this
+	 * connection, but only of one, expected type. It will block if the frame is
+	 * not immediately available. Will throw {@link EOFException} if there are
+	 * no more frames to read. Will throw {@link TPException} if the frame
+	 * received is not of the expected type.
+	 * 
+	 * @return next {@link Frame} of {@literal null} on end of stream
+	 * @param responseClass
+	 *            the {@link Class} of the expected response frame
+	 * @throws EOFException
+	 *             if the connection is closed in the middle of frame
+	 * @throws IOException
+	 *             on any other I/O error
+	 * @throws TPException
+	 *             if an unexpected frame type is received
+	 */
+	public <F extends Frame<V>> F receiveFrame(Class<F> responseClass) throws EOFException, IOException, TPException
+	{
+		Frame<V> frame=receiveFrame();
+		if (frame == null)
+			throw new EOFException();
+		else if (responseClass.isInstance(frame))
+			return responseClass.cast(frame);
+		else
+			throw new TPException(String.format("Unexpected frame: type %d (%s)", frame.getFrameType(), frame.getClass().getName()));
 	}
 
 	/**

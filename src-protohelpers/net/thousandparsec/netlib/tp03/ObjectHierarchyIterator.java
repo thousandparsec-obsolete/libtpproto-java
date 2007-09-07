@@ -50,17 +50,6 @@ public final class ObjectHierarchyIterator extends AbstractIterator<Pair<Integer
 		this.rootIds=rootIds;
 	}
 
-	void setCount(int count)
-	{
-		this.count=count;
-		this.objects=new ArrayList<Object>(count);
-	}
-
-	void addObject(Object object)
-	{
-		this.objects.add(object);
-	}
-
 	private void fetchIds()
 	{
 		try
@@ -68,24 +57,13 @@ public final class ObjectHierarchyIterator extends AbstractIterator<Pair<Integer
 			GetObjectsByID getObjs=new GetObjectsByID();
 			for (Object.ContainsType id : rootIds)
 				getObjs.getIds().add(new IdsType(id.getID()));
-			conn.sendFrame(getObjs, new TP03Visitor(true)
-				{
-					@Override
-					public void frame(Sequence frame)
-					{
-						setCount(frame.getNumber());
-					}
-				});
-			assert count >= 0;
+
+			Sequence result=conn.sendFrame(getObjs, Sequence.class);
+			this.count=result.getNumber();
+			this.objects=new ArrayList<Object>(count);
+
 			for (int i=0; i < count; i++)
-				conn.receiveFrame(new TP03Visitor(true)
-					{
-						@Override
-						public void frame(Object frame)
-						{
-							addObject(frame);
-						}
-					});
+				this.objects.add(conn.receiveFrame(Object.class));
 			objectsIter=objects.iterator();
 		}
 		catch (IOException ex)

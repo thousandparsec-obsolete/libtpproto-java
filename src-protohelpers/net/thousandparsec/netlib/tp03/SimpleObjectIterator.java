@@ -38,30 +38,20 @@ public class SimpleObjectIterator extends AbstractIterator<ModtimesType>
 		this.chunkSize=chunkSize;
 	}
 
-	void setIds(List<ModtimesType> ids, int key, int remaining)
-	{
-		this.idsIter=ids.iterator();
-		this.key=key;
-		this.lastId+=ids.size();
-		this.remaining=remaining;
-	}
-
 	private void fetchIds(int chunk) throws IOException, TPException
 	{
 		GetObjectIDs getIds=new GetObjectIDs();
 		getIds.setKey(key);
 		getIds.setStart(lastId);
 		getIds.setAmount(chunk);
-		conn.sendFrame(getIds);
 
-		conn.receiveFrame(new TP03Visitor(true)
-			{
-				@Override
-				public void frame(ObjectIDs frame)
-				{
-					setIds(frame.getModtimes(), frame.getKey(), frame.getRemaining());
-				}
-			});
+		ObjectIDs result=conn.sendFrame(getIds, ObjectIDs.class);
+
+		List<ModtimesType> ids=result.getModtimes();
+		this.idsIter=ids.iterator();
+		this.key=result.getKey();
+		this.lastId+=ids.size();
+		this.remaining=result.getRemaining();
 	}
 
 	@Override
