@@ -562,7 +562,7 @@ public class Connection<V extends Visitor>
 		else if (responseClass.isInstance(frame))
 			return responseClass.cast(frame);
 		else
-			throw new TPException(String.format("Unexpected frame: type %d (%s)", frame.getFrameType(), frame.getClass().getName()));
+			throw new TPException(String.format("Unexpected frame: type %d (%s)", frame.getFrameType(), frame.toString()));
 	}
 
 	/**

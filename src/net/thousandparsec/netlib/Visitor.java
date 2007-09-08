@@ -64,14 +64,14 @@ public abstract class Visitor
 	public void unhandledFrame(Frame<?> frame) throws TPException
 	{
 		if (errorOnUnhandled)
-			throw new TPException(String.format("Unexpected frame: type %d (%s)", frame.getFrameType(), frame.getClass().getName()));
+			throw new TPException(String.format("Unexpected frame: type %d (%s)", frame.getFrameType(), frame.toString()));
 	}
 
 	/* game objects */
 	public void unhandledGameObject(GameObject<?> object) throws TPException
 	{
 		if (errorOnUnhandled)
-			throw new TPException(String.format("Unexpected game object: type %d (%s)", object.getObjectType(), object.getClass().getName()));
+			throw new TPException(String.format("Unexpected game object: type %d (%s)", object.getObjectType(), object.toString()));
 	}
 
 	public void gameObject(Universe<?> object) throws TPException
