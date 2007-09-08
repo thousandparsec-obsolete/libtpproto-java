@@ -28,7 +28,7 @@ public class TestConnect extends TP03Visitor
 		TP03Decoder decoder=new TP03Decoder();
 		Connection<TP03Visitor> conn=decoder.makeConnection(
 			new URI(args.length > 0 ? args[0] : "tp://guest:guest@demo1.thousandparsec.net/tp"),
-			true);
+			true, false);
 		new TestConnect(conn).start();
 	}
 

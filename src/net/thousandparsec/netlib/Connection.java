@@ -76,9 +76,9 @@ public class Connection<V extends Visitor>
 	/**
 	 * A convenience method that creates a {@link Connection} connected to a
 	 * server specified in a URI as a {@link String}. See
-	 * {@link #makeConnection(FrameDecoder, URI)} for details.
+	 * {@link #makeConnection(FrameDecoder, URI, boolean)} for details.
 	 * 
-	 * @see #makeConnection(FrameDecoder, URI)
+	 * @see #makeConnection(FrameDecoder, URI, boolean)
 	 * @return the {@link Connection} instance conected to a server described by
 	 *         the connection URI
 	 * @throws URISyntaxException
@@ -89,10 +89,10 @@ public class Connection<V extends Visitor>
 	 *             on a I/O error
 	 */
 	public static <V extends Visitor> Connection<V>
-		makeConnection(FrameDecoder<V> frameDecoder, String serverUri)
+		makeConnection(FrameDecoder<V> frameDecoder, String serverUri, boolean log)
 		throws URISyntaxException, UnknownHostException, IOException
 	{
-		return makeConnection(frameDecoder, new URI(serverUri));
+		return makeConnection(frameDecoder, new URI(serverUri), log);
 	}
 
 	/**
@@ -111,20 +111,20 @@ public class Connection<V extends Visitor>
 	 *             on a I/O error
 	 */
 	public static <V extends Visitor> Connection<V>
-		makeConnection(FrameDecoder<V> frameDecoder, URI serverUri)
+		makeConnection(FrameDecoder<V> frameDecoder, URI serverUri, boolean log)
 		throws UnknownHostException, IOException
 	{
 		int port=serverUri.getPort();
 		return port == -1
-			? makeConnection(frameDecoder, serverUri.getHost(), Method.valueOf(serverUri.getScheme()))
-			: makeConnection(frameDecoder, serverUri.getHost(), Method.valueOf(serverUri.getScheme()), port);
+			? makeConnection(frameDecoder, serverUri.getHost(), Method.valueOf(serverUri.getScheme()), log)
+			: makeConnection(frameDecoder, serverUri.getHost(), Method.valueOf(serverUri.getScheme()), port, log);
 	}
 
 	/**
 	 * A convenience method that creates a {@link Connection} connected to a
 	 * server specified by a host name and connection {@link Method}.
 	 * 
-	 * @see #makeConnection(FrameDecoder, URI)
+	 * @see #makeConnection(FrameDecoder, URI, boolean)
 	 * @return the {@link Connection} instance conected to a server described by
 	 *         the connection URI
 	 * @throws UnknownHostException
@@ -133,10 +133,10 @@ public class Connection<V extends Visitor>
 	 *             on a I/O error
 	 */
 	public static <V extends Visitor> Connection<V>
-		makeConnection(FrameDecoder<V> frameDecoder, String host, Method method)
+		makeConnection(FrameDecoder<V> frameDecoder, String host, Method method, boolean log)
 		throws UnknownHostException, IOException
 	{
-		return makeConnection(frameDecoder, host, method, method.defaultPort);
+		return makeConnection(frameDecoder, host, method, method.defaultPort, log);
 	}
 
 	/**
@@ -144,7 +144,7 @@ public class Connection<V extends Visitor>
 	 * server specified by a host name and connection {@link Method} and a
 	 * non-default port.
 	 * 
-	 * @see #makeConnection(FrameDecoder, URI)
+	 * @see #makeConnection(FrameDecoder, URI, boolean)
 	 * @return the {@link Connection} instance conected to a server described by
 	 *         the connection URI
 	 * @throws UnknownHostException
@@ -153,17 +153,17 @@ public class Connection<V extends Visitor>
 	 *             on a I/O error
 	 */
 	public static <V extends Visitor> Connection<V>
-		makeConnection(FrameDecoder<V> frameDecoder, String host, Method method, int port)
+		makeConnection(FrameDecoder<V> frameDecoder, String host, Method method, int port, boolean log)
 		throws UnknownHostException, IOException
 	{
 		switch (method)
 		{
 			case tp:
-				return makeTPConnection(frameDecoder, host);
+				return makeTPConnection(frameDecoder, host, log);
 			case tps:
-				return makeTPSConnection(frameDecoder, host);
+				return makeTPSConnection(frameDecoder, host, log);
 			case http:
-				return makeHTTPConnection(frameDecoder, host);
+				return makeHTTPConnection(frameDecoder, host, log);
 			case https:
 				return makeHTTPSConnection(frameDecoder, host);
 			default:
@@ -175,7 +175,7 @@ public class Connection<V extends Visitor>
 	 * A convenience method that creates a plain {@link Connection} connected to
 	 * a server specified by a host name.
 	 * 
-	 * @see #makeConnection(FrameDecoder, URI)
+	 * @see #makeConnection(FrameDecoder, URI, boolean)
 	 * @return the {@link Connection} instance conected to a server described by
 	 *         the connection URI
 	 * @throws UnknownHostException
@@ -184,17 +184,17 @@ public class Connection<V extends Visitor>
 	 *             on a I/O error
 	 */
 	public static <V extends Visitor> Connection<V>
-		makeTPConnection(FrameDecoder<V> frameDecoder, String host)
+		makeTPConnection(FrameDecoder<V> frameDecoder, String host, boolean log)
 		throws UnknownHostException, IOException
 	{
-		return makeTPConnection(frameDecoder, host, Method.tp.defaultPort);
+		return makeTPConnection(frameDecoder, host, Method.tp.defaultPort, log);
 	}
 
 	/**
 	 * A convenience method that creates a plain {@link Connection} connected to
 	 * a server specified by a host name and non-default port.
 	 * 
-	 * @see #makeConnection(FrameDecoder, URI)
+	 * @see #makeConnection(FrameDecoder, URI, boolean)
 	 * @return the {@link Connection} instance conected to a server described by
 	 *         the connection URI
 	 * @throws UnknownHostException
@@ -203,17 +203,17 @@ public class Connection<V extends Visitor>
 	 *             on a I/O error
 	 */
 	public static <V extends Visitor> Connection<V>
-		makeTPConnection(FrameDecoder<V> frameDecoder, String host, int port)
+		makeTPConnection(FrameDecoder<V> frameDecoder, String host, int port, boolean log)
 		throws UnknownHostException, IOException
 	{
-		return new Connection<V>(frameDecoder, new Socket(host, port));
+		return new Connection<V>(frameDecoder, new Socket(host, port), log);
 	}
 
 	/**
 	 * A convenience method that creates a secure (by SSL/TLS)
 	 * {@link Connection} connected to a server specified by a host name.
 	 * 
-	 * @see #makeConnection(FrameDecoder, URI)
+	 * @see #makeConnection(FrameDecoder, URI, boolean)
 	 * @return the {@link Connection} instance conected to a server described by
 	 *         the connection URI
 	 * @throws UnknownHostException
@@ -222,10 +222,10 @@ public class Connection<V extends Visitor>
 	 *             on a I/O error
 	 */
 	public static <V extends Visitor> Connection<V>
-		makeTPSConnection(FrameDecoder<V> frameDecoder, String host)
+		makeTPSConnection(FrameDecoder<V> frameDecoder, String host, boolean log)
 		throws UnknownHostException, IOException
 	{
-		return makeTPSConnection(frameDecoder, host, Method.tps.defaultPort);
+		return makeTPSConnection(frameDecoder, host, Method.tps.defaultPort, log);
 	}
 
 	/**
@@ -233,7 +233,7 @@ public class Connection<V extends Visitor>
 	 * {@link Connection} connected to a server specified by a host name and
 	 * non-default port.
 	 * 
-	 * @see #makeConnection(FrameDecoder, URI)
+	 * @see #makeConnection(FrameDecoder, URI, boolean)
 	 * @return the {@link Connection} instance conected to a server described by
 	 *         the connection URI
 	 * @throws UnknownHostException
@@ -242,17 +242,17 @@ public class Connection<V extends Visitor>
 	 *             on a I/O error
 	 */
 	public static <V extends Visitor> Connection<V>
-		makeTPSConnection(FrameDecoder<V> frameDecoder, String host, int port)
+		makeTPSConnection(FrameDecoder<V> frameDecoder, String host, int port, boolean log)
 		throws UnknownHostException, IOException
 	{
-		return new Connection<V>(frameDecoder, SSLSocketFactory.getDefault().createSocket(host, port));
+		return new Connection<V>(frameDecoder, SSLSocketFactory.getDefault().createSocket(host, port), log);
 	}
 
 	/**
 	 * A convenience method that creates a plain {@link Connection} via HTTP
 	 * tunnel connected to a server specified by a host name.
 	 * 
-	 * @see #makeConnection(FrameDecoder, URI)
+	 * @see #makeConnection(FrameDecoder, URI, boolean)
 	 * @return the {@link Connection} instance conected to a server described by
 	 *         the connection URI
 	 * @throws UnknownHostException
@@ -261,10 +261,10 @@ public class Connection<V extends Visitor>
 	 *             on a I/O error
 	 */
 	public static <V extends Visitor> Connection<V>
-		makeHTTPConnection(FrameDecoder<V> frameDecoder, String host)
+		makeHTTPConnection(FrameDecoder<V> frameDecoder, String host, boolean log)
 		throws UnknownHostException, IOException
 	{
-		return makeHTTPConnection(frameDecoder, host, Method.http.defaultPort);
+		return makeHTTPConnection(frameDecoder, host, Method.http.defaultPort, log);
 	}
 
 	/**
@@ -272,7 +272,7 @@ public class Connection<V extends Visitor>
 	 * tunnel connected to a server specified by a host name and non-default
 	 * port.
 	 * 
-	 * @see #makeConnection(FrameDecoder, URI)
+	 * @see #makeConnection(FrameDecoder, URI, boolean)
 	 * @return the {@link Connection} instance conected to a server described by
 	 *         the connection URI
 	 * @throws UnknownHostException
@@ -282,7 +282,7 @@ public class Connection<V extends Visitor>
 	 */
 	@SuppressWarnings("unused")
 	public static <V extends Visitor> Connection<V>
-		makeHTTPConnection(FrameDecoder<V> frameDecoder, String host, int port)
+		makeHTTPConnection(FrameDecoder<V> frameDecoder, String host, int port, boolean log)
 		throws UnknownHostException, IOException
 	{
 //		return null;
@@ -294,7 +294,7 @@ public class Connection<V extends Visitor>
 	 * {@link Connection} via HTTPS tunnel connected to a server specified by a
 	 * host name.
 	 * 
-	 * @see #makeConnection(FrameDecoder, URI)
+	 * @see #makeConnection(FrameDecoder, URI, boolean)
 	 * @return the {@link Connection} instance conected to a server described by
 	 *         the connection URI
 	 * @throws UnknownHostException
@@ -314,7 +314,7 @@ public class Connection<V extends Visitor>
 	 * {@link Connection} via HTTPS tunnel connected to a server specified by a
 	 * host name and non-default port.
 	 * 
-	 * @see #makeConnection(FrameDecoder, URI)
+	 * @see #makeConnection(FrameDecoder, URI, boolean)
 	 * @return the {@link Connection} instance conected to a server described by
 	 *         the connection URI
 	 * @throws UnknownHostException
@@ -339,6 +339,7 @@ public class Connection<V extends Visitor>
 	private final TPInputStream tpin;
 	private final OutputStream out;
 	private final TPOutputStream tpout;
+	private final boolean log;
 	private int seq=0;
 
 	/**
@@ -354,7 +355,7 @@ public class Connection<V extends Visitor>
 	 * @throws IOException
 	 *             on any I/O error during connection setup
 	 */
-	public Connection(FrameDecoder<V> frameDecoder, Socket socket) throws IOException
+	public Connection(FrameDecoder<V> frameDecoder, Socket socket, boolean log) throws IOException
 	{
 		this.frameDecoder=frameDecoder;
 		this.socket=socket;
@@ -363,6 +364,7 @@ public class Connection<V extends Visitor>
 		this.tpin=new TPInputStream(this.in);
 		this.out=socket.getOutputStream();
 		this.tpout=new TPOutputStream(this.out);
+		this.log=log;
 	}
 
 	private TPInputStream getInputStream()
@@ -413,6 +415,9 @@ public class Connection<V extends Visitor>
 	{
 		synchronized (lockSend)
 		{
+			//FIXME: add proper logging
+			if (log)
+				System.err.printf("%s: Sending frame %d (%s)%n", getClass().getName(), frame.getFrameType(), frame.toString());
 			TPOutputStream tpout=getOutputStream();
 			frame.write(tpout, this);
 			tpout.flush();
@@ -505,7 +510,16 @@ public class Connection<V extends Visitor>
 		synchronized (lockRecv)
 		{
 			Frame.Header h=Frame.Header.readHeader(getInputStream(), getCompatibility());
-			return h == null ? null : frameDecoder.decodeFrame(h.id, getInputStream(h.length));
+			if (h != null)
+			{
+				Frame<V> frame=frameDecoder.decodeFrame(h.id, getInputStream(h.length));
+				//FIXME: add proper logging
+				if (log)
+					System.err.printf("%s: Received frame %d (%s)%n", getClass().getName(), frame.getFrameType(), frame.toString());
+				return frame;
+			}
+			else
+				return null;
 		}
 	}
 
