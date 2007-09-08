@@ -96,6 +96,12 @@ public final class ObjectHierarchyIterator extends AbstractIterator<Pair<Integer
 			finished();
 			throw new RuntimeException(ex);
 		}
+		catch (RuntimeException ex)
+		{
+			//give up on error, instead of continuously trying again and again
+			finished();
+			throw ex;
+		}
 	}
 
 	/*

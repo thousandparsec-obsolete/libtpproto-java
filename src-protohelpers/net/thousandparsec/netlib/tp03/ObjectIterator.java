@@ -87,6 +87,12 @@ public class ObjectIterator extends AbstractIterator<Object>
 			finished();
 			throw new RuntimeException(ex);
 		}
+		catch (RuntimeException ex)
+		{
+			//give up on error, instead of continuously trying again and again
+			finished();
+			throw ex;
+		}
 	}
 
 	/*
