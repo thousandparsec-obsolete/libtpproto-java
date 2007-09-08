@@ -45,4 +45,14 @@ public class OrderInsert extends Order
 		super(id, in);
 	}
 
+	@Override
+	public String toString()
+	{
+		StringBuilder buf=new StringBuilder();
+		buf.append("{OrderInsert");
+		buf.append("; super:").append(super.toString());
+		buf.append("}");
+		return buf.toString();
+	}
+
 }

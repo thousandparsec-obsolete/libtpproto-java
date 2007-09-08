@@ -48,4 +48,14 @@ public class GetCategory extends GetWithID
 		super(id, in);
 	}
 
+	@Override
+	public String toString()
+	{
+		StringBuilder buf=new StringBuilder();
+		buf.append("{GetCategory");
+		buf.append("; super:").append(super.toString());
+		buf.append("}");
+		return buf.toString();
+	}
+
 }

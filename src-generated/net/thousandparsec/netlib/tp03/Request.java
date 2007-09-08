@@ -37,4 +37,13 @@ public abstract class Request extends Frame<TP03Visitor>
 		super(id, in);
 	}
 
+	@Override
+	public String toString()
+	{
+		StringBuilder buf=new StringBuilder();
+		buf.append("{Request");
+		buf.append("}");
+		return buf.toString();
+	}
+
 }

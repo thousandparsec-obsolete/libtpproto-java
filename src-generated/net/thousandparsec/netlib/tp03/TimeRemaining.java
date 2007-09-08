@@ -66,4 +66,16 @@ public class TimeRemaining extends Response
 		this.time=in.readInteger32();
 	}
 
+	@Override
+	public String toString()
+	{
+		StringBuilder buf=new StringBuilder();
+		buf.append("{TimeRemaining");
+		buf.append("; time: ");
+		buf.append(String.valueOf(this.time));
+		buf.append("; super:").append(super.toString());
+		buf.append("}");
+		return buf.toString();
+	}
+
 }

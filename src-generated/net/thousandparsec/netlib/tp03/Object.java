@@ -174,6 +174,21 @@ public class Object extends Response
 			this.z=in.readInteger64();
 		}
 
+		@Override
+		public String toString()
+		{
+			StringBuilder buf=new StringBuilder();
+			buf.append("{PosType");
+			buf.append("; x: ");
+			buf.append(String.valueOf(this.x));
+			buf.append("; y: ");
+			buf.append(String.valueOf(this.y));
+			buf.append("; z: ");
+			buf.append(String.valueOf(this.z));
+			buf.append("}");
+			return buf.toString();
+		}
+
 	}
 
 	private PosType pos=new PosType();
@@ -280,6 +295,21 @@ public class Object extends Response
 			this.z=in.readInteger64();
 		}
 
+		@Override
+		public String toString()
+		{
+			StringBuilder buf=new StringBuilder();
+			buf.append("{VelType");
+			buf.append("; x: ");
+			buf.append(String.valueOf(this.x));
+			buf.append("; y: ");
+			buf.append(String.valueOf(this.y));
+			buf.append("; z: ");
+			buf.append(String.valueOf(this.z));
+			buf.append("}");
+			return buf.toString();
+		}
+
 	}
 
 	private VelType vel=new VelType();
@@ -356,6 +386,17 @@ public class Object extends Response
 		ContainsType(TPDataInput in) throws IOException
 		{
 			this.ID=in.readInteger32();
+		}
+
+		@Override
+		public String toString()
+		{
+			StringBuilder buf=new StringBuilder();
+			buf.append("{ContainsType");
+			buf.append("; ID: ");
+			buf.append(String.valueOf(this.ID));
+			buf.append("}");
+			return buf.toString();
 		}
 
 	}
@@ -436,6 +477,17 @@ public class Object extends Response
 		OrdertypesType(TPDataInput in) throws IOException
 		{
 			this.ID=in.readInteger32();
+		}
+
+		@Override
+		public String toString()
+		{
+			StringBuilder buf=new StringBuilder();
+			buf.append("{OrdertypesType");
+			buf.append("; ID: ");
+			buf.append(String.valueOf(this.ID));
+			buf.append("}");
+			return buf.toString();
 		}
 
 	}
@@ -584,6 +636,40 @@ public class Object extends Response
 		this.modtime=in.readInteger64();
 		in.readCharacter(this.padding);
 		this.object=GameObject.createGameObject(this.otype, in);
+	}
+
+	@Override
+	public String toString()
+	{
+		StringBuilder buf=new StringBuilder();
+		buf.append("{Object");
+		buf.append("; id: ");
+		buf.append(String.valueOf(this.id));
+		buf.append("; otype: ");
+		buf.append(String.valueOf(this.otype));
+		buf.append("; name: ");
+		buf.append(String.valueOf(this.name));
+		buf.append("; size: ");
+		buf.append(String.valueOf(this.size));
+		buf.append("; pos: ");
+		buf.append(String.valueOf(this.pos));
+		buf.append("; vel: ");
+		buf.append(String.valueOf(this.vel));
+		buf.append("; contains: ");
+		buf.append(String.valueOf(this.contains));
+		buf.append("; ordertypes: ");
+		buf.append(String.valueOf(this.ordertypes));
+		buf.append("; orders: ");
+		buf.append(String.valueOf(this.orders));
+		buf.append("; modtime: ");
+		buf.append(String.valueOf(this.modtime));
+		buf.append("; padding: ");
+		buf.append(java.util.Arrays.toString(this.padding));
+		buf.append("; object: ");
+		buf.append(String.valueOf(this.object));
+		buf.append("; super:").append(super.toString());
+		buf.append("}");
+		return buf.toString();
 	}
 
 }

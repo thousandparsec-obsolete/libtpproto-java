@@ -112,6 +112,17 @@ public class Message extends Response
 			this.msgtype=in.readInteger32();
 		}
 
+		@Override
+		public String toString()
+		{
+			StringBuilder buf=new StringBuilder();
+			buf.append("{MsgtypelistType");
+			buf.append("; msgtype: ");
+			buf.append(String.valueOf(this.msgtype));
+			buf.append("}");
+			return buf.toString();
+		}
+
 	}
 
 	private java.util.List<MsgtypelistType> msgtypelist=new java.util.ArrayList<MsgtypelistType>();
@@ -248,6 +259,19 @@ public class Message extends Response
 			this.id=in.readInteger32();
 		}
 
+		@Override
+		public String toString()
+		{
+			StringBuilder buf=new StringBuilder();
+			buf.append("{ReferencesType");
+			buf.append("; type: ");
+			buf.append(String.valueOf(this.type));
+			buf.append("; id: ");
+			buf.append(String.valueOf(this.id));
+			buf.append("}");
+			return buf.toString();
+		}
+
 	}
 
 	private java.util.List<ReferencesType> references=new java.util.ArrayList<ReferencesType>();
@@ -318,6 +342,30 @@ public class Message extends Response
 		this.references.clear();
 		for (int length=in.readInteger32(); length > 0; length--)
 			this.references.add(new ReferencesType(in));
+	}
+
+	@Override
+	public String toString()
+	{
+		StringBuilder buf=new StringBuilder();
+		buf.append("{Message");
+		buf.append("; id: ");
+		buf.append(String.valueOf(this.id));
+		buf.append("; slot: ");
+		buf.append(String.valueOf(this.slot));
+		buf.append("; msgtypelist: ");
+		buf.append(String.valueOf(this.msgtypelist));
+		buf.append("; subject: ");
+		buf.append(String.valueOf(this.subject));
+		buf.append("; body: ");
+		buf.append(String.valueOf(this.body));
+		buf.append("; turn: ");
+		buf.append(String.valueOf(this.turn));
+		buf.append("; references: ");
+		buf.append(String.valueOf(this.references));
+		buf.append("; super:").append(super.toString());
+		buf.append("}");
+		return buf.toString();
 	}
 
 }

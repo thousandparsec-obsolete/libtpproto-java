@@ -66,4 +66,16 @@ public class GetObjectIDsByContainer extends Request
 		this.id=in.readInteger32();
 	}
 
+	@Override
+	public String toString()
+	{
+		StringBuilder buf=new StringBuilder();
+		buf.append("{GetObjectIDsByContainer");
+		buf.append("; id: ");
+		buf.append(String.valueOf(this.id));
+		buf.append("; super:").append(super.toString());
+		buf.append("}");
+		return buf.toString();
+	}
+
 }

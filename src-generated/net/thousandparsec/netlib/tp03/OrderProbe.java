@@ -48,4 +48,14 @@ public class OrderProbe extends Order
 		super(id, in);
 	}
 
+	@Override
+	public String toString()
+	{
+		StringBuilder buf=new StringBuilder();
+		buf.append("{OrderProbe");
+		buf.append("; super:").append(super.toString());
+		buf.append("}");
+		return buf.toString();
+	}
+
 }

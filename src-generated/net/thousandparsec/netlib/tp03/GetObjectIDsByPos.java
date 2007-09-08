@@ -116,6 +116,21 @@ public class GetObjectIDsByPos extends Request
 			this.z=in.readInteger64();
 		}
 
+		@Override
+		public String toString()
+		{
+			StringBuilder buf=new StringBuilder();
+			buf.append("{PosType");
+			buf.append("; x: ");
+			buf.append(String.valueOf(this.x));
+			buf.append("; y: ");
+			buf.append(String.valueOf(this.y));
+			buf.append("; z: ");
+			buf.append(String.valueOf(this.z));
+			buf.append("}");
+			return buf.toString();
+		}
+
 	}
 
 	private PosType pos=new PosType();
@@ -176,6 +191,20 @@ public class GetObjectIDsByPos extends Request
 		super(id, in);
 		this.pos=new PosType(in);
 		this.r=in.readInteger64();
+	}
+
+	@Override
+	public String toString()
+	{
+		StringBuilder buf=new StringBuilder();
+		buf.append("{GetObjectIDsByPos");
+		buf.append("; pos: ");
+		buf.append(String.valueOf(this.pos));
+		buf.append("; r: ");
+		buf.append(String.valueOf(this.r));
+		buf.append("; super:").append(super.toString());
+		buf.append("}");
+		return buf.toString();
 	}
 
 }

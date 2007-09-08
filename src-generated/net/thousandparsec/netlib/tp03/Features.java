@@ -181,6 +181,17 @@ public class Features extends Response
 			}
 		}
 
+		@Override
+		public String toString()
+		{
+			StringBuilder buf=new StringBuilder();
+			buf.append("{FeaturesType");
+			buf.append("; feature: ");
+			buf.append(String.valueOf(this.feature));
+			buf.append("}");
+			return buf.toString();
+		}
+
 	}
 
 	private java.util.List<FeaturesType> features=new java.util.ArrayList<FeaturesType>();
@@ -229,6 +240,18 @@ public class Features extends Response
 		this.features.clear();
 		for (int length=in.readInteger32(); length > 0; length--)
 			this.features.add(new FeaturesType(in));
+	}
+
+	@Override
+	public String toString()
+	{
+		StringBuilder buf=new StringBuilder();
+		buf.append("{Features");
+		buf.append("; features: ");
+		buf.append(String.valueOf(this.features));
+		buf.append("; super:").append(super.toString());
+		buf.append("}");
+		return buf.toString();
 	}
 
 }

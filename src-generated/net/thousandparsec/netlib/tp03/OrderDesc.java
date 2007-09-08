@@ -163,6 +163,21 @@ public class OrderDesc extends Response
 			this.description=in.readString();
 		}
 
+		@Override
+		public String toString()
+		{
+			StringBuilder buf=new StringBuilder();
+			buf.append("{ParametersType");
+			buf.append("; name: ");
+			buf.append(String.valueOf(this.name));
+			buf.append("; type: ");
+			buf.append(String.valueOf(this.type));
+			buf.append("; description: ");
+			buf.append(String.valueOf(this.description));
+			buf.append("}");
+			return buf.toString();
+		}
+
 	}
 
 	private java.util.List<ParametersType> parameters=new java.util.ArrayList<ParametersType>();
@@ -238,6 +253,26 @@ public class OrderDesc extends Response
 		for (int length=in.readInteger32(); length > 0; length--)
 			this.parameters.add(new ParametersType(in));
 		this.modtime=in.readInteger64();
+	}
+
+	@Override
+	public String toString()
+	{
+		StringBuilder buf=new StringBuilder();
+		buf.append("{OrderDesc");
+		buf.append("; id: ");
+		buf.append(String.valueOf(this.id));
+		buf.append("; name: ");
+		buf.append(String.valueOf(this.name));
+		buf.append("; description: ");
+		buf.append(String.valueOf(this.description));
+		buf.append("; parameters: ");
+		buf.append(String.valueOf(this.parameters));
+		buf.append("; modtime: ");
+		buf.append(String.valueOf(this.modtime));
+		buf.append("; super:").append(super.toString());
+		buf.append("}");
+		return buf.toString();
 	}
 
 }

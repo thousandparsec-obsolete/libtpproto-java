@@ -48,4 +48,14 @@ public class GetOrder extends GetWithIDSlot
 		super(id, in);
 	}
 
+	@Override
+	public String toString()
+	{
+		StringBuilder buf=new StringBuilder();
+		buf.append("{GetOrder");
+		buf.append("; super:").append(super.toString());
+		buf.append("}");
+		return buf.toString();
+	}
+
 }

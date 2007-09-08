@@ -141,6 +141,10 @@ public class JavaOutputGenerator implements OutputGenerator
 
 			printInputConstructor(0, packetName, properties, true);
 
+			printToStringMethod(0, packetName, properties, true);
+
+			//TODO: printEqualsMethod();
+
 			out.println("}");
 		}
 		finally
@@ -359,6 +363,39 @@ public class JavaOutputGenerator implements OutputGenerator
 					break;
 			}
 		}
+		out.printf("%s	}%n", indent);
+		out.println();
+
+		checkError(out);
+	}
+
+	private void printToStringMethod(int level, String typeName, List<Property> properties, boolean overrides) throws IOException
+	{
+		Indent indent=new Indent(level);
+
+		out.printf("%s	@Override%n", indent);
+		out.printf("%s	public String toString()%n", indent);
+		out.printf("%s	{%n", indent);
+		out.printf("%s		StringBuilder buf=new StringBuilder();%n", indent);
+		out.printf("%s		buf.append(\"{%s\");%n", indent, typeName);
+		for (Property p : properties)
+		{
+			out.printf("%s		buf.append(\"; %s: \");%n", indent, p.name);
+			switch (p.type)
+			{
+				case character:
+					out.printf("%s		buf.append(java.util.Arrays.toString(this.%s));%n", indent, p.name);
+					break;
+
+				default:
+					out.printf("%s		buf.append(String.valueOf(this.%s));%n", indent, p.name);
+					break;
+			}
+		}
+		if (overrides && basePacket != null)
+			out.printf("%s		buf.append(\"; super:\").append(super.toString());%n", indent);
+		out.printf("%s		buf.append(\"}\");%n", indent);
+		out.printf("%s		return buf.toString();%n", indent);
 		out.printf("%s	}%n", indent);
 		out.println();
 
@@ -771,6 +808,8 @@ public class JavaOutputGenerator implements OutputGenerator
 		printConvenienceConstructor(level, name, properties);
 
 		printInputConstructor(level, name, properties, false);
+
+		printToStringMethod(level, name, properties, false);
 
 		out.printf("%s}%n", indent);
 		out.println();

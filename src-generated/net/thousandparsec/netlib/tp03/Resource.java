@@ -186,4 +186,32 @@ public class Resource extends Response
 		this.modtime=in.readInteger64();
 	}
 
+	@Override
+	public String toString()
+	{
+		StringBuilder buf=new StringBuilder();
+		buf.append("{Resource");
+		buf.append("; id: ");
+		buf.append(String.valueOf(this.id));
+		buf.append("; singularname: ");
+		buf.append(String.valueOf(this.singularname));
+		buf.append("; pluralname: ");
+		buf.append(String.valueOf(this.pluralname));
+		buf.append("; singularunitname: ");
+		buf.append(String.valueOf(this.singularunitname));
+		buf.append("; pluralunitname: ");
+		buf.append(String.valueOf(this.pluralunitname));
+		buf.append("; description: ");
+		buf.append(String.valueOf(this.description));
+		buf.append("; weight: ");
+		buf.append(String.valueOf(this.weight));
+		buf.append("; size: ");
+		buf.append(String.valueOf(this.size));
+		buf.append("; modtime: ");
+		buf.append(String.valueOf(this.modtime));
+		buf.append("; super:").append(super.toString());
+		buf.append("}");
+		return buf.toString();
+	}
+
 }

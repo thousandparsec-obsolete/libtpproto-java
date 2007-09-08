@@ -37,4 +37,13 @@ public abstract class Response extends Frame<TP03Visitor>
 		super(id, in);
 	}
 
+	@Override
+	public String toString()
+	{
+		StringBuilder buf=new StringBuilder();
+		buf.append("{Response");
+		buf.append("}");
+		return buf.toString();
+	}
+
 }

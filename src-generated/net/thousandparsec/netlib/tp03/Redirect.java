@@ -65,4 +65,16 @@ public class Redirect extends Response
 		this.URI=in.readString();
 	}
 
+	@Override
+	public String toString()
+	{
+		StringBuilder buf=new StringBuilder();
+		buf.append("{Redirect");
+		buf.append("; URI: ");
+		buf.append(String.valueOf(this.URI));
+		buf.append("; super:").append(super.toString());
+		buf.append("}");
+		return buf.toString();
+	}
+
 }

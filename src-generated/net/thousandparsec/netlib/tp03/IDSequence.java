@@ -128,6 +128,19 @@ public abstract class IDSequence extends Response
 			this.modtime=in.readInteger64();
 		}
 
+		@Override
+		public String toString()
+		{
+			StringBuilder buf=new StringBuilder();
+			buf.append("{ModtimesType");
+			buf.append("; ID: ");
+			buf.append(String.valueOf(this.ID));
+			buf.append("; modtime: ");
+			buf.append(String.valueOf(this.modtime));
+			buf.append("}");
+			return buf.toString();
+		}
+
 	}
 
 	private java.util.List<ModtimesType> modtimes=new java.util.ArrayList<ModtimesType>();
@@ -182,6 +195,22 @@ public abstract class IDSequence extends Response
 		this.modtimes.clear();
 		for (int length=in.readInteger32(); length > 0; length--)
 			this.modtimes.add(new ModtimesType(in));
+	}
+
+	@Override
+	public String toString()
+	{
+		StringBuilder buf=new StringBuilder();
+		buf.append("{IDSequence");
+		buf.append("; key: ");
+		buf.append(String.valueOf(this.key));
+		buf.append("; remaining: ");
+		buf.append(String.valueOf(this.remaining));
+		buf.append("; modtimes: ");
+		buf.append(String.valueOf(this.modtimes));
+		buf.append("; super:").append(super.toString());
+		buf.append("}");
+		return buf.toString();
 	}
 
 }

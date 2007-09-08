@@ -99,4 +99,20 @@ public class Player extends Response
 		this.race=in.readString();
 	}
 
+	@Override
+	public String toString()
+	{
+		StringBuilder buf=new StringBuilder();
+		buf.append("{Player");
+		buf.append("; id: ");
+		buf.append(String.valueOf(this.id));
+		buf.append("; name: ");
+		buf.append(String.valueOf(this.name));
+		buf.append("; race: ");
+		buf.append(String.valueOf(this.race));
+		buf.append("; super:").append(super.toString());
+		buf.append("}");
+		return buf.toString();
+	}
+
 }

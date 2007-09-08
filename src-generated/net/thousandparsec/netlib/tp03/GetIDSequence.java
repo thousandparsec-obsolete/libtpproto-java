@@ -95,4 +95,20 @@ public abstract class GetIDSequence extends Request
 		this.amount=in.readInteger32();
 	}
 
+	@Override
+	public String toString()
+	{
+		StringBuilder buf=new StringBuilder();
+		buf.append("{GetIDSequence");
+		buf.append("; key: ");
+		buf.append(String.valueOf(this.key));
+		buf.append("; start: ");
+		buf.append(String.valueOf(this.start));
+		buf.append("; amount: ");
+		buf.append(String.valueOf(this.amount));
+		buf.append("; super:").append(super.toString());
+		buf.append("}");
+		return buf.toString();
+	}
+
 }

@@ -107,6 +107,17 @@ public class Component extends Response
 			this.category=in.readInteger32();
 		}
 
+		@Override
+		public String toString()
+		{
+			StringBuilder buf=new StringBuilder();
+			buf.append("{CategoriesType");
+			buf.append("; category: ");
+			buf.append(String.valueOf(this.category));
+			buf.append("}");
+			return buf.toString();
+		}
+
 	}
 
 	private java.util.List<CategoriesType> categories=new java.util.ArrayList<CategoriesType>();
@@ -240,6 +251,19 @@ public class Component extends Response
 			this.valuefunc=in.readString();
 		}
 
+		@Override
+		public String toString()
+		{
+			StringBuilder buf=new StringBuilder();
+			buf.append("{PropertiesType");
+			buf.append("; id: ");
+			buf.append(String.valueOf(this.id));
+			buf.append("; valuefunc: ");
+			buf.append(String.valueOf(this.valuefunc));
+			buf.append("}");
+			return buf.toString();
+		}
+
 	}
 
 	private java.util.List<PropertiesType> properties=new java.util.ArrayList<PropertiesType>();
@@ -310,6 +334,30 @@ public class Component extends Response
 		this.properties.clear();
 		for (int length=in.readInteger32(); length > 0; length--)
 			this.properties.add(new PropertiesType(in));
+	}
+
+	@Override
+	public String toString()
+	{
+		StringBuilder buf=new StringBuilder();
+		buf.append("{Component");
+		buf.append("; id: ");
+		buf.append(String.valueOf(this.id));
+		buf.append("; modtime: ");
+		buf.append(String.valueOf(this.modtime));
+		buf.append("; categories: ");
+		buf.append(String.valueOf(this.categories));
+		buf.append("; name: ");
+		buf.append(String.valueOf(this.name));
+		buf.append("; description: ");
+		buf.append(String.valueOf(this.description));
+		buf.append("; requirements: ");
+		buf.append(String.valueOf(this.requirements));
+		buf.append("; properties: ");
+		buf.append(String.valueOf(this.properties));
+		buf.append("; super:").append(super.toString());
+		buf.append("}");
+		return buf.toString();
 	}
 
 }

@@ -120,4 +120,22 @@ public class CreateAccount extends Request
 		this.comment=in.readString();
 	}
 
+	@Override
+	public String toString()
+	{
+		StringBuilder buf=new StringBuilder();
+		buf.append("{CreateAccount");
+		buf.append("; username: ");
+		buf.append(String.valueOf(this.username));
+		buf.append("; password: ");
+		buf.append(String.valueOf(this.password));
+		buf.append("; email: ");
+		buf.append(String.valueOf(this.email));
+		buf.append("; comment: ");
+		buf.append(String.valueOf(this.comment));
+		buf.append("; super:").append(super.toString());
+		buf.append("}");
+		return buf.toString();
+	}
+
 }

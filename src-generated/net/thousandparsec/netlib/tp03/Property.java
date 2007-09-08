@@ -109,6 +109,17 @@ public class Property extends Response
 			this.category=in.readInteger32();
 		}
 
+		@Override
+		public String toString()
+		{
+			StringBuilder buf=new StringBuilder();
+			buf.append("{CategoriesType");
+			buf.append("; category: ");
+			buf.append(String.valueOf(this.category));
+			buf.append("}");
+			return buf.toString();
+		}
+
 	}
 
 	private java.util.List<CategoriesType> categories=new java.util.ArrayList<CategoriesType>();
@@ -262,6 +273,34 @@ public class Property extends Response
 		this.description=in.readString();
 		this.calculatefunc=in.readString();
 		this.requirementfunc=in.readString();
+	}
+
+	@Override
+	public String toString()
+	{
+		StringBuilder buf=new StringBuilder();
+		buf.append("{Property");
+		buf.append("; id: ");
+		buf.append(String.valueOf(this.id));
+		buf.append("; modtime: ");
+		buf.append(String.valueOf(this.modtime));
+		buf.append("; categories: ");
+		buf.append(String.valueOf(this.categories));
+		buf.append("; rank: ");
+		buf.append(String.valueOf(this.rank));
+		buf.append("; name: ");
+		buf.append(String.valueOf(this.name));
+		buf.append("; displayname: ");
+		buf.append(String.valueOf(this.displayname));
+		buf.append("; description: ");
+		buf.append(String.valueOf(this.description));
+		buf.append("; calculatefunc: ");
+		buf.append(String.valueOf(this.calculatefunc));
+		buf.append("; requirementfunc: ");
+		buf.append(String.valueOf(this.requirementfunc));
+		buf.append("; super:").append(super.toString());
+		buf.append("}");
+		return buf.toString();
 	}
 
 }

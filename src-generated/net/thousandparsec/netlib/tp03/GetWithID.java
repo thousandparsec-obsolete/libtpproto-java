@@ -75,6 +75,17 @@ public abstract class GetWithID extends Request
 			this.id=in.readInteger32();
 		}
 
+		@Override
+		public String toString()
+		{
+			StringBuilder buf=new StringBuilder();
+			buf.append("{IdsType");
+			buf.append("; id: ");
+			buf.append(String.valueOf(this.id));
+			buf.append("}");
+			return buf.toString();
+		}
+
 	}
 
 	private java.util.List<IdsType> ids=new java.util.ArrayList<IdsType>();
@@ -123,6 +134,18 @@ public abstract class GetWithID extends Request
 		this.ids.clear();
 		for (int length=in.readInteger32(); length > 0; length--)
 			this.ids.add(new IdsType(in));
+	}
+
+	@Override
+	public String toString()
+	{
+		StringBuilder buf=new StringBuilder();
+		buf.append("{GetWithID");
+		buf.append("; ids: ");
+		buf.append(String.valueOf(this.ids));
+		buf.append("; super:").append(super.toString());
+		buf.append("}");
+		return buf.toString();
 	}
 
 }

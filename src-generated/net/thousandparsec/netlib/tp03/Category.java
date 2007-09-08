@@ -111,4 +111,22 @@ public class Category extends Response
 		this.description=in.readString();
 	}
 
+	@Override
+	public String toString()
+	{
+		StringBuilder buf=new StringBuilder();
+		buf.append("{Category");
+		buf.append("; id: ");
+		buf.append(String.valueOf(this.id));
+		buf.append("; modtime: ");
+		buf.append(String.valueOf(this.modtime));
+		buf.append("; name: ");
+		buf.append(String.valueOf(this.name));
+		buf.append("; description: ");
+		buf.append(String.valueOf(this.description));
+		buf.append("; super:").append(super.toString());
+		buf.append("}");
+		return buf.toString();
+	}
+
 }

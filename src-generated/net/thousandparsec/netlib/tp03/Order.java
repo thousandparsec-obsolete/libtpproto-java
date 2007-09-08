@@ -156,6 +156,19 @@ public class Order extends Response
 			this.amount=in.readInteger32();
 		}
 
+		@Override
+		public String toString()
+		{
+			StringBuilder buf=new StringBuilder();
+			buf.append("{ResourcesType");
+			buf.append("; id: ");
+			buf.append(String.valueOf(this.id));
+			buf.append("; amount: ");
+			buf.append(String.valueOf(this.amount));
+			buf.append("}");
+			return buf.toString();
+		}
+
 	}
 
 	private java.util.List<ResourcesType> resources=new java.util.ArrayList<ResourcesType>();
@@ -216,6 +229,26 @@ public class Order extends Response
 		this.resources.clear();
 		for (int length=in.readInteger32(); length > 0; length--)
 			this.resources.add(new ResourcesType(in));
+	}
+
+	@Override
+	public String toString()
+	{
+		StringBuilder buf=new StringBuilder();
+		buf.append("{Order");
+		buf.append("; id: ");
+		buf.append(String.valueOf(this.id));
+		buf.append("; slot: ");
+		buf.append(String.valueOf(this.slot));
+		buf.append("; type: ");
+		buf.append(String.valueOf(this.type));
+		buf.append("; turns: ");
+		buf.append(String.valueOf(this.turns));
+		buf.append("; resources: ");
+		buf.append(String.valueOf(this.resources));
+		buf.append("; super:").append(super.toString());
+		buf.append("}");
+		return buf.toString();
 	}
 
 }

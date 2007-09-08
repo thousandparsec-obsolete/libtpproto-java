@@ -106,6 +106,17 @@ public class Design extends Response
 			this.category=in.readInteger32();
 		}
 
+		@Override
+		public String toString()
+		{
+			StringBuilder buf=new StringBuilder();
+			buf.append("{CategoriesType");
+			buf.append("; category: ");
+			buf.append(String.valueOf(this.category));
+			buf.append("}");
+			return buf.toString();
+		}
+
 	}
 
 	private java.util.List<CategoriesType> categories=new java.util.ArrayList<CategoriesType>();
@@ -245,6 +256,19 @@ public class Design extends Response
 			this.componentnum=in.readInteger32();
 		}
 
+		@Override
+		public String toString()
+		{
+			StringBuilder buf=new StringBuilder();
+			buf.append("{ComponentsType");
+			buf.append("; componentid: ");
+			buf.append(String.valueOf(this.componentid));
+			buf.append("; componentnum: ");
+			buf.append(String.valueOf(this.componentnum));
+			buf.append("}");
+			return buf.toString();
+		}
+
 	}
 
 	private java.util.List<ComponentsType> components=new java.util.ArrayList<ComponentsType>();
@@ -351,6 +375,19 @@ public class Design extends Response
 			this.value=in.readString();
 		}
 
+		@Override
+		public String toString()
+		{
+			StringBuilder buf=new StringBuilder();
+			buf.append("{PropertiesType");
+			buf.append("; id: ");
+			buf.append(String.valueOf(this.id));
+			buf.append("; value: ");
+			buf.append(String.valueOf(this.value));
+			buf.append("}");
+			return buf.toString();
+		}
+
 	}
 
 	private java.util.List<PropertiesType> properties=new java.util.ArrayList<PropertiesType>();
@@ -434,6 +471,36 @@ public class Design extends Response
 		this.properties.clear();
 		for (int length=in.readInteger32(); length > 0; length--)
 			this.properties.add(new PropertiesType(in));
+	}
+
+	@Override
+	public String toString()
+	{
+		StringBuilder buf=new StringBuilder();
+		buf.append("{Design");
+		buf.append("; id: ");
+		buf.append(String.valueOf(this.id));
+		buf.append("; modtime: ");
+		buf.append(String.valueOf(this.modtime));
+		buf.append("; categories: ");
+		buf.append(String.valueOf(this.categories));
+		buf.append("; name: ");
+		buf.append(String.valueOf(this.name));
+		buf.append("; description: ");
+		buf.append(String.valueOf(this.description));
+		buf.append("; usage: ");
+		buf.append(String.valueOf(this.usage));
+		buf.append("; owner: ");
+		buf.append(String.valueOf(this.owner));
+		buf.append("; components: ");
+		buf.append(String.valueOf(this.components));
+		buf.append("; feedback: ");
+		buf.append(String.valueOf(this.feedback));
+		buf.append("; properties: ");
+		buf.append(String.valueOf(this.properties));
+		buf.append("; super:").append(super.toString());
+		buf.append("}");
+		return buf.toString();
 	}
 
 }

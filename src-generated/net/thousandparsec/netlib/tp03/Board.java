@@ -135,4 +135,24 @@ public class Board extends Response
 		this.modtime=in.readInteger64();
 	}
 
+	@Override
+	public String toString()
+	{
+		StringBuilder buf=new StringBuilder();
+		buf.append("{Board");
+		buf.append("; id: ");
+		buf.append(String.valueOf(this.id));
+		buf.append("; name: ");
+		buf.append(String.valueOf(this.name));
+		buf.append("; description: ");
+		buf.append(String.valueOf(this.description));
+		buf.append("; messages: ");
+		buf.append(String.valueOf(this.messages));
+		buf.append("; modtime: ");
+		buf.append(String.valueOf(this.modtime));
+		buf.append("; super:").append(super.toString());
+		buf.append("}");
+		return buf.toString();
+	}
+
 }

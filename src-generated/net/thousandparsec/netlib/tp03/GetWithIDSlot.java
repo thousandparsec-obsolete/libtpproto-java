@@ -90,6 +90,17 @@ public abstract class GetWithIDSlot extends Request
 			this.slot=in.readInteger32();
 		}
 
+		@Override
+		public String toString()
+		{
+			StringBuilder buf=new StringBuilder();
+			buf.append("{SlotsType");
+			buf.append("; slot: ");
+			buf.append(String.valueOf(this.slot));
+			buf.append("}");
+			return buf.toString();
+		}
+
 	}
 
 	private java.util.List<SlotsType> slots=new java.util.ArrayList<SlotsType>();
@@ -141,6 +152,20 @@ public abstract class GetWithIDSlot extends Request
 		this.slots.clear();
 		for (int length=in.readInteger32(); length > 0; length--)
 			this.slots.add(new SlotsType(in));
+	}
+
+	@Override
+	public String toString()
+	{
+		StringBuilder buf=new StringBuilder();
+		buf.append("{GetWithIDSlot");
+		buf.append("; id: ");
+		buf.append(String.valueOf(this.id));
+		buf.append("; slots: ");
+		buf.append(String.valueOf(this.slots));
+		buf.append("; super:").append(super.toString());
+		buf.append("}");
+		return buf.toString();
 	}
 
 }

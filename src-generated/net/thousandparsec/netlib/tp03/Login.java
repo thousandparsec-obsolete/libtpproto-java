@@ -84,4 +84,18 @@ public class Login extends Request
 		this.password=in.readString();
 	}
 
+	@Override
+	public String toString()
+	{
+		StringBuilder buf=new StringBuilder();
+		buf.append("{Login");
+		buf.append("; username: ");
+		buf.append(String.valueOf(this.username));
+		buf.append("; password: ");
+		buf.append(String.valueOf(this.password));
+		buf.append("; super:").append(super.toString());
+		buf.append("}");
+		return buf.toString();
+	}
+
 }
