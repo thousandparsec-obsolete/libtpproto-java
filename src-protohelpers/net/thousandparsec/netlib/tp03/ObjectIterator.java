@@ -77,10 +77,14 @@ public class ObjectIterator extends AbstractIterator<Object>
 		}
 		catch (IOException ex)
 		{
+			//give up on error, instead of continuously trying again and again
+			finished();
 			throw new RuntimeException(ex);
 		}
 		catch (TPException ex)
 		{
+			//give up on error, instead of continuously trying again and again
+			finished();
 			throw new RuntimeException(ex);
 		}
 	}

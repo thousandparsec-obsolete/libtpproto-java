@@ -50,48 +50,52 @@ public final class ObjectHierarchyIterator extends AbstractIterator<Pair<Integer
 		this.rootIds=rootIds;
 	}
 
-	private void fetchIds()
+	private void fetchIds() throws IOException, TPException
 	{
-		try
-		{
-			GetObjectsByID getObjs=new GetObjectsByID();
-			for (Object.ContainsType id : rootIds)
-				getObjs.getIds().add(new IdsType(id.getID()));
+		GetObjectsByID getObjs=new GetObjectsByID();
+		for (Object.ContainsType id : rootIds)
+			getObjs.getIds().add(new IdsType(id.getID()));
 
-			Sequence result=conn.sendFrame(getObjs, Sequence.class);
-			this.count=result.getNumber();
-			this.objects=new ArrayList<Object>(count);
+		Sequence result=conn.sendFrame(getObjs, Sequence.class);
+		this.count=result.getNumber();
+		this.objects=new ArrayList<Object>(count);
 
-			for (int i=0; i < count; i++)
-				this.objects.add(conn.receiveFrame(Object.class));
-			objectsIter=objects.iterator();
-		}
-		catch (IOException ex)
-		{
-			throw new RuntimeException(ex);
-		}
-		catch (TPException ex)
-		{
-			throw new RuntimeException(ex);
-		}
+		for (int i=0; i < count; i++)
+			this.objects.add(conn.receiveFrame(Object.class));
+		objectsIter=objects.iterator();
 	}
 
 	@Override
 	protected Pair<Integer, Object> fetchNext()
 	{
-		if (count == -1)
-			fetchIds();
-		if (childIter != null && childIter.hasNext())
-			return childIter.next();
-		else if (objectsIter.hasNext())
+		try
 		{
-			Object object=objectsIter.next();
-			childIter=new ObjectHierarchyIterator(conn, depth + 1, object.getContains());
-			return Pair.make(depth, object);
-		}
+			if (count == -1)
+				fetchIds();
+			if (childIter != null && childIter.hasNext())
+				return childIter.next();
+			else if (objectsIter.hasNext())
+			{
+				Object object=objectsIter.next();
+				childIter=new ObjectHierarchyIterator(conn, depth + 1, object.getContains());
+				return Pair.make(depth, object);
+			}
 
-		finished();
-		return null;
+			finished();
+			return null;
+		}
+		catch (IOException ex)
+		{
+			//give up on error, instead of continuously trying again and again
+			finished();
+			throw new RuntimeException(ex);
+		}
+		catch (TPException ex)
+		{
+			//give up on error, instead of continuously trying again and again
+			finished();
+			throw new RuntimeException(ex);
+		}
 	}
 
 	/*
