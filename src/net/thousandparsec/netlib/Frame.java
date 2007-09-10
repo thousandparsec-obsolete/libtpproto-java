@@ -21,6 +21,7 @@ import java.util.Arrays;
 public abstract class Frame<V extends Visitor> extends TPObject<V> implements Visitable<V>
 {
 	private final int id;
+	private int seq;
 
 	protected Frame(int id)
 	{
@@ -40,7 +41,7 @@ public abstract class Frame<V extends Visitor> extends TPObject<V> implements Vi
 				//magic
 				out.writeCharacter(getStringBytes(String.format("TP%02d", conn.getCompatibility())));
 				//sequence
-				out.writeInteger(conn.getNextFrameSequence());
+				out.writeInteger(this.seq=conn.getNextFrameSequence());
 				//type
 				out.writeInteger(id);
 				//payload length
@@ -56,7 +57,7 @@ public abstract class Frame<V extends Visitor> extends TPObject<V> implements Vi
 				//frameversion
 				out.writeInteger((byte)0); //?
 				//sequence
-				out.writeInteger(conn.getNextFrameSequence());
+				out.writeInteger(this.seq=conn.getNextFrameSequence());
 				//type
 				out.writeInteger(id);
 				//payload length
@@ -85,6 +86,24 @@ public abstract class Frame<V extends Visitor> extends TPObject<V> implements Vi
 	public final int getFrameType()
 	{
 		return id;
+	}
+
+	void setSequenceNumber(int seq)
+	{
+		this.seq=seq;
+	}
+
+	/**
+	 * Returns this frame's sequence number; for an outgoing frame this is the
+	 * last sequence number assigned to it by the {@link Connection}; for an
+	 * incoming frame it is the sequence number as sent by the server, equal to
+	 * the sequence number of the frame to which it is a response to.
+	 * 
+	 * @return this frame's sequence number
+	 */
+	public final int getSequenceNumber()
+	{
+		return seq;
 	}
 
 	static class Header

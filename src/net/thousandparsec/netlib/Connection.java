@@ -591,13 +591,15 @@ public class Connection<V extends Visitor>
 				else
 				{
 					Frame<V> frame=frameDecoder.decodeFrame(h.id, getInputStream(h.length));
-					boolean async=h.seq == 0;
+					frame.setSequenceNumber(h.seq);
+
+					boolean async=frame.getSequenceNumber() == 0;
 					//FIXME: add proper logging
 					if (log)
 						if (async)
-							System.err.printf("%s: Received asynchronous frame %d (%s)%n", getClass().getName(), frame.getFrameType(), frame.toString());
+							System.err.printf("%s: Received asynchronous frame seq %d, type %d (%s)%n", getClass().getName(), frame.getSequenceNumber(), frame.getFrameType(), frame.toString());
 						else
-							System.err.printf("%s: Received frame %d (%s)%n", getClass().getName(), frame.getFrameType(), frame.toString());
+							System.err.printf("%s: Received frame seq %d, type %d (%s)%n", getClass().getName(), frame.getSequenceNumber(), frame.getFrameType(), frame.toString());
 					if (async)
 						frame.visit(asyncVisitor);
 					else
