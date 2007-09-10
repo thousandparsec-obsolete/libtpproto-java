@@ -47,10 +47,6 @@ public class TestConnect extends TP03Visitor
 		{
 			conn.sendFrame(new Ping());
 
-			System.out.println("Sleep!");
-			Thread.sleep(100000);
-			System.out.println("Slept!");
-
 			GetObjectsByID getObj=new GetObjectsByID();
 			getObj.getIds().add(new IdsType(Universe.OBJECT_ID));
 			conn.sendFrame(getObj);
