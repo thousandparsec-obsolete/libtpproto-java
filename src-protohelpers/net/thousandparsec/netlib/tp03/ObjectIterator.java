@@ -54,7 +54,7 @@ public class ObjectIterator extends AbstractIterator<Object>
 		assert result.getNumber() == count;
 
 		for (int i=0; i < count; i++)
-			next.add(conn.receiveFrame(Object.class, getObj.getSequenceNumber()));
+			next.add(conn.receiveFrame(Object.class));
 
 		nextIter=next.iterator();
 		return true;
@@ -98,7 +98,12 @@ public class ObjectIterator extends AbstractIterator<Object>
 	/*
 	public static void main(String... args) throws UnknownHostException, IOException, TPException, URISyntaxException
 	{
-		Connection<TP03Visitor> conn=new TP03Decoder().makeConnection(new URI("tp://guest:guest@demo1.thousandparsec.net/tp"), true);
+		SequentialConnection<TP03Visitor> conn=new SimpleSequentialConnection<TP03Visitor>(
+			new TP03Decoder().makeConnection(
+				new URI("tp://guest:guest@demo1.thousandparsec.net/tp"),
+				true,
+				new TP03Visitor(true),
+				true));
 		try
 		{
 			for (Iterator<Object> oit=new ObjectIterator(conn, DEFAULT_CHUNK_SIZE); oit.hasNext(); )

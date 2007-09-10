@@ -91,7 +91,12 @@ public class SimpleObjectIterator extends AbstractIterator<ModtimesType>
 	/*
 	public static void main(String... args) throws UnknownHostException, IOException, TPException, URISyntaxException
 	{
-		Connection<TP03Visitor> conn=new TP03Decoder().makeConnection(new URI("tp://guest:guest@demo1.thousandparsec.net/tp"), true);
+		SequentialConnection<TP03Visitor> conn=new SimpleSequentialConnection<TP03Visitor>(
+			new TP03Decoder().makeConnection(
+				new URI("tp://guest:guest@demo1.thousandparsec.net/tp"),
+				true,
+				new TP03Visitor(true),
+				true));
 		try
 		{
 			for (Iterator<ModtimesType> oit=new SimpleObjectIterator(conn, DEFAULT_CHUNK_SIZE); oit.hasNext(); )

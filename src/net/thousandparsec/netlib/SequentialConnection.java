@@ -39,9 +39,6 @@ public interface SequentialConnection<V extends Visitor>
 	 * @return next {@link Frame} of {@literal null} on end of stream
 	 * @param expectedClass
 	 *            the {@link Class} of the expected response frame
-	 * @param expectedSequence
-	 *            the received frame's expected sequence number; may be 0 to
-	 *            ignore sequence number
 	 * @throws EOFException
 	 *             if the connection is closed in the middle of frame
 	 * @throws IOException
@@ -50,18 +47,17 @@ public interface SequentialConnection<V extends Visitor>
 	 *             if an unexpected frame type is received or on other TP
 	 *             protocol error
 	 */
-	<F extends Frame<V>> F receiveFrame(Class<F> expectedClass, int expectedSequence)
-		throws EOFException, IOException, TPException;
+	<F extends Frame<V>> F receiveFrame(Class<F> expectedClass) throws EOFException, IOException, TPException;
 
 	/**
 	 * Synchronously sends a {@link Frame} to the server via this connection and
 	 * returns a response if it is of a specified, expected type. This is a
 	 * simple composition of {@link Connection#sendFrame(Frame)} and
-	 * {@link #receiveFrame(Class, int)}, inheriting exceptional conditions and
+	 * {@link #receiveFrame(Class)}, inheriting exceptional conditions and
 	 * return values of the latter. Also, see comments in
 	 * {@link #sendFrame(Frame, Visitor)}.
 	 * 
-	 * @see #receiveFrame(Class, int)
+	 * @see #receiveFrame(Class)
 	 * @param frame
 	 *            the {@link Frame} to send
 	 * @param responseClass

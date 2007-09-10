@@ -61,7 +61,7 @@ public final class ObjectHierarchyIterator extends AbstractIterator<Pair<Integer
 		this.objects=new ArrayList<Object>(count);
 
 		for (int i=0; i < count; i++)
-			this.objects.add(conn.receiveFrame(Object.class, getObjs.getSequenceNumber()));
+			this.objects.add(conn.receiveFrame(Object.class));
 		objectsIter=objects.iterator();
 	}
 
@@ -107,7 +107,12 @@ public final class ObjectHierarchyIterator extends AbstractIterator<Pair<Integer
 	/*
 	public static void main(String... args) throws UnknownHostException, IOException, TPException, URISyntaxException
 	{
-		Connection<TP03Visitor> conn=new TP03Decoder().makeConnection(new URI("tp://guest:guest@demo1.thousandparsec.net/tp"), true);
+		SequentialConnection<TP03Visitor> conn=new SimpleSequentialConnection<TP03Visitor>(
+			new TP03Decoder().makeConnection(
+				new URI("tp://guest:guest@demo1.thousandparsec.net/tp"),
+				true,
+				new TP03Visitor(true),
+				true));
 		try
 		{
 			TP03Visitor v=new TP03Visitor()
