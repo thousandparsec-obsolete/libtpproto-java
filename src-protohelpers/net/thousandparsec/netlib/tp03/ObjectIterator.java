@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import net.thousandparsec.netlib.Connection;
+import net.thousandparsec.netlib.SequentialConnection;
 import net.thousandparsec.netlib.TPException;
 import net.thousandparsec.netlib.tp03.GetWithID.IdsType;
 import net.thousandparsec.util.AbstractIterator;
@@ -21,7 +22,7 @@ public class ObjectIterator extends AbstractIterator<Object>
 {
 	public static final int DEFAULT_CHUNK_SIZE=100;
 
-	private final Connection<TP03Visitor> conn;
+	private final SequentialConnection<TP03Visitor> conn;
 	private final int chunkSize;
 	private final SimpleObjectIterator objIds;
 	private List<Object> next=new LinkedList<Object>();
@@ -34,7 +35,7 @@ public class ObjectIterator extends AbstractIterator<Object>
 
 	public ObjectIterator(Connection<TP03Visitor> conn, int chunkSize)
 	{
-		this.conn=conn;
+		this.conn=new SequentialConnection<TP03Visitor>(conn);
 		this.chunkSize=chunkSize;
 		this.objIds=new SimpleObjectIterator(conn, chunkSize);
 	}

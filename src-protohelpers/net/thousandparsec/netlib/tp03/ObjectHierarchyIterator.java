@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.thousandparsec.netlib.Connection;
+import net.thousandparsec.netlib.SequentialConnection;
 import net.thousandparsec.netlib.TPException;
 import net.thousandparsec.netlib.objects.Universe;
 import net.thousandparsec.netlib.tp03.GetWithID.IdsType;
@@ -25,7 +26,7 @@ import net.thousandparsec.util.Pair;
  */
 public final class ObjectHierarchyIterator extends AbstractIterator<Pair<Integer, Object>>
 {
-	private final Connection<TP03Visitor> conn;
+	private final SequentialConnection<TP03Visitor> conn;
 	private final int depth;
 	private final List<Object.ContainsType> rootIds;
 	private int count=-1;
@@ -35,15 +36,15 @@ public final class ObjectHierarchyIterator extends AbstractIterator<Pair<Integer
 
 	public ObjectHierarchyIterator(Connection<TP03Visitor> conn, int rootId)
 	{
-		this(conn, 0, rootId);
+		this(new SequentialConnection<TP03Visitor>(conn), 0, rootId);
 	}
 
-	private ObjectHierarchyIterator(Connection<TP03Visitor> conn, int depth, int rootId)
+	private ObjectHierarchyIterator(SequentialConnection<TP03Visitor> conn, int depth, int rootId)
 	{
 		this(conn, depth, Collections.singletonList(new Object.ContainsType(rootId)));
 	}
 
-	private ObjectHierarchyIterator(Connection<TP03Visitor> conn, int depth, List<Object.ContainsType> rootIds)
+	private ObjectHierarchyIterator(SequentialConnection<TP03Visitor> conn, int depth, List<Object.ContainsType> rootIds)
 	{
 		this.conn=conn;
 		this.depth=depth;

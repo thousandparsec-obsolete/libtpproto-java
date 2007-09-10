@@ -16,14 +16,16 @@ import java.util.concurrent.Future;
 import javax.net.ssl.SSLSocketFactory;
 
 /**
- * This class implements the client connection for the Thousand Parsec protocol.
- * The connection can send {@link Frame}s to the server and receive responses.
- * This class is parameterised by two types: the concrete {@link FrameDecoder}
- * used to decode frames in the incoming stream and a matching {@link Visitor}.
- * The frame decoder specifies which protocol version is supported by this
- * connection; unfortunately this is very rigid and to support another protocol
- * version the code has to be duplicated (reimplemented) with frame objects
- * generated for this protocol version.
+ * This class implements the basic client connection for the Thousand Parsec
+ * protocol. The connection offers low-level services: it can asynchronously
+ * send {@link Frame}s to the server and receive incoming frames, both
+ * synchronously and asynchronously.
+ * <p>
+ * This class is parameterised by the concrete {@link Visitor} that matches the
+ * protocol version and forces a matching implementation of {@link FrameDecoder}.
+ * Unfortunately this is very rigid and to support another protocol version the
+ * code has to be duplicated (reimplemented) with frame objects generated for
+ * that protocol version.
  * <p>
  * The {@link Connection} object and all of the protocol version implementation
  * will guarantee that any lists and object returned by {@link Frame} objects
@@ -36,8 +38,11 @@ import javax.net.ssl.SSLSocketFactory;
  * those frames will not interfere with normal (supposedly sequential)
  * processing and will not get dropped. The asynchronous frames are only
  * received if any of the {@code receive*} methods are called - the frame is
- * sent to the asynchronous visitor and the methods tries another frame without
- * returning.
+ * sent to the asynchronous visitor and the methods wait for another frame
+ * without returning.
+ * <p>
+ * The asynchronous frames are a subset of pipelined communication, which
+ * Thousand Parsec protocol supports.
  * 
  * @author ksobolewski
  */
@@ -497,78 +502,6 @@ public class Connection<V extends Visitor>
 	}
 
 	/**
-	 * Synchronously sends a {@link Frame} to the server via this connection and
-	 * sends a response to the specified {@link Visitor}. Note that what this
-	 * does is very dumb: it simply waits for next frame from the server, so if
-	 * the frame sent does not expect a response, you get stuck (because the
-	 * operation is synchronised and you won't be able to send anything else),
-	 * and if the response consists of more than one frame (like the "Sequence"
-	 * response), this will only handle the first one.
-	 * 
-	 * @param frame
-	 *            the {@link Frame} to send
-	 * @param responseVisitor
-	 *            the {@link Visitor} which will be used to accept the response
-	 * @throws IOException
-	 *             on any I/O error
-	 * @throws TPException
-	 *             thrown by the {@link Visitor}'s handler methods
-	 */
-	public void sendFrame(Frame<V> frame, V responseVisitor) throws IOException, TPException
-	{
-		/*
-		 * synchronize to eliminate race conditions if there are many concurrent
-		 * senders and receivers; in other words ensure that the next frame
-		 * received will be the response to this frame
-		 */
-		synchronized (lockSend)
-		{
-			synchronized (lockRecv)
-			{
-				sendFrame(frame);
-				Frame<V> response=receiveFrame();
-				if (response.getSequenceNumber() != frame.getSequenceNumber())
-					throw new TPException(String.format("Response frame sequence %s does not match request frame sequence %s", response.getSequenceNumber(), frame.getSequenceNumber()));
-				response.visit(responseVisitor);
-			}
-		}
-	}
-
-	/**
-	 * Synchronously sends a {@link Frame} to the server via this connection and
-	 * returns a response if it is of a specified, expected type. This is a
-	 * simple composition of {@link #sendFrame(Frame)} and
-	 * {@link #receiveFrame(Class, int)}, inheriting exceptional conditions and
-	 * return values of the latter.
-	 * 
-	 * @see #receiveFrame(Class, int)
-	 * @param frame
-	 *            the {@link Frame} to send
-	 * @param responseClass
-	 *            the {@link Class} of the expected response frame
-	 * @throws IOException
-	 *             on any I/O error
-	 * @throws TPException
-	 *             thrown by the {@link Visitor}'s handler methods
-	 */
-	public <F extends Frame<V>> F sendFrame(Frame<V> frame, Class<F> responseClass) throws IOException, TPException
-	{
-		/*
-		 * synchronize to eliminate race conditions if there are many concurrent
-		 * senders and receivers; in other words ensure that the next frame
-		 * received will be the response to this frame
-		 */
-		synchronized (lockSend)
-		{
-			synchronized (lockRecv)
-			{
-				sendFrame(frame);
-				return receiveFrame(responseClass, frame.getSequenceNumber());
-			}
-		}
-	}
-
-	/**
 	 * Synchronously reads (and returns) next {@link Frame} from this
 	 * connection; it will block if the frame is not immediately available. Will
 	 * return {@literal null} if there are no more frames to read (the
@@ -618,12 +551,9 @@ public class Connection<V extends Visitor>
 	 * immediately available. Will throw {@link EOFException} if there are no
 	 * more frames to read (it is assumed that the caller expects the frame to
 	 * be there, so it's abnormal to reach end of stream here).
-	 * <p>
-	 * Note that this is mostly incompatible with
-	 * {@link #sendFrame(Frame, Visitor) visitor variant of sendFrame()},
-	 * because of synchronisation; don't use them at the same time if you don't
-	 * want unexpected behaviour.
 	 * 
+	 * @param visitor
+	 *            the {@link Visitor} which will receive the incoming frame
 	 * @throws EOFException
 	 *             if the connection is closed in the middle of frame or there
 	 *             are no more frames to read
@@ -641,48 +571,11 @@ public class Connection<V extends Visitor>
 	}
 
 	/**
-	 * Synchronously reads (and returns) next {@link Frame} from this
-	 * connection, but only of one, expected type and sequence number. It will
-	 * block if the frame is not immediately available. Will throw
-	 * {@link EOFException} if there are no more frames to read. Will throw
-	 * {@link TPException} if the frame received is not of the expected type.
-	 * 
-	 * @return next {@link Frame} of {@literal null} on end of stream
-	 * @param expectedClass
-	 *            the {@link Class} of the expected response frame
-	 * @param expectedSequence
-	 *            the received frame's expected sequence number; may be 0 to
-	 *            ignore sequence number
-	 * @throws EOFException
-	 *             if the connection is closed in the middle of frame
-	 * @throws IOException
-	 *             on any other I/O error
-	 * @throws TPException
-	 *             if an unexpected frame type is received or on other TP
-	 *             protocol error
-	 */
-	public <F extends Frame<V>> F receiveFrame(Class<F> expectedClass, int expectedSequence) throws EOFException, IOException, TPException
-	{
-		Frame<V> frame=receiveFrame();
-		if (frame == null)
-			throw new EOFException();
-		else if (expectedSequence != 0 && frame.getSequenceNumber() != expectedSequence)
-			throw new TPException(String.format("Response frame sequence %s does not match expected frame sequence %s", frame.getSequenceNumber(), expectedSequence));
-		else if (!expectedClass.isInstance(frame))
-			throw new TPException(String.format("Unexpected frame: type %d (%s)", frame.getFrameType(), frame.toString()));
-		else
-			return expectedClass.cast(frame);
-	}
-
-	/**
 	 * Synchronously reads {@link Frame}s from this connection until end of
 	 * stream and sends them to the given {@link Visitor}.
-	 * <p>
-	 * Note that this is mostly incompatible with
-	 * {@link #sendFrame(Frame, Visitor) visitor variant of sendFrame()},
-	 * because of synchronisation; don't use them at the same time if you don't
-	 * want unexpected behaviour.
 	 * 
+	 * @param visitor
+	 *            the {@link Visitor} which will receive incoming frames
 	 * @throws EOFException
 	 *             if the connection is closed in the middle of frame
 	 * @throws IOException
@@ -706,11 +599,10 @@ public class Connection<V extends Visitor>
 	 * task quits (by catching {@link java.util.concurrent.ExecutionException}
 	 * thrown by {@link Future#get()}). This task does not close the connection
 	 * when it quits.
-	 * <p>
-	 * Note that this is mostly incompatible with
-	 * {@link #sendFrame(Frame, Visitor) visitor variant of sendFrame()},
-	 * because of synchronisation; don't use them at the same time if you don't
-	 * want unexpected behaviour.
+	 * 
+	 * @param visitor
+	 *            the {@link Visitor} which will receive incoming frames
+	 * @return a {@link Future} that represents the asynchronous task
 	 */
 	public Future<Void> receiveAllFramesAsync(final V visitor)
 	{
