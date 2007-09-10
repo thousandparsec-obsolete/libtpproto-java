@@ -491,10 +491,10 @@ public class JavaOutputGenerator implements OutputGenerator
 			frameDecoder.println("		};");
 			frameDecoder.println();
 			frameDecoder.printf("	public Connection<TP%02dVisitor>%n", compat);
-			frameDecoder.printf("		makeConnection(URI serverUri, boolean autologin)%n", compat);
+			frameDecoder.printf("		makeConnection(URI serverUri, boolean autologin, TP03Visitor asyncVisitor, boolean log)%n", compat);
 			frameDecoder.println("		throws UnknownHostException, IOException, TPException");
 			frameDecoder.println("	{");
-			frameDecoder.printf("		Connection<TP%02dVisitor> connection=Connection.makeConnection(this, serverUri);%n", compat);
+			frameDecoder.printf("		Connection<TP%02dVisitor> connection=Connection.makeConnection(this, serverUri, asyncVisitor, log);%n", compat);
 			frameDecoder.println("		if (autologin)");
 			frameDecoder.println("		{");
 			frameDecoder.println("			String userInfo=serverUri.getUserInfo();");
