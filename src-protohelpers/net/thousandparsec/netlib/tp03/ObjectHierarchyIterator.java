@@ -61,7 +61,7 @@ public final class ObjectHierarchyIterator extends AbstractIterator<Pair<Integer
 		this.objects=new ArrayList<Object>(count);
 
 		for (int i=0; i < count; i++)
-			this.objects.add(conn.receiveFrame(Object.class));
+			this.objects.add(conn.receiveFrame(Object.class, getObjs.getSequenceNumber()));
 		objectsIter=objects.iterator();
 	}
 

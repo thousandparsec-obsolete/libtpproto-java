@@ -526,7 +526,10 @@ public class Connection<V extends Visitor>
 			synchronized (lockRecv)
 			{
 				sendFrame(frame);
-				receiveFrame().visit(responseVisitor);
+				Frame<V> response=receiveFrame();
+				if (response.getSequenceNumber() != frame.getSequenceNumber())
+					throw new TPException(String.format("Response frame sequence %s does not match request frame sequence %s", response.getSequenceNumber(), frame.getSequenceNumber()));
+				response.visit(responseVisitor);
 			}
 		}
 	}
@@ -535,10 +538,10 @@ public class Connection<V extends Visitor>
 	 * Synchronously sends a {@link Frame} to the server via this connection and
 	 * returns a response if it is of a specified, expected type. This is a
 	 * simple composition of {@link #sendFrame(Frame)} and
-	 * {@link #receiveFrame(Class)}, inheriting exceptional conditions and
+	 * {@link #receiveFrame(Class, int)}, inheriting exceptional conditions and
 	 * return values of the latter.
 	 * 
-	 * @see #receiveFrame(Class)
+	 * @see #receiveFrame(Class, int)
 	 * @param frame
 	 *            the {@link Frame} to send
 	 * @param responseClass
@@ -560,7 +563,7 @@ public class Connection<V extends Visitor>
 			synchronized (lockRecv)
 			{
 				sendFrame(frame);
-				return receiveFrame(responseClass);
+				return receiveFrame(responseClass, frame.getSequenceNumber());
 			}
 		}
 	}
@@ -639,14 +642,17 @@ public class Connection<V extends Visitor>
 
 	/**
 	 * Synchronously reads (and returns) next {@link Frame} from this
-	 * connection, but only of one, expected type. It will block if the frame is
-	 * not immediately available. Will throw {@link EOFException} if there are
-	 * no more frames to read. Will throw {@link TPException} if the frame
-	 * received is not of the expected type.
+	 * connection, but only of one, expected type and sequence number. It will
+	 * block if the frame is not immediately available. Will throw
+	 * {@link EOFException} if there are no more frames to read. Will throw
+	 * {@link TPException} if the frame received is not of the expected type.
 	 * 
 	 * @return next {@link Frame} of {@literal null} on end of stream
-	 * @param responseClass
+	 * @param expectedClass
 	 *            the {@link Class} of the expected response frame
+	 * @param expectedSequence
+	 *            the received frame's expected sequence number; may be 0 to
+	 *            ignore sequence number
 	 * @throws EOFException
 	 *             if the connection is closed in the middle of frame
 	 * @throws IOException
@@ -655,15 +661,17 @@ public class Connection<V extends Visitor>
 	 *             if an unexpected frame type is received or on other TP
 	 *             protocol error
 	 */
-	public <F extends Frame<V>> F receiveFrame(Class<F> responseClass) throws EOFException, IOException, TPException
+	public <F extends Frame<V>> F receiveFrame(Class<F> expectedClass, int expectedSequence) throws EOFException, IOException, TPException
 	{
 		Frame<V> frame=receiveFrame();
 		if (frame == null)
 			throw new EOFException();
-		else if (responseClass.isInstance(frame))
-			return responseClass.cast(frame);
-		else
+		else if (expectedSequence != 0 && frame.getSequenceNumber() != expectedSequence)
+			throw new TPException(String.format("Response frame sequence %s does not match expected frame sequence %s", frame.getSequenceNumber(), expectedSequence));
+		else if (!expectedClass.isInstance(frame))
 			throw new TPException(String.format("Unexpected frame: type %d (%s)", frame.getFrameType(), frame.toString()));
+		else
+			return expectedClass.cast(frame);
 	}
 
 	/**

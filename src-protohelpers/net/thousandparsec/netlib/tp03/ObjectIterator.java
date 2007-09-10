@@ -54,7 +54,7 @@ public class ObjectIterator extends AbstractIterator<Object>
 		assert result.getNumber() == count;
 
 		for (int i=0; i < count; i++)
-			next.add(conn.receiveFrame(Object.class));
+			next.add(conn.receiveFrame(Object.class, getObj.getSequenceNumber()));
 
 		nextIter=next.iterator();
 		return true;
