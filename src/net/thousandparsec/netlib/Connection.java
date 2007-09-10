@@ -19,7 +19,9 @@ import javax.net.ssl.SSLSocketFactory;
  * This class implements the basic client connection for the Thousand Parsec
  * protocol. The connection offers low-level services: it can asynchronously
  * send {@link Frame}s to the server and receive incoming frames, both
- * synchronously and asynchronously.
+ * synchronously and asynchronously. This class is thread safe in that the
+ * low-level operations are synchronised and can be mixed with each other; but
+ * note that higher-level wrappers might not be thread safe in this manner.
  * <p>
  * This class is parameterised by the concrete {@link Visitor} that matches the
  * protocol version and forces a matching implementation of {@link FrameDecoder}.
@@ -42,7 +44,12 @@ import javax.net.ssl.SSLSocketFactory;
  * without returning.
  * <p>
  * The asynchronous frames are a subset of pipelined communication, which
- * Thousand Parsec protocol supports.
+ * Thousand Parsec protocol supports, but done in a non-pipelined and very
+ * low-level way. The asynchronous frames are recognised and sent to a special
+ * {@link Visitor}, but only if any other interaction is done on the
+ * connection. To achieve a really asynchronous support for asynchronous frames,
+ * you should use a higher-level wrapper or read frames asynchronously (see
+ * {@link #receiveAllFramesAsync(Visitor)}).
  * 
  * @author ksobolewski
  */

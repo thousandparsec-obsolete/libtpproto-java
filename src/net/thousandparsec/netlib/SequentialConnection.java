@@ -12,8 +12,13 @@ import java.io.IOException;
  * <p>
  * This class is in a distinct class hierarchy than the {@link Connection},
  * because sequential methods are mostly incompatible with other modes on
- * communication and so the interface is separate. You can get the underlying
- * {@link Connection} if required via {@link #unwrap()} method.
+ * communication and so the interface is separate. Because other modes can
+ * interfere with this connection's behaviour, you should avoid parallel use of
+ * the same underlying connection when this class is in use; this also implies
+ * that the sequential connection is not thread-safe.
+ * <p>
+ * You can get the underlying {@link Connection} if required via
+ * {@link #unwrap()} method.
  * 
  * @author ksobolewski
  */
