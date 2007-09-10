@@ -34,7 +34,7 @@ public class SimpleSequentialConnection<V extends Visitor> implements Sequential
 		this.conn=conn;
 	}
 
-	public Connection<V> unwrap()
+	public Connection<V> getConnection()
 	{
 		return conn;
 	}

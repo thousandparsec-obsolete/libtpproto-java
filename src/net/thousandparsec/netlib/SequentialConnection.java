@@ -16,7 +16,7 @@ import java.io.IOException;
  * and so the interface is separate.
  * <p>
  * You can get the underlying {@link Connection} if required via
- * {@link #unwrap()} method.
+ * {@link #getConnection()} method.
  * 
  * @author ksobolewski
  */
@@ -27,7 +27,7 @@ public interface SequentialConnection<V extends Visitor>
 	 * 
 	 * @return the underlying {@link Connection}
 	 */
-	Connection<V> unwrap();
+	Connection<V> getConnection();
 
 	/**
 	 * Synchronously reads (and returns) next {@link Frame} from this
