@@ -77,7 +77,7 @@ public class SequentialConnection<V extends Visitor>
 		else if (expectedSequence != 0 && frame.getSequenceNumber() != expectedSequence)
 			throw new TPException(String.format("Response frame sequence %s does not match expected frame sequence %s", frame.getSequenceNumber(), expectedSequence));
 		else if (!expectedClass.isInstance(frame))
-			throw new TPException(String.format("Unexpected frame: type %d (%s)", frame.getFrameType(), frame.toString()));
+			throw new TPException(String.format("Unexpected frame: type %d (%s) while expecting %s", frame.getFrameType(), frame.toString(), expectedClass.getSimpleName()));
 		else
 			return expectedClass.cast(frame);
 	}
