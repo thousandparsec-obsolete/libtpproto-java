@@ -44,7 +44,7 @@ public class TP03Decoder implements FrameDecoder<TP03Visitor>
 			if (data.length != 2)
 				throw new TPException("Autologin enabled but login info provided in the URI is invalid");
 
-			SequentialConnection<TP03Visitor> seqConnection=new SequentialConnection<TP03Visitor>(connection);
+			SequentialConnection<TP03Visitor> seqConnection=new SimpleSequentialConnection<TP03Visitor>(connection);
 			Connect connect=new Connect();
 			connect.setString("libtpproto-java-test");
 			seqConnection.sendFrame(connect, CHECK_LOGIN_VISITOR);

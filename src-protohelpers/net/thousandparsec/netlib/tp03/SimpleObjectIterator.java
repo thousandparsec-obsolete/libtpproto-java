@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-import net.thousandparsec.netlib.Connection;
 import net.thousandparsec.netlib.SequentialConnection;
 import net.thousandparsec.netlib.TPException;
 import net.thousandparsec.netlib.tp03.IDSequence.ModtimesType;
@@ -28,14 +27,14 @@ public class SimpleObjectIterator extends AbstractIterator<ModtimesType>
 	private int lastId=0;
 	private int remaining;
 
-	public SimpleObjectIterator(Connection<TP03Visitor> conn)
+	public SimpleObjectIterator(SequentialConnection<TP03Visitor> conn)
 	{
 		this(conn, DEFAULT_CHUNK_SIZE);
 	}
 
-	public SimpleObjectIterator(Connection<TP03Visitor> conn, int chunkSize)
+	public SimpleObjectIterator(SequentialConnection<TP03Visitor> conn, int chunkSize)
 	{
-		this.conn=new SequentialConnection<TP03Visitor>(conn);
+		this.conn=conn;
 		this.chunkSize=chunkSize;
 	}
 

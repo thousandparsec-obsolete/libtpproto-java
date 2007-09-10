@@ -504,7 +504,7 @@ public class JavaOutputGenerator implements OutputGenerator
 			frameDecoder.println("			if (data.length != 2)");
 			frameDecoder.println("				throw new TPException(\"Autologin enabled but login info provided in the URI is invalid\");");
 			frameDecoder.println();
-			frameDecoder.printf("			SequentialConnection<TP%02dVisitor> seqConnection=new SequentialConnection<TP%02dVisitor>(connection);%n", compat, compat);
+			frameDecoder.printf("			SequentialConnection<TP%02dVisitor> seqConnection=new SimpleSequentialConnection<TP%02dVisitor>(connection);%n", compat, compat);
 			frameDecoder.println("			Connect connect=new Connect();");
 			frameDecoder.println("			connect.setString(\"libtpproto-java-test\");");
 			frameDecoder.println("			seqConnection.sendFrame(connect, CHECK_LOGIN_VISITOR);");

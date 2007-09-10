@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import net.thousandparsec.netlib.Connection;
 import net.thousandparsec.netlib.SequentialConnection;
 import net.thousandparsec.netlib.TPException;
 import net.thousandparsec.netlib.objects.Universe;
@@ -34,9 +33,9 @@ public final class ObjectHierarchyIterator extends AbstractIterator<Pair<Integer
 	private Iterator<Object> objectsIter;
 	private Iterator<Pair<Integer, Object>> childIter;
 
-	public ObjectHierarchyIterator(Connection<TP03Visitor> conn, int rootId)
+	public ObjectHierarchyIterator(SequentialConnection<TP03Visitor> conn, int rootId)
 	{
-		this(new SequentialConnection<TP03Visitor>(conn), 0, rootId);
+		this(conn, 0, rootId);
 	}
 
 	private ObjectHierarchyIterator(SequentialConnection<TP03Visitor> conn, int depth, int rootId)
