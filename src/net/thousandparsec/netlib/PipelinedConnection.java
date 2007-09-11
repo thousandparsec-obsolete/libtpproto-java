@@ -59,6 +59,8 @@ public class PipelinedConnection<V extends Visitor>
 		this.pipelines=Collections.synchronizedMap(new HashMap<Integer, BlockingQueue<Frame<V>>>());
 		this.exec=Executors.newSingleThreadExecutor();
 		this.receiverFuture=exec.submit(new ReceiverTask());
+		//it is safe to do here, per shutdown() contract: it waits for tasks to finish, and then shuts down
+		exec.shutdown();
 	}
 
 	/**
@@ -122,10 +124,11 @@ public class PipelinedConnection<V extends Visitor>
 		}
 		finally
 		{
-			exec.shutdown();
+			//check for errors in the receiver task
 			receiverFuture.get();
 			//check if the pipelines were closed properly
-			assert pipelines.keySet().isEmpty();
+			if (!pipelines.keySet().isEmpty())
+				throw new IOException("Not all pipelines were closed properly");
 		}
 	}
 
