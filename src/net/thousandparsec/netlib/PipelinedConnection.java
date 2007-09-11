@@ -21,11 +21,12 @@ import java.util.concurrent.LinkedBlockingQueue;
  * {@link SequentialConnection} thread safe.
  * <p>
  * The typical use case is that several threads use this class to sequentially
- * send and receive frames on a common connection. This class reads incoming
- * frames into a queue and distributes them between all pipelines. Those
- * pipelines have incoming frames of their own; these queues have a limited
- * capacity and if any of the threads stops processing its frames, the entire
- * connection blocks. TODO: errors handling (another queue)?
+ * send and receive frames on a common connection. This class spawns a "receiver
+ * task", which reads incoming frames in inother thread and distributes them
+ * between pipelines. Those pipelines have incoming queues of their own; these
+ * queues are blockin queues and have a limited capacity and if any of the
+ * threads stops processing its frames, the entire connection blocks after this
+ * thread's queue fills up. TODO: errors handling (another queue)?
  * <p>
  * The asynchronous frames sent by the server are still handled by the
  * underlying {@link Connection}, but this class makes them really asynchronous -
@@ -85,12 +86,13 @@ public class PipelinedConnection<V extends Visitor>
 	}
 
 	/**
-	 * This is a sequential view of this {@link PipelinedConnection}, similar
-	 * to {@link SequentialConnection}. The pipeline starts without a squential
-	 * number assigned; each frame sent causes this {@link PipelinedConnection}
-	 * to register this pipeline with a new sequential number and all incoming
-	 * frames with this number are routed to this pipeline. Subsequent outgoing
-	 * frames cause this (old) assignment to be removed.
+	 * This is a sequential view of this {@link PipelinedConnection},
+	 * implementing the {@link SequentialConnection} interface. The pipeline
+	 * starts without a squential number assigned; each frame sent causes this
+	 * {@link PipelinedConnection} to register this pipeline with a new
+	 * sequential number and all incoming frames with this number are routed to
+	 * this pipeline. Subsequent outgoing frames cause this (old) assignment to
+	 * be removed.
 	 * 
 	 * @return a new sequential view of this {@link PipelinedConnection}
 	 */
