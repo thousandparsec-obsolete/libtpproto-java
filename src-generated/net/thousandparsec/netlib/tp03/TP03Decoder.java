@@ -31,10 +31,10 @@ public class TP03Decoder implements FrameDecoder<TP03Visitor>
 		};
 
 	public Connection<TP03Visitor>
-		makeConnection(URI serverUri, boolean autologin, TP03Visitor asyncVisitor, boolean log)
+		makeConnection(URI serverUri, boolean autologin, TP03Visitor asyncVisitor)
 		throws UnknownHostException, IOException, TPException
 	{
-		Connection<TP03Visitor> connection=Connection.makeConnection(this, serverUri, asyncVisitor, log);
+		Connection<TP03Visitor> connection=Connection.makeConnection(this, serverUri, asyncVisitor);
 		if (autologin)
 		{
 			String userInfo=serverUri.getUserInfo();

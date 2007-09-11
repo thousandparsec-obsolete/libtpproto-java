@@ -8,6 +8,9 @@ import java.net.Socket;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -98,10 +101,10 @@ public class Connection<V extends Visitor>
 	/**
 	 * A convenience method that creates a {@link Connection} connected to a
 	 * server specified in a URI as a {@link String}. See
-	 * {@link #makeConnection(FrameDecoder, URI, Visitor, boolean)} for
+	 * {@link #makeConnection(FrameDecoder, URI, Visitor)} for
 	 * details.
 	 * 
-	 * @see #makeConnection(FrameDecoder, URI, Visitor, boolean)
+	 * @see #makeConnection(FrameDecoder, URI, Visitor)
 	 * @return the {@link Connection} instance conected to a server described by
 	 *         the connection URI
 	 * @throws URISyntaxException
@@ -112,14 +115,13 @@ public class Connection<V extends Visitor>
 	 *             on a I/O error
 	 */
 	public static <V extends Visitor> Connection<V>
-		makeConnection(FrameDecoder<V> frameDecoder, String serverUri, V asyncVisitor, boolean log)
+		makeConnection(FrameDecoder<V> frameDecoder, String serverUri, V asyncVisitor)
 		throws URISyntaxException, UnknownHostException, IOException
 	{
 		return makeConnection(
 			frameDecoder,
 			new URI(serverUri),
-			asyncVisitor,
-			log);
+			asyncVisitor);
 	}
 
 	/**
@@ -138,7 +140,7 @@ public class Connection<V extends Visitor>
 	 *             on a I/O error
 	 */
 	public static <V extends Visitor> Connection<V>
-		makeConnection(FrameDecoder<V> frameDecoder, URI serverUri, V asyncVisitor, boolean log)
+		makeConnection(FrameDecoder<V> frameDecoder, URI serverUri, V asyncVisitor)
 		throws UnknownHostException, IOException
 	{
 		int port=serverUri.getPort();
@@ -147,22 +149,20 @@ public class Connection<V extends Visitor>
 				frameDecoder,
 				serverUri.getHost(),
 				Method.valueOf(serverUri.getScheme()),
-				asyncVisitor,
-				log)
+				asyncVisitor)
 			: makeConnection(
 				frameDecoder,
 				serverUri.getHost(),
 				Method.valueOf(serverUri.getScheme()),
 				port,
-				asyncVisitor,
-				log);
+				asyncVisitor);
 	}
 
 	/**
 	 * A convenience method that creates a {@link Connection} connected to a
 	 * server specified by a host name and connection {@link Method}.
 	 * 
-	 * @see #makeConnection(FrameDecoder, URI, Visitor, boolean)
+	 * @see #makeConnection(FrameDecoder, URI, Visitor)
 	 * @return the {@link Connection} instance conected to a server described by
 	 *         the connection URI
 	 * @throws UnknownHostException
@@ -171,7 +171,7 @@ public class Connection<V extends Visitor>
 	 *             on a I/O error
 	 */
 	public static <V extends Visitor> Connection<V>
-		makeConnection(FrameDecoder<V> frameDecoder, String host, Method method, V asyncVisitor, boolean log)
+		makeConnection(FrameDecoder<V> frameDecoder, String host, Method method, V asyncVisitor)
 		throws UnknownHostException, IOException
 	{
 		return makeConnection(
@@ -179,8 +179,7 @@ public class Connection<V extends Visitor>
 			host,
 			method,
 			method.defaultPort,
-			asyncVisitor,
-			log);
+			asyncVisitor);
 	}
 
 	/**
@@ -188,7 +187,7 @@ public class Connection<V extends Visitor>
 	 * server specified by a host name and connection {@link Method} and a
 	 * non-default port.
 	 * 
-	 * @see #makeConnection(FrameDecoder, URI, Visitor, boolean)
+	 * @see #makeConnection(FrameDecoder, URI, Visitor)
 	 * @return the {@link Connection} instance conected to a server described by
 	 *         the connection URI
 	 * @throws UnknownHostException
@@ -197,19 +196,19 @@ public class Connection<V extends Visitor>
 	 *             on a I/O error
 	 */
 	public static <V extends Visitor> Connection<V>
-		makeConnection(FrameDecoder<V> frameDecoder, String host, Method method, int port, V asyncVisitor, boolean log)
+		makeConnection(FrameDecoder<V> frameDecoder, String host, Method method, int port, V asyncVisitor)
 		throws UnknownHostException, IOException
 	{
 		switch (method)
 		{
 			case tp:
-				return makeTPConnection(frameDecoder, host, asyncVisitor, log);
+				return makeTPConnection(frameDecoder, host, asyncVisitor);
 			case tps:
-				return makeTPSConnection(frameDecoder, host, asyncVisitor, log);
+				return makeTPSConnection(frameDecoder, host, asyncVisitor);
 			case http:
-				return makeHTTPConnection(frameDecoder, host, asyncVisitor, log);
+				return makeHTTPConnection(frameDecoder, host, asyncVisitor);
 			case https:
-				return makeHTTPSConnection(frameDecoder, host, asyncVisitor, log);
+				return makeHTTPSConnection(frameDecoder, host, asyncVisitor);
 			default:
 				throw new IllegalArgumentException("Unknown connection method");
 		}
@@ -219,7 +218,7 @@ public class Connection<V extends Visitor>
 	 * A convenience method that creates a plain {@link Connection} connected to
 	 * a server specified by a host name.
 	 * 
-	 * @see #makeConnection(FrameDecoder, URI, Visitor, boolean)
+	 * @see #makeConnection(FrameDecoder, URI, Visitor)
 	 * @return the {@link Connection} instance conected to a server described by
 	 *         the connection URI
 	 * @throws UnknownHostException
@@ -228,22 +227,21 @@ public class Connection<V extends Visitor>
 	 *             on a I/O error
 	 */
 	public static <V extends Visitor> Connection<V>
-		makeTPConnection(FrameDecoder<V> frameDecoder, String host, V asyncVisitor, boolean log)
+		makeTPConnection(FrameDecoder<V> frameDecoder, String host, V asyncVisitor)
 		throws UnknownHostException, IOException
 	{
 		return makeTPConnection(
 			frameDecoder,
 			host,
 			Method.tp.defaultPort,
-			asyncVisitor,
-			log);
+			asyncVisitor);
 	}
 
 	/**
 	 * A convenience method that creates a plain {@link Connection} connected to
 	 * a server specified by a host name and non-default port.
 	 * 
-	 * @see #makeConnection(FrameDecoder, URI, Visitor, boolean)
+	 * @see #makeConnection(FrameDecoder, URI, Visitor)
 	 * @return the {@link Connection} instance conected to a server described by
 	 *         the connection URI
 	 * @throws UnknownHostException
@@ -252,21 +250,20 @@ public class Connection<V extends Visitor>
 	 *             on a I/O error
 	 */
 	public static <V extends Visitor> Connection<V>
-		makeTPConnection(FrameDecoder<V> frameDecoder, String host, int port, V asyncVisitor, boolean log)
+		makeTPConnection(FrameDecoder<V> frameDecoder, String host, int port, V asyncVisitor)
 		throws UnknownHostException, IOException
 	{
 		return new Connection<V>(
 			frameDecoder,
 			new Socket(host, port),
-			asyncVisitor,
-			log);
+			asyncVisitor);
 	}
 
 	/**
 	 * A convenience method that creates a secure (by SSL/TLS)
 	 * {@link Connection} connected to a server specified by a host name.
 	 * 
-	 * @see #makeConnection(FrameDecoder, URI, Visitor, boolean)
+	 * @see #makeConnection(FrameDecoder, URI, Visitor)
 	 * @return the {@link Connection} instance conected to a server described by
 	 *         the connection URI
 	 * @throws UnknownHostException
@@ -275,15 +272,14 @@ public class Connection<V extends Visitor>
 	 *             on a I/O error
 	 */
 	public static <V extends Visitor> Connection<V>
-		makeTPSConnection(FrameDecoder<V> frameDecoder, String host, V asyncVisitor, boolean log)
+		makeTPSConnection(FrameDecoder<V> frameDecoder, String host, V asyncVisitor)
 		throws UnknownHostException, IOException
 	{
 		return makeTPSConnection(
 			frameDecoder,
 			host,
 			Method.tps.defaultPort,
-			asyncVisitor,
-			log);
+			asyncVisitor);
 	}
 
 	/**
@@ -291,7 +287,7 @@ public class Connection<V extends Visitor>
 	 * {@link Connection} connected to a server specified by a host name and
 	 * non-default port.
 	 * 
-	 * @see #makeConnection(FrameDecoder, URI, Visitor, boolean)
+	 * @see #makeConnection(FrameDecoder, URI, Visitor)
 	 * @return the {@link Connection} instance conected to a server described by
 	 *         the connection URI
 	 * @throws UnknownHostException
@@ -300,21 +296,20 @@ public class Connection<V extends Visitor>
 	 *             on a I/O error
 	 */
 	public static <V extends Visitor> Connection<V>
-		makeTPSConnection(FrameDecoder<V> frameDecoder, String host, int port, V asyncVisitor, boolean log)
+		makeTPSConnection(FrameDecoder<V> frameDecoder, String host, int port, V asyncVisitor)
 		throws UnknownHostException, IOException
 	{
 		return new Connection<V>(
 			frameDecoder,
 			SSLSocketFactory.getDefault().createSocket(host, port),
-			asyncVisitor,
-			log);
+			asyncVisitor);
 	}
 
 	/**
 	 * A convenience method that creates a plain {@link Connection} via HTTP
 	 * tunnel connected to a server specified by a host name.
 	 * 
-	 * @see #makeConnection(FrameDecoder, URI, Visitor, boolean)
+	 * @see #makeConnection(FrameDecoder, URI, Visitor)
 	 * @return the {@link Connection} instance conected to a server described by
 	 *         the connection URI
 	 * @throws UnknownHostException
@@ -323,15 +318,14 @@ public class Connection<V extends Visitor>
 	 *             on a I/O error
 	 */
 	public static <V extends Visitor> Connection<V>
-		makeHTTPConnection(FrameDecoder<V> frameDecoder, String host, V asyncVisitor, boolean log)
+		makeHTTPConnection(FrameDecoder<V> frameDecoder, String host, V asyncVisitor)
 		throws UnknownHostException, IOException
 	{
 		return makeHTTPConnection(
 			frameDecoder,
 			host,
 			Method.http.defaultPort,
-			asyncVisitor,
-			log);
+			asyncVisitor);
 	}
 
 	/**
@@ -339,7 +333,7 @@ public class Connection<V extends Visitor>
 	 * tunnel connected to a server specified by a host name and non-default
 	 * port.
 	 * 
-	 * @see #makeConnection(FrameDecoder, URI, Visitor, boolean)
+	 * @see #makeConnection(FrameDecoder, URI, Visitor)
 	 * @return the {@link Connection} instance conected to a server described by
 	 *         the connection URI
 	 * @throws UnknownHostException
@@ -349,7 +343,7 @@ public class Connection<V extends Visitor>
 	 */
 	@SuppressWarnings("unused")
 	public static <V extends Visitor> Connection<V>
-		makeHTTPConnection(FrameDecoder<V> frameDecoder, String host, int port, V asyncVisitor, boolean log)
+		makeHTTPConnection(FrameDecoder<V> frameDecoder, String host, int port, V asyncVisitor)
 		throws UnknownHostException, IOException
 	{
 		throw new UnsupportedOperationException("Not yet implemented");
@@ -360,7 +354,7 @@ public class Connection<V extends Visitor>
 	 * {@link Connection} via HTTPS tunnel connected to a server specified by a
 	 * host name.
 	 * 
-	 * @see #makeConnection(FrameDecoder, URI, Visitor, boolean)
+	 * @see #makeConnection(FrameDecoder, URI, Visitor)
 	 * @return the {@link Connection} instance conected to a server described by
 	 *         the connection URI
 	 * @throws UnknownHostException
@@ -369,15 +363,14 @@ public class Connection<V extends Visitor>
 	 *             on a I/O error
 	 */
 	public static <V extends Visitor> Connection<V>
-		makeHTTPSConnection(FrameDecoder<V> frameDecoder, String host, V asyncVisitor, boolean log)
+		makeHTTPSConnection(FrameDecoder<V> frameDecoder, String host, V asyncVisitor)
 		throws UnknownHostException, IOException
 	{
 		return makeHTTPSConnection(
 			frameDecoder,
 			host,
 			Method.https.defaultPort,
-			asyncVisitor,
-			log);
+			asyncVisitor);
 	}
 
 	/**
@@ -385,7 +378,7 @@ public class Connection<V extends Visitor>
 	 * {@link Connection} via HTTPS tunnel connected to a server specified by a
 	 * host name and non-default port.
 	 * 
-	 * @see #makeConnection(FrameDecoder, URI, Visitor, boolean)
+	 * @see #makeConnection(FrameDecoder, URI, Visitor)
 	 * @return the {@link Connection} instance conected to a server described by
 	 *         the connection URI
 	 * @throws UnknownHostException
@@ -395,7 +388,7 @@ public class Connection<V extends Visitor>
 	 */
 	@SuppressWarnings("unused")
 	public static <V extends Visitor> Connection<V>
-		makeHTTPSConnection(FrameDecoder<V> frameDecoder, String host, int port, V asyncVisitor, boolean log)
+		makeHTTPSConnection(FrameDecoder<V> frameDecoder, String host, int port, V asyncVisitor)
 		throws UnknownHostException, IOException
 	{
 		throw new UnsupportedOperationException("Not yet implemented");
@@ -410,7 +403,7 @@ public class Connection<V extends Visitor>
 	private final TPInputStream tpin;
 	private final OutputStream out;
 	private final TPOutputStream tpout;
-	private final boolean log;
+	private final List<ConnectionListener<V>> listeners;
 	//start with sequence 1 not to mistake response for the first frame for asynchronous frame
 	private int seq=1;
 
@@ -429,13 +422,10 @@ public class Connection<V extends Visitor>
 	 * @param asyncVisitor
 	 *            a {@link Visitor} that will accept asynchronous frames sent by
 	 *            the server
-	 * @param log
-	 *            if {@literal true}, this connection will log outgoing and
-	 *            incoming {@link Frame}s
 	 * @throws IOException
 	 *             on any I/O error during connection setup
 	 */
-	public Connection(FrameDecoder<V> frameDecoder, Socket socket, V asyncVisitor, boolean log) throws IOException
+	public Connection(FrameDecoder<V> frameDecoder, Socket socket, V asyncVisitor) throws IOException
 	{
 		if (asyncVisitor == null)
 			throw new IllegalArgumentException("asyncVisitor");
@@ -448,7 +438,7 @@ public class Connection<V extends Visitor>
 		this.tpin=new TPInputStream(this.in);
 		this.out=socket.getOutputStream();
 		this.tpout=new TPOutputStream(this.out);
-		this.log=log;
+		this.listeners=new ArrayList<ConnectionListener<V>>();
 	}
 
 	private TPInputStream getInputStream()
@@ -488,7 +478,70 @@ public class Connection<V extends Visitor>
 	}
 
 	/**
+	 * Adds a {@link ConnectionListener} to this connection.
+	 * 
+	 * @param l
+	 *            the listener to add
+	 */
+	public void addConnectionListener(ConnectionListener<V> l)
+	{
+		listeners.add(l);
+	}
+
+	/**
+	 * Removes a {@link ConnectionListener} from this connection.
+	 * 
+	 * @param l
+	 *            the listener to remove
+	 */
+	public void removeConnectionListener(ConnectionListener<V> l)
+	{
+		listeners.removeAll(Collections.singleton(l));
+	}
+
+	/**
+	 * @param frame
+	 *            the {@link Frame} sent
+	 */
+	void fireFrameSentEvent(Frame<V> frame)
+	{
+		ConnectionEvent<V> ev=new ConnectionEvent<V>(ConnectionEvent.Type.FRAME_SENT, frame, false, null);
+		for (ConnectionListener<V> l : listeners)
+			l.frameSent(ev);
+	}
+
+	/**
+	 * @param frame
+	 *            the {@link Frame} received
+	 * @param isAsync
+	 *            {@literal true} if this frame was an asynchronous frame
+	 */
+	void fireFrameReceivedEvent(Frame<V> frame, boolean isAsync)
+	{
+		ConnectionEvent<V> ev=new ConnectionEvent<V>(ConnectionEvent.Type.FRAME_RECEIVED, frame, isAsync, null);
+		for (ConnectionListener<V> l : listeners)
+			l.frameReceived(ev);
+	}
+
+	/**
+	 * @param frame
+	 *            the {@link Frame} errored, if any (can be {@literal null})
+	 * @param ex
+	 *            the exception that caused the error
+	 */
+	void fireErrorEvent(Frame<V> frame, Exception ex)
+	{
+		ConnectionEvent<V> ev=new ConnectionEvent<V>(ConnectionEvent.Type.CONNECTION_ERROR, frame, false, ex);
+		for (ConnectionListener<V> l : listeners)
+			l.connectionError(ev);
+	}
+
+	/**
 	 * Asynchronously sends a {@link Frame} to the server via this connection.
+	 * <p>
+	 * This method, in addition to throwing an exception, notifies registered
+	 * {@link ConnectionListener}s of a connection error for exceptions
+	 * declared as thrown by this method.
 	 * 
 	 * @param frame
 	 *            the {@link Frame} to send
@@ -499,12 +552,19 @@ public class Connection<V extends Visitor>
 	{
 		synchronized (lockSend)
 		{
-			//FIXME: add proper logging
-			if (log)
-				System.err.printf("%s: Sending frame %d (%s)%n", getClass().getName(), frame.getFrameType(), frame.toString());
-			TPOutputStream tpout=getOutputStream();
-			frame.write(tpout, this);
-			tpout.flush();
+			try
+			{
+				TPOutputStream tpout=getOutputStream();
+				frame.write(tpout, this);
+				tpout.flush();
+
+				fireFrameSentEvent(frame);
+			}
+			catch (IOException ex)
+			{
+				fireErrorEvent(frame, ex);
+				throw ex;
+			}
 		}
 	}
 
@@ -513,6 +573,10 @@ public class Connection<V extends Visitor>
 	 * connection; it will block if the frame is not immediately available. Will
 	 * return {@literal null} if there are no more frames to read (the
 	 * connection was gracefully closed).
+	 * <p>
+	 * This method, in addition to throwing an exception, notifies registered
+	 * {@link ConnectionListener}s of a connection error for exceptions
+	 * declared as thrown by this method.
 	 * 
 	 * @return next {@link Frame} of {@literal null} on end of stream
 	 * @throws EOFException
@@ -526,28 +590,38 @@ public class Connection<V extends Visitor>
 	{
 		synchronized (lockRecv)
 		{
-			while (true)
+			try
 			{
-				Frame.Header h=Frame.Header.readHeader(getInputStream(), getCompatibility());
-				if (h == null)
-					return null;
-				else
+				while (true)
 				{
-					Frame<V> frame=frameDecoder.decodeFrame(h.id, getInputStream(h.length));
-					frame.setSequenceNumber(h.seq);
-
-					boolean async=frame.getSequenceNumber() == 0;
-					//FIXME: add proper logging
-					if (log)
-						if (async)
-							System.err.printf("%s: Received asynchronous frame seq %d, type %d (%s)%n", getClass().getName(), frame.getSequenceNumber(), frame.getFrameType(), frame.toString());
-						else
-							System.err.printf("%s: Received frame seq %d, type %d (%s)%n", getClass().getName(), frame.getSequenceNumber(), frame.getFrameType(), frame.toString());
-					if (async)
-						frame.visit(asyncVisitor);
+					Frame.Header h=Frame.Header.readHeader(getInputStream(), getCompatibility());
+					if (h == null)
+						return null;
 					else
-						return frame;
+					{
+						Frame<V> frame=frameDecoder.decodeFrame(h.id, getInputStream(h.length));
+						frame.setSequenceNumber(h.seq);
+
+						boolean async=frame.getSequenceNumber() == 0;
+
+						fireFrameReceivedEvent(frame, async);
+
+						if (async)
+							frame.visit(asyncVisitor);
+						else
+							return frame;
+					}
 				}
+			}
+			catch (IOException ex)
+			{
+				fireErrorEvent(null, ex);
+				throw ex;
+			}
+			catch (TPException ex)
+			{
+				fireErrorEvent(null, ex);
+				throw ex;
 			}
 		}
 	}
@@ -558,6 +632,11 @@ public class Connection<V extends Visitor>
 	 * immediately available. Will throw {@link EOFException} if there are no
 	 * more frames to read (it is assumed that the caller expects the frame to
 	 * be there, so it's abnormal to reach end of stream here).
+	 * <p>
+	 * This method, in addition to throwing an exception, notifies registered
+	 * {@link ConnectionListener}s of a connection error for exceptions
+	 * declared as thrown by this method, except the exception thrown by the
+	 * visitor.
 	 * 
 	 * @param visitor
 	 *            the {@link Visitor} which will receive the incoming frame
@@ -580,6 +659,10 @@ public class Connection<V extends Visitor>
 	/**
 	 * Synchronously reads {@link Frame}s from this connection until end of
 	 * stream and sends them to the given {@link Visitor}.
+	 * <p>
+	 * This method, in addition to throwing an exception, notifies registered
+	 * {@link ConnectionListener}s of a connection error for exceptions
+	 * declared as thrown by this method.
 	 * 
 	 * @param visitor
 	 *            the {@link Visitor} which will receive incoming frames
@@ -605,7 +688,8 @@ public class Connection<V extends Visitor>
 	 * inspect if there were errors during the asnychronous processing when the
 	 * task quits (by catching {@link java.util.concurrent.ExecutionException}
 	 * thrown by {@link Future#get()}). This task does not close the connection
-	 * when it quits.
+	 * when it quits. The errors encountered during asynchronous processing are
+	 * sent to the registered {@link ConnectionListener}s.
 	 * 
 	 * @param visitor
 	 *            the {@link Visitor} which will receive incoming frames

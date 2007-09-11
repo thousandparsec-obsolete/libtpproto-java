@@ -8,6 +8,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import net.thousandparsec.netlib.Connection;
+import net.thousandparsec.netlib.DefaultConnectionListener;
 import net.thousandparsec.netlib.Frame;
 import net.thousandparsec.netlib.TPException;
 import net.thousandparsec.netlib.objects.GameObject;
@@ -28,7 +29,8 @@ public class TestConnect extends TP03Visitor
 		TP03Decoder decoder=new TP03Decoder();
 		Connection<TP03Visitor> conn=decoder.makeConnection(
 			new URI(args.length > 0 ? args[0] : "tp://guest:guest@demo1.thousandparsec.net/tp"),
-			true, new TP03Visitor(false), true);
+			true, new TP03Visitor(false));
+		conn.addConnectionListener(new DefaultConnectionListener<TP03Visitor>());
 		new TestConnect(conn).start();
 	}
 

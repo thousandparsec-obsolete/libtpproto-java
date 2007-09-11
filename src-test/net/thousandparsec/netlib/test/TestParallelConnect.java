@@ -18,6 +18,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import net.thousandparsec.netlib.Connection;
+import net.thousandparsec.netlib.DefaultConnectionListener;
 import net.thousandparsec.netlib.PipelinedConnection;
 import net.thousandparsec.netlib.SequentialConnection;
 import net.thousandparsec.netlib.TPException;
@@ -35,7 +36,8 @@ public class TestParallelConnect
 		TP03Decoder decoder=new TP03Decoder();
 		Connection<TP03Visitor> conn=decoder.makeConnection(
 			new URI(args.length > 0 ? args[0] : "tp://guest:guest@demo1.thousandparsec.net/tp"),
-			true, new TP03Visitor(false), true);
+			true, new TP03Visitor(false));
+		conn.addConnectionListener(new DefaultConnectionListener<TP03Visitor>());
 		new TestParallelConnect(conn).start();
 	}
 

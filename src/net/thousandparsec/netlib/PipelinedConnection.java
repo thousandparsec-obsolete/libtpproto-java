@@ -26,13 +26,17 @@ import java.util.concurrent.LinkedBlockingQueue;
  * between pipelines. Those pipelines have incoming queues of their own; these
  * queues are blockin queues and have a limited capacity and if any of the
  * threads stops processing its frames, the entire connection blocks after this
- * thread's queue fills up. TODO: errors handling (another queue)?
+ * thread's queue fills up.
  * <p>
  * The asynchronous frames sent by the server are still handled by the
  * underlying {@link Connection}, but this class makes them really asynchronous -
  * while with the low-level connection there needs to be an interaction to read
  * any pending asynchronous frames, with this class the asynchronous frames are
  * processed as soon as they appear in the incoming queue.
+ * <p>
+ * The errors, like unexpected frame or a response frame for unregistered
+ * sequence number, are received by the underlying {@link Connection}'s
+ * listeners.
  * 
  * @author ksobolewski
  */
@@ -237,9 +241,7 @@ public class PipelinedConnection<V extends Visitor>
 				{
 					BlockingQueue<Frame<V>> queue=getPipelineQueues().get(frame.getSequenceNumber());
 					if (queue == null)
-					{
-						//FIXME: error: unexpected frame
-					}
+						getConnection().fireErrorEvent(frame, new TPException(String.format("Unexpected frame: seq %d, type %d (%s)", frame.getSequenceNumber(), frame.getFrameType(), frame.toString())));
 					else
 						queue.put(frame);
 				}
@@ -247,9 +249,7 @@ public class PipelinedConnection<V extends Visitor>
 			}
 			catch (Exception ex)
 			{
-				//FIXME: error
-				System.err.println("Asynchronous receiver failed:");
-				ex.printStackTrace(System.err);
+				getConnection().fireErrorEvent(null, ex);
 				throw ex;
 			}
 		}
