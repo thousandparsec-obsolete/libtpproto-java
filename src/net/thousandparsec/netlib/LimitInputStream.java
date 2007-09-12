@@ -27,10 +27,10 @@ class LimitInputStream extends FilterInputStream
 		this.limit=limit;
 	}
 
-	private void checkLimit()
+	private void checkLimit() throws IOException
 	{
 		if (limit == 0)
-			throw new IllegalStateException("Read limit exceeded on stream");
+			throw new IOException("Read limit exceeded on stream");
 	}
 
 	@Override
