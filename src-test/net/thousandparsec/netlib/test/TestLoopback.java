@@ -19,6 +19,11 @@ import net.thousandparsec.netlib.tp03.TP03Visitor;
 
 public class TestLoopback
 {
+	public static void main(String... args) throws Exception
+	{
+		new TestLoopback().sendAndReceiveAllFrames();
+	}
+
 	@Test(groups={"net.thousandparsec.netlib.tp03"})
 	@SuppressWarnings("unchecked")
 	public void sendAndReceiveAllFrames() throws IOException, InterruptedException, InstantiationException, IllegalAccessException, ExecutionException
