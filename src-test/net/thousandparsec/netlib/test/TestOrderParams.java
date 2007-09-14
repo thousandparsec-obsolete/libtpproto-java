@@ -68,7 +68,8 @@ public class TestOrderParams
 			{
 				final Object o=oit.next();
 
-				if (o.getObject() instanceof ObjectParams.Planet)
+				if (o.getObject() instanceof ObjectParams.Planet
+					|| o.getObject() instanceof ObjectParams.Fleet)
 				{
 					GetOrder getOrder=new GetOrder();
 					getOrder.setId(o.getId());
