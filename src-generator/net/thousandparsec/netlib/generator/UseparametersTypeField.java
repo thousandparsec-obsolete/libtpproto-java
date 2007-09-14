@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class UseparametersTypeField
 {
-	private static final Pattern TYPEFIELD_REGEX=Pattern.compile("(\\w+)(=(\\w+)(\\[(\\w+)\\])?.(((\\w+)([.:]|$))+))?");
+	private static final Pattern TYPEFIELD_REGEX=Pattern.compile("(\\w+)(=(\\w+)(\\[(\\w+)\\])?\\.(((\\w+)([.:]|$))+))?");
 	private static final int TYPEFIELD_REGEX_GROUP_LOCAL=1;
 //	private static final int TYPEFIELD_REGEX_GROUP_INDIRECT_CLAUSE=2;
 	private static final int TYPEFIELD_REGEX_GROUP_INDIRECT_FRAME_NAME=3;
