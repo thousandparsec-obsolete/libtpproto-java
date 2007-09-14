@@ -46,7 +46,7 @@ public class ObjectIterator extends AbstractIterator<Object>
 		GetObjectsByID getObj=new GetObjectsByID();
 		int count;
 		for (count=0; count < chunkSize && objIds.hasNext(); count++)
-			getObj.getIds().add(new IdsType(objIds.next().getID()));
+			getObj.getIds().add(new IdsType(objIds.next().getId()));
 		if (count == 0)
 			return false;
 
@@ -102,8 +102,8 @@ public class ObjectIterator extends AbstractIterator<Object>
 			new TP03Decoder().makeConnection(
 				new URI("tp://guest:guest@demo1.thousandparsec.net/tp"),
 				true,
-				new TP03Visitor(true),
-				true));
+				new TP03Visitor(true)));
+		conn.getConnection().addConnectionListener(new DefaultConnectionListener<TP03Visitor>());
 		try
 		{
 			for (Iterator<Object> oit=new ObjectIterator(conn, DEFAULT_CHUNK_SIZE); oit.hasNext(); )

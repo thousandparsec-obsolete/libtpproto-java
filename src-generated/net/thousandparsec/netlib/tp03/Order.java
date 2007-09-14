@@ -51,16 +51,16 @@ public class Order extends Response
 		this.slot=value;
 	}
 
-	private int type;
+	private int otype;
 
-	public int getType()
+	public int getOtype()
 	{
-		return this.type;
+		return this.otype;
 	}
 
-	public void setType(int value)
+	public void setOtype(int value)
 	{
-		this.type=value;
+		this.otype=value;
 	}
 
 	/**
@@ -185,6 +185,38 @@ public class Order extends Response
 			this.resources.add(new ResourcesType(object));
 	}
 
+	/**
+	 * extra data, required by the order is appended to the end
+	 */
+	private byte[] orderparams=new byte[0];
+
+	public java.util.List<OrderParams> getOrderparams(OrderDesc template) throws TPException
+	{
+		try
+		{
+			if (template.getId() != getOtype())
+				throw new TPException(String.format("ParameterSet id does not match frame's parameter set id: %d != %d", template.getId(), getOtype()));
+			TPDataInput in=new TPInputStream(new java.io.ByteArrayInputStream(this.orderparams));
+			java.util.List<OrderParams> ret=new java.util.ArrayList<OrderParams>();
+			for (OrderDesc.ParametersType template0 : template.getParameters())
+			{
+				ret.add(OrderParams.create(template0.getType(), in));
+			}
+			return ret;
+		}
+		catch (IOException ex)
+		{
+			//rather unlikely, unless you pass a wrong template and hit EOFException
+			throw new TPException(ex);
+		}
+	}
+
+	@SuppressWarnings("unused")
+	private void setOrderparams(OrderParams value)
+	{
+		throw new RuntimeException();
+	}
+
 	@Override
 	public void visit(TP03Visitor visitor) throws TPException
 	{
@@ -199,7 +231,8 @@ public class Order extends Response
 			 + 4
 			 + 4
 			 + 4
-			 + findByteLength(this.resources);
+			 + findByteLength(this.resources)
+			 + this.orderparams.length;
 	}
 
 	@Override
@@ -208,11 +241,12 @@ public class Order extends Response
 		super.write(out, conn);
 		out.writeInteger(this.id);
 		out.writeInteger(this.slot);
-		out.writeInteger(this.type);
+		out.writeInteger(this.otype);
 		out.writeInteger(this.turns);
 		out.writeInteger(this.resources.size());
 		for (ResourcesType object : this.resources)
 			object.write(out, conn);
+		out.writeCharacter(this.orderparams);
 	}
 
 	/**
@@ -224,11 +258,13 @@ public class Order extends Response
 		super(id, in);
 		this.id=in.readInteger32();
 		this.slot=in.readInteger32();
-		this.type=in.readInteger32();
+		this.otype=in.readInteger32();
 		this.turns=in.readInteger32();
 		this.resources.clear();
 		for (int length=in.readInteger32(); length > 0; length--)
 			this.resources.add(new ResourcesType(in));
+		//indirect: drain the rest of frame and decode later
+		this.orderparams=in.drainFrame();
 	}
 
 	@Override
@@ -240,12 +276,14 @@ public class Order extends Response
 		buf.append(String.valueOf(this.id));
 		buf.append("; slot: ");
 		buf.append(String.valueOf(this.slot));
-		buf.append("; type: ");
-		buf.append(String.valueOf(this.type));
+		buf.append("; otype: ");
+		buf.append(String.valueOf(this.otype));
 		buf.append("; turns: ");
 		buf.append(String.valueOf(this.turns));
 		buf.append("; resources: ");
 		buf.append(String.valueOf(this.resources));
+		buf.append("; orderparams: ");
+		buf.append("<indirect>");
 		buf.append("; super:").append(super.toString());
 		buf.append("}");
 		return buf.toString();

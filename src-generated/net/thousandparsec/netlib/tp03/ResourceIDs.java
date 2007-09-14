@@ -5,8 +5,7 @@ import net.thousandparsec.netlib.*;
 import java.io.IOException;
 
 /**
- * List Of R
- * esource Description IDs
+ * List Of Resource Description IDs
  */
 public class ResourceIDs extends IDSequence
 {

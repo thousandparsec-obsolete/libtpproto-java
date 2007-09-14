@@ -37,14 +37,14 @@ class EnumerationHandler extends PropertyHandler
 			if (getDepth() == 0 && localName.equals("values"))
 			{
 				super.startElement(uri, localName, name, atts);
-				parent.packet.parent.parent.generator.startEnum(parent.level, camelName, getValueSubtype());
+				parent.generator.generator.startEnum(parent.level, camelName, getValueSubtype());
 			}
 			else if (getDepth() == 1)
 			{
 				super.startElement(uri, localName, name, atts);
 				lastName=atts.getValue("name");
 				lastValue=atts.getValue("id");
-				pushHandler(new TextCommentHandler(this, parent.packet, parent.level, 1));
+				pushHandler(new TextCommentHandler(this, parent.generator.generator, parent.level, 1));
 			}
 			else
 				super.startElement(uri, localName, name, atts);
@@ -64,7 +64,7 @@ class EnumerationHandler extends PropertyHandler
 			if (getDepth() == 2)
 			{
 				super.endElement(uri, localName, name);
-				parent.packet.parent.parent.generator.printEnumValue(parent.level, lastName, lastValue);
+				parent.generator.generator.printEnumValue(parent.level, lastName, lastValue);
 			}
 			else if (getDepth() == 1)
 			{
@@ -72,7 +72,7 @@ class EnumerationHandler extends PropertyHandler
 				if (localName.equals("name"))
 					setValueType(camelName=getName().substring(0, 1).toUpperCase()+getName().substring(1));
 				else if (localName.equals("values"))
-					parent.packet.parent.parent.generator.endEnum(parent.level, camelName, getValueSubtype());
+					parent.generator.generator.endEnum(parent.level, camelName, getValueSubtype());
 			}
 			else
 				super.endElement(uri, localName, name);

@@ -95,8 +95,8 @@ class GroupHandler extends PropertyHandler
 					pushHandler(new TextCollectorHandler(this, longNameCollector=new StringBuilder()));
 				else if (localName.equals("structure"))
 				{
-					parent.packet.parent.parent.generator.startInnerType(parent.level, getValueType());
-					pushHandler(new StructureHandler<GroupHandler>(this, parent.packet, parent.level + 1));
+					parent.generator.generator.startInnerType(parent.level, getValueType());
+					pushHandler(new StructureHandler<GroupHandler>(this, parent.generator, parent.level + 1));
 				}
 			}
 			else
@@ -129,7 +129,7 @@ class GroupHandler extends PropertyHandler
 					//...so we use "singularised" (usually) plural name
 					setValueType(singularizeName(getName()));
 				else if (localName.equals("structure"))
-					parent.packet.parent.parent.generator.endInnerType(parent.level, getValueType(), getProperties());
+					parent.generator.generator.endInnerType(parent.level, getValueType(), getProperties());
 			}
 			else
 				super.endElement(uri, localName, name);

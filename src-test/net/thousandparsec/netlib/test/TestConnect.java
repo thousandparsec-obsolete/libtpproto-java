@@ -11,16 +11,16 @@ import net.thousandparsec.netlib.Connection;
 import net.thousandparsec.netlib.DefaultConnectionListener;
 import net.thousandparsec.netlib.Frame;
 import net.thousandparsec.netlib.TPException;
-import net.thousandparsec.netlib.objects.GameObject;
-import net.thousandparsec.netlib.objects.Universe;
 import net.thousandparsec.netlib.tp03.Fail;
 import net.thousandparsec.netlib.tp03.GetObjectsByID;
 import net.thousandparsec.netlib.tp03.Object;
+import net.thousandparsec.netlib.tp03.ObjectParams;
 import net.thousandparsec.netlib.tp03.Okay;
 import net.thousandparsec.netlib.tp03.Ping;
 import net.thousandparsec.netlib.tp03.TP03Decoder;
 import net.thousandparsec.netlib.tp03.TP03Visitor;
 import net.thousandparsec.netlib.tp03.GetWithID.IdsType;
+import net.thousandparsec.netlib.tp03.ObjectParams.Universe;
 
 public class TestConnect extends TP03Visitor
 {
@@ -50,7 +50,8 @@ public class TestConnect extends TP03Visitor
 			conn.sendFrame(new Ping());
 
 			GetObjectsByID getObj=new GetObjectsByID();
-			getObj.getIds().add(new IdsType(Universe.OBJECT_ID));
+			//zero for top-level object is a typical magic number
+			getObj.getIds().add(new IdsType(0));
 			conn.sendFrame(getObj);
 		}
 		finally
@@ -94,13 +95,13 @@ public class TestConnect extends TP03Visitor
 	}
 
 	@Override
-	public void unhandledGameObject(GameObject<?> object)
+	public void unhandledObjectParams(ObjectParams object)
 	{
 		System.out.printf("Got game object: %s%n", object);
 	}
 
 	@Override
-	public void gameObject(Universe<?> object)
+	public void objectParams(Universe object)
 	{
 		System.out.printf("Got Universe: age %d%n", object.getAge());
 	}

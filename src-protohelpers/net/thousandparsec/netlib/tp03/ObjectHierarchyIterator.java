@@ -8,18 +8,17 @@ import java.util.List;
 
 import net.thousandparsec.netlib.SequentialConnection;
 import net.thousandparsec.netlib.TPException;
-import net.thousandparsec.netlib.objects.Universe;
 import net.thousandparsec.netlib.tp03.GetWithID.IdsType;
 import net.thousandparsec.util.AbstractIterator;
 import net.thousandparsec.util.Pair;
 
 /**
  * This is an {@link Iterator} that starts from the root object (usually the
- * {@link Universe}) and returns subsequent objects in a depth-first search.
- * The objects produced by thie iterator are {@link Pair}s which have hierarchy
- * depth (starting from {@literal 0}) as the left component and the
- * {@link Object} frame object as the right component. From the changes of the
- * depth the structure of the hierarchy can be determined.
+ * {@link ObjectParams.Universe}) and returns subsequent objects in a
+ * depth-first search. The objects produced by thie iterator are {@link Pair}s
+ * which have hierarchy depth (starting from {@literal 0}) as the left
+ * component and the {@link Object} frame object as the right component. From
+ * the changes of the depth the structure of the hierarchy can be determined.
  * 
  * @author ksobolewski
  */
@@ -54,7 +53,7 @@ public final class ObjectHierarchyIterator extends AbstractIterator<Pair<Integer
 	{
 		GetObjectsByID getObjs=new GetObjectsByID();
 		for (Object.ContainsType id : rootIds)
-			getObjs.getIds().add(new IdsType(id.getID()));
+			getObjs.getIds().add(new IdsType(id.getId()));
 
 		Sequence result=conn.sendFrame(getObjs, Sequence.class);
 		this.count=result.getNumber();
@@ -111,8 +110,8 @@ public final class ObjectHierarchyIterator extends AbstractIterator<Pair<Integer
 			new TP03Decoder().makeConnection(
 				new URI("tp://guest:guest@demo1.thousandparsec.net/tp"),
 				true,
-				new TP03Visitor(true),
-				true));
+				new TP03Visitor(true)));
+		conn.getConnection().addConnectionListener(new DefaultConnectionListener<TP03Visitor>());
 		try
 		{
 			TP03Visitor v=new TP03Visitor()
@@ -120,10 +119,10 @@ public final class ObjectHierarchyIterator extends AbstractIterator<Pair<Integer
 					@Override
 					public void frame(Object object)
 					{
-						System.out.printf("Object: type=%d, id=%d, name=%s%n", object.getObject().getObjectType(), object.getId(), object.getName());
+						System.out.printf("Object: type=%d, id=%d, name=%s%n", object.getOtype(), object.getId(), object.getName());
 					}
 				};
-			for (Iterator<Pair<Integer, Object>> oit=new ObjectHierarchyIterator(conn, Universe.OBJECT_ID); oit.hasNext(); )
+			for (Iterator<Pair<Integer, Object>> oit=new ObjectHierarchyIterator(conn, 0); oit.hasNext(); )
 			{
 				Pair<Integer, Object> object=oit.next();
 				for (int i=0; i < object.left; i++)

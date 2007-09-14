@@ -24,14 +24,14 @@ class PacketHandler extends StructuredElementHandler<ProtocolHandler>
 	protected final String packetName;
 	private boolean classdefWritten=false;
 
-	PacketHandler(ProtocolHandler parent, File targetDir, String packetName, int id, String basePacket) throws SAXException
+	PacketHandler(ProtocolHandler parent, File targetDir, int id, String basePacket, String packetName) throws SAXException
 	{
 		super(parent);
 		this.packetName=packetName;
 
 		try
 		{
-			parent.parent.generator.startPacket(targetDir, basePacket, packetName, id);
+			parent.parent.generator.startPacket(targetDir, id, basePacket, packetName);
 		}
 		catch (IOException ex)
 		{
@@ -57,11 +57,11 @@ class PacketHandler extends StructuredElementHandler<ProtocolHandler>
 			{
 				super.startElement(uri, localName, name, atts);
 				if (localName.equals("longname"))
-					pushHandler(new TextCommentHandler(this, this, 0, 0));
+					pushHandler(new TextCommentHandler(this, this.parent.parent.generator, 0, 0));
 				else if (localName.equals("structure"))
 				{
 					ensurePacketType();
-					pushHandler(new StructureHandler<PacketHandler>(this, this, 1));
+					pushHandler(new StructureHandler<PacketHandler>(this, parent.parent, 1));
 				}
 			}
 			else

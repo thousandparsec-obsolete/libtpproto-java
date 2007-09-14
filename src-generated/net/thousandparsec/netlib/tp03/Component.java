@@ -34,8 +34,7 @@ public class Component extends Response
 	}
 
 	/**
-	 * The time at which t
-	 * his component was last modified.
+	 * The time at which this component was last modified.
 	 */
 	private long modtime;
 

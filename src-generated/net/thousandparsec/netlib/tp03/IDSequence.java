@@ -57,18 +57,18 @@ public abstract class IDSequence extends Response
 		}
 
 		/**
-		 * the IDs
+		 * the ID
 		 */
-		private int ID;
+		private int id;
 
-		public int getID()
+		public int getId()
 		{
-			return this.ID;
+			return this.id;
 		}
 
-		public void setID(int value)
+		public void setId(int value)
 		{
-			this.ID=value;
+			this.id=value;
 		}
 
 		/**
@@ -96,16 +96,16 @@ public abstract class IDSequence extends Response
 
 		public void write(TPDataOutput out, Connection<?> conn) throws IOException
 		{
-			out.writeInteger(this.ID);
+			out.writeInteger(this.id);
 			out.writeInteger(this.modtime);
 		}
 
 		/**
 		 * A convenience constructor for easy initialisation of non-read only fields.
 		 */
-		public ModtimesType(int ID, long modtime)
+		public ModtimesType(int id, long modtime)
 		{
-			setID(ID);
+			setId(id);
 			setModtime(modtime);
 		}
 
@@ -114,7 +114,7 @@ public abstract class IDSequence extends Response
 		 */
 		public ModtimesType(ModtimesType copy)
 		{
-			setID(copy.getID());
+			setId(copy.getId());
 			setModtime(copy.getModtime());
 		}
 
@@ -124,7 +124,7 @@ public abstract class IDSequence extends Response
 		@SuppressWarnings("unused")
 		ModtimesType(TPDataInput in) throws IOException
 		{
-			this.ID=in.readInteger32();
+			this.id=in.readInteger32();
 			this.modtime=in.readInteger64();
 		}
 
@@ -133,8 +133,8 @@ public abstract class IDSequence extends Response
 		{
 			StringBuilder buf=new StringBuilder();
 			buf.append("{ModtimesType");
-			buf.append("; ID: ");
-			buf.append(String.valueOf(this.ID));
+			buf.append("; id: ");
+			buf.append(String.valueOf(this.id));
 			buf.append("; modtime: ");
 			buf.append(String.valueOf(this.modtime));
 			buf.append("}");

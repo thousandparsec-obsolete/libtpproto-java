@@ -51,7 +51,8 @@ public class Fail extends Response
 		NoSuchThing(4),
 
 		/**
-		 * Permission Denied, You don't have permission to do this operation
+		 * Permission Denied, You don't have 
+		 * permission to do this operation
 		 */
 		PermissionDenied(5),
 

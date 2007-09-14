@@ -13,18 +13,18 @@ import org.xml.sax.SAXException;
  */
 class TextCommentHandler extends StackedHandler<StackedHandler<?>>
 {
-	private final PacketHandler packet;
+	private final OutputGenerator generator;
 	private final int level;
 	private final int correction;
 
-	TextCommentHandler(StackedHandler<?> parent, PacketHandler packet, int level, int correction) throws IOException
+	TextCommentHandler(StackedHandler<?> parent, OutputGenerator generator, int level, int correction) throws IOException
 	{
 		super(parent);
-		this.packet=packet;
+		this.generator=generator;
 		this.level=level;
 		this.correction=correction;
 
-		packet.parent.parent.generator.startComment(level, correction);
+		generator.startComment(level, correction);
 	}
 
 	@Override
@@ -32,7 +32,7 @@ class TextCommentHandler extends StackedHandler<StackedHandler<?>>
 	{
 		try
 		{
-			packet.parent.parent.generator.continueComment(level, correction, ch, start, length);
+			generator.continueComment(level, correction, ch, start, length);
 			super.characters(ch, start, length);
 		}
 		catch (IOException ex)
@@ -46,7 +46,7 @@ class TextCommentHandler extends StackedHandler<StackedHandler<?>>
 	{
 		try
 		{
-			packet.parent.parent.generator.endComment(level, correction);
+			generator.endComment(level, correction);
 			super.endElement(uri, localName, name);
 		}
 		catch (IOException ex)

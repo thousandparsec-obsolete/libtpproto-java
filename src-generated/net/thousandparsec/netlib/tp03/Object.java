@@ -1,7 +1,6 @@
 package net.thousandparsec.netlib.tp03;
 
 import net.thousandparsec.netlib.*;
-import net.thousandparsec.netlib.objects.*;
 
 import java.io.IOException;
 
@@ -337,18 +336,18 @@ public class Object extends Response
 		}
 
 		/**
-		 * the IDs
+		 * the ID
 		 */
-		private int ID;
+		private int id;
 
-		public int getID()
+		public int getId()
 		{
-			return this.ID;
+			return this.id;
 		}
 
-		public void setID(int value)
+		public void setId(int value)
 		{
-			this.ID=value;
+			this.id=value;
 		}
 
 		@Override
@@ -360,15 +359,15 @@ public class Object extends Response
 
 		public void write(TPDataOutput out, Connection<?> conn) throws IOException
 		{
-			out.writeInteger(this.ID);
+			out.writeInteger(this.id);
 		}
 
 		/**
 		 * A convenience constructor for easy initialisation of non-read only fields.
 		 */
-		public ContainsType(int ID)
+		public ContainsType(int id)
 		{
-			setID(ID);
+			setId(id);
 		}
 
 		/**
@@ -376,7 +375,7 @@ public class Object extends Response
 		 */
 		public ContainsType(ContainsType copy)
 		{
-			setID(copy.getID());
+			setId(copy.getId());
 		}
 
 		/**
@@ -385,7 +384,7 @@ public class Object extends Response
 		@SuppressWarnings("unused")
 		ContainsType(TPDataInput in) throws IOException
 		{
-			this.ID=in.readInteger32();
+			this.id=in.readInteger32();
 		}
 
 		@Override
@@ -393,8 +392,8 @@ public class Object extends Response
 		{
 			StringBuilder buf=new StringBuilder();
 			buf.append("{ContainsType");
-			buf.append("; ID: ");
-			buf.append(String.valueOf(this.ID));
+			buf.append("; id: ");
+			buf.append(String.valueOf(this.id));
 			buf.append("}");
 			return buf.toString();
 		}
@@ -428,18 +427,18 @@ public class Object extends Response
 		}
 
 		/**
-		 * the IDs
+		 * the ID
 		 */
-		private int ID;
+		private int id;
 
-		public int getID()
+		public int getId()
 		{
-			return this.ID;
+			return this.id;
 		}
 
-		public void setID(int value)
+		public void setId(int value)
 		{
-			this.ID=value;
+			this.id=value;
 		}
 
 		@Override
@@ -451,15 +450,15 @@ public class Object extends Response
 
 		public void write(TPDataOutput out, Connection<?> conn) throws IOException
 		{
-			out.writeInteger(this.ID);
+			out.writeInteger(this.id);
 		}
 
 		/**
 		 * A convenience constructor for easy initialisation of non-read only fields.
 		 */
-		public OrdertypesType(int ID)
+		public OrdertypesType(int id)
 		{
-			setID(ID);
+			setId(id);
 		}
 
 		/**
@@ -467,7 +466,7 @@ public class Object extends Response
 		 */
 		public OrdertypesType(OrdertypesType copy)
 		{
-			setID(copy.getID());
+			setId(copy.getId());
 		}
 
 		/**
@@ -476,7 +475,7 @@ public class Object extends Response
 		@SuppressWarnings("unused")
 		OrdertypesType(TPDataInput in) throws IOException
 		{
-			this.ID=in.readInteger32();
+			this.id=in.readInteger32();
 		}
 
 		@Override
@@ -484,8 +483,8 @@ public class Object extends Response
 		{
 			StringBuilder buf=new StringBuilder();
 			buf.append("{OrdertypesType");
-			buf.append("; ID: ");
-			buf.append(String.valueOf(this.ID));
+			buf.append("; id: ");
+			buf.append(String.valueOf(this.id));
 			buf.append("}");
 			return buf.toString();
 		}
@@ -507,8 +506,7 @@ public class Object extends Response
 	}
 
 	/**
-	 * number of orders currently 
-	 * on this object
+	 * number of orders currently on this object
 	 */
 	private int orders;
 
@@ -549,22 +547,21 @@ public class Object extends Response
 		System.arraycopy(value, 0, this.padding, 0, this.padding.length);
 	}
 
-	/*
-	 * somehow we know that Universe is type 0 :)
-	 * [it has to be in sync with otype property, which is inited to 0 if not created by server]
-	 * (and use subversive inner class construct to exploit protected constructor ;))
-	 */
-	private GameObject<TP03Visitor> object=new Universe<TP03Visitor>() {};
+	private ObjectParams object=new ObjectParams(-1);
+	{
+		//hackity hack :) [for tests only!]
+		this.otype=-1;
+	}
 
-	public GameObject<TP03Visitor> getObject()
+	public ObjectParams getObject()
 	{
 		return this.object;
 	}
 
 	@SuppressWarnings("unused")
-	private void setObject(GameObject<TP03Visitor> value)
+	private void setObject(ObjectParams value)
 	{
-		this.object=value.copy();
+		throw new RuntimeException();
 	}
 
 	@Override
@@ -635,7 +632,8 @@ public class Object extends Response
 		this.orders=in.readInteger32();
 		this.modtime=in.readInteger64();
 		in.readCharacter(this.padding);
-		this.object=GameObject.createGameObject(this.otype, in);
+		//direct: just read this sucker
+		this.object=ObjectParams.create(this.otype, in);
 	}
 
 	@Override
