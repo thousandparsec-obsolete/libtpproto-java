@@ -132,7 +132,7 @@ public class JavaOutputGenerator implements OutputGenerator
 
 			printInputConstructor(0, packetName, properties, true);
 
-			printToStringMethod(0, packetName, properties, true);
+			printToStringMethod(0, packetName, properties, true, out);
 
 			//TODO: printEqualsMethod();
 
@@ -218,12 +218,18 @@ public class JavaOutputGenerator implements OutputGenerator
 		this.parameterName=null;
 	}
 
-	public void endParameterSet(File targetDir, List<NamedEntity> parameters) throws IOException
+	public void endParameterSet(File targetDir, List<NamedEntity> parameters, List<NamedEntity> parameterDescs) throws IOException
 	{
 		try
 		{
-			printToStringMethod(0, parameterSetName, Collections.<Property>emptyList(), false);
-			printStaticParameterFactory(0, parameters);
+			printToStringMethod(0, parameterSetName, Collections.<Property>emptyList(), false, outParam);
+			printStaticParameterFactory(0, parameterSetName, parameters, outParam);
+
+			if (outParamDesc != null)
+			{
+				printToStringMethod(0, parameterSetName+"Desc", Collections.<Property>emptyList(), false, outParamDesc);
+				printStaticParameterFactory(0, parameterSetName+"Desc", parameterDescs, outParamDesc);
+			}
 
 			outParam.println("}");
 			if (outParamDesc != null)
@@ -321,6 +327,7 @@ public class JavaOutputGenerator implements OutputGenerator
 			switch (p.type)
 			{
 				case group:
+				case descparameter:
 					out.printf("%s		this.%s.write(out, conn);%n", indent, p.name);
 					break;
 
@@ -480,6 +487,10 @@ public class JavaOutputGenerator implements OutputGenerator
 						out.printf("%s		this.%s=%s.create(this.%s, in);%n", indent, p.name, p.targetType, p.targetSubtype);
 					}
 					break;
+
+				case descparameter:
+					out.printf("%s		this.%s=%s.create(this.%s, in);%n", indent, p.name, p.targetType, p.targetSubtype);
+					break;
 			}
 		}
 		out.printf("%s	}%n", indent);
@@ -488,7 +499,7 @@ public class JavaOutputGenerator implements OutputGenerator
 		checkError(out);
 	}
 
-	private void printToStringMethod(int level, String typeName, List<Property> properties, boolean overrides) throws IOException
+	private void printToStringMethod(int level, String typeName, List<Property> properties, boolean overrides, PrintWriter out) throws IOException
 	{
 		Indent indent=new Indent(level);
 
@@ -511,6 +522,7 @@ public class JavaOutputGenerator implements OutputGenerator
 				case integer:
 				case list:
 				case string:
+				case descparameter:
 					out.printf("%s		buf.append(String.valueOf(this.%s));%n", indent, p.name);
 					break;
 
@@ -532,19 +544,19 @@ public class JavaOutputGenerator implements OutputGenerator
 		checkError(out);
 	}
 
-	private void printStaticParameterFactory(int level, List<NamedEntity> parameters) throws IOException
+	private void printStaticParameterFactory(int level, String className, List<NamedEntity> parameters, PrintWriter out) throws IOException
 	{
 		Indent indent=new Indent(level);
 
-		out.printf("%s	public static %s create(int id, TPDataInput in) throws IOException%n", indent, parameterSetName);
+		out.printf("%s	public static %s create(int id, TPDataInput in) throws IOException%n", indent, className);
 		out.printf("%s	{%n", indent);
 		out.println("		switch (id)");
 		out.println("		{");
 		for (NamedEntity parameter : parameters)
 			out.printf("			case %d: return new %s(id, in);%n", parameter.id, parameter.name);
 		out.println("			//this is necessary for marshall/unmarshall tests");
-		out.printf("			case -1: return new %s(id, in);%n", parameterSetName);
-		out.printf("			default: throw new IllegalArgumentException(\"Invalid %s id: \"+id);%n", parameterSetName);
+		out.printf("			case -1: return new %s(id, in);%n", className);
+		out.printf("			default: throw new IllegalArgumentException(\"Invalid %s id: \"+id);%n", className);
 		out.println("		}");
 		out.printf("%s	}%n", indent);
 		out.println();
@@ -827,7 +839,7 @@ public class JavaOutputGenerator implements OutputGenerator
 
 		printInputConstructor(1, parameterName, properties, true);
 
-		printToStringMethod(1, parameterName, properties, true);
+		printToStringMethod(1, parameterName, properties, true, out);
 
 		printVisitorMethod(1, baseClass.substring(0, 1).toLowerCase()+baseClass.substring(1), true);
 
@@ -904,6 +916,14 @@ public class JavaOutputGenerator implements OutputGenerator
 					out.printf("%s	this.%s=-1;%n", indent, property.targetSubtype);
 					out.printf("%s}%n", indent);
 				}
+				break;
+
+			case descparameter:
+				out.printf("%sprivate %s %s=new %s(-1);%n", indent, property.targetType, property.name, property.targetType);
+				out.printf("%s{%n", indent);
+				out.printf("%s	//hackity hack :) [for tests only!]%n", indent);
+				out.printf("%s	this.%s=-1;%n", indent, property.targetSubtype);
+				out.printf("%s}%n", indent);
 				break;
 		}
 		out.println();
@@ -1009,6 +1029,12 @@ public class JavaOutputGenerator implements OutputGenerator
 					out.printf("%s	return this.%s;%n", indent, property.name);
 				}
 				break;
+
+			case descparameter:
+				out.printf("%spublic %s %s()%n", indent, property.targetType, camelPrefix("get", property.name));
+				out.printf("%s{%n", indent);
+				out.printf("%s	return this.%s;%n", indent, property.name);
+				break;
 		}
 		out.printf("%s}%n", indent);
 		out.println();
@@ -1071,6 +1097,7 @@ public class JavaOutputGenerator implements OutputGenerator
 				break;
 
 			case useparameters:
+			case descparameter:
 				//TODO: should this be copyable?
 				out.printf("%s	throw new RuntimeException();%n", indent, property.name);
 				break;
@@ -1145,7 +1172,7 @@ public class JavaOutputGenerator implements OutputGenerator
 		printConvenienceConstructor(level, name, properties);
 		printInputConstructor(level, name, properties, false);
 
-		printToStringMethod(level, name, properties, false);
+		printToStringMethod(level, name, properties, false, out);
 
 		out.printf("%s}%n", indent);
 		out.println();

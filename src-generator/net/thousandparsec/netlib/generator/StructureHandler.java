@@ -46,8 +46,7 @@ class StructureHandler<P extends StructuredElementHandler<?>> extends StackedHan
 			}
 			catch (IllegalArgumentException ex)
 			{
-				//FIXME: uncomment when able to handle useparameters and descparameter
-				//throw new SAXException("Unknown property type: "+localName);
+				throw new SAXException("Unknown property type: "+localName);
 			}
 		}
 		else
@@ -113,20 +112,24 @@ class StructureHandler<P extends StructuredElementHandler<?>> extends StackedHan
 			@Override
 			<P extends StructuredElementHandler<?>> PropertyHandler makeHandler(StructureHandler<P> parent, Generator generator, Attributes xmlAtts) throws NumberFormatException, SAXException
 			{
-				//I assume that descparameter is always read only
+				//I assume that useparameters is always read only
 				PropertyHandler ret=new PropertyHandler(parent, useparameters, xmlAtts.getValue("ref"), xmlAtts.getValue("typefield"), 0, true);
 				//I told ya it won't be pretty!
 				ret.setUseparametersTypeField(xmlAtts.getValue("typefield"));
 				return ret;
 			}
+		},
+		descparameter
+		{
+			@Override
+			<P extends StructuredElementHandler<?>> PropertyHandler makeHandler(StructureHandler<P> parent, Generator generator, Attributes xmlAtts) throws NumberFormatException, SAXException
+			{
+				//I assume that descparameter is always read only
+				return new PropertyHandler(parent, descparameter, xmlAtts.getValue("ref")+"Desc", xmlAtts.getValue("typefield"), 0, true);
+			}
 		};
-		//TODO
-//		useparameters,
 
 		@SuppressWarnings("unused") //stupid Eclipse :P
-		<P extends StructuredElementHandler<?>> PropertyHandler makeHandler(StructureHandler<P> structureHandler, Generator generator, Attributes xmlAtts) throws NumberFormatException, SAXException
-		{
-			return null;
-		}
+		abstract <P extends StructuredElementHandler<?>> PropertyHandler makeHandler(StructureHandler<P> structureHandler, Generator generator, Attributes xmlAtts) throws NumberFormatException, SAXException;
 	}
 }

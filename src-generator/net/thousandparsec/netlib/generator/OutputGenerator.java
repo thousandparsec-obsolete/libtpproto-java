@@ -39,7 +39,7 @@ public interface OutputGenerator
 
 	void endParameter(String name) throws IOException;
 
-	void endParameterSet(File targetDir, List<NamedEntity> parameters) throws IOException;
+	void endParameterSet(File targetDir, List<NamedEntity> parameters, List<NamedEntity> parameterDescs) throws IOException;
 
 	/**
 	 * The {@code entities} parameter is a map from a group name to a list of
