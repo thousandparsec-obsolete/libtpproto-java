@@ -47,6 +47,9 @@ public class JavaOutputGenerator implements OutputGenerator
 
 	/* for parameter sets */
 	private String parameterSetName;
+	private String parameterName;
+	private PrintWriter outParam;
+	private PrintWriter outParamDesc;
 
 	/**
 	 * The constructor has no arguments to allow it eventually become easier to
@@ -103,10 +106,10 @@ public class JavaOutputGenerator implements OutputGenerator
 		this.basePacket=basePacket;
 		this.packetName=packetName;
 
-		printPreamble();
+		printPreamble(this.out);
 	}
 
-	private void printPreamble() throws IOException
+	private void printPreamble(PrintWriter out) throws IOException
 	{
 		out.printf("package %s.tp%02d;%n", TARGET_BASE_PACKAGE, compat);
 		out.println();
@@ -152,10 +155,67 @@ public class JavaOutputGenerator implements OutputGenerator
 	public void startParameterSet(File targetDir, String name) throws IOException
 	{
 		this.targetDir=createTargetDir(targetDir);
-		this.out=createTargetFile(new File(this.targetDir, name+".java"));
+		/*
+		 * Carefully wrangle out, outParam and outParamDesc to correctly
+		 * redirect output from structure callbacks. outParamDesc is created
+		 * lazily after the first descstruct element appears, to avoid
+		 * unnecessry classes when it's unused.
+		 */
+		this.outParam=createTargetFile(new File(this.targetDir, name+".java"));
 		this.parameterSetName=name;
 
-		printPreamble();
+		out=outParam;
+
+		printPreamble(this.outParam);
+	}
+
+	public void startParameter(String name) throws IOException
+	{
+		this.parameterName=name;
+	}
+
+	public void startParameterStruct() throws IOException
+	{
+		out=outParam;
+
+		printParameterStructType(outParam, parameterSetName);
+
+		checkError(out);
+	}
+
+	public void endParameterStruct(List<Property> properties) throws IOException
+	{
+		printEndParameterClass(properties, parameterSetName, outParam);
+	}
+
+	public void startParameterDescStruct() throws IOException
+	{
+		if (outParamDesc == null)
+		{
+			outParamDesc=createTargetFile(new File(targetDir, String.format("%sDesc.java", parameterSetName)));
+			printPreamble(outParamDesc);
+			printParameterSetType(outParamDesc, parameterSetName+"Desc");
+
+			checkError(out);
+		}
+
+		out=outParamDesc;
+
+		printParameterStructType(outParamDesc, parameterSetName+"Desc");
+
+		checkError(out);
+	}
+
+	public void endParameterDescStruct(List<Property> properties) throws IOException
+	{
+		printEndParameterClass(properties, parameterSetName+"Desc", outParamDesc);
+
+		out=outParam;
+	}
+
+	public void endParameter(String name) throws IOException
+	{
+		this.parameterName=null;
 	}
 
 	public void endParameterSet(File targetDir, List<NamedEntity> parameters) throws IOException
@@ -165,17 +225,26 @@ public class JavaOutputGenerator implements OutputGenerator
 			printToStringMethod(0, parameterSetName, Collections.<Property>emptyList(), false);
 			printStaticParameterFactory(0, parameters);
 
-			out.println("}");
+			outParam.println("}");
+			if (outParamDesc != null)
+				outParamDesc.println("}");
 		}
 		finally
 		{
-			PrintWriter bak=out;
+			PrintWriter bakParam=outParam;
+			PrintWriter bakParamDesc=outParamDesc;
 			this.targetDir=null;
 			this.out=null;
+			this.outParam=null;
+			this.outParamDesc=null;
 			this.parameterSetName=null;
 
-			bak.close();
-			checkError(bak);
+			bakParam.close();
+			if (bakParamDesc != null)
+				bakParamDesc.close();
+			checkError(bakParam);
+			if (bakParamDesc != null)
+				checkError(bakParamDesc);
 		}
 	}
 
@@ -687,16 +756,22 @@ public class JavaOutputGenerator implements OutputGenerator
 
 	public void startParameterSetType() throws IOException
 	{
-		out.printf("public class %s extends TPObject<TP%02dVisitor> implements Visitable<TP%02dVisitor>%n", parameterSetName, compat, compat);
+		out=outParam;
+		printParameterSetType(outParam, parameterSetName);
+	}
+
+	private void printParameterSetType(PrintWriter out, String className) throws IOException
+	{
+		out.printf("public class %s extends TPObject<TP%02dVisitor> implements Visitable<TP%02dVisitor>%n", className, compat, compat);
 		out.println("{");
 		out.println("	private final int id;");
 		out.println();
-		out.printf("	protected %s(int id)%n", parameterSetName);
+		out.printf("	protected %s(int id)%n", className);
 		out.println("	{");
 		out.println("		this.id=id;");
 		out.println("	}");
 		out.println();
-		out.printf("	%s(int id, TPDataInput in)%n", parameterSetName);
+		out.printf("	%s(int id, TPDataInput in)%n", className);
 		out.println("	{");
 		out.println("		this(id);");
 		out.println("		//nothing to read");
@@ -722,6 +797,41 @@ public class JavaOutputGenerator implements OutputGenerator
 		out.println("	{");
 		out.println("		throw new RuntimeException();");
 		out.println("	}");
+		out.println();
+
+		checkError(out);
+	}
+
+	private void printParameterStructType(PrintWriter out, String baseClass)
+	{
+		Indent indent=new Indent(1);
+
+		out.printf("%spublic static class %s extends %s%n", indent, parameterName, baseClass);
+		out.printf("%s{%n", indent);
+		out.printf("%s	/**%n", indent);
+		out.printf("%s	 * A default constructor which initialises properties to their defaults.%n", indent);
+		out.printf("%s	 */%n", indent);
+		out.printf("%s	protected %s(int id)%n", indent, parameterName);
+		out.printf("%s	{%n", indent);
+		out.printf("%s		super(id);%n", indent, parameterName);
+		out.printf("%s	}%n", indent);
+		out.println();
+	}
+
+	private void printEndParameterClass(List<Property> properties, String baseClass, PrintWriter out) throws IOException
+	{
+		Indent indent=new Indent(1);
+
+		printFindLengthMethod(1, properties);
+		printWriteMethod(1, properties, true);
+
+		printInputConstructor(1, parameterName, properties, true);
+
+		printToStringMethod(1, parameterName, properties, true);
+
+		printVisitorMethod(1, baseClass.substring(0, 1).toLowerCase()+baseClass.substring(1), true);
+
+		out.printf("%s}%n", indent);
 		out.println();
 
 		checkError(out);
@@ -1011,24 +1121,14 @@ public class JavaOutputGenerator implements OutputGenerator
 	public void startInnerType(int level, String name) throws IOException
 	{
 		Indent indent=new Indent(level);
-		//hmmm, this is getting messy.
-		boolean isParameter=level == 1 && parameterSetName != null;
 
-		if (isParameter)
-			out.printf("%spublic static class %s extends %s%n", indent, name, parameterSetName);
-		else
-			out.printf("%spublic static class %s extends TPObject<TP%02dVisitor>%n", indent, name, compat);
+		out.printf("%spublic static class %s extends TPObject<TP%02dVisitor>%n", indent, name, compat);
 		out.printf("%s{%n", indent);
 		out.printf("%s	/**%n", indent);
 		out.printf("%s	 * A default constructor which initialises properties to their defaults.%n", indent);
 		out.printf("%s	 */%n", indent);
-		if (isParameter)
-			out.printf("%s	protected %s(int id)%n", indent, name);
-		else
-			out.printf("%s	public %s()%n", indent, name);
+		out.printf("%s	public %s()%n", indent, name);
 		out.printf("%s	{%n", indent);
-		if (isParameter)
-			out.printf("%s		super(id);%n", indent, name);
 		out.printf("%s	}%n", indent);
 		out.println();
 
@@ -1038,21 +1138,14 @@ public class JavaOutputGenerator implements OutputGenerator
 	public void endInnerType(int level, String name, List<Property> properties) throws IOException
 	{
 		Indent indent=new Indent(level);
-		//hmmm, this is getting messy.
-		boolean isParameter=level == 1 && parameterSetName != null;
 
 		printFindLengthMethod(level, properties);
-		printWriteMethod(level, properties, isParameter);
+		printWriteMethod(level, properties, false);
 
-		if (!isParameter)
-			printConvenienceConstructor(level, name, properties);
+		printConvenienceConstructor(level, name, properties);
+		printInputConstructor(level, name, properties, false);
 
-		printInputConstructor(level, name, properties, isParameter);
-
-		printToStringMethod(level, name, properties, isParameter);
-
-		if (isParameter)
-			printVisitorMethod(level, parameterSetName.substring(0, 1).toLowerCase()+parameterSetName.substring(1), isParameter);
+		printToStringMethod(level, name, properties, false);
 
 		out.printf("%s}%n", indent);
 		out.println();

@@ -36,7 +36,7 @@ class StackedHandler<P extends StackedHandler<?>> implements ContentHandler
 	private ContentHandler stack;
 	private int depth;
 
-	public StackedHandler(P parent)
+	StackedHandler(P parent)
 	{
 		this.parent=parent;
 		this.stack=NULL_HANDLER;

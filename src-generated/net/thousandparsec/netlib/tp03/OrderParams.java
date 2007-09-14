@@ -43,6 +43,9 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		throw new RuntimeException();
 	}
 
+	/**
+	 * Coordinates in absolute space. (Relative to the center of the Universe)
+	 */
 	public static class OrderParamAbsSpaceCoords extends OrderParams
 	{
 		/**
@@ -53,9 +56,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			super(id);
 		}
 
-		/**
-		 * Coordinates in absolute space. (Relative to the center of the Universe)
-		 */
 		public static class PosType extends TPObject<TP03Visitor>
 		{
 			/**
@@ -220,6 +220,9 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 
 	}
 
+	/**
+	 * The number of turns before something happens.
+	 */
 	public static class OrderParamTime extends OrderParams
 	{
 		/**
@@ -230,9 +233,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			super(id);
 		}
 
-		/**
-		 * The number of turns before something happens.
-		 */
 		/**
 		 * Number of turns
 		 */
@@ -312,6 +312,9 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 
 	}
 
+	/**
+	 * An object's ID number.
+	 */
 	public static class OrderParamObject extends OrderParams
 	{
 		/**
@@ -322,9 +325,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			super(id);
 		}
 
-		/**
-		 * An object's ID number.
-		 */
 		/**
 		 * The object's Id number.
 		 */
@@ -383,6 +383,9 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 
 	}
 
+	/**
+	 * A player's ID number.
+	 */
 	public static class OrderParamPlayer extends OrderParams
 	{
 		/**
@@ -393,9 +396,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			super(id);
 		}
 
-		/**
-		 * A player's ID number.
-		 */
 		/**
 		 * The player's Id number.
 		 */
@@ -512,6 +512,9 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 
 	}
 
+	/**
+	 * Coordinates relative to an object
+	 */
 	public static class OrderParamRelSpaceCoords extends OrderParams
 	{
 		/**
@@ -522,9 +525,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			super(id);
 		}
 
-		/**
-		 * Coordinates relative to an object
-		 */
 		/**
 		 * The object's Id number.
 		 */
@@ -709,6 +709,9 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 
 	}
 
+	/**
+	 * A number value from a range.
+	 */
 	public static class OrderParamRange extends OrderParams
 	{
 		/**
@@ -719,9 +722,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			super(id);
 		}
 
-		/**
-		 * A number value from a range.
-		 */
 		/**
 		 * The Value
 		 */
@@ -843,6 +843,9 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 
 	}
 
+	/**
+	 * A in which numerous items can be selected.
+	 */
 	public static class OrderParamList extends OrderParams
 	{
 		/**
@@ -853,9 +856,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			super(id);
 		}
 
-		/**
-		 * A in which numerous items can be selected.
-		 */
 		/**
 		 * A list of the items which can be chosen.
 		 */
@@ -1153,6 +1153,9 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 
 	}
 
+	/**
+	 * A textual string.
+	 */
 	public static class OrderParamString extends OrderParams
 	{
 		/**
@@ -1163,9 +1166,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			super(id);
 		}
 
-		/**
-		 * A textual string.
-		 */
 		/**
 		 * The maximum length of the string
 		 */
@@ -1242,6 +1242,9 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 
 	}
 
+	/**
+	 * A reference to something.
+	 */
 	public static class OrderParamReference extends OrderParams
 	{
 		/**
@@ -1252,9 +1255,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			super(id);
 		}
 
-		/**
-		 * A reference to something.
-		 */
 		/**
 		 * The generic reference to something.
 		 */
@@ -1406,6 +1406,9 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 
 	}
 
+	/**
+	 * A list of references to something.
+	 */
 	public static class OrderParamReferenceList extends OrderParams
 	{
 		/**
@@ -1416,9 +1419,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			super(id);
 		}
 
-		/**
-		 * A list of references to something.
-		 */
 		/**
 		 * The list of references.
 		 */

@@ -37,12 +37,12 @@ class PropertyHandler extends StructuredElementHandler<StructureHandler<?>>
 	 * the beginning of this element. Remember to set it with
 	 * {@link #setValueType(String)} later.
 	 */
-	public PropertyHandler(StructureHandler<?> parent, StructureHandler.PropertyType type, int size, boolean readOnly)
+	PropertyHandler(StructureHandler<?> parent, StructureHandler.PropertyType type, int size, boolean readOnly)
 	{
 		this(parent, type, null, null, size, readOnly);
 	}
 
-	public PropertyHandler(StructureHandler<?> parent, StructureHandler.PropertyType type, String valueType, String valueSubtype, int size, boolean readOnly)
+	PropertyHandler(StructureHandler<?> parent, StructureHandler.PropertyType type, String valueType, String valueSubtype, int size, boolean readOnly)
 	{
 		super(parent);
 		this.valueType=valueType;

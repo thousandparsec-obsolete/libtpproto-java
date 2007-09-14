@@ -19,9 +19,25 @@ public interface OutputGenerator
 
 	void startPacket(File targetDir, int id, String basePacket, String packetName) throws IOException;
 
+	void startPacketType() throws IOException;
+
 	void endPacket(List<Property> properties) throws IOException;
 
 	void startParameterSet(File targetDir, String name) throws IOException;
+
+	void startParameterSetType() throws IOException;
+
+	void startParameter(String name) throws IOException;
+
+	void startParameterStruct() throws IOException;
+
+	void endParameterStruct(List<Property> properties) throws IOException;
+
+	void startParameterDescStruct() throws IOException;
+
+	void endParameterDescStruct(List<Property> properties) throws IOException;
+
+	void endParameter(String name) throws IOException;
 
 	void endParameterSet(File targetDir, List<NamedEntity> parameters) throws IOException;
 
@@ -30,10 +46,6 @@ public interface OutputGenerator
 	 * entities; there is at least one group named "frame".
 	 */
 	void endProtocol(File targetDir, Map<String, List<NamedEntity>> entities) throws IOException;
-
-	void startPacketType() throws IOException;
-
-	void startParameterSetType() throws IOException;
 
 	void startComment(int level, int correction) throws IOException;
 
@@ -54,9 +66,9 @@ public interface OutputGenerator
 	void endEnum(int level, String enumName, String valueType) throws IOException;
 
 	/**
-	 * Called for inner types in packets AND in parametersets. Level and
-	 * previous call to {@link #startParameterSet(File, String)} may be used to
-	 * distinguish them
+	 * Called for inner types in structures (only). Which structure it is (under
+	 * packet, under parameter/usestruct or under packet/descstruct) should be
+	 * remembered from calls to {@code start*()} methods.
 	 */
 	void startInnerType(int level, String name) throws IOException;
 

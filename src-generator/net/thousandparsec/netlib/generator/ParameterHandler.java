@@ -7,14 +7,13 @@ import org.xml.sax.SAXException;
 
 /**
  * This handler generates an inner class for one parameter from its
- * {@code ./usestruct/structure} element.
+ * {@code ./usestruct/structure} and {@code ./descstruct/structure} elements.
  * 
  * @author ksobolewski
  */
-public class ParameterHandler extends StructuredElementHandler<ParametersetHandler>
+class ParameterHandler extends StackedHandler<ParametersetHandler>
 {
 	private final String name;
-	private boolean underUsestruct;
 
 	ParameterHandler(ParametersetHandler parent, String name, int id) throws SAXException
 	{
@@ -23,7 +22,7 @@ public class ParameterHandler extends StructuredElementHandler<ParametersetHandl
 
 		try
 		{
-			parent.parent.parent.generator.startInnerType(1, this.name);
+			parent.parent.parent.generator.startParameter(this.name);
 		}
 		catch (IOException ex)
 		{
@@ -42,14 +41,14 @@ public class ParameterHandler extends StructuredElementHandler<ParametersetHandl
 			{
 				super.startElement(uri, localName, name, atts);
 				if (name.equals("description"))
-					pushHandler(new TextCommentHandler(this, parent.parent.parent.generator, 1, 1));
+					pushHandler(new TextCommentHandler(this, parent.parent.parent.generator, 1, 0));
 				else if (name.equals("usestruct"))
-					underUsestruct=true;
-			}
-			else if (getDepth() == 1 && underUsestruct)
-			{
-				super.startElement(uri, localName, name, atts);
-				pushHandler(new StructureHandler<ParameterHandler>(this, parent.parent.parent, 2));
+					pushHandler(new UsestructHandler(this));
+				else if (name.equals("descstruct"))
+				{
+					parent.hasParameterDesc();
+					pushHandler(new DescstructHandler(this));
+				}
 			}
 			else
 				super.startElement(uri, localName, name, atts);
@@ -66,10 +65,8 @@ public class ParameterHandler extends StructuredElementHandler<ParametersetHandl
 	{
 		try
 		{
-			if (getDepth() == 1 && name.equals("usestruct"))
-				underUsestruct=false;
-			else if (getDepth() == 0)
-				parent.parent.parent.generator.endInnerType(1, this.name, getProperties());
+			if (getDepth() == 0)
+				parent.parent.parent.generator.endParameter(this.name);
 			super.endElement(uri, localName, name);
 		}
 		catch (IOException ex)
