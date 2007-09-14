@@ -335,6 +335,37 @@ public class TP03Visitor extends Visitor
 		unhandledFrame(frame);
 	}
 
+	public void unhandledObjectParams(ObjectParams objectParams) throws TPException
+	{
+		if (errorOnUnhandled)
+			throw new TPException(String.format("Unexpected objectParams: type %d (%s)", objectParams.getParameterType(), objectParams.toString()));
+	}
+
+	public void objectParams(ObjectParams.Universe objectParams) throws TPException
+	{
+		unhandledObjectParams(objectParams);
+	}
+
+	public void objectParams(ObjectParams.Galaxy objectParams) throws TPException
+	{
+		unhandledObjectParams(objectParams);
+	}
+
+	public void objectParams(ObjectParams.StarSystem objectParams) throws TPException
+	{
+		unhandledObjectParams(objectParams);
+	}
+
+	public void objectParams(ObjectParams.Planet objectParams) throws TPException
+	{
+		unhandledObjectParams(objectParams);
+	}
+
+	public void objectParams(ObjectParams.Fleet objectParams) throws TPException
+	{
+		unhandledObjectParams(objectParams);
+	}
+
 	public void unhandledOrderParams(OrderParams orderParams) throws TPException
 	{
 		if (errorOnUnhandled)
@@ -389,37 +420,6 @@ public class TP03Visitor extends Visitor
 	public void orderParams(OrderParams.OrderParamReferenceList orderParams) throws TPException
 	{
 		unhandledOrderParams(orderParams);
-	}
-
-	public void unhandledObjectParams(ObjectParams objectParams) throws TPException
-	{
-		if (errorOnUnhandled)
-			throw new TPException(String.format("Unexpected objectParams: type %d (%s)", objectParams.getParameterType(), objectParams.toString()));
-	}
-
-	public void objectParams(ObjectParams.Universe objectParams) throws TPException
-	{
-		unhandledObjectParams(objectParams);
-	}
-
-	public void objectParams(ObjectParams.Galaxy objectParams) throws TPException
-	{
-		unhandledObjectParams(objectParams);
-	}
-
-	public void objectParams(ObjectParams.StarSystem objectParams) throws TPException
-	{
-		unhandledObjectParams(objectParams);
-	}
-
-	public void objectParams(ObjectParams.Planet objectParams) throws TPException
-	{
-		unhandledObjectParams(objectParams);
-	}
-
-	public void objectParams(ObjectParams.Fleet objectParams) throws TPException
-	{
-		unhandledObjectParams(objectParams);
 	}
 
 }

@@ -3,9 +3,9 @@ package net.thousandparsec.netlib.generator;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -28,7 +28,8 @@ class ProtocolHandler extends StackedHandler<Generator>
 		super(parent);
 		this.targetDir=targetDir;
 		this.packets=new ArrayList<NamedEntity>();
-		this.entities=new HashMap<String, List<NamedEntity>>();
+		//make it deterministic - sorted by key (group name)
+		this.entities=new TreeMap<String, List<NamedEntity>>();
 
 		try
 		{
