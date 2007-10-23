@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="starmapper-core" default="compile.all">
+<project name="libtpproto-java" default="compile.all">
 	<property name="version" value="0.1"/>
 	<property name="version.micro" value="0.1.0"/>
 
