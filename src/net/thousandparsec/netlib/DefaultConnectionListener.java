@@ -9,18 +9,20 @@ public class DefaultConnectionListener<V extends Visitor> implements ConnectionL
 {
 	private final boolean printSent;
 	private final boolean printReceived;
+	private final boolean printReceivedAsync;
 	private final boolean printError;
 
-	public DefaultConnectionListener(boolean printSent, boolean printReceived, boolean printError)
+	public DefaultConnectionListener(boolean printSent, boolean printReceived, boolean printReceivedAsync, boolean printError)
 	{
 		this.printSent=printSent;
 		this.printReceived=printReceived;
+		this.printReceivedAsync=printReceivedAsync;
 		this.printError=printError;
 	}
 
 	public DefaultConnectionListener()
 	{
-		this(true, true, true);
+		this(true, true, true, true);
 	}
 
 	public void frameSent(ConnectionEvent<V> ev)
@@ -34,12 +36,15 @@ public class DefaultConnectionListener<V extends Visitor> implements ConnectionL
 
 	public void frameReceived(ConnectionEvent<V> ev)
 	{
-		if (printReceived)
+		Frame<V> frame=ev.getFrame();
+		if (ev.isAsync())
 		{
-			Frame<V> frame=ev.getFrame();
-			if (ev.isAsync())
+			if (printReceivedAsync)
 				System.err.printf("%s: Received asynchronous frame seq %d, type %d (%s)%n", getClass().getName(), frame.getSequenceNumber(), frame.getFrameType(), frame.toString());
-			else
+		}
+		else
+		{
+			if (printReceived)
 				System.err.printf("%s: Received frame seq %d, type %d (%s)%n", getClass().getName(), frame.getSequenceNumber(), frame.getFrameType(), frame.toString());
 		}
 	}
