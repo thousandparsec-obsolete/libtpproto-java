@@ -247,7 +247,7 @@ public class PipelinedConnection<V extends Visitor>
 				}
 				return null;
 			}
-			catch (Exception ex)
+			catch (InterruptedException ex)
 			{
 				getConnection().fireErrorEvent(null, ex);
 				throw ex;
