@@ -115,11 +115,8 @@ public class PipelinedConnection<V extends Visitor>
 	 *             on any I/O error
 	 * @throws ExecutionException
 	 *             if the receiver task fails
-	 * @throws InterruptedException
-	 *             if the current thread was interrupted while waiting for
-	 *             receiver task
 	 */
-	public void close() throws IOException, InterruptedException, ExecutionException
+	public void close() throws IOException, ExecutionException
 	{
 		try
 		{
@@ -129,7 +126,8 @@ public class PipelinedConnection<V extends Visitor>
 		finally
 		{
 			//check for errors in the receiver task
-			receiverFuture.get();
+			//(ignore interupt, as it's purpose is to stop waiting)
+			try {receiverFuture.get();} catch (InterruptedException ignore) {}
 			//check if the pipelines were closed properly
 			if (!pipelines.keySet().isEmpty())
 				throw new IOException("Not all pipelines were closed properly");
@@ -266,7 +264,11 @@ public class PipelinedConnection<V extends Visitor>
 			}
 			finally
 			{
-				try {getConnection().close();} catch (IOException ignore) {}
+				//avoid deadlock:
+				//PipelinedConnection.close() tries to get the return status
+				//of the receiver, which is us, and wich is trying to return
+				Thread.currentThread().interrupt();
+				try {close();} catch (IOException ignore) {}
 			}
 		}
 	}
