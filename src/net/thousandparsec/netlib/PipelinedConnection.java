@@ -46,7 +46,6 @@ public class PipelinedConnection<V extends Visitor>
 
 	private final Connection<V> conn;
 	private final Map<Integer, BlockingQueue<Frame<V>>> pipelines;
-	private final ExecutorService exec;
 	private final Future<Void> receiverFuture;
 
 	/**
@@ -61,7 +60,7 @@ public class PipelinedConnection<V extends Visitor>
 		this.conn=conn;
 		//we need something stronger that ConcurrentMap
 		this.pipelines=Collections.synchronizedMap(new HashMap<Integer, BlockingQueue<Frame<V>>>());
-		this.exec=Executors.newSingleThreadExecutor();
+		ExecutorService exec=Executors.newSingleThreadExecutor();
 		this.receiverFuture=exec.submit(new ReceiverTask());
 		//it is safe to do here, per shutdown() contract: it waits for tasks to finish, and then shuts down
 		exec.shutdown();
