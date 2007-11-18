@@ -41,7 +41,7 @@
 	<target name="compile.all" depends="compile.core,compile.proto-tp03,compile.generator"/>
 	<target name="compile.core">
 		<mkdir dir="${classes.core}"/>
-		<javac source="1.5" target="1.5" sourcepath="" destdir="${classes.core}">
+		<javac source="1.5" target="1.5" sourcepath="" destdir="${classes.core}" debug="true">
 			<src>
 				<path path="${src.core}"/>
 			</src>
@@ -83,7 +83,7 @@
 	</target>
 	<target name="compile.proto-tp03" depends="compile.core">
 		<mkdir dir="${classes.proto-tp03}"/>
-		<javac source="1.5" target="1.5" sourcepath="" destdir="${classes.proto-tp03}">
+		<javac source="1.5" target="1.5" sourcepath="" destdir="${classes.proto-tp03}" debug="true">
 			<src>
 				<path path="${src.generated}"/>
 				<path path="${src.protohelpers}"/>
@@ -117,7 +117,7 @@
 	</target>
 	<target name="compile.generator">
 		<mkdir dir="${classes.generator}"/>
-		<javac source="1.5" target="1.5" sourcepath="" srcdir="${src.generator}" destdir="${classes.generator}">
+		<javac source="1.5" target="1.5" sourcepath="" srcdir="${src.generator}" destdir="${classes.generator}" debug="true">
 			<include name="**"/>
 		</javac>
 		<copy todir="${classes.generator}">
@@ -142,7 +142,7 @@
 
 	<target name="compile.test" depends="compile.core,compile.proto-tp03">
 		<mkdir dir="${classes.test}"/>
-		<javac source="1.5" target="1.5" sourcepath="" destdir="${classes.test}">
+		<javac source="1.5" target="1.5" sourcepath="" destdir="${classes.test}" debug="true">
 			<src>
 				<path path="${src.test}"/>
 			</src>
