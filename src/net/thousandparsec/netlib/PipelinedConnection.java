@@ -135,7 +135,7 @@ public class PipelinedConnection<V extends Visitor>
 
 	private class Pipeline implements SequentialConnection<V>
 	{
-		private BlockingQueue<Frame<V>> incoming=new LinkedBlockingQueue<Frame<V>>();
+		private final BlockingQueue<Frame<V>> incoming=new LinkedBlockingQueue<Frame<V>>();
 		private int lastSeq=0;
 
 		Pipeline()
