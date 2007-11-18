@@ -237,20 +237,36 @@ public class PipelinedConnection<V extends Visitor>
 			{
 				Connection<V> conn=getConnection();
 				Frame<V> frame;
-				while ((frame=conn.receiveFrame()) != null)
-				{
-					BlockingQueue<Frame<V>> queue=getPipelineQueues().get(frame.getSequenceNumber());
-					if (queue == null)
-						getConnection().fireErrorEvent(frame, new TPException(String.format("Unexpected frame: seq %d, type %d (%s)", frame.getSequenceNumber(), frame.getFrameType(), frame.toString())));
-					else
-						queue.put(frame);
-				}
+				while (true)
+					try
+					{
+						if ((frame=conn.receiveFrame()) == null)
+							break;
+						else
+						{
+							BlockingQueue<Frame<V>> queue=getPipelineQueues().get(frame.getSequenceNumber());
+							if (queue == null)
+								getConnection().fireErrorEvent(frame, new TPException(String.format("Unexpected frame: seq %d, type %d (%s)", frame.getSequenceNumber(), frame.getFrameType(), frame.toString())));
+							else
+								queue.put(frame);
+						}
+					}
+					//TPException is a protocol error - try to continue
+					catch (TPException ex)
+					{
+						getConnection().fireErrorEvent(null, ex);
+					}
+					//IOException is fatal - quit
 				return null;
 			}
-			catch (InterruptedException ex)
+			catch (Exception ex)
 			{
 				getConnection().fireErrorEvent(null, ex);
 				throw ex;
+			}
+			finally
+			{
+				try {getConnection().close();} catch (IOException ignore) {}
 			}
 		}
 	}
