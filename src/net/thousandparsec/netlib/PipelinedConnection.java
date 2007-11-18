@@ -144,6 +144,8 @@ public class PipelinedConnection<V extends Visitor>
 
 		private void sendFrame(Frame<V> frame) throws IOException
 		{
+			if (lastSeq < 0)
+				throw new IOException("This pipeline is closed");
 			/*
 			 * Strong synchronisation is needed as there is a race condition here.
 			 * The procedure:
@@ -169,6 +171,9 @@ public class PipelinedConnection<V extends Visitor>
 
 		private Frame<V> receiveFrame() throws InterruptedException
 		{
+			if (lastSeq < 0)
+				return null;
+
 			return incoming.take();
 		}
 
@@ -214,6 +219,7 @@ public class PipelinedConnection<V extends Visitor>
 		public void close()
 		{
 			getPipelineQueues().remove(lastSeq);
+			lastSeq=-1;
 		}
 
 		public Connection<V> getConnection()
