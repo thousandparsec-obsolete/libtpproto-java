@@ -48,6 +48,8 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 	 */
 	public static class OrderParamAbsSpaceCoords extends OrderParams
 	{
+		public static final int PARAM_TYPE=0;
+
 		/**
 		 * A default constructor which initialises properties to their defaults.
 		 */
@@ -225,6 +227,8 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 	 */
 	public static class OrderParamTime extends OrderParams
 	{
+		public static final int PARAM_TYPE=1;
+
 		/**
 		 * A default constructor which initialises properties to their defaults.
 		 */
@@ -317,6 +321,8 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 	 */
 	public static class OrderParamObject extends OrderParams
 	{
+		public static final int PARAM_TYPE=2;
+
 		/**
 		 * A default constructor which initialises properties to their defaults.
 		 */
@@ -388,6 +394,8 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 	 */
 	public static class OrderParamPlayer extends OrderParams
 	{
+		public static final int PARAM_TYPE=3;
+
 		/**
 		 * A default constructor which initialises properties to their defaults.
 		 */
@@ -517,6 +525,8 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 	 */
 	public static class OrderParamRelSpaceCoords extends OrderParams
 	{
+		public static final int PARAM_TYPE=4;
+
 		/**
 		 * A default constructor which initialises properties to their defaults.
 		 */
@@ -714,6 +724,8 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 	 */
 	public static class OrderParamRange extends OrderParams
 	{
+		public static final int PARAM_TYPE=5;
+
 		/**
 		 * A default constructor which initialises properties to their defaults.
 		 */
@@ -848,6 +860,8 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 	 */
 	public static class OrderParamList extends OrderParams
 	{
+		public static final int PARAM_TYPE=6;
+
 		/**
 		 * A default constructor which initialises properties to their defaults.
 		 */
@@ -1158,6 +1172,8 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 	 */
 	public static class OrderParamString extends OrderParams
 	{
+		public static final int PARAM_TYPE=7;
+
 		/**
 		 * A default constructor which initialises properties to their defaults.
 		 */
@@ -1247,6 +1263,8 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 	 */
 	public static class OrderParamReference extends OrderParams
 	{
+		public static final int PARAM_TYPE=8;
+
 		/**
 		 * A default constructor which initialises properties to their defaults.
 		 */
@@ -1411,6 +1429,8 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 	 */
 	public static class OrderParamReferenceList extends OrderParams
 	{
+		public static final int PARAM_TYPE=9;
+
 		/**
 		 * A default constructor which initialises properties to their defaults.
 		 */
@@ -1663,16 +1683,16 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 	{
 		switch (id)
 		{
-			case 0: return new OrderParams.OrderParamAbsSpaceCoords(id, in);
-			case 1: return new OrderParams.OrderParamTime(id, in);
-			case 2: return new OrderParams.OrderParamObject(id, in);
-			case 3: return new OrderParams.OrderParamPlayer(id, in);
-			case 4: return new OrderParams.OrderParamRelSpaceCoords(id, in);
-			case 5: return new OrderParams.OrderParamRange(id, in);
-			case 6: return new OrderParams.OrderParamList(id, in);
-			case 7: return new OrderParams.OrderParamString(id, in);
-			case 8: return new OrderParams.OrderParamReference(id, in);
-			case 9: return new OrderParams.OrderParamReferenceList(id, in);
+			case OrderParams.OrderParamAbsSpaceCoords.PARAM_TYPE: return new OrderParams.OrderParamAbsSpaceCoords(id, in);
+			case OrderParams.OrderParamTime.PARAM_TYPE: return new OrderParams.OrderParamTime(id, in);
+			case OrderParams.OrderParamObject.PARAM_TYPE: return new OrderParams.OrderParamObject(id, in);
+			case OrderParams.OrderParamPlayer.PARAM_TYPE: return new OrderParams.OrderParamPlayer(id, in);
+			case OrderParams.OrderParamRelSpaceCoords.PARAM_TYPE: return new OrderParams.OrderParamRelSpaceCoords(id, in);
+			case OrderParams.OrderParamRange.PARAM_TYPE: return new OrderParams.OrderParamRange(id, in);
+			case OrderParams.OrderParamList.PARAM_TYPE: return new OrderParams.OrderParamList(id, in);
+			case OrderParams.OrderParamString.PARAM_TYPE: return new OrderParams.OrderParamString(id, in);
+			case OrderParams.OrderParamReference.PARAM_TYPE: return new OrderParams.OrderParamReference(id, in);
+			case OrderParams.OrderParamReferenceList.PARAM_TYPE: return new OrderParams.OrderParamReferenceList(id, in);
 			//this is necessary for marshall/unmarshall tests
 			case -1: return new OrderParams(id, in);
 			default: throw new IllegalArgumentException("Invalid OrderParams id: "+id);

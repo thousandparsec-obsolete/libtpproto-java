@@ -48,6 +48,7 @@ public class JavaOutputGenerator implements OutputGenerator
 	/* for parameter sets */
 	private String parameterSetName;
 	private String parameterName;
+	private int parameterType;
 	private PrintWriter outParam;
 	private PrintWriter outParamDesc;
 
@@ -169,9 +170,10 @@ public class JavaOutputGenerator implements OutputGenerator
 		printPreamble(this.outParam);
 	}
 
-	public void startParameter(String name) throws IOException
+	public void startParameter(String name, int id) throws IOException
 	{
 		this.parameterName=name;
+		this.parameterType=id;
 	}
 
 	public void startParameterStruct() throws IOException
@@ -216,6 +218,7 @@ public class JavaOutputGenerator implements OutputGenerator
 	public void endParameter(String name) throws IOException
 	{
 		this.parameterName=null;
+		this.parameterType=-1;
 	}
 
 	public void endParameterSet(File targetDir, List<NamedEntity> parameters, List<NamedEntity> parameterDescs) throws IOException
@@ -553,7 +556,7 @@ public class JavaOutputGenerator implements OutputGenerator
 		out.println("		switch (id)");
 		out.println("		{");
 		for (NamedEntity parameter : parameters)
-			out.printf("			case %d: return new %s(id, in);%n", parameter.id, parameter.name);
+			out.printf("			case %s.PARAM_TYPE: return new %s(id, in);%n", parameter.name, parameter.name);
 		out.println("			//this is necessary for marshall/unmarshall tests");
 		out.printf("			case -1: return new %s(id, in);%n", className);
 		out.printf("			default: throw new IllegalArgumentException(\"Invalid %s id: \"+id);%n", className);
@@ -820,6 +823,8 @@ public class JavaOutputGenerator implements OutputGenerator
 
 		out.printf("%spublic static class %s extends %s%n", indent, parameterName, baseClass);
 		out.printf("%s{%n", indent);
+		out.printf("%s	public static final int PARAM_TYPE=%d;%n", indent, parameterType);
+		out.println();
 		out.printf("%s	/**%n", indent);
 		out.printf("%s	 * A default constructor which initialises properties to their defaults.%n", indent);
 		out.printf("%s	 */%n", indent);

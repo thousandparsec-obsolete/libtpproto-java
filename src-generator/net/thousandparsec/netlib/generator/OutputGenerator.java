@@ -27,7 +27,7 @@ public interface OutputGenerator
 
 	void startParameterSetType() throws IOException;
 
-	void startParameter(String name) throws IOException;
+	void startParameter(String name, int id) throws IOException;
 
 	void startParameterStruct() throws IOException;
 

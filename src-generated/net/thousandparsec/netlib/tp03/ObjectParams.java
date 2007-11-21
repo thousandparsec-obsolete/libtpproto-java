@@ -45,6 +45,8 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 
 	public static class Universe extends ObjectParams
 	{
+		public static final int PARAM_TYPE=0;
+
 		/**
 		 * A default constructor which initialises properties to their defaults.
 		 */
@@ -111,6 +113,8 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 
 	public static class Galaxy extends ObjectParams
 	{
+		public static final int PARAM_TYPE=1;
+
 		/**
 		 * A default constructor which initialises properties to their defaults.
 		 */
@@ -159,6 +163,8 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 
 	public static class StarSystem extends ObjectParams
 	{
+		public static final int PARAM_TYPE=2;
+
 		/**
 		 * A default constructor which initialises properties to their defaults.
 		 */
@@ -207,6 +213,8 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 
 	public static class Planet extends ObjectParams
 	{
+		public static final int PARAM_TYPE=3;
+
 		/**
 		 * A default constructor which initialises properties to their defaults.
 		 */
@@ -417,6 +425,8 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 
 	public static class Fleet extends ObjectParams
 	{
+		public static final int PARAM_TYPE=4;
+
 		/**
 		 * A default constructor which initialises properties to their defaults.
 		 */
@@ -618,11 +628,11 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 	{
 		switch (id)
 		{
-			case 0: return new ObjectParams.Universe(id, in);
-			case 1: return new ObjectParams.Galaxy(id, in);
-			case 2: return new ObjectParams.StarSystem(id, in);
-			case 3: return new ObjectParams.Planet(id, in);
-			case 4: return new ObjectParams.Fleet(id, in);
+			case ObjectParams.Universe.PARAM_TYPE: return new ObjectParams.Universe(id, in);
+			case ObjectParams.Galaxy.PARAM_TYPE: return new ObjectParams.Galaxy(id, in);
+			case ObjectParams.StarSystem.PARAM_TYPE: return new ObjectParams.StarSystem(id, in);
+			case ObjectParams.Planet.PARAM_TYPE: return new ObjectParams.Planet(id, in);
+			case ObjectParams.Fleet.PARAM_TYPE: return new ObjectParams.Fleet(id, in);
 			//this is necessary for marshall/unmarshall tests
 			case -1: return new ObjectParams(id, in);
 			default: throw new IllegalArgumentException("Invalid ObjectParams id: "+id);

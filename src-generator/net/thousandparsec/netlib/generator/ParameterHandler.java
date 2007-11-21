@@ -22,7 +22,7 @@ class ParameterHandler extends StackedHandler<ParametersetHandler>
 
 		try
 		{
-			parent.parent.parent.generator.startParameter(this.name);
+			parent.parent.parent.generator.startParameter(this.name, id);
 		}
 		catch (IOException ex)
 		{
