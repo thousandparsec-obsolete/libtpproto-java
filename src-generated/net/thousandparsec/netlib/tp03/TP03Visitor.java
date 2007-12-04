@@ -335,4 +335,9 @@ public class TP03Visitor extends Visitor
 		unhandledFrame(packet);
 	}
 
+	public void frame(FinishedTurn packet) throws TPException
+	{
+		unhandledFrame(packet);
+	}
+
 }
