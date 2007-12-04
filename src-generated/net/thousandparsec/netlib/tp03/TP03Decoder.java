@@ -124,6 +124,7 @@ public class TP03Decoder implements FrameDecoder<TP03Visitor>
 			case Property.FRAME_TYPE: return new Property(id, in);
 			case GetPropertyIDs.FRAME_TYPE: return new GetPropertyIDs(id, in);
 			case PropertyIDs.FRAME_TYPE: return new PropertyIDs(id, in);
+			case FinishedTurn.FRAME_TYPE: return new FinishedTurn(id, in);
 			default: throw new IllegalArgumentException("Invalid Frame id: "+id);
 		}
 	}

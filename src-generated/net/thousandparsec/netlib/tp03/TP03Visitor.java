@@ -335,6 +335,11 @@ public class TP03Visitor extends Visitor
 		unhandledFrame(frame);
 	}
 
+	public void frame(FinishedTurn frame) throws TPException
+	{
+		unhandledFrame(frame);
+	}
+
 	public void unhandledObjectParams(ObjectParams objectParams) throws TPException
 	{
 		if (errorOnUnhandled)
