@@ -54,7 +54,7 @@ public final class ObjectHierarchyIterator extends AbstractIterator<Pair<Integer
 	{
 		GetObjectsByID getObjs=new GetObjectsByID();
 		for (Object.ContainsType id : rootIds)
-			getObjs.getIds().add(new IdsType(id.getID()));
+			getObjs.getIds().add(new IdsType(id.getId()));
 
 		Sequence result=conn.sendFrame(getObjs, Sequence.class);
 		this.count=result.getNumber();

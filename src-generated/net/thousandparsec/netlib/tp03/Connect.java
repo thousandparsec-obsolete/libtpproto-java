@@ -24,11 +24,9 @@ public class Connect extends Request
 	/**
 	 * 
 				The client identification string can be any string but will mostly
-	 * 
 				used to produce stats of who uses which client. The server may return 
 	 * 
 				either a OK, Fail or Redirect frame.
-	 * 
 			
 	 */
 	private String string=new String();
