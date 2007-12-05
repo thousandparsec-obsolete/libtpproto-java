@@ -135,7 +135,7 @@ class PropertyHandler extends StructuredElementHandler<StructureHandler<?>>
 				if (this.name == null)
 					throw new SAXException(String.format("Property without a name (type: %s)", type));
 				if (this.valueType == null)
-					throw new SAXException(String.format("Property without an unknown type (%s)", type));
+					throw new SAXException(String.format("Property with an unknown type (%s)", type));
 
 				Property prop=parent.parent.addProperty(this.name, type, valueType, valueSubtype, size, readOnly, useparametersTypeField);
 
