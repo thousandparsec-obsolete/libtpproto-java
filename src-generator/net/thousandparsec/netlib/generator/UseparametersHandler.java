@@ -1,5 +1,6 @@
 package net.thousandparsec.netlib.generator;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import net.thousandparsec.netlib.generator.StructureHandler.PropertyType;
@@ -13,11 +14,18 @@ class UseparametersHandler extends PropertyHandler
 	private StringBuilder typefieldCollector;
 	private String indirectFrame;
 	private String indirectFrameCheckField;
-	private List<SearchPathElement> searchPath;
+	private List<SearchPathElement> searchPath=new LinkedList<SearchPathElement>();
+	private boolean handlingTypeframe;
 
-	UseparametersHandler(StructureHandler<?> parent, PropertyType useparameters, String ref)
+	UseparametersHandler(StructureHandler<?> parent, String ref)
 	{
-		super(parent, PropertyType.useparameters, 0, true);
+		super(parent, PropertyType.useparameters, ref, null, 0, true);
+	}
+
+	protected void addSearchPathElement(SearchPathElement element)
+	{
+		//add at the beginning, because we receive path elements in reverse order
+		searchPath.add(0, element);
 	}
 
 	@Override
@@ -32,8 +40,16 @@ class UseparametersHandler extends PropertyHandler
 			{
 				indirectFrame=atts.getValue("name");
 				indirectFrameCheckField=atts.getValue("idfield");
-//				pushHandler(...)
+				handlingTypeframe=true;
 			}
+		}
+		else if (getDepth() == 1 && handlingTypeframe)
+		{
+			super.startElement(uri, localName, name, atts);
+			if (localName.equals("getfield"))
+				pushHandler(new TypeFrameHandler(this, this, SearchPathElement.Type.FIELD, atts));
+			else if (localName.equals("getlist"))
+				pushHandler(new TypeFrameHandler(this, this, SearchPathElement.Type.LIST, atts));
 		}
 		else
 			super.startElement(uri, localName, name, atts);
@@ -44,7 +60,12 @@ class UseparametersHandler extends PropertyHandler
 	{
 		if (getDepth() == 1 && localName.equals("typefield"))
 		{
-			//actually NOP, keep the collector for later use
+			//keep the collector for later use
+			setValueSybtype(typefieldCollector.toString());
+		}
+		else if (getDepth() == 1 && localName.equals("typeframe"))
+		{
+			handlingTypeframe=false;
 		}
 		else if (getDepth() == 0)
 		{

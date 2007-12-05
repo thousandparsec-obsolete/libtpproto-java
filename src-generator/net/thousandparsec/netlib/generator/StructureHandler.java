@@ -113,7 +113,7 @@ class StructureHandler<P extends StructuredElementHandler<?>> extends StackedHan
 			<P extends StructuredElementHandler<?>> PropertyHandler makeHandler(StructureHandler<P> parent, Generator generator, Attributes xmlAtts) throws NumberFormatException, SAXException
 			{
 				//I assume that useparameters is always read only
-				return new UseparametersHandler(parent, useparameters, xmlAtts.getValue("ref"));
+				return new UseparametersHandler(parent, xmlAtts.getValue("ref"));
 			}
 		},
 		descparameter
