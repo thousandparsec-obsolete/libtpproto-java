@@ -20,11 +20,6 @@ public class Property
 	 */
 	public final UseparametersTypeField useparametersTypeField;
 
-	Property(String name, PropertyType type, String targetType, String targetSubtype, int size, boolean readOnly, String useparametersTypeField)
-	{
-		this(name, type, targetType, targetSubtype, size, readOnly, useparametersTypeField == null ? null : new UseparametersTypeField(useparametersTypeField));
-	}
-
 	Property(String name, PropertyType type, String targetType, String targetSubtype, int size, boolean readOnly, UseparametersTypeField useparametersTypeField)
 	{
 		this.name=name;

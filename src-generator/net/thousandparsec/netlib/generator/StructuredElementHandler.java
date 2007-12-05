@@ -23,7 +23,7 @@ abstract class StructuredElementHandler<P extends StackedHandler<?>> extends Sta
 		this.properties=new ArrayList<Property>();
 	}
 
-	protected Property addProperty(String name, PropertyType type, String targetType, String targetSubtype, int size, boolean readOnly, String useparametersTypeField)
+	protected Property addProperty(String name, PropertyType type, String targetType, String targetSubtype, int size, boolean readOnly, UseparametersTypeField useparametersTypeField)
 	{
 		Property property=new Property(name, type, targetType, targetSubtype, size, readOnly, useparametersTypeField);
 		properties.add(property);
