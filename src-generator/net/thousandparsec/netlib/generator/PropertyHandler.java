@@ -30,7 +30,7 @@ class PropertyHandler extends StructuredElementHandler<StructureHandler<?>>
 	protected final boolean readOnly;
 	private String name;
 	private StringBuilder nameCollector;
-	private String useparametersTypeField;
+	private UseparametersTypeField useparametersTypeField;
 
 	/**
 	 * Initialises wothout a target's language type name, when it's unknown at
@@ -83,12 +83,12 @@ class PropertyHandler extends StructuredElementHandler<StructureHandler<?>>
 		this.name=name;
 	}
 
-	protected String getUseparametersTypeField()
+	protected UseparametersTypeField getUseparametersTypeField()
 	{
 		return useparametersTypeField;
 	}
 
-	protected void setUseparametersTypeField(String useparametersIndirectFrame)
+	protected void setUseparametersTypeField(UseparametersTypeField useparametersIndirectFrame)
 	{
 		this.useparametersTypeField=useparametersIndirectFrame;
 	}

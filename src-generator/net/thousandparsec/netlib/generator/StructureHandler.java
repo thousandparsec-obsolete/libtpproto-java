@@ -114,8 +114,6 @@ class StructureHandler<P extends StructuredElementHandler<?>> extends StackedHan
 			{
 				//I assume that useparameters is always read only
 				PropertyHandler ret=new PropertyHandler(parent, useparameters, xmlAtts.getValue("ref"), xmlAtts.getValue("typefield"), 0, true);
-				//I told ya it won't be pretty!
-				ret.setUseparametersTypeField(xmlAtts.getValue("typefield"));
 				return ret;
 			}
 		},
