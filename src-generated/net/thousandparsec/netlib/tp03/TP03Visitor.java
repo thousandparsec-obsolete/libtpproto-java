@@ -427,9 +427,4 @@ public class TP03Visitor extends Visitor
 		unhandledOrderParams(orderParams);
 	}
 
-	public void frame(FinishedTurn packet) throws TPException
-	{
-		unhandledFrame(packet);
-	}
-
 }
