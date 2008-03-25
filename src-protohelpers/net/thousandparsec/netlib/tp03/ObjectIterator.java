@@ -46,7 +46,7 @@ public class ObjectIterator extends AbstractIterator<Object>
 		GetObjectsByID getObj=new GetObjectsByID();
 		int count;
 		for (count=0; count < chunkSize && objIds.hasNext(); count++)
-			getObj.getIds().add(new IdsType(objIds.next().getID()));
+			getObj.getIds().add(new IdsType(objIds.next().getId()));
 		if (count == 0)
 			return false;
 

@@ -51,16 +51,16 @@ public class Order extends Response
 		this.slot=value;
 	}
 
-	private int type;
+	private int otype;
 
-	public int getType()
+	public int getOtype()
 	{
-		return this.type;
+		return this.otype;
 	}
 
-	public void setType(int value)
+	public void setOtype(int value)
 	{
-		this.type=value;
+		this.otype=value;
 	}
 
 	/**
@@ -241,7 +241,7 @@ public class Order extends Response
 		super.write(out, conn);
 		out.writeInteger(this.id);
 		out.writeInteger(this.slot);
-		out.writeInteger(this.type);
+		out.writeInteger(this.otype);
 		out.writeInteger(this.turns);
 		out.writeInteger(this.resources.size());
 		for (ResourcesType object : this.resources)
@@ -258,7 +258,7 @@ public class Order extends Response
 		super(id, in);
 		this.id=in.readInteger32();
 		this.slot=in.readInteger32();
-		this.type=in.readInteger32();
+		this.otype=in.readInteger32();
 		this.turns=in.readInteger32();
 		this.resources.clear();
 		for (int length=in.readInteger32(); length > 0; length--)
@@ -276,8 +276,8 @@ public class Order extends Response
 		buf.append(String.valueOf(this.id));
 		buf.append("; slot: ");
 		buf.append(String.valueOf(this.slot));
-		buf.append("; type: ");
-		buf.append(String.valueOf(this.type));
+		buf.append("; otype: ");
+		buf.append(String.valueOf(this.otype));
 		buf.append("; turns: ");
 		buf.append(String.valueOf(this.turns));
 		buf.append("; resources: ");

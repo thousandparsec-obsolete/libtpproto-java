@@ -336,18 +336,18 @@ public class Object extends Response
 		}
 
 		/**
-		 * the IDs
+		 * the ID
 		 */
-		private int ID;
+		private int id;
 
-		public int getID()
+		public int getId()
 		{
-			return this.ID;
+			return this.id;
 		}
 
-		public void setID(int value)
+		public void setId(int value)
 		{
-			this.ID=value;
+			this.id=value;
 		}
 
 		@Override
@@ -359,15 +359,15 @@ public class Object extends Response
 
 		public void write(TPDataOutput out, Connection<?> conn) throws IOException
 		{
-			out.writeInteger(this.ID);
+			out.writeInteger(this.id);
 		}
 
 		/**
 		 * A convenience constructor for easy initialisation of non-read only fields.
 		 */
-		public ContainsType(int ID)
+		public ContainsType(int id)
 		{
-			setID(ID);
+			setId(id);
 		}
 
 		/**
@@ -375,7 +375,7 @@ public class Object extends Response
 		 */
 		public ContainsType(ContainsType copy)
 		{
-			setID(copy.getID());
+			setId(copy.getId());
 		}
 
 		/**
@@ -384,7 +384,7 @@ public class Object extends Response
 		@SuppressWarnings("unused")
 		ContainsType(TPDataInput in) throws IOException
 		{
-			this.ID=in.readInteger32();
+			this.id=in.readInteger32();
 		}
 
 		@Override
@@ -392,8 +392,8 @@ public class Object extends Response
 		{
 			StringBuilder buf=new StringBuilder();
 			buf.append("{ContainsType");
-			buf.append("; ID: ");
-			buf.append(String.valueOf(this.ID));
+			buf.append("; id: ");
+			buf.append(String.valueOf(this.id));
 			buf.append("}");
 			return buf.toString();
 		}
@@ -427,18 +427,18 @@ public class Object extends Response
 		}
 
 		/**
-		 * the IDs
+		 * the ID
 		 */
-		private int ID;
+		private int id;
 
-		public int getID()
+		public int getId()
 		{
-			return this.ID;
+			return this.id;
 		}
 
-		public void setID(int value)
+		public void setId(int value)
 		{
-			this.ID=value;
+			this.id=value;
 		}
 
 		@Override
@@ -450,15 +450,15 @@ public class Object extends Response
 
 		public void write(TPDataOutput out, Connection<?> conn) throws IOException
 		{
-			out.writeInteger(this.ID);
+			out.writeInteger(this.id);
 		}
 
 		/**
 		 * A convenience constructor for easy initialisation of non-read only fields.
 		 */
-		public OrdertypesType(int ID)
+		public OrdertypesType(int id)
 		{
-			setID(ID);
+			setId(id);
 		}
 
 		/**
@@ -466,7 +466,7 @@ public class Object extends Response
 		 */
 		public OrdertypesType(OrdertypesType copy)
 		{
-			setID(copy.getID());
+			setId(copy.getId());
 		}
 
 		/**
@@ -475,7 +475,7 @@ public class Object extends Response
 		@SuppressWarnings("unused")
 		OrdertypesType(TPDataInput in) throws IOException
 		{
-			this.ID=in.readInteger32();
+			this.id=in.readInteger32();
 		}
 
 		@Override
@@ -483,8 +483,8 @@ public class Object extends Response
 		{
 			StringBuilder buf=new StringBuilder();
 			buf.append("{OrdertypesType");
-			buf.append("; ID: ");
-			buf.append(String.valueOf(this.ID));
+			buf.append("; id: ");
+			buf.append(String.valueOf(this.id));
 			buf.append("}");
 			return buf.toString();
 		}
