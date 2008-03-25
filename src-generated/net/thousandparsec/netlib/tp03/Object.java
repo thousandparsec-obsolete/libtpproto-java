@@ -1,7 +1,6 @@
 package net.thousandparsec.netlib.tp03;
 
 import net.thousandparsec.netlib.*;
-import net.thousandparsec.netlib.objects.*;
 
 import java.io.IOException;
 
@@ -548,22 +547,21 @@ public class Object extends Response
 		System.arraycopy(value, 0, this.padding, 0, this.padding.length);
 	}
 
-	/*
-	 * somehow we know that Universe is type 0 :)
-	 * [it has to be in sync with otype property, which is inited to 0 if not created by server]
-	 * (and use subversive inner class construct to exploit protected constructor ;))
-	 */
-	private GameObject<TP03Visitor> object=new Universe<TP03Visitor>() {};
+	private ObjectParams object=new ObjectParams(-1);
+	{
+		//hackity hack :) [for tests only!]
+		this.otype=-1;
+	}
 
-	public GameObject<TP03Visitor> getObject()
+	public ObjectParams getObject()
 	{
 		return this.object;
 	}
 
 	@SuppressWarnings("unused")
-	private void setObject(GameObject<TP03Visitor> value)
+	private void setObject(ObjectParams value)
 	{
-		this.object=value.copy();
+		throw new RuntimeException();
 	}
 
 	@Override
@@ -634,7 +632,8 @@ public class Object extends Response
 		this.orders=in.readInteger32();
 		this.modtime=in.readInteger64();
 		in.readCharacter(this.padding);
-		this.object=GameObject.createGameObject(this.otype, in);
+		//direct: just read this sucker
+		this.object=ObjectParams.create(this.otype, in);
 	}
 
 	@Override

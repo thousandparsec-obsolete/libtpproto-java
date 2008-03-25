@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -18,13 +20,16 @@ import org.xml.sax.SAXException;
 class ProtocolHandler extends StackedHandler<Generator>
 {
 	private final File targetDir;
-	private final List<Packet> packets;
+	private final List<NamedEntity> packets;
+	private final Map<String, List<NamedEntity>> entities;
 
 	ProtocolHandler(Generator parent, File targetDir, int compat) throws SAXException
 	{
 		super(parent);
 		this.targetDir=targetDir;
-		this.packets=new ArrayList<Packet>();
+		this.packets=new ArrayList<NamedEntity>();
+		//make it deterministic - sorted by key (group name)
+		this.entities=new TreeMap<String, List<NamedEntity>>();
 
 		try
 		{
@@ -34,6 +39,11 @@ class ProtocolHandler extends StackedHandler<Generator>
 		{
 			throw new SAXException(ex);
 		}
+	}
+
+	void addEntityGroup(String groupName, List<NamedEntity> group)
+	{
+		entities.put(groupName, group);
 	}
 
 	@Override
@@ -49,18 +59,15 @@ class ProtocolHandler extends StackedHandler<Generator>
 				{
 					String id=atts.getValue("id");
 					int intId=id == null ? -1 : Integer.parseInt(id);
-					packets.add(new Packet(packetName, intId));
+					packets.add(new NamedEntity(packetName, intId));
 					String base=atts.getValue("base");
 					if ("Header".equals(base))
 						base=null;
-					pushHandler(new PacketHandler(this, targetDir, packetName, intId, base));
+					pushHandler(new PacketHandler(this, targetDir, intId, base, packetName));
 				}
 			}
-		}
-		else if (localName.equals("parameterset"))
-		{
-			super.startElement(uri, localName, name, atts);
-			pushHandler(new ParametersetHandler(this));
+			else if (localName.equals("parameterset"))
+				pushHandler(new ParametersetHandler(this, targetDir, atts.getValue("name")));
 		}
 		else
 			super.startElement(uri, localName, name, atts);
@@ -69,15 +76,18 @@ class ProtocolHandler extends StackedHandler<Generator>
 	@Override
 	public void endElement(String uri, String localName, String name) throws SAXException
 	{
-		if (getDepth() == 0)
-			try
+		try
+		{
+			if (getDepth() == 0)
 			{
-				parent.generator.endProtocol(targetDir, packets);
+				addEntityGroup("frame", packets);
+				parent.generator.endProtocol(targetDir, entities);
 			}
-			catch (IOException ex)
-			{
-				throw new SAXException(ex);
-			}
-		super.endElement(uri, localName, name);
+			super.endElement(uri, localName, name);
+		}
+		catch (IOException ex)
+		{
+			throw new SAXException(ex);
+		}
 	}
 }

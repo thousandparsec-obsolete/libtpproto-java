@@ -102,8 +102,8 @@ public class ObjectIterator extends AbstractIterator<Object>
 			new TP03Decoder().makeConnection(
 				new URI("tp://guest:guest@demo1.thousandparsec.net/tp"),
 				true,
-				new TP03Visitor(true),
-				true));
+				new TP03Visitor(true)));
+		conn.getConnection().addConnectionListener(new DefaultConnectionListener<TP03Visitor>());
 		try
 		{
 			for (Iterator<Object> oit=new ObjectIterator(conn, DEFAULT_CHUNK_SIZE); oit.hasNext(); )

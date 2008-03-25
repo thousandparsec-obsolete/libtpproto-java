@@ -13,8 +13,10 @@ import java.util.Formattable;
 import java.util.Formatter;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import net.thousandparsec.netlib.generator.StructureHandler.PropertyType;
+import net.thousandparsec.netlib.generator.UseparametersTypeField.SearchPathElement;
 
 public class JavaOutputGenerator implements OutputGenerator
 {
@@ -31,12 +33,24 @@ public class JavaOutputGenerator implements OutputGenerator
 			throw new IOException("Couldn't write to output file");
 	}
 
+	/* for protocol */
+	private int compat;
+
+	/* common */
 	private File targetDir;
 	private PrintWriter out;
+
+	/* for packets */
+	private int packetType;
 	private String basePacket;
 	private String packetName;
-	private int packetType;
-	private int compat;
+
+	/* for parameter sets */
+	private String parameterSetName;
+	private String parameterName;
+	private int parameterType;
+	private PrintWriter outParam;
+	private PrintWriter outParamDesc;
 
 	/**
 	 * The constructor has no arguments to allow it eventually become easier to
@@ -85,26 +99,23 @@ public class JavaOutputGenerator implements OutputGenerator
 		this.compat=compat;
 	}
 
-	public void startPacket(File targetDir, String basePacket, String packetName, int packetType) throws IOException
+	public void startPacket(File targetDir, int packetType, String basePacket, String packetName) throws IOException
 	{
 		this.targetDir=createTargetDir(targetDir);
 		this.out=createTargetFile(new File(this.targetDir, packetName+".java"));
+		this.packetType=packetType;
 		this.basePacket=basePacket;
 		this.packetName=packetName;
-		this.packetType=packetType;
 
-		printPreamble(basePacket);
+		printPreamble(this.out);
 	}
 
-	private void printPreamble(String basePacket) throws IOException
+	private void printPreamble(PrintWriter out) throws IOException
 	{
 		out.printf("package %s.tp%02d;%n", TARGET_BASE_PACKAGE, compat);
 		out.println();
 
 		out.printf("import %s.*;%n", TARGET_BASE_PACKAGE);
-		//ugly special case
-		if (packetName.equals("Object"))
-			out.printf("import %s.objects.*;%n", TARGET_BASE_PACKAGE);
 		out.println();
 		out.println("import java.io.IOException;");
 		out.println();
@@ -116,32 +127,13 @@ public class JavaOutputGenerator implements OutputGenerator
 	{
 		try
 		{
-			//ugly special cases (ugh!)
-			if (packetName.equals("Object"))
-			{
-				Property objectProp=new Property(
-					"object",
-					PropertyType.object,
-					String.format("GameObject<TP%02dVisitor>", compat),
-					null,
-					0,
-					true);
-				properties=new ConcatenationList<Property>(
-					properties,
-					Collections.singletonList(objectProp));
-
-				printPropertyDef(1, objectProp);
-				printPropertyGetter(1, objectProp);
-				printPropertySetter(1, objectProp);
-			}
-
-			printVisitorMethod(0);
+			printVisitorMethod(0, "frame", basePacket != null);
 			printFindLengthMethod(0, properties);
 			printWriteMethod(0, properties, true);
 
 			printInputConstructor(0, packetName, properties, true);
 
-			printToStringMethod(0, packetName, properties, true);
+			printToStringMethod(0, packetName, properties, true, out);
 
 			//TODO: printEqualsMethod();
 
@@ -152,25 +144,129 @@ public class JavaOutputGenerator implements OutputGenerator
 			PrintWriter bak=out;
 			this.targetDir=null;
 			this.out=null;
-			this.packetName=null;
 			this.packetType=0;
 			this.basePacket=null;
+			this.packetName=null;
 
 			bak.close();
 			checkError(bak);
 		}
 	}
 
-	private void printVisitorMethod(int level) throws IOException
+	public void startParameterSet(File targetDir, String name) throws IOException
+	{
+		this.targetDir=createTargetDir(targetDir);
+		/*
+		 * Carefully wrangle out, outParam and outParamDesc to correctly
+		 * redirect output from structure callbacks. outParamDesc is created
+		 * lazily after the first descstruct element appears, to avoid
+		 * unnecessry classes when it's unused.
+		 */
+		this.outParam=createTargetFile(new File(this.targetDir, name+".java"));
+		this.parameterSetName=name;
+
+		out=outParam;
+
+		printPreamble(this.outParam);
+	}
+
+	public void startParameter(String name, int id) throws IOException
+	{
+		this.parameterName=name;
+		this.parameterType=id;
+	}
+
+	public void startParameterStruct() throws IOException
+	{
+		out=outParam;
+
+		printParameterStructType(outParam, parameterSetName);
+
+		checkError(out);
+	}
+
+	public void endParameterStruct(List<Property> properties) throws IOException
+	{
+		printEndParameterClass(properties, parameterSetName, outParam);
+	}
+
+	public void startParameterDescStruct() throws IOException
+	{
+		if (outParamDesc == null)
+		{
+			outParamDesc=createTargetFile(new File(targetDir, String.format("%sDesc.java", parameterSetName)));
+			printPreamble(outParamDesc);
+			printParameterSetType(outParamDesc, parameterSetName+"Desc");
+
+			checkError(out);
+		}
+
+		out=outParamDesc;
+
+		printParameterStructType(outParamDesc, parameterSetName+"Desc");
+
+		checkError(out);
+	}
+
+	public void endParameterDescStruct(List<Property> properties) throws IOException
+	{
+		printEndParameterClass(properties, parameterSetName+"Desc", outParamDesc);
+
+		out=outParam;
+	}
+
+	public void endParameter(String name) throws IOException
+	{
+		this.parameterName=null;
+		this.parameterType=-1;
+	}
+
+	public void endParameterSet(File targetDir, List<NamedEntity> parameters, List<NamedEntity> parameterDescs) throws IOException
+	{
+		try
+		{
+			printToStringMethod(0, parameterSetName, Collections.<Property>emptyList(), false, outParam);
+			printStaticParameterFactory(0, parameterSetName, parameters, outParam);
+
+			if (outParamDesc != null)
+			{
+				printToStringMethod(0, parameterSetName+"Desc", Collections.<Property>emptyList(), false, outParamDesc);
+				printStaticParameterFactory(0, parameterSetName+"Desc", parameterDescs, outParamDesc);
+			}
+
+			outParam.println("}");
+			if (outParamDesc != null)
+				outParamDesc.println("}");
+		}
+		finally
+		{
+			PrintWriter bakParam=outParam;
+			PrintWriter bakParamDesc=outParamDesc;
+			this.targetDir=null;
+			this.out=null;
+			this.outParam=null;
+			this.outParamDesc=null;
+			this.parameterSetName=null;
+
+			bakParam.close();
+			if (bakParamDesc != null)
+				bakParamDesc.close();
+			checkError(bakParam);
+			if (bakParamDesc != null)
+				checkError(bakParamDesc);
+		}
+	}
+
+	private void printVisitorMethod(int level, String type, boolean overrides) throws IOException
 	{
 		Indent indent=new Indent(level);
 
-		if (basePacket != null)
+		if (overrides)
 			out.printf("%s	@Override%n", indent);
 		out.printf("%s	public void visit(TP%02dVisitor visitor) throws TPException%n", indent, compat);
 		out.printf("%s	{%n", indent);
 		if (packetType != -1)
-			out.printf("%s		visitor.frame(this);%n", indent);
+			out.printf("%s		visitor.%s(this);%n", indent, type);
 		else
 			out.printf("%s		//NOP (not a leaf class)%n", indent);
 		out.printf("%s	}%n", indent);
@@ -195,7 +291,21 @@ public class JavaOutputGenerator implements OutputGenerator
 			if (p.size != 0)
 				out.printf("%d", Math.abs(p.size)); //size can be negative for enums
 			else
-				out.printf("findByteLength(this.%s)", p.name);
+			{
+				switch (p.type)
+				{
+					case useparameters:
+						if (p.useparametersTypeField.isIndirect())
+							//this is just a blob, not even prepended with a length field
+							out.printf("this.%s.length", p.name);
+						else
+							out.printf("findByteLength(this.%s)", p.name);
+						break;
+					default:
+						out.printf("findByteLength(this.%s)", p.name);
+						break;
+				}
+			}
 		}
 		out.println(";");
 
@@ -220,7 +330,7 @@ public class JavaOutputGenerator implements OutputGenerator
 			switch (p.type)
 			{
 				case group:
-				case object: //special case
+				case descparameter:
 					out.printf("%s		this.%s.write(out, conn);%n", indent, p.name);
 					break;
 
@@ -237,11 +347,20 @@ public class JavaOutputGenerator implements OutputGenerator
 						out.printf("%s		out.writeInteger(this.%s.value);%n", indent, p.name);
 					break;
 
-				default:
+				case character:
+				case integer:
+				case string:
 					//integer and enumeration are the same type physically, so fold enumeration to integer
 					out.printf("%s		out.%s(this.%s);%n", indent,
 						camelPrefix("write", (p.type == PropertyType.enumeration ? PropertyType.integer : p.type).name()),
 						p.name);
+					break;
+
+				case useparameters:
+					if (p.useparametersTypeField.isIndirect())
+						out.printf("%s		out.writeCharacter(this.%s);%n", indent, p.name);
+					else
+						out.printf("%s		this.%s.write(out, conn);%n", indent, p.name);
 					break;
 			}
 		}
@@ -294,6 +413,7 @@ public class JavaOutputGenerator implements OutputGenerator
 			out.printf("%s		%s(%s.%s());%n", indent, camelPrefix("set", property.name), "copy", camelPrefix("get", property.name));
 		out.printf("%s	}%n", indent);
 		out.println();
+
 		checkError(out);
 	}
 
@@ -319,10 +439,6 @@ public class JavaOutputGenerator implements OutputGenerator
 			{
 				case group:
 					out.printf("%s		this.%s=new %s(in);%n", indent, p.name, p.targetType);
-					break;
-
-				case object: //special case
-					out.printf("%s		this.%s=GameObject.createGameObject(this.otype, in);%n", indent, p.name, p.targetType);
 					break;
 
 				case list:
@@ -358,8 +474,25 @@ public class JavaOutputGenerator implements OutputGenerator
 					out.printf("%s		in.readCharacter(this.%s);%n", indent, p.name, p.size * 8);
 					break;
 
-				default:
+				case string:
 					out.printf("%s		this.%s=in.%s();%n", indent, p.name, camelPrefix("read", p.type.name()));
+					break;
+
+				case useparameters:
+					if (p.useparametersTypeField.isIndirect())
+					{
+						out.printf("%s		//indirect: drain the rest of frame and decode later%n", indent);
+						out.printf("%s		this.%s=in.drainFrame();%n", indent, p.name);
+					}
+					else
+					{
+						out.printf("%s		//direct: just read this sucker%n", indent);
+						out.printf("%s		this.%s=%s.create(this.%s, in);%n", indent, p.name, p.targetType, p.targetSubtype);
+					}
+					break;
+
+				case descparameter:
+					out.printf("%s		this.%s=%s.create(this.%s, in);%n", indent, p.name, p.targetType, p.targetSubtype);
 					break;
 			}
 		}
@@ -369,7 +502,7 @@ public class JavaOutputGenerator implements OutputGenerator
 		checkError(out);
 	}
 
-	private void printToStringMethod(int level, String typeName, List<Property> properties, boolean overrides) throws IOException
+	private void printToStringMethod(int level, String typeName, List<Property> properties, boolean overrides, PrintWriter out) throws IOException
 	{
 		Indent indent=new Indent(level);
 
@@ -387,8 +520,20 @@ public class JavaOutputGenerator implements OutputGenerator
 					out.printf("%s		buf.append(java.util.Arrays.toString(this.%s));%n", indent, p.name);
 					break;
 
-				default:
+				case enumeration:
+				case group:
+				case integer:
+				case list:
+				case string:
+				case descparameter:
 					out.printf("%s		buf.append(String.valueOf(this.%s));%n", indent, p.name);
+					break;
+
+				case useparameters:
+					if (p.useparametersTypeField.isIndirect())
+						out.printf("%s		buf.append(\"<indirect>\");%n", indent);
+					else
+						out.printf("%s		buf.append(String.valueOf(this.%s));%n", indent, p.name);
 					break;
 			}
 		}
@@ -402,7 +547,27 @@ public class JavaOutputGenerator implements OutputGenerator
 		checkError(out);
 	}
 
-	private void printVisitorClass(File targetDir, List<Packet> packets) throws IOException
+	private void printStaticParameterFactory(int level, String className, List<NamedEntity> parameters, PrintWriter out) throws IOException
+	{
+		Indent indent=new Indent(level);
+
+		out.printf("%s	public static %s create(int id, TPDataInput in) throws IOException%n", indent, className);
+		out.printf("%s	{%n", indent);
+		out.println("		switch (id)");
+		out.println("		{");
+		for (NamedEntity parameter : parameters)
+			out.printf("			case %s.PARAM_TYPE: return new %s(id, in);%n", parameter.name, parameter.name);
+		out.println("			//this is necessary for marshall/unmarshall tests");
+		out.printf("			case -1: return new %s(id, in);%n", className);
+		out.printf("			default: throw new IllegalArgumentException(\"Invalid %s id: \"+id);%n", className);
+		out.println("		}");
+		out.printf("%s	}%n", indent);
+		out.println();
+
+		checkError(out);
+	}
+
+	private void printVisitorClass(File targetDir, Map<String, List<NamedEntity>> entities) throws IOException
 	{
 		PrintWriter visitor=createTargetFile(new File(createTargetDir(targetDir), String.format("TP%02dVisitor.java", compat)));
 		try
@@ -431,15 +596,28 @@ public class JavaOutputGenerator implements OutputGenerator
 			visitor.println("		super(errorOnUnhandled);");
 			visitor.println("	}");
 			visitor.println();
-			for (Packet packet : packets)
-				if (packet.id != -1)
+			for (Map.Entry<String, List<NamedEntity>> group : entities.entrySet())
+			{
+				if (!group.getKey().equals("frame"))
 				{
-					visitor.printf("	public void frame(%s packet) throws TPException%n", packet.name);
+					visitor.printf("	public void unhandled%s(%s %s) throws TPException%n", camelPrefix("", group.getKey()), camelPrefix("", group.getKey()), group.getKey());
 					visitor.println("	{");
-					visitor.println("		unhandledFrame(packet);");
+					visitor.println("		if (errorOnUnhandled)");
+					//we're not doing frames, so this is a parameter -> getParameterType()
+					visitor.printf("			throw new TPException(String.format(\"Unexpected %s: type %%d (%%s)\", %s.getParameterType(), %s.toString()));%n", group.getKey(), group.getKey(), group.getKey());
 					visitor.println("	}");
 					visitor.println();
 				}
+				for (NamedEntity packet : group.getValue())
+					if (packet.id != -1)
+					{
+						visitor.printf("	public void %s(%s %s) throws TPException%n", group.getKey(), packet.name, group.getKey());
+						visitor.println("	{");
+						visitor.printf("		unhandled%s(%s);%n", camelPrefix("", group.getKey()), group.getKey());
+						visitor.println("	}");
+						visitor.println();
+					}
+			}
 			visitor.println("}");
 
 			checkError(visitor);
@@ -450,7 +628,7 @@ public class JavaOutputGenerator implements OutputGenerator
 		}
 	}
 
-	private void printFrameDecoder(File targetDir, List<Packet> packets) throws IOException
+	private void printFrameDecoder(File targetDir, Map<String, List<NamedEntity>> entities) throws IOException
 	{
 		PrintWriter frameDecoder=createTargetFile(new File(createTargetDir(targetDir), String.format("TP%02dDecoder.java", compat)));
 		try
@@ -522,7 +700,7 @@ public class JavaOutputGenerator implements OutputGenerator
 			frameDecoder.println("	{");
 			frameDecoder.println("		switch (id)");
 			frameDecoder.println("		{");
-			for (Packet packet : packets)
+			for (NamedEntity packet : entities.get("frame"))
 				if (packet.id != -1)
 					frameDecoder.printf("			case %s.FRAME_TYPE: return new %s(id, in);%n", packet.name, packet.name);
 			frameDecoder.println("			default: throw new IllegalArgumentException(\"Invalid Frame id: \"+id);");
@@ -544,12 +722,12 @@ public class JavaOutputGenerator implements OutputGenerator
 		}
 	}
 
-	public void endProtocol(File targetDir, List<Packet> packets) throws IOException
+	public void endProtocol(File targetDir, Map<String, List<NamedEntity>> entities) throws IOException
 	{
 		try
 		{
-			printVisitorClass(targetDir, packets);
-			printFrameDecoder(targetDir, packets);
+			printVisitorClass(targetDir, entities);
+			printFrameDecoder(targetDir, entities);
 		}
 		finally
 		{
@@ -570,20 +748,13 @@ public class JavaOutputGenerator implements OutputGenerator
 			out.println();
 		}
 
-		printConstructors();
-
-		checkError(out);
-	}
-
-	private void printConstructors() throws IOException
-	{
 		//first constructor, for general public and subclasses
 		out.printf("	protected %s(int id)%n", packetName);
 		out.println("	{");
 		out.println("		super(id);");
 		out.println("	}");
 		out.println();
-
+		
 		//(note: id == -1 is no id is a base class for other packets)
 		//(but then, it should not have readonly properties...)
 		if (packetType != -1)
@@ -594,6 +765,91 @@ public class JavaOutputGenerator implements OutputGenerator
 			out.println("	}");
 			out.println();
 		}
+
+		checkError(out);
+	}
+
+	public void startParameterSetType() throws IOException
+	{
+		out=outParam;
+		printParameterSetType(outParam, parameterSetName);
+	}
+
+	private void printParameterSetType(PrintWriter out, String className) throws IOException
+	{
+		out.printf("public class %s extends TPObject<TP%02dVisitor> implements Visitable<TP%02dVisitor>%n", className, compat, compat);
+		out.println("{");
+		out.println("	private final int id;");
+		out.println();
+		out.printf("	protected %s(int id)%n", className);
+		out.println("	{");
+		out.println("		this.id=id;");
+		out.println("	}");
+		out.println();
+		out.printf("	%s(int id, TPDataInput in)%n", className);
+		out.println("	{");
+		out.println("		this(id);");
+		out.println("		//nothing to read");
+		out.println("	}");
+		out.println();
+		out.println("	public int getParameterType()");
+		out.println("	{");
+		out.println("		return id;");
+		out.println("	}");
+		out.println();
+		out.println("	@Override");
+		out.println("	public int findByteLength()");
+		out.println("	{");
+		out.println("		return 0;");
+		out.println("	}");
+		out.println();
+		out.println("	public void write(TPDataOutput out, Connection<?> conn) throws IOException");
+		out.println("	{");
+		out.println("		//NOP");
+		out.println("	}");
+		out.println();
+		out.printf("	public void visit(TP%02dVisitor visitor) throws TPException%n", compat);
+		out.println("	{");
+		out.println("		throw new RuntimeException();");
+		out.println("	}");
+		out.println();
+
+		checkError(out);
+	}
+
+	private void printParameterStructType(PrintWriter out, String baseClass)
+	{
+		Indent indent=new Indent(1);
+
+		out.printf("%spublic static class %s extends %s%n", indent, parameterName, baseClass);
+		out.printf("%s{%n", indent);
+		out.printf("%s	public static final int PARAM_TYPE=%d;%n", indent, parameterType);
+		out.println();
+		out.printf("%s	/**%n", indent);
+		out.printf("%s	 * A default constructor which initialises properties to their defaults.%n", indent);
+		out.printf("%s	 */%n", indent);
+		out.printf("%s	protected %s(int id)%n", indent, parameterName);
+		out.printf("%s	{%n", indent);
+		out.printf("%s		super(id);%n", indent, parameterName);
+		out.printf("%s	}%n", indent);
+		out.println();
+	}
+
+	private void printEndParameterClass(List<Property> properties, String baseClass, PrintWriter out) throws IOException
+	{
+		Indent indent=new Indent(1);
+
+		printFindLengthMethod(1, properties);
+		printWriteMethod(1, properties, true);
+
+		printInputConstructor(1, parameterName, properties, true);
+
+		printToStringMethod(1, parameterName, properties, true, out);
+
+		printVisitorMethod(1, baseClass.substring(0, 1).toLowerCase()+baseClass.substring(1), true);
+
+		out.printf("%s}%n", indent);
+		out.println();
 
 		checkError(out);
 	}
@@ -648,17 +904,31 @@ public class JavaOutputGenerator implements OutputGenerator
 					
 				break;
 
-			case object: //special case
-				out.printf("%s/*%n", indent);
-				out.printf("%s * somehow we know that Universe is type 0 :)%n", indent);
-				out.printf("%s * [it has to be in sync with otype property, which is inited to 0 if not created by server]%n", indent);
-				out.printf("%s * (and use subversive inner class construct to exploit protected constructor ;))%n", indent);
-				out.printf("%s */%n", indent);
-				out.printf("%sprivate %s %s=new Universe<TP%02dVisitor>() {};%n", indent, property.targetType, property.name, compat);
+			case group:
+			case string:
+				out.printf("%sprivate %s %s=new %s();%n", indent, property.targetType, property.name, property.targetType);
 				break;
 
-			default:
-				out.printf("%sprivate %s %s=new %s();%n", indent, property.targetType, property.name, property.targetType);
+			case useparameters:
+				if (property.useparametersTypeField.isIndirect())
+					out.printf("%sprivate byte[] %s=new byte[0];%n", indent, property.name);
+				else
+				{
+					//even direct requires hacks!
+					out.printf("%sprivate %s %s=new %s(-1);%n", indent, property.targetType, property.name, property.targetType);
+					out.printf("%s{%n", indent);
+					out.printf("%s	//hackity hack :) [for tests only!]%n", indent);
+					out.printf("%s	this.%s=-1;%n", indent, property.targetSubtype);
+					out.printf("%s}%n", indent);
+				}
+				break;
+
+			case descparameter:
+				out.printf("%sprivate %s %s=new %s(-1);%n", indent, property.targetType, property.name, property.targetType);
+				out.printf("%s{%n", indent);
+				out.printf("%s	//hackity hack :) [for tests only!]%n", indent);
+				out.printf("%s	this.%s=-1;%n", indent, property.targetSubtype);
+				out.printf("%s}%n", indent);
 				break;
 		}
 		out.println();
@@ -686,7 +956,86 @@ public class JavaOutputGenerator implements OutputGenerator
 					out.printf("%s	return this.%s;%n", indent, property.name);
 				break;
 
-			default:
+			case enumeration:
+				out.printf("%spublic %s %s()%n", indent, property.size < 0 ? property.targetSubtype : property.targetType, camelPrefix("get", property.name));
+				out.printf("%s{%n", indent);
+				out.printf("%s	return this.%s;%n", indent, property.name);
+				break;
+
+			case group:
+			case integer:
+			case string:
+				out.printf("%spublic %s %s()%n", indent, property.targetType, camelPrefix("get", property.name));
+				out.printf("%s{%n", indent);
+				out.printf("%s	return this.%s;%n", indent, property.name);
+				break;
+
+			case useparameters:
+				if (property.useparametersTypeField.isIndirect())
+				{
+					//FIXME: somehow return nested groups as nested objects
+					out.printf("%spublic java.util.List<%s> %s(%s template) throws TPException%n", indent, property.targetType, camelPrefix("get", property.name), property.useparametersTypeField.indirectFrame);
+					out.printf("%s{%n", indent);
+					out.printf("%s	try%n", indent);
+					out.printf("%s	{%n", indent);
+					out.printf("%s		if (template.%s() != %s())%n", indent, camelPrefix("get", property.useparametersTypeField.indirectFrameCheckField), camelPrefix("get", property.useparametersTypeField.localField));
+					out.printf("%s			throw new TPException(String.format(\"ParameterSet id does not match frame's parameter set id: %%d != %%d\", template.%s(), %s()));%n", indent, camelPrefix("get", property.useparametersTypeField.indirectFrameCheckField), camelPrefix("get", property.useparametersTypeField.localField));
+					out.printf("%s		TPDataInput in=new TPInputStream(new java.io.ByteArrayInputStream(this.%s));%n", indent, property.name);
+					out.printf("%s		java.util.List<%s> ret=new java.util.ArrayList<%s>();%n", indent, property.targetType, property.targetType);
+
+					//please, take a seat, it's not a pretty sight!
+					int nest=0;
+					int varCnt=0;
+					Indent nestIndent=indent;
+					String srcVar="template";
+					String varType=property.useparametersTypeField.indirectFrame;
+					for (int i=0; i < property.useparametersTypeField.searchPath.size(); i++)
+					{
+						SearchPathElement elem=property.useparametersTypeField.searchPath.get(i);
+
+						String varName=String.format("template%d", varCnt++);
+						varType=elem.type == SearchPathElement.Type.FINAL
+							? "int" //int?
+							: varType+"."+elem.property.substring(0, 1).toUpperCase()+elem.property.substring(1)+"Type";
+
+						switch (elem.type)
+						{
+							case FIELD:
+								out.printf("%s		%s %s=%s.%s();%n", nestIndent, varType, varName, srcVar, camelPrefix("get", elem.property));
+								break;
+
+							case LIST:
+								out.printf("%s		for (%s %s : %s.%s())%n", nestIndent, varType, varName, srcVar, camelPrefix("get", elem.property));
+								out.printf("%s		{%n", nestIndent);
+								nestIndent=new Indent(level + ++nest);
+								break;
+
+							case FINAL:
+								out.printf("%s		ret.add(%s.create(%s.%s(), in));%n", nestIndent, property.targetType, srcVar, camelPrefix("get", elem.property));
+								break;
+						}
+						srcVar=varName;
+					}
+					while (nest != 0)
+						out.printf("%s		}%n", new Indent(level + --nest));
+
+					out.printf("%s		return ret;%n", indent);
+					out.printf("%s	}%n", indent);
+					out.printf("%s	catch (IOException ex)%n", indent);
+					out.printf("%s	{%n", indent);
+					out.printf("%s		//rather unlikely, unless you pass a wrong template and hit EOFException%n", indent);
+					out.printf("%s		throw new TPException(ex);%n", indent);
+					out.printf("%s	}%n", indent);
+				}
+				else
+				{
+					out.printf("%spublic %s %s()%n", indent, property.targetType, camelPrefix("get", property.name));
+					out.printf("%s{%n", indent);
+					out.printf("%s	return this.%s;%n", indent, property.name);
+				}
+				break;
+
+			case descparameter:
 				out.printf("%spublic %s %s()%n", indent, property.targetType, camelPrefix("get", property.name));
 				out.printf("%s{%n", indent);
 				out.printf("%s	return this.%s;%n", indent, property.name);
@@ -706,15 +1055,29 @@ public class JavaOutputGenerator implements OutputGenerator
 		boolean isPublic=!property.readOnly && property.type != PropertyType.list;
 		if (!isPublic)
 			out.printf("%s@SuppressWarnings(\"unused\")%n", indent);
+
+		String valueType;
+		switch (property.type)
+		{
+			case list:
+				valueType=String.format("java.util.List<%s>", property.targetType);
+				break;
+			case enumeration:
+				valueType=property.size < 0
+					? property.targetSubtype
+					: property.targetType;
+				break;
+			default:
+				valueType=property.targetType;
+		}
+
 		out.printf("%s%s void %s(%s value)%n",
 			indent,
 			isPublic
 				? "public"
 				: "private",
 			camelPrefix("set", property.name),
-			property.type != PropertyType.list
-				? property.targetType
-				: String.format("java.util.List<%s>", property.targetType));
+			valueType);
 		out.printf("%s{%n", indent);
 		switch (property.type)
 		{
@@ -732,12 +1095,16 @@ public class JavaOutputGenerator implements OutputGenerator
 				out.printf("%s	this.%s=new %s(value);%n", indent, property.name, property.targetType);
 				break;
 
-			case object: //special case
-				out.printf("%s	this.%s=value.copy();%n", indent, property.name);
+			case enumeration:
+			case integer:
+			case string:
+				out.printf("%s	this.%s=value;%n", indent, property.name);
 				break;
 
-			default:
-				out.printf("%s	this.%s=value;%n", indent, property.name);
+			case useparameters:
+			case descparameter:
+				//TODO: should this be copyable?
+				out.printf("%s	throw new RuntimeException();%n", indent, property.name);
 				break;
 		}
 		out.printf("%s}%n", indent);
@@ -786,6 +1153,7 @@ public class JavaOutputGenerator implements OutputGenerator
 	public void startInnerType(int level, String name) throws IOException
 	{
 		Indent indent=new Indent(level);
+
 		out.printf("%spublic static class %s extends TPObject<TP%02dVisitor>%n", indent, name, compat);
 		out.printf("%s{%n", indent);
 		out.printf("%s	/**%n", indent);
@@ -807,10 +1175,9 @@ public class JavaOutputGenerator implements OutputGenerator
 		printWriteMethod(level, properties, false);
 
 		printConvenienceConstructor(level, name, properties);
-
 		printInputConstructor(level, name, properties, false);
 
-		printToStringMethod(level, name, properties, false);
+		printToStringMethod(level, name, properties, false, out);
 
 		out.printf("%s}%n", indent);
 		out.println();

@@ -68,4 +68,20 @@ class LimitInputStream extends FilterInputStream
 		limit -= ret;
 		return ret;
 	}
+
+	/**
+	 * Reads all bytes remaining to the limit and returns them as a {@code byte}
+	 * array.
+	 * 
+	 * @return the array of bytes remaining to the limit
+	 * @throws IOException
+	 *             on I/O error
+	 */
+	public byte[] drain() throws IOException
+	{
+		byte[] ret=new byte[limit];
+		if (limit != 0)
+			read(ret);
+		return ret;
+	}
 }

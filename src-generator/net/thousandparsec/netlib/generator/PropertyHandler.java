@@ -30,18 +30,19 @@ class PropertyHandler extends StructuredElementHandler<StructureHandler<?>>
 	protected final boolean readOnly;
 	private String name;
 	private StringBuilder nameCollector;
+	private UseparametersTypeField useparametersTypeField;
 
 	/**
 	 * Initialises wothout a target's language type name, when it's unknown at
 	 * the beginning of this element. Remember to set it with
 	 * {@link #setValueType(String)} later.
 	 */
-	public PropertyHandler(StructureHandler<?> parent, StructureHandler.PropertyType type, int size, boolean readOnly)
+	PropertyHandler(StructureHandler<?> parent, StructureHandler.PropertyType type, int size, boolean readOnly)
 	{
 		this(parent, type, null, null, size, readOnly);
 	}
 
-	public PropertyHandler(StructureHandler<?> parent, StructureHandler.PropertyType type, String valueType, String valueSubtype, int size, boolean readOnly)
+	PropertyHandler(StructureHandler<?> parent, StructureHandler.PropertyType type, String valueType, String valueSubtype, int size, boolean readOnly)
 	{
 		super(parent);
 		this.valueType=valueType;
@@ -82,6 +83,16 @@ class PropertyHandler extends StructuredElementHandler<StructureHandler<?>>
 		this.name=name;
 	}
 
+	protected UseparametersTypeField getUseparametersTypeField()
+	{
+		return useparametersTypeField;
+	}
+
+	protected void setUseparametersTypeField(UseparametersTypeField useparametersIndirectFrame)
+	{
+		this.useparametersTypeField=useparametersIndirectFrame;
+	}
+
 	@Override
 	public void startElement(String uri, String localName, String name, Attributes atts) throws SAXException
 	{
@@ -94,7 +105,7 @@ class PropertyHandler extends StructuredElementHandler<StructureHandler<?>>
 					//do you hate XML already?
 					pushHandler(new TextCollectorHandler(this, nameCollector=new StringBuilder()));
 				else if (localName.equals("description"))
-					pushHandler(new TextCommentHandler(this, parent.packet, parent.level, 0));
+					pushHandler(new TextCommentHandler(this, parent.generator.generator, parent.level, 0));
 				else if (localName.equals("subtype"))
 				{
 					//subtype means that the value is taken from the subclass - we handle it manually where it's needed
@@ -122,16 +133,16 @@ class PropertyHandler extends StructuredElementHandler<StructureHandler<?>>
 			else if (getDepth() == 0)
 			{
 				if (this.name == null)
-					throw new SAXException("Property without a name: "+parent.packet.packetName+" <type: "+type+">");
+					throw new SAXException(String.format("Property without a name (type: %s)", type));
 				if (this.valueType == null)
-					throw new SAXException("Property with an unknown type: "+parent.packet.packetName+".."+this.name+" <type: "+type+">");
+					throw new SAXException(String.format("Property with an unknown type (%s)", type));
 
-				Property prop=parent.parent.addProperty(this.name, type, valueType, valueSubtype, size, readOnly);
+				Property prop=parent.parent.addProperty(this.name, type, valueType, valueSubtype, size, readOnly, useparametersTypeField);
 
-				parent.packet.parent.parent.generator.printPropertyDef(parent.level, prop);
-				parent.packet.parent.parent.generator.printPropertyGetter(parent.level, prop);
+				parent.generator.generator.printPropertyDef(parent.level, prop);
+				parent.generator.generator.printPropertyGetter(parent.level, prop);
 				//print setter even if read-only (*might* be useful)
-				parent.packet.parent.parent.generator.printPropertySetter(parent.level, prop);
+				parent.generator.generator.printPropertySetter(parent.level, prop);
 			}
 			super.endElement(uri, localName, name);
 		}
