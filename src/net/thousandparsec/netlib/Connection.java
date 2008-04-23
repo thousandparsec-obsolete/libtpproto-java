@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-//import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.SSLSocketFactory;
 
 /**
  * This class implements the basic client connection for the Thousand Parsec
@@ -341,7 +341,7 @@ public class Connection<V extends Visitor>
 	 * @throws IOException
 	 *             on a I/O error
 	 */
-	//@SuppressWarnings("unused")
+	@SuppressWarnings("unused")
 	public static <V extends Visitor> Connection<V>
 		makeHTTPConnection(FrameDecoder<V> frameDecoder, String host, int port, V asyncVisitor)
 		throws UnknownHostException, IOException
@@ -386,7 +386,7 @@ public class Connection<V extends Visitor>
 	 * @throws IOException
 	 *             on a I/O error
 	 */
-	//@SuppressWarnings("unused")
+	@SuppressWarnings("unused")
 	public static <V extends Visitor> Connection<V>
 		makeHTTPSConnection(FrameDecoder<V> frameDecoder, String host, int port, V asyncVisitor)
 		throws UnknownHostException, IOException

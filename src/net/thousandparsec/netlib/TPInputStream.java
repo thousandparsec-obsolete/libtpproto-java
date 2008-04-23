@@ -10,12 +10,20 @@ import java.io.InputStream;
  * 
  * @author ksobolewski
  */
-class TPInputStream implements TPDataInput
+public class TPInputStream implements TPDataInput
 {
+	private final LimitInputStream orig;
 	private final DataInputStream in;
+
+	TPInputStream(LimitInputStream in)
+	{
+		this.orig=in;
+		this.in=new DataInputStream(in);
+	}
 
 	public TPInputStream(InputStream in)
 	{
+		this.orig=null;
 		this.in=new DataInputStream(in);
 	}
 
@@ -50,5 +58,10 @@ class TPInputStream implements TPDataInput
 		byte[] buf=new byte[length];
 		in.readFully(buf);
 		return new String(buf, "utf-8");
+	}
+
+	public byte[] drainFrame() throws IOException
+	{
+		return orig == null ? null : orig.drain();
 	}
 }

@@ -14,13 +14,11 @@ public class TPException extends Exception
 
 	public TPException(Throwable cause)
 	{
-		//super(cause);
-                super(cause.getMessage());
+		super(cause);
 	}
 
 	public TPException(String message, Throwable cause)
 	{
-		//super(message, cause);
-                super(message);
+		super(message, cause);
 	}
 }

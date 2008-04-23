@@ -2,7 +2,6 @@ package net.thousandparsec.netlib;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.util.Arrays;
 
 /**
  * A base class for classes representing protocol's frames. This class also
@@ -76,7 +75,7 @@ public abstract class Frame<V extends Visitor> extends TPObject<V> implements Vi
 	 * 
 	 * @return byte length of this object
 	 */
-
+	@Override
 	public int findByteLength()
 	{
 		//no payload here
@@ -116,8 +115,9 @@ public abstract class Frame<V extends Visitor> extends TPObject<V> implements Vi
 			try
 			{
 				in.readCharacter(buf, 0, template.length);
-				if (!Arrays.equals(buf, template))
-					throw new IOException("Not a start of a frame");
+				for (int i=0; i < template.length; i++)
+					if (buf[i] != template[i])
+						throw new IOException("Not a start of a frame");
 				return true;
 			}
 			catch (EOFException ex)
@@ -157,7 +157,7 @@ public abstract class Frame<V extends Visitor> extends TPObject<V> implements Vi
 					if (!checkMagic(in, buf, MAGIC_TP04))
 						return null;
 					//frameversion (not in this compat)
-					framever=in.readInteger32();
+					framever=in.readInteger8();
 					//sequence
 					seq=in.readInteger32();
 					//type
