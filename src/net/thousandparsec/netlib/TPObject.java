@@ -18,7 +18,7 @@ public abstract class TPObject<V extends Visitor> implements Writable
 		}
 		catch (UnsupportedEncodingException ex)
 		{
-			throw new Error(ex);
+			throw new Error(ex.getMessage());
 		}
 	}
 

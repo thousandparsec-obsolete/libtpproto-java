@@ -75,16 +75,4 @@ public interface TPDataInput
 	 *             on I/O error
 	 */
 	String readString() throws IOException;
-
-	/**
-	 * Reads all bytes remaining to the end of current frame and returns them as
-	 * a {@code byte} array. If there is no current frame or the end is not
-	 * possible to determine, returns {@literal null}.
-	 * 
-	 * @return the array of bytes remaining to the end of current frame, or
-	 *         {@literal null} if not possible
-	 * @throws IOException
-	 *             on I/O error
-	 */
-	byte[] drainFrame() throws IOException;
 }

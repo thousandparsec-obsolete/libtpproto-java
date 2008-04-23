@@ -97,7 +97,7 @@ public class Pair<L, R>
 	 * @return true if the other {@link Object} is a {@link Pair} with
 	 *         components equal to respective components of this pair.
 	 */
-	@Override
+
 	public boolean equals(Object o)
 	{
 		if (this == o)
@@ -115,13 +115,13 @@ public class Pair<L, R>
 	 * 
 	 * @return a combination of hash codes if this {@link Pair}'s components
 	 */
-	@Override
+
 	public int hashCode()
 	{
 		return (left == null ? 0 : left.hashCode()) * 31 + (right == null ? 0 : right.hashCode());
 	}
 
-	@Override
+
 	public String toString()
 	{
 		return "("+left+", "+right+")";

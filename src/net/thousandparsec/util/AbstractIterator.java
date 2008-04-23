@@ -20,7 +20,8 @@ import java.util.Iterator;
  * 
  * @author ksobolewski
  */
-public abstract class AbstractIterator<E> implements Iterator<E>
+//public abstract class AbstractIterator<E> implements Iterator<E>
+public abstract class AbstractIterator implements Iterator
 {
 	private enum State {VIRGIN, IN_PROGRESS, FINISHED}
 
@@ -53,7 +54,8 @@ public abstract class AbstractIterator<E> implements Iterator<E>
 		//call hasNext() to fetch the first element if hasNext() wasn't called before
 		if (!hasNext())
 			throw new IllegalStateException();
-		E ret=next;
+		//E ret=next;//changed here
+                E ret=(E)next;
 		next=fetchNext();
 		return ret;
 	}
