@@ -33,7 +33,7 @@ class LimitInputStream extends FilterInputStream
 			throw new IOException("Read limit exceeded on stream");
 	}
 
-	@Override
+	
 	public int read() throws IOException
 	{
 		checkLimit();
@@ -41,7 +41,7 @@ class LimitInputStream extends FilterInputStream
 		return super.read();
 	}
 
-	@Override
+	
 	public int read(byte b[]) throws IOException
 	{
 		checkLimit();
@@ -50,7 +50,7 @@ class LimitInputStream extends FilterInputStream
 		return ret;
 	}
 
-	@Override
+	
 	public int read(byte b[], int off, int len) throws IOException
 	{
 		checkLimit();
@@ -59,7 +59,7 @@ class LimitInputStream extends FilterInputStream
 		return ret;
 	}
 
-	@Override
+	
 	public long skip(long n) throws IOException
 	{
 		checkLimit();

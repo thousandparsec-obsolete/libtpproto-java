@@ -6,7 +6,8 @@ package net.thousandparsec.netlib;
  * 
  * @author ksobolewski
  */
-public class ConnectionEvent<V extends Visitor>
+//ublic class ConnectionEvent<V extends Visitor>
+public class ConnectionEvent
 {
 	public static enum Type
 	{
@@ -16,11 +17,13 @@ public class ConnectionEvent<V extends Visitor>
 	}
 
 	private final Type type;
-	private final Frame<V> frame;
+	//private final Frame<V> frame;
+        private final Frame frame;
 	private final boolean isAsync;
 	private final Exception exception;
 
-	ConnectionEvent(Type type, Frame<V> frame, boolean isAsync, Exception exception)
+	//ConnectionEvent(Type type, Frame<V> frame, boolean isAsync, Exception exception)
+        ConnectionEvent(Type type, Frame frame, boolean isAsync, Exception exception)
 	{
 		this.type=type;
 		this.frame=frame;
@@ -33,7 +36,8 @@ public class ConnectionEvent<V extends Visitor>
 		return type;
 	}
 
-	public Frame<V> getFrame()
+	//public Frame<V> getFrame()
+        public Frame getFrame()
 	{
 		return frame;
 	}

@@ -17,7 +17,8 @@ import java.io.IOException;
  * @see Connection
  * @author ksobolewski
  */
-public abstract class Frame<V extends Visitor> extends TPObject<V> implements Visitable<V>
+//public abstract class Frame<V extends Visitor> extends TPObject<V> implements Visitable<V>
+public abstract class Frame extends TPObject implements Visitable
 {
 	private final int id;
 	private int seq;
@@ -32,7 +33,8 @@ public abstract class Frame<V extends Visitor> extends TPObject<V> implements Vi
 		this(id);
 	}
 
-	public void write(TPDataOutput out, Connection<?> conn) throws IOException
+	//public void write(TPDataOutput out, Connection<?> conn) throws IOException
+        public void write(TPDataOutput out, Connection conn) throws IOException
 	{
 		switch (conn.getCompatibility())
 		{
@@ -75,7 +77,7 @@ public abstract class Frame<V extends Visitor> extends TPObject<V> implements Vi
 	 * 
 	 * @return byte length of this object
 	 */
-	@Override
+	
 	public int findByteLength()
 	{
 		//no payload here

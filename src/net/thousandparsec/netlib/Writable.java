@@ -33,5 +33,6 @@ public interface Writable
 	 * @throws IOException
 	 *             on I/O error
 	 */
-	void write(TPDataOutput out, Connection<?> conn) throws IOException;
+	//void write(TPDataOutput out, Connection<?> conn) throws IOException;
+        void write(TPDataOutput out, Connection conn) throws IOException;
 }

@@ -17,9 +17,11 @@ import java.io.IOException;
  * 
  * @author ksobolewski
  */
-public class SimpleSequentialConnection<V extends Visitor> implements SequentialConnection<V>
+//public class SimpleSequentialConnection<V extends Visitor> implements SequentialConnection<V>
+public class SimpleSequentialConnection implements SequentialConnection
 {
-	private final Connection<V> conn;
+	//private final Connection<V> conn;
+        private final Connection conn;
 	private int lastSequence;
 
 	/**
@@ -29,19 +31,22 @@ public class SimpleSequentialConnection<V extends Visitor> implements Sequential
 	 * @param conn
 	 *            the underlying {@link Connection}
 	 */
-	public SimpleSequentialConnection(Connection<V> conn)
+	//public SimpleSequentialConnection(Connection<V> conn)
+        public SimpleSequentialConnection(Connection conn)
 	{
 		this.conn=conn;
 	}
 
-	public Connection<V> getConnection()
+	//public Connection<V> getConnection()
+        public Connection getConnection()
 	{
 		return conn;
 	}
 
 	public <F extends Frame<V>> F receiveFrame(Class<F> expectedClass) throws EOFException, IOException, TPException
 	{
-		Frame<V> frame=conn.receiveFrame();
+		//Frame<V> frame=conn.receiveFrame();
+                Frame frame=conn.receiveFrame();
 		if (frame == null)
 			throw new EOFException();
 		else if (lastSequence != 0 && frame.getSequenceNumber() != lastSequence)
@@ -59,11 +64,13 @@ public class SimpleSequentialConnection<V extends Visitor> implements Sequential
 		return receiveFrame(responseClass);
 	}
 
-	public void sendFrame(Frame<V> frame, V responseVisitor) throws IOException, TPException
+	//public void sendFrame(Frame<V> frame, V responseVisitor) throws IOException, TPException
+        public void sendFrame(Frame frame, Visitor responseVisitor) throws IOException, TPException
 	{
 		conn.sendFrame(frame);
 		lastSequence=frame.getSequenceNumber();
-		Frame<V> response=conn.receiveFrame();
+		//Frame<V> response=conn.receiveFrame();
+                Frame response=conn.receiveFrame();
 		if (response.getSequenceNumber() != frame.getSequenceNumber())
 			throw new TPException(String.format("Response frame sequence %s does not match request frame sequence %s", response.getSequenceNumber(), frame.getSequenceNumber()));
 		response.visit(responseVisitor);

@@ -40,11 +40,13 @@ import java.util.concurrent.LinkedBlockingQueue;
  * 
  * @author ksobolewski
  */
-public class PipelinedConnection<V extends Visitor>
+//public class PipelinedConnection<V extends Visitor>
+public class PipelinedConnection
 {
 	public static final int DEFAULT_QUEUE_DEPTH=32;
 
-	private final Connection<V> conn;
+	//private final Connection<V> conn;
+        private final Connection conn;
 	private final Map<Integer, BlockingQueue<Frame<V>>> pipelines;
 	private final Future<Void> receiverFuture;
 
@@ -55,7 +57,8 @@ public class PipelinedConnection<V extends Visitor>
 	 * @param conn
 	 *            the underlying {@link Connection}
 	 */
-	public PipelinedConnection(Connection<V> conn)
+	//public PipelinedConnection(Connection<V> conn)
+        public PipelinedConnection(Connection conn)
 	{
 		this.conn=conn;
 		//we need something stronger that ConcurrentMap
@@ -85,7 +88,8 @@ public class PipelinedConnection<V extends Visitor>
 	 * 
 	 * @return the underlying {@link Connection}
 	 */
-	public Connection<V> getConnection()
+	//public Connection<V> getConnection()
+        public Connection getConnection()
 	{
 		return conn;
 	}
@@ -102,6 +106,7 @@ public class PipelinedConnection<V extends Visitor>
 	 * @return a new sequential view of this {@link PipelinedConnection}
 	 */
 	public SequentialConnection<V> createPipeline()
+        //public SequentialConnection createPipeline()
 	{
 		return new Pipeline();
 	}
@@ -133,7 +138,8 @@ public class PipelinedConnection<V extends Visitor>
 		}
 	}
 
-	private class Pipeline implements SequentialConnection<V>
+	//private class Pipeline implements SequentialConnection<V>
+        private class Pipeline implements SequentialConnection
 	{
 		private final BlockingQueue<Frame<V>> incoming=new LinkedBlockingQueue<Frame<V>>();
 		private int lastSeq=0;
@@ -142,7 +148,8 @@ public class PipelinedConnection<V extends Visitor>
 		{
 		}
 
-		private void sendFrame(Frame<V> frame) throws IOException
+		//private void sendFrame(Frame<V> frame) throws IOException
+                private void sendFrame(Frame frame) throws IOException
 		{
 			if (lastSeq < 0)
 				throw new IOException("This pipeline is closed");
@@ -169,7 +176,8 @@ public class PipelinedConnection<V extends Visitor>
 			}
 		}
 
-		private Frame<V> receiveFrame() throws InterruptedException
+		//private Frame<V> receiveFrame() throws InterruptedException
+                private Frame receiveFrame() throws InterruptedException
 		{
 			if (lastSeq < 0)
 				return null;

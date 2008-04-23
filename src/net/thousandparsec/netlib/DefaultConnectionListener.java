@@ -5,7 +5,8 @@ package net.thousandparsec.netlib;
  * 
  * @author ksobolewski
  */
-public class DefaultConnectionListener<V extends Visitor> implements ConnectionListener<V>
+//public class DefaultConnectionListener<V extends Visitor> implements ConnectionListener<V>
+public class DefaultConnectionListener implements ConnectionListener
 {
 	private final boolean printSent;
 	private final boolean printReceived;
@@ -25,18 +26,22 @@ public class DefaultConnectionListener<V extends Visitor> implements ConnectionL
 		this(true, true, true, true);
 	}
 
-	public void frameSent(ConnectionEvent<V> ev)
+	//public void frameSent(ConnectionEvent<V> ev)
+        public void frameSent(ConnectionEvent ev)
 	{
 		if (printSent)
 		{
-			Frame<V> frame=ev.getFrame();
+			//Frame<V> frame=ev.getFrame();
+                        Frame frame=ev.getFrame();
 			System.err.printf("%s: Sent frame seq %d, type %d (%s)%n", getClass().getName(), frame.getSequenceNumber(), frame.getFrameType(), frame.toString());
 		}
 	}
 
-	public void frameReceived(ConnectionEvent<V> ev)
+	//public void frameReceived(ConnectionEvent<V> ev)
+        public void frameReceived(ConnectionEvent ev)
 	{
-		Frame<V> frame=ev.getFrame();
+		//Frame<V> frame=ev.getFrame();
+                Frame frame=ev.getFrame();
 		if (ev.isAsync())
 		{
 			if (printReceivedAsync)
@@ -49,7 +54,8 @@ public class DefaultConnectionListener<V extends Visitor> implements ConnectionL
 		}
 	}
 
-	public void connectionError(ConnectionEvent<V> ev)
+	//public void connectionError(ConnectionEvent<V> ev)
+        public void connectionError(ConnectionEvent ev)
 	{
 		if (printError)
 		{

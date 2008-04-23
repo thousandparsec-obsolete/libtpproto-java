@@ -11,7 +11,8 @@ package net.thousandparsec.netlib;
  * 
  * @author ksobolewski
  */
-public interface ConnectionListener<V extends Visitor>
+//public interface ConnectionListener<V extends Visitor>
+public interface ConnectionListener
 {
 	/**
 	 * Called when the conection being observed had just sent a frame.
@@ -19,7 +20,8 @@ public interface ConnectionListener<V extends Visitor>
 	 * @param ev
 	 *            the event containing the {@link Frame} sent
 	 */
-	void frameSent(ConnectionEvent<V> ev);
+	//void frameSent(ConnectionEvent<V> ev);
+        void frameSent(ConnectionEvent ev);
 
 	/**
 	 * Called when the conection being observed had just received a frame.
@@ -28,7 +30,8 @@ public interface ConnectionListener<V extends Visitor>
 	 *            the event containing the {@link Frame} received and a flag
 	 *            indicating if the frame was an asynchronous frame
 	 */
-	void frameReceived(ConnectionEvent<V> ev);
+	//void frameReceived(ConnectionEvent<V> ev);
+        void frameReceived(ConnectionEvent ev);
 
 	/**
 	 * Called when a connection error occurs; the exception passed can be of any
@@ -39,5 +42,6 @@ public interface ConnectionListener<V extends Visitor>
 	 *            the event containing the {@link Exception} that caused the
 	 *            connection error and (if possible) the errored {@link Frame}
 	 */
-	void connectionError(ConnectionEvent<V> ev);
+	//void connectionError(ConnectionEvent<V> ev);
+        void connectionError(ConnectionEvent ev);
 }

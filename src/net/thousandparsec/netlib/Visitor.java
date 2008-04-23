@@ -56,7 +56,8 @@ public abstract class Visitor
 	}
 
 	/* frames */
-	public void unhandledFrame(Frame<?> frame) throws TPException
+	//public void unhandledFrame(Frame<?> frame) throws TPException
+        public void unhandledFrame(Frame frame) throws TPException
 	{
 		if (errorOnUnhandled)
 			throw new TPException(String.format("Unexpected frame: type %d (%s)", frame.getFrameType(), frame.toString()));

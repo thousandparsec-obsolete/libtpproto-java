@@ -11,7 +11,8 @@ import java.net.UnknownHostException;
  * @see Connection
  * @author ksobolewski
  */
-public interface FrameDecoder<V extends Visitor>
+//public interface FrameDecoder<V extends Visitor>
+public interface FrameDecoder
 {
 	int getCompatibility();
 
@@ -35,7 +36,8 @@ public interface FrameDecoder<V extends Visitor>
 	 *            the server
 	 * @see Connection#makeConnection(FrameDecoder, URI, Visitor)
 	 */
-	Connection<V> makeConnection(URI serverUri, boolean autologin, V asyncVisitor) throws UnknownHostException, IOException, TPException;
-
-	Frame<V> decodeFrame(int id, TPDataInput in) throws IOException;
+	//Connection<V> makeConnection(URI serverUri, boolean autologin, V asyncVisitor) throws UnknownHostException, IOException, TPException;
+        Connection makeConnection(URI serverUri, boolean autologin, Visitor asyncVisitor) throws UnknownHostException, IOException, TPException;
+	//Frame<V> decodeFrame(int id, TPDataInput in) throws IOException;
+        Frame decodeFrame(int id, TPDataInput in) throws IOException;
 }
