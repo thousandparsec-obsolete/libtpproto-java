@@ -24,7 +24,7 @@ public class Features extends Response
 	/**
 	 * List of available features
 	 */
-	public static class FeaturesType extends TPObject<TP03Visitor>
+	public static class FeaturesType extends TPObject
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -135,14 +135,13 @@ public class Features extends Response
 			this.feature=value;
 		}
 
-		@Override
 		public int findByteLength()
 		{
 			return super.findByteLength()
 				 + 4;
 		}
 
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			out.writeInteger(this.feature.value);
 		}
@@ -166,7 +165,6 @@ public class Features extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		FeaturesType(TPDataInput in) throws IOException
 		{
 			feature: {
@@ -181,7 +179,6 @@ public class Features extends Response
 			}
 		}
 
-		@Override
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -194,55 +191,52 @@ public class Features extends Response
 
 	}
 
-	private java.util.List<FeaturesType> features=new java.util.ArrayList<FeaturesType>();
-
-	public java.util.List<FeaturesType> getFeatures()
+	private java.util.Vector features = new java.util.Vector();
+	public java.util.Vector getFeatures()
 	{
 		return this.features;
 	}
 
-	@SuppressWarnings("unused")
-	private void setFeatures(java.util.List<FeaturesType> value)
+	private void setFeatures(java.util.Vector value)
 	{
-		for (FeaturesType object : value)
-			this.features.add(new FeaturesType(object));
+                for (int i = 0; i < value.size(); i ++){
+                    this.features.addElement(new FeaturesType((FeaturesType)value.elementAt(i)));
+                }
+
 	}
 
-	@Override
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);
 	}
 
-	@Override
 	public int findByteLength()
 	{
 		return super.findByteLength()
 			 + findByteLength(this.features);
 	}
 
-	@Override
-	public void write(TPDataOutput out, Connection<?> conn) throws IOException
+	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
 		super.write(out, conn);
 		out.writeInteger(this.features.size());
-		for (FeaturesType object : this.features)
-			object.write(out, conn);
+                for (int i =0; i < features.size(); i++){
+                    ((FeaturesType)features.elementAt(i)).write(out, conn);
+                }
+		
 	}
 
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	Features(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);
-		this.features.clear();
+		this.features.removeAllElements();
 		for (int length=in.readInteger32(); length > 0; length--)
-			this.features.add(new FeaturesType(in));
+			this.features.addElement(new FeaturesType(in));
 	}
 
-	@Override
 	public String toString()
 	{
 		StringBuilder buf=new StringBuilder();

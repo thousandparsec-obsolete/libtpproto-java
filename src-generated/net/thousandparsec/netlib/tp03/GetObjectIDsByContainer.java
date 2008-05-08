@@ -36,21 +36,18 @@ public class GetObjectIDsByContainer extends Request
 		this.id=value;
 	}
 
-	@Override
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);
 	}
 
-	@Override
 	public int findByteLength()
 	{
 		return super.findByteLength()
 			 + 4;
 	}
 
-	@Override
-	public void write(TPDataOutput out, Connection<?> conn) throws IOException
+	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
 		super.write(out, conn);
 		out.writeInteger(this.id);
@@ -59,14 +56,12 @@ public class GetObjectIDsByContainer extends Request
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	GetObjectIDsByContainer(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);
 		this.id=in.readInteger32();
 	}
 
-	@Override
 	public String toString()
 	{
 		StringBuilder buf=new StringBuilder();

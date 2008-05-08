@@ -17,11 +17,9 @@ import java.io.IOException;
  * 
  * @author ksobolewski
  */
-//public class SimpleSequentialConnection<V extends Visitor> implements SequentialConnection<V>
 public class SimpleSequentialConnection implements SequentialConnection
 {
-	//private final Connection<V> conn;
-        private final Connection conn;
+	private final Connection conn;
 	private int lastSequence;
 
 	/**
@@ -31,14 +29,12 @@ public class SimpleSequentialConnection implements SequentialConnection
 	 * @param conn
 	 *            the underlying {@link Connection}
 	 */
-	//public SimpleSequentialConnection(Connection<V> conn)
-        public SimpleSequentialConnection(Connection conn)
+	public SimpleSequentialConnection(Connection conn)
 	{
 		this.conn=conn;
 	}
 
-	//public Connection<V> getConnection()
-        public Connection getConnection()
+	public Connection getConnection()
 	{
 		return conn;
 	}
@@ -64,8 +60,7 @@ public class SimpleSequentialConnection implements SequentialConnection
 		return receiveFrame(responseClass);
 	}
 
-	//public void sendFrame(Frame<V> frame, V responseVisitor) throws IOException, TPException
-        public void sendFrame(Frame frame, Visitor responseVisitor) throws IOException, TPException
+	public void sendFrame(Frame frame, Visitor responseVisitor) throws IOException, TPException
 	{
 		conn.sendFrame(frame);
 		lastSequence=frame.getSequenceNumber();

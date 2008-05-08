@@ -81,7 +81,7 @@ public class Object extends Response
 		this.size=value;
 	}
 
-	public static class PosType extends TPObject<TP03Visitor>
+	public static class PosType extends TPObject
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -126,7 +126,6 @@ public class Object extends Response
 			this.z=value;
 		}
 
-		@Override
 		public int findByteLength()
 		{
 			return super.findByteLength()
@@ -135,7 +134,7 @@ public class Object extends Response
 				 + 8;
 		}
 
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			out.writeInteger(this.x);
 			out.writeInteger(this.y);
@@ -165,7 +164,7 @@ public class Object extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
+
 		PosType(TPDataInput in) throws IOException
 		{
 			this.x=in.readInteger64();
@@ -173,7 +172,6 @@ public class Object extends Response
 			this.z=in.readInteger64();
 		}
 
-		@Override
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -202,7 +200,7 @@ public class Object extends Response
 		this.pos=new PosType(value);
 	}
 
-	public static class VelType extends TPObject<TP03Visitor>
+	public static class VelType extends TPObject
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -247,7 +245,6 @@ public class Object extends Response
 			this.z=value;
 		}
 
-		@Override
 		public int findByteLength()
 		{
 			return super.findByteLength()
@@ -256,7 +253,7 @@ public class Object extends Response
 				 + 8;
 		}
 
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			out.writeInteger(this.x);
 			out.writeInteger(this.y);
@@ -286,7 +283,7 @@ public class Object extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
+
 		VelType(TPDataInput in) throws IOException
 		{
 			this.x=in.readInteger64();
@@ -294,7 +291,6 @@ public class Object extends Response
 			this.z=in.readInteger64();
 		}
 
-		@Override
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -326,7 +322,7 @@ public class Object extends Response
 	/**
 	 * IDs of the objects contained by this object.
 	 */
-	public static class ContainsType extends TPObject<TP03Visitor>
+	public static class ContainsType extends TPObject
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -350,14 +346,13 @@ public class Object extends Response
 			this.id=value;
 		}
 
-		@Override
 		public int findByteLength()
 		{
 			return super.findByteLength()
 				 + 4;
 		}
 
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			out.writeInteger(this.id);
 		}
@@ -381,13 +376,12 @@ public class Object extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
+
 		ContainsType(TPDataInput in) throws IOException
 		{
 			this.id=in.readInteger32();
 		}
 
-		@Override
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -400,24 +394,25 @@ public class Object extends Response
 
 	}
 
-	private java.util.List<ContainsType> contains=new java.util.ArrayList<ContainsType>();
-
-	public java.util.List<ContainsType> getContains()
+	
+        private java.util.Vector contains = new java.util.Vector();
+	public java.util.Vector getContains()
 	{
 		return this.contains;
 	}
 
-	@SuppressWarnings("unused")
-	private void setContains(java.util.List<ContainsType> value)
+	private void setContains(java.util.Vector value)
 	{
-		for (ContainsType object : value)
-			this.contains.add(new ContainsType(object));
+                for (int i =0; i < value.size(); i ++){
+                    this.contains.addElement(new ContainsType((ContainsType)value.elementAt(i)));
+                }
+
 	}
 
 	/**
 	 * The order types that a player can send to this object.
 	 */
-	public static class OrdertypesType extends TPObject<TP03Visitor>
+	public static class OrdertypesType extends TPObject
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -441,14 +436,13 @@ public class Object extends Response
 			this.id=value;
 		}
 
-		@Override
 		public int findByteLength()
 		{
 			return super.findByteLength()
 				 + 4;
 		}
 
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			out.writeInteger(this.id);
 		}
@@ -472,13 +466,12 @@ public class Object extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
+
 		OrdertypesType(TPDataInput in) throws IOException
 		{
 			this.id=in.readInteger32();
 		}
 
-		@Override
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -491,18 +484,18 @@ public class Object extends Response
 
 	}
 
-	private java.util.List<OrdertypesType> ordertypes=new java.util.ArrayList<OrdertypesType>();
-
-	public java.util.List<OrdertypesType> getOrdertypes()
+	private java.util.Vector ordertypes = new java.util.Vector();
+	public java.util.Vector getOrdertypes()
 	{
 		return this.ordertypes;
 	}
 
-	@SuppressWarnings("unused")
-	private void setOrdertypes(java.util.List<OrdertypesType> value)
+	private void setOrdertypes(java.util.Vector value)
 	{
-		for (OrdertypesType object : value)
-			this.ordertypes.add(new OrdertypesType(object));
+                for (int i = 0; i < value.size(); i++){
+                    this.ordertypes.addElement(new OrdertypesType((OrdertypesType)value.elementAt(i)));
+                }
+
 	}
 
 	/**
@@ -558,19 +551,16 @@ public class Object extends Response
 		return this.object;
 	}
 
-	@SuppressWarnings("unused")
 	private void setObject(ObjectParams value)
 	{
 		throw new RuntimeException();
 	}
 
-	@Override
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);
 	}
 
-	@Override
 	public int findByteLength()
 	{
 		return super.findByteLength()
@@ -588,8 +578,7 @@ public class Object extends Response
 			 + findByteLength(this.object);
 	}
 
-	@Override
-	public void write(TPDataOutput out, Connection<?> conn) throws IOException
+	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
 		super.write(out, conn);
 		out.writeInteger(this.id);
@@ -599,11 +588,14 @@ public class Object extends Response
 		this.pos.write(out, conn);
 		this.vel.write(out, conn);
 		out.writeInteger(this.contains.size());
-		for (ContainsType object : this.contains)
-			object.write(out, conn);
+                for (int i = 0; i < contains.size(); i++){
+                    ((ContainsType)contains.elementAt(i)).write(out, conn);
+                }
+
 		out.writeInteger(this.ordertypes.size());
-		for (OrdertypesType object : this.ordertypes)
-			object.write(out, conn);
+		for (int i = 0; i < ordertypes.size(); i++){
+                    ((OrdertypesType)ordertypes.elementAt(i)).write(out, conn);
+                }
 		out.writeInteger(this.orders);
 		out.writeInteger(this.modtime);
 		out.writeCharacter(this.padding);
@@ -613,7 +605,7 @@ public class Object extends Response
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
+
 	Object(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);
@@ -623,12 +615,12 @@ public class Object extends Response
 		this.size=in.readInteger64();
 		this.pos=new PosType(in);
 		this.vel=new VelType(in);
-		this.contains.clear();
+		this.contains.removeAllElements();
 		for (int length=in.readInteger32(); length > 0; length--)
-			this.contains.add(new ContainsType(in));
-		this.ordertypes.clear();
+			this.contains.addElement(new ContainsType(in));
+		this.ordertypes.removeAllElements();
 		for (int length=in.readInteger32(); length > 0; length--)
-			this.ordertypes.add(new OrdertypesType(in));
+			this.ordertypes.addElement(new OrdertypesType(in));
 		this.orders=in.readInteger32();
 		this.modtime=in.readInteger64();
 		in.readCharacter(this.padding);
@@ -636,7 +628,6 @@ public class Object extends Response
 		this.object=ObjectParams.create(this.otype, in);
 	}
 
-	@Override
 	public String toString()
 	{
 		StringBuilder buf=new StringBuilder();

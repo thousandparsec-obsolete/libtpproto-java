@@ -7,7 +7,7 @@ import java.io.IOException;
 /**
  * These are the "parameters" that define structures of Objects.
  */
-public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP03Visitor>
+public class ObjectParams extends TPObject implements Visitable
 {
 	private final int id;
 
@@ -27,13 +27,12 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 		return id;
 	}
 
-	@Override
 	public int findByteLength()
 	{
 		return 0;
 	}
 
-	public void write(TPDataOutput out, Connection<?> conn) throws IOException
+	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
 		//NOP
 	}
@@ -62,21 +61,18 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 			return this.age;
 		}
 
-		@SuppressWarnings("unused")
 		private void setAge(int value)
 		{
 			this.age=value;
 		}
 
-		@Override
 		public int findByteLength()
 		{
 			return super.findByteLength()
 				 + 4;
 		}
 
-		@Override
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			super.write(out, conn);
 			out.writeInteger(this.age);
@@ -85,14 +81,13 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
+
 		Universe(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
 			this.age=in.readInteger32();
 		}
 
-		@Override
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -103,7 +98,6 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 			return buf.toString();
 		}
 
-		@Override
 		public void visit(TP03Visitor visitor) throws TPException
 		{
 			visitor.objectParams(this);
@@ -123,14 +117,12 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 			super(id);
 		}
 
-		@Override
 		public int findByteLength()
 		{
 			return super.findByteLength();
 		}
 
-		@Override
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			super.write(out, conn);
 		}
@@ -138,13 +130,12 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
+
 		Galaxy(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
 		}
 
-		@Override
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -153,7 +144,6 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 			return buf.toString();
 		}
 
-		@Override
 		public void visit(TP03Visitor visitor) throws TPException
 		{
 			visitor.objectParams(this);
@@ -173,14 +163,12 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 			super(id);
 		}
 
-		@Override
 		public int findByteLength()
 		{
 			return super.findByteLength();
 		}
 
-		@Override
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			super.write(out, conn);
 		}
@@ -188,13 +176,12 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
+
 		StarSystem(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
 		}
 
-		@Override
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -203,7 +190,6 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 			return buf.toString();
 		}
 
-		@Override
 		public void visit(TP03Visitor visitor) throws TPException
 		{
 			visitor.objectParams(this);
@@ -230,13 +216,12 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 			return this.owner;
 		}
 
-		@SuppressWarnings("unused")
 		private void setOwner(int value)
 		{
 			this.owner=value;
 		}
 
-		public static class ResourcesType extends TPObject<TP03Visitor>
+		public static class ResourcesType extends TPObject
 		{
 			/**
 			 * A default constructor which initialises properties to their defaults.
@@ -252,7 +237,6 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 				return this.id;
 			}
 
-			@SuppressWarnings("unused")
 			private void setId(int value)
 			{
 				this.id=value;
@@ -265,7 +249,6 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 				return this.units;
 			}
 
-			@SuppressWarnings("unused")
 			private void setUnits(int value)
 			{
 				this.units=value;
@@ -278,7 +261,6 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 				return this.unitsminable;
 			}
 
-			@SuppressWarnings("unused")
 			private void setUnitsminable(int value)
 			{
 				this.unitsminable=value;
@@ -291,13 +273,11 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 				return this.unitsinaccessible;
 			}
 
-			@SuppressWarnings("unused")
 			private void setUnitsinaccessible(int value)
 			{
 				this.unitsinaccessible=value;
 			}
 
-			@Override
 			public int findByteLength()
 			{
 				return super.findByteLength()
@@ -307,7 +287,7 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 					 + 4;
 			}
 
-			public void write(TPDataOutput out, Connection<?> conn) throws IOException
+			public void write(TPDataOutput out, Connection conn) throws IOException
 			{
 				out.writeInteger(this.id);
 				out.writeInteger(this.units);
@@ -329,7 +309,7 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 			/**
 			 * A special "internal" constructor that reads contents from a stream.
 			 */
-			@SuppressWarnings("unused")
+
 			ResourcesType(TPDataInput in) throws IOException
 			{
 				this.id=in.readInteger32();
@@ -338,7 +318,6 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 				this.unitsinaccessible=in.readInteger32();
 			}
 
-			@Override
 			public String toString()
 			{
 				StringBuilder buf=new StringBuilder();
@@ -357,21 +336,22 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 
 		}
 
-		private java.util.List<ResourcesType> resources=new java.util.ArrayList<ResourcesType>();
-
-		public java.util.List<ResourcesType> getResources()
+		private java.util.Vector resources = new java.util.Vector();
+		public java.util.Vector getResources()
 		{
 			return this.resources;
 		}
 
-		@SuppressWarnings("unused")
-		private void setResources(java.util.List<ResourcesType> value)
+
+		private void setResources(java.util.Vector value)
 		{
-			for (ResourcesType object : value)
-				this.resources.add(new ResourcesType(object));
+                        for (int i = 0; i < value.size(); i++){
+                            this.resources.addElement(new ResourcesType((ResourcesType)value.elementAt(i)));
+                        }
+
 		}
 
-		@Override
+
 		public int findByteLength()
 		{
 			return super.findByteLength()
@@ -379,30 +359,30 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 				 + findByteLength(this.resources);
 		}
 
-		@Override
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			super.write(out, conn);
 			out.writeInteger(this.owner);
 			out.writeInteger(this.resources.size());
-			for (ResourcesType object : this.resources)
-				object.write(out, conn);
+                        for (int i =0; i < this.resources.size(); i++){
+                            ((ResourcesType)this.resources.elementAt(i)).write(out, conn);
+                        }
+
 		}
 
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
+
 		Planet(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
 			this.owner=in.readInteger32();
-			this.resources.clear();
+			this.resources.removeAllElements();
 			for (int length=in.readInteger32(); length > 0; length--)
-				this.resources.add(new ResourcesType(in));
+				this.resources.addElement(new ResourcesType(in));
 		}
 
-		@Override
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -415,7 +395,6 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 			return buf.toString();
 		}
 
-		@Override
 		public void visit(TP03Visitor visitor) throws TPException
 		{
 			visitor.objectParams(this);
@@ -442,13 +421,12 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 			return this.owner;
 		}
 
-		@SuppressWarnings("unused")
 		private void setOwner(int value)
 		{
 			this.owner=value;
 		}
 
-		public static class ShipsType extends TPObject<TP03Visitor>
+		public static class ShipsType extends TPObject
 		{
 			/**
 			 * A default constructor which initialises properties to their defaults.
@@ -464,7 +442,6 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 				return this.type;
 			}
 
-			@SuppressWarnings("unused")
 			private void setType(int value)
 			{
 				this.type=value;
@@ -477,13 +454,11 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 				return this.count;
 			}
 
-			@SuppressWarnings("unused")
 			private void setCount(int value)
 			{
 				this.count=value;
 			}
 
-			@Override
 			public int findByteLength()
 			{
 				return super.findByteLength()
@@ -491,7 +466,7 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 					 + 4;
 			}
 
-			public void write(TPDataOutput out, Connection<?> conn) throws IOException
+			public void write(TPDataOutput out, Connection conn) throws IOException
 			{
 				out.writeInteger(this.type);
 				out.writeInteger(this.count);
@@ -509,14 +484,13 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 			/**
 			 * A special "internal" constructor that reads contents from a stream.
 			 */
-			@SuppressWarnings("unused")
+
 			ShipsType(TPDataInput in) throws IOException
 			{
 				this.type=in.readInteger32();
 				this.count=in.readInteger32();
 			}
 
-			@Override
 			public String toString()
 			{
 				StringBuilder buf=new StringBuilder();
@@ -531,18 +505,20 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 
 		}
 
-		private java.util.List<ShipsType> ships=new java.util.ArrayList<ShipsType>();
-
-		public java.util.List<ShipsType> getShips()
+		
+                private java.util.Vector ships = new java.util.Vector();
+		public java.util.Vector getShips()
 		{
 			return this.ships;
 		}
 
-		@SuppressWarnings("unused")
-		private void setShips(java.util.List<ShipsType> value)
+
+		private void setShips(java.util.Vector value)
 		{
-			for (ShipsType object : value)
-				this.ships.add(new ShipsType(object));
+                        for (int i = 0; i < value.size(); i++){
+                            this.ships.addElement(new ShipsType((ShipsType)value.elementAt(i)));
+                        }
+
 		}
 
 		private int damage;
@@ -552,13 +528,13 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 			return this.damage;
 		}
 
-		@SuppressWarnings("unused")
+
 		private void setDamage(int value)
 		{
 			this.damage=value;
 		}
 
-		@Override
+
 		public int findByteLength()
 		{
 			return super.findByteLength()
@@ -567,32 +543,33 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 				 + 4;
 		}
 
-		@Override
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			super.write(out, conn);
 			out.writeInteger(this.owner);
 			out.writeInteger(this.ships.size());
-			for (ShipsType object : this.ships)
-				object.write(out, conn);
+                        for (int i = 0; i < this.ships.size(); i++){
+                            ((ShipsType)this.ships.elementAt(i)).write(out, conn);
+                        }
+			
 			out.writeInteger(this.damage);
 		}
 
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
+
 		Fleet(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
 			this.owner=in.readInteger32();
-			this.ships.clear();
+			this.ships.removeAllElements();
 			for (int length=in.readInteger32(); length > 0; length--)
-				this.ships.add(new ShipsType(in));
+				this.ships.addElement(new ShipsType(in));
 			this.damage=in.readInteger32();
 		}
 
-		@Override
+
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -607,7 +584,6 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 			return buf.toString();
 		}
 
-		@Override
 		public void visit(TP03Visitor visitor) throws TPException
 		{
 			visitor.objectParams(this);
@@ -615,7 +591,6 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 
 	}
 
-	@Override
 	public String toString()
 	{
 		StringBuilder buf=new StringBuilder();

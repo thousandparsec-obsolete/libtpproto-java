@@ -7,34 +7,34 @@ import java.net.UnknownHostException;
 
 import net.thousandparsec.netlib.*;
 
-public class TP03Decoder implements FrameDecoder<TP03Visitor>
+public class TP03Decoder implements FrameDecoder
 {
 	private static final TP03Visitor CHECK_LOGIN_VISITOR=new TP03Visitor()
 		{
-			@Override
-			public void unhandledFrame(Frame<?> frame) throws TPException
+			
+			public void unhandledFrame(Frame frame) throws TPException
 			{
 				throw new TPException(String.format("Unexpected frame type %d", frame.getFrameType()));
 			}
 
-			@Override
+			
 			public void frame(Okay frame)
 			{
 				//all's good, capt'n!
 			}
 
-			@Override
+			
 			public void frame(Fail frame) throws TPException
 			{
 				throw new TPException(String.format("Server said 'Fail': %d (%s)", frame.getCode().value, frame.getResult()));
 			}
 		};
 
-	public Connection<TP03Visitor>
+	public Connection
 		makeConnection(URI serverUri, boolean autologin, TP03Visitor asyncVisitor)
 		throws UnknownHostException, IOException, TPException
 	{
-		Connection<TP03Visitor> connection=Connection.makeConnection(this, serverUri, asyncVisitor);
+		Connection connection=Connection.makeConnection(this, serverUri, asyncVisitor);
 		if (autologin)
 		{
 			String userInfo=serverUri.getUserInfo();
@@ -44,7 +44,7 @@ public class TP03Decoder implements FrameDecoder<TP03Visitor>
 			if (data.length != 2)
 				throw new TPException("Autologin enabled but login info provided in the URI is invalid");
 
-			SequentialConnection<TP03Visitor> seqConnection=new SimpleSequentialConnection<TP03Visitor>(connection);
+			SequentialConnection seqConnection=new SimpleSequentialConnection(connection);
 			Connect connect=new Connect();
 			connect.setString("libtpproto-java-test");
 			seqConnection.sendFrame(connect, CHECK_LOGIN_VISITOR);
@@ -57,7 +57,7 @@ public class TP03Decoder implements FrameDecoder<TP03Visitor>
 		return connection;
 	}
 
-	public Frame<TP03Visitor> decodeFrame(int id, TPDataInput in) throws IOException
+	public Frame decodeFrame(int id, TPDataInput in) throws IOException
 	{
 		switch (id)
 		{
@@ -129,6 +129,7 @@ public class TP03Decoder implements FrameDecoder<TP03Visitor>
 		}
 	}
 
+      
 	public int getCompatibility()
 	{
 		return 3;

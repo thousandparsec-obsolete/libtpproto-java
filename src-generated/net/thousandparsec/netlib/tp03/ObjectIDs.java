@@ -21,20 +21,18 @@ public class ObjectIDs extends IDSequence
 		super(FRAME_TYPE);
 	}
 
-	@Override
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);
 	}
 
-	@Override
 	public int findByteLength()
 	{
 		return super.findByteLength();
 	}
 
-	@Override
-	public void write(TPDataOutput out, Connection<?> conn) throws IOException
+	
+	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
 		super.write(out, conn);
 	}
@@ -42,13 +40,12 @@ public class ObjectIDs extends IDSequence
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
+
 	ObjectIDs(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);
 	}
 
-	@Override
 	public String toString()
 	{
 		StringBuilder buf=new StringBuilder();

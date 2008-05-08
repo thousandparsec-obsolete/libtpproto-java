@@ -73,7 +73,6 @@ public class Order extends Response
 		return this.turns;
 	}
 
-	@SuppressWarnings("unused")
 	private void setTurns(int value)
 	{
 		this.turns=value;
@@ -82,7 +81,7 @@ public class Order extends Response
 	/**
 	 * Resources needed to complete this order.
 	 */
-	public static class ResourcesType extends TPObject<TP03Visitor>
+	public static class ResourcesType extends TPObject
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -101,7 +100,6 @@ public class Order extends Response
 			return this.id;
 		}
 
-		@SuppressWarnings("unused")
 		private void setId(int value)
 		{
 			this.id=value;
@@ -117,13 +115,11 @@ public class Order extends Response
 			return this.amount;
 		}
 
-		@SuppressWarnings("unused")
 		private void setAmount(int value)
 		{
 			this.amount=value;
 		}
 
-		@Override
 		public int findByteLength()
 		{
 			return super.findByteLength()
@@ -131,7 +127,7 @@ public class Order extends Response
 				 + 4;
 		}
 
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			out.writeInteger(this.id);
 			out.writeInteger(this.amount);
@@ -149,14 +145,13 @@ public class Order extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
+
 		ResourcesType(TPDataInput in) throws IOException
 		{
 			this.id=in.readInteger32();
 			this.amount=in.readInteger32();
 		}
 
-		@Override
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -171,36 +166,40 @@ public class Order extends Response
 
 	}
 
-	private java.util.List<ResourcesType> resources=new java.util.ArrayList<ResourcesType>();
-
-	public java.util.List<ResourcesType> getResources()
+	
+        private java.util.Vector resources = new java.util.Vector();
+	public java.util.Vector getResources()
 	{
-		return java.util.Collections.unmodifiableList(resources);
+                return resources;
+		//return java.util.Collections.unmodifiableList(resources);
 	}
 
-	@SuppressWarnings("unused")
-	private void setResources(java.util.List<ResourcesType> value)
+	private void setResources(java.util.Vector value)
 	{
-		for (ResourcesType object : value)
-			this.resources.add(new ResourcesType(object));
+                for (int i = 0; i < value.size(); i++){
+                    this.resources.addElement(new ResourcesType((ResourcesType)value.elementAt(i)));
+                }
+		
 	}
 
 	/**
 	 * extra data, required by the order is appended to the end
 	 */
 	private byte[] orderparams=new byte[0];
-
-	public java.util.List<OrderParams> getOrderparams(OrderDesc template) throws TPException
+        
+	public java.util.Vector getOrderparams(OrderDesc template) throws TPException
 	{
 		try
 		{
 			if (template.getId() != getOtype())
 				throw new TPException(String.format("ParameterSet id does not match frame's parameter set id: %d != %d", template.getId(), getOtype()));
 			TPDataInput in=new TPInputStream(new java.io.ByteArrayInputStream(this.orderparams));
-			java.util.List<OrderParams> ret=new java.util.ArrayList<OrderParams>();
-			for (OrderDesc.ParametersType template0 : template.getParameters())
+			//java.util.List<OrderParams> ret=new java.util.ArrayList<OrderParams>();
+                        java.util.Vector ret = new java.util.Vector();
+			
+                        for (OrderDesc.ParametersType template0 : template.getParameters())
 			{
-				ret.add(OrderParams.create(template0.getType(), in));
+				ret.addElement(OrderParams.create(template0.getType(), in));
 			}
 			return ret;
 		}
@@ -211,19 +210,19 @@ public class Order extends Response
 		}
 	}
 
-	@SuppressWarnings("unused")
+	
 	private void setOrderparams(OrderParams value)
 	{
 		throw new RuntimeException();
 	}
 
-	@Override
+	
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);
 	}
 
-	@Override
+	
 	public int findByteLength()
 	{
 		return super.findByteLength()
@@ -235,7 +234,7 @@ public class Order extends Response
 			 + this.orderparams.length;
 	}
 
-	@Override
+	
 	public void write(TPDataOutput out, Connection<?> conn) throws IOException
 	{
 		super.write(out, conn);
@@ -252,7 +251,6 @@ public class Order extends Response
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	Order(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);
@@ -260,14 +258,13 @@ public class Order extends Response
 		this.slot=in.readInteger32();
 		this.otype=in.readInteger32();
 		this.turns=in.readInteger32();
-		this.resources.clear();
+		this.resources.removeAllElements();
 		for (int length=in.readInteger32(); length > 0; length--)
-			this.resources.add(new ResourcesType(in));
+			this.resources.addElement(new ResourcesType(in));
 		//indirect: drain the rest of frame and decode later
 		this.orderparams=in.drainFrame();
 	}
 
-	@Override
 	public String toString()
 	{
 		StringBuilder buf=new StringBuilder();

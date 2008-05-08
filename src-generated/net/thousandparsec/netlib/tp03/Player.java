@@ -63,13 +63,13 @@ public class Player extends Response
 		this.race=value;
 	}
 
-	@Override
+	
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);
 	}
 
-	@Override
+	
 	public int findByteLength()
 	{
 		return super.findByteLength()
@@ -78,8 +78,8 @@ public class Player extends Response
 			 + findByteLength(this.race);
 	}
 
-	@Override
-	public void write(TPDataOutput out, Connection<?> conn) throws IOException
+	
+	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
 		super.write(out, conn);
 		out.writeInteger(this.id);
@@ -90,7 +90,7 @@ public class Player extends Response
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
+	
 	Player(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);
@@ -99,7 +99,7 @@ public class Player extends Response
 		this.race=in.readString();
 	}
 
-	@Override
+	
 	public String toString()
 	{
 		StringBuilder buf=new StringBuilder();

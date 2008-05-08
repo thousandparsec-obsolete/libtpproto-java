@@ -36,8 +36,7 @@ public interface FrameDecoder
 	 *            the server
 	 * @see Connection#makeConnection(FrameDecoder, URI, Visitor)
 	 */
-	//Connection<V> makeConnection(URI serverUri, boolean autologin, V asyncVisitor) throws UnknownHostException, IOException, TPException;
+	
         Connection makeConnection(URI serverUri, boolean autologin, Visitor asyncVisitor) throws UnknownHostException, IOException, TPException;
-	//Frame<V> decodeFrame(int id, TPDataInput in) throws IOException;
-        Frame decodeFrame(int id, TPDataInput in) throws IOException;
+	Frame decodeFrame(int id, TPDataInput in) throws IOException;
 }

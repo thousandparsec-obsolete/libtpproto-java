@@ -7,7 +7,7 @@ import java.io.IOException;
 /**
  * These are the parameters for Orders and OrderDescriptions.
  */
-public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03Visitor>
+public class OrderParams extends TPObject implements Visitable
 {
 	private final int id;
 
@@ -27,13 +27,12 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		return id;
 	}
 
-	@Override
 	public int findByteLength()
 	{
 		return 0;
 	}
 
-	public void write(TPDataOutput out, Connection<?> conn) throws IOException
+	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
 		//NOP
 	}
@@ -58,7 +57,7 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			super(id);
 		}
 
-		public static class PosType extends TPObject<TP03Visitor>
+		public static class PosType extends TPObject
 		{
 			/**
 			 * A default constructor which initialises properties to their defaults.
@@ -103,7 +102,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 				this.z=value;
 			}
 
-			@Override
 			public int findByteLength()
 			{
 				return super.findByteLength()
@@ -112,7 +110,7 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 					 + 8;
 			}
 
-			public void write(TPDataOutput out, Connection<?> conn) throws IOException
+			public void write(TPDataOutput out, Connection conn) throws IOException
 			{
 				out.writeInteger(this.x);
 				out.writeInteger(this.y);
@@ -142,7 +140,7 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			/**
 			 * A special "internal" constructor that reads contents from a stream.
 			 */
-			@SuppressWarnings("unused")
+
 			PosType(TPDataInput in) throws IOException
 			{
 				this.x=in.readInteger64();
@@ -150,7 +148,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 				this.z=in.readInteger64();
 			}
 
-			@Override
 			public String toString()
 			{
 				StringBuilder buf=new StringBuilder();
@@ -179,15 +176,13 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			this.pos=new PosType(value);
 		}
 
-		@Override
 		public int findByteLength()
 		{
 			return super.findByteLength()
 				 + findByteLength(this.pos);
 		}
 
-		@Override
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			super.write(out, conn);
 			this.pos.write(out, conn);
@@ -196,14 +191,13 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
+
 		OrderParamAbsSpaceCoords(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
 			this.pos=new PosType(in);
 		}
 
-		@Override
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -214,7 +208,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			return buf.toString();
 		}
 
-		@Override
 		public void visit(TP03Visitor visitor) throws TPException
 		{
 			visitor.orderParams(this);
@@ -262,13 +255,11 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			return this.maxtime;
 		}
 
-		@SuppressWarnings("unused")
 		private void setMaxtime(int value)
 		{
 			this.maxtime=value;
 		}
 
-		@Override
 		public int findByteLength()
 		{
 			return super.findByteLength()
@@ -276,8 +267,7 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 				 + 4;
 		}
 
-		@Override
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			super.write(out, conn);
 			out.writeInteger(this.turns);
@@ -287,7 +277,7 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
+
 		OrderParamTime(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
@@ -295,7 +285,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			this.maxtime=in.readInteger32();
 		}
 
-		@Override
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -308,7 +297,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			return buf.toString();
 		}
 
-		@Override
 		public void visit(TP03Visitor visitor) throws TPException
 		{
 			visitor.orderParams(this);
@@ -346,15 +334,13 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			this.objectid=value;
 		}
 
-		@Override
 		public int findByteLength()
 		{
 			return super.findByteLength()
 				 + 4;
 		}
 
-		@Override
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			super.write(out, conn);
 			out.writeInteger(this.objectid);
@@ -363,14 +349,13 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
+
 		OrderParamObject(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
 			this.objectid=in.readInteger32();
 		}
 
-		@Override
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -381,7 +366,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			return buf.toString();
 		}
 
-		@Override
 		public void visit(TP03Visitor visitor) throws TPException
 		{
 			visitor.orderParams(this);
@@ -466,13 +450,11 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			return this.mask;
 		}
 
-		@SuppressWarnings("unused")
 		private void setMask(int value)
 		{
 			this.mask=value;
 		}
 
-		@Override
 		public int findByteLength()
 		{
 			return super.findByteLength()
@@ -480,8 +462,7 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 				 + 4;
 		}
 
-		@Override
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			super.write(out, conn);
 			out.writeInteger(this.playerid);
@@ -491,7 +472,7 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
+
 		OrderParamPlayer(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
@@ -499,7 +480,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			this.mask=in.readInteger32();
 		}
 
-		@Override
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -512,7 +492,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			return buf.toString();
 		}
 
-		@Override
 		public void visit(TP03Visitor visitor) throws TPException
 		{
 			visitor.orderParams(this);
@@ -550,7 +529,7 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			this.objectid=value;
 		}
 
-		public static class RelposType extends TPObject<TP03Visitor>
+		public static class RelposType extends TPObject
 		{
 			/**
 			 * A default constructor which initialises properties to their defaults.
@@ -595,7 +574,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 				this.z=value;
 			}
 
-			@Override
 			public int findByteLength()
 			{
 				return super.findByteLength()
@@ -604,7 +582,7 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 					 + 8;
 			}
 
-			public void write(TPDataOutput out, Connection<?> conn) throws IOException
+			public void write(TPDataOutput out, Connection conn) throws IOException
 			{
 				out.writeInteger(this.x);
 				out.writeInteger(this.y);
@@ -634,7 +612,7 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			/**
 			 * A special "internal" constructor that reads contents from a stream.
 			 */
-			@SuppressWarnings("unused")
+
 			RelposType(TPDataInput in) throws IOException
 			{
 				this.x=in.readInteger64();
@@ -642,7 +620,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 				this.z=in.readInteger64();
 			}
 
-			@Override
 			public String toString()
 			{
 				StringBuilder buf=new StringBuilder();
@@ -671,7 +648,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			this.relpos=new RelposType(value);
 		}
 
-		@Override
 		public int findByteLength()
 		{
 			return super.findByteLength()
@@ -679,8 +655,7 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 				 + findByteLength(this.relpos);
 		}
 
-		@Override
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			super.write(out, conn);
 			out.writeInteger(this.objectid);
@@ -690,7 +665,7 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
+
 		OrderParamRelSpaceCoords(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
@@ -698,7 +673,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			this.relpos=new RelposType(in);
 		}
 
-		@Override
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -711,7 +685,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			return buf.toString();
 		}
 
-		@Override
 		public void visit(TP03Visitor visitor) throws TPException
 		{
 			visitor.orderParams(this);
@@ -759,7 +732,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			return this.minvalue;
 		}
 
-		@SuppressWarnings("unused")
 		private void setMinvalue(int value)
 		{
 			this.minvalue=value;
@@ -775,7 +747,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			return this.maxvalue;
 		}
 
-		@SuppressWarnings("unused")
 		private void setMaxvalue(int value)
 		{
 			this.maxvalue=value;
@@ -791,13 +762,11 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			return this.increment;
 		}
 
-		@SuppressWarnings("unused")
 		private void setIncrement(int value)
 		{
 			this.increment=value;
 		}
 
-		@Override
 		public int findByteLength()
 		{
 			return super.findByteLength()
@@ -807,8 +776,7 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 				 + 4;
 		}
 
-		@Override
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			super.write(out, conn);
 			out.writeInteger(this.value);
@@ -820,7 +788,7 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
+
 		OrderParamRange(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
@@ -830,7 +798,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			this.increment=in.readInteger32();
 		}
 
-		@Override
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -847,7 +814,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			return buf.toString();
 		}
 
-		@Override
 		public void visit(TP03Visitor visitor) throws TPException
 		{
 			visitor.orderParams(this);
@@ -873,7 +839,7 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		/**
 		 * A list of the items which can be chosen.
 		 */
-		public static class PossibleselectionsType extends TPObject<TP03Visitor>
+		public static class PossibleselectionsType extends TPObject
 		{
 			/**
 			 * A default constructor which initialises properties to their defaults.
@@ -892,7 +858,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 				return this.id;
 			}
 
-			@SuppressWarnings("unused")
 			private void setId(int value)
 			{
 				this.id=value;
@@ -908,7 +873,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 				return this.name;
 			}
 
-			@SuppressWarnings("unused")
 			private void setName(String value)
 			{
 				this.name=value;
@@ -924,13 +888,11 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 				return this.maxnum;
 			}
 
-			@SuppressWarnings("unused")
 			private void setMaxnum(int value)
 			{
 				this.maxnum=value;
 			}
 
-			@Override
 			public int findByteLength()
 			{
 				return super.findByteLength()
@@ -939,7 +901,7 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 					 + 4;
 			}
 
-			public void write(TPDataOutput out, Connection<?> conn) throws IOException
+			public void write(TPDataOutput out, Connection conn) throws IOException
 			{
 				out.writeInteger(this.id);
 				out.writeString(this.name);
@@ -959,7 +921,7 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			/**
 			 * A special "internal" constructor that reads contents from a stream.
 			 */
-			@SuppressWarnings("unused")
+
 			PossibleselectionsType(TPDataInput in) throws IOException
 			{
 				this.id=in.readInteger32();
@@ -967,7 +929,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 				this.maxnum=in.readInteger32();
 			}
 
-			@Override
 			public String toString()
 			{
 				StringBuilder buf=new StringBuilder();
@@ -984,24 +945,25 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 
 		}
 
-		private java.util.List<PossibleselectionsType> possibleselections=new java.util.ArrayList<PossibleselectionsType>();
-
-		public java.util.List<PossibleselectionsType> getPossibleselections()
+		private java.util.Vector possibleselections = new java.util.Vector();
+		public java.util.Vector getPossibleselections()
 		{
-			return java.util.Collections.unmodifiableList(possibleselections);
+                        return possibleselections;
+			
 		}
 
-		@SuppressWarnings("unused")
-		private void setPossibleselections(java.util.List<PossibleselectionsType> value)
+		private void setPossibleselections(java.util.Vector value)
 		{
-			for (PossibleselectionsType object : value)
-				this.possibleselections.add(new PossibleselectionsType(object));
+                        for (int i = 0; i < value.size(); i ++){
+                            this.possibleselections.addElement(new PossibleselectionsType((PossibleselectionsType)value.elementAt(i)));
+                        }
+			
 		}
 
 		/**
 		 * A list of the items which have been selected.
 		 */
-		public static class SelectionType extends TPObject<TP03Visitor>
+		public static class SelectionType extends TPObject
 		{
 			/**
 			 * A default constructor which initialises properties to their defaults.
@@ -1040,7 +1002,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 				this.number=value;
 			}
 
-			@Override
 			public int findByteLength()
 			{
 				return super.findByteLength()
@@ -1048,7 +1009,7 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 					 + 4;
 			}
 
-			public void write(TPDataOutput out, Connection<?> conn) throws IOException
+			public void write(TPDataOutput out, Connection conn) throws IOException
 			{
 				out.writeInteger(this.id);
 				out.writeInteger(this.number);
@@ -1075,14 +1036,13 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			/**
 			 * A special "internal" constructor that reads contents from a stream.
 			 */
-			@SuppressWarnings("unused")
+
 			SelectionType(TPDataInput in) throws IOException
 			{
 				this.id=in.readInteger32();
 				this.number=in.readInteger32();
 			}
 
-			@Override
 			public String toString()
 			{
 				StringBuilder buf=new StringBuilder();
@@ -1097,21 +1057,21 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 
 		}
 
-		private java.util.List<SelectionType> selection=new java.util.ArrayList<SelectionType>();
+		private java.util.Vector selection=new java.util.Vector();
 
-		public java.util.List<SelectionType> getSelection()
+		public java.util.Vector getSelection()
 		{
 			return this.selection;
 		}
 
-		@SuppressWarnings("unused")
-		private void setSelection(java.util.List<SelectionType> value)
+		private void setSelection(java.util.Vector value)
 		{
-			for (SelectionType object : value)
-				this.selection.add(new SelectionType(object));
+                        for (int i =0; i < value.size(); i++){
+                            this.selection.addElement(new SelectionType((SelectionType)value.elementAt(i)));
+                        }
+			
 		}
 
-		@Override
 		public int findByteLength()
 		{
 			return super.findByteLength()
@@ -1119,22 +1079,24 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 				 + findByteLength(this.selection);
 		}
 
-		@Override
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			super.write(out, conn);
 			out.writeInteger(this.possibleselections.size());
-			for (PossibleselectionsType object : this.possibleselections)
-				object.write(out, conn);
+                        for (int i = 0; i < possibleselections.size(); i++){
+                            ((PossibleselectionsType)possibleselections.elementAt(i)).write(out, conn);
+                        }
 			out.writeInteger(this.selection.size());
-			for (SelectionType object : this.selection)
-				object.write(out, conn);
+			for (int i =0; i < selection.size(); i ++){
+                            ((SelectionType)selection.elementAt(i)).write(out, conn);
+                        }
+
 		}
 
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
+
 		OrderParamList(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
@@ -1146,7 +1108,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 				this.selection.add(new SelectionType(in));
 		}
 
-		@Override
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -1159,7 +1120,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			return buf.toString();
 		}
 
-		@Override
 		public void visit(TP03Visitor visitor) throws TPException
 		{
 			visitor.orderParams(this);
@@ -1192,7 +1152,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			return this.maxlength;
 		}
 
-		@SuppressWarnings("unused")
 		private void setMaxlength(int value)
 		{
 			this.maxlength=value;
@@ -1210,7 +1169,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			this.string=value;
 		}
 
-		@Override
 		public int findByteLength()
 		{
 			return super.findByteLength()
@@ -1218,8 +1176,7 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 				 + findByteLength(this.string);
 		}
 
-		@Override
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			super.write(out, conn);
 			out.writeInteger(this.maxlength);
@@ -1229,7 +1186,7 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
+
 		OrderParamString(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
@@ -1237,7 +1194,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			this.string=in.readString();
 		}
 
-		@Override
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -1250,7 +1206,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			return buf.toString();
 		}
 
-		@Override
 		public void visit(TP03Visitor visitor) throws TPException
 		{
 			visitor.orderParams(this);
@@ -1291,7 +1246,7 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		/**
 		 * A list of allowed valid reference types.
 		 */
-		public static class AllowedType extends TPObject<TP03Visitor>
+		public static class AllowedType extends TPObject
 		{
 			/**
 			 * A default constructor which initialises properties to their defaults.
@@ -1310,20 +1265,18 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 				return this.reftype;
 			}
 
-			@SuppressWarnings("unused")
 			private void setReftype(int value)
 			{
 				this.reftype=value;
 			}
 
-			@Override
 			public int findByteLength()
 			{
 				return super.findByteLength()
 					 + 4;
 			}
 
-			public void write(TPDataOutput out, Connection<?> conn) throws IOException
+			public void write(TPDataOutput out, Connection conn) throws IOException
 			{
 				out.writeInteger(this.reftype);
 			}
@@ -1339,13 +1292,13 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			/**
 			 * A special "internal" constructor that reads contents from a stream.
 			 */
-			@SuppressWarnings("unused")
+			
 			AllowedType(TPDataInput in) throws IOException
 			{
 				this.reftype=in.readInteger32();
 			}
 
-			@Override
+			 
 			public String toString()
 			{
 				StringBuilder buf=new StringBuilder();
@@ -1358,21 +1311,24 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 
 		}
 
-		private java.util.List<AllowedType> allowed=new java.util.ArrayList<AllowedType>();
+		private java.util.Vector allowed=new java.util.Vector();
 
-		public java.util.List<AllowedType> getAllowed()
+		public java.util.Vector getAllowed()
 		{
-			return java.util.Collections.unmodifiableList(allowed);
+                        return allowed;
+			
 		}
 
-		@SuppressWarnings("unused")
-		private void setAllowed(java.util.List<AllowedType> value)
+		
+		private void setAllowed(java.util.Vector value)
 		{
-			for (AllowedType object : value)
-				this.allowed.add(new AllowedType(object));
+                        for (int i = 0; i < value.size(); i++){
+                            this.allowed.addElement(new AllowedType((AllowedType)value.elementAt(i)));
+                        }
+			
 		}
 
-		@Override
+		 
 		public int findByteLength()
 		{
 			return super.findByteLength()
@@ -1380,20 +1336,22 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 				 + findByteLength(this.allowed);
 		}
 
-		@Override
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		 
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			super.write(out, conn);
 			out.writeInteger(this.reference);
 			out.writeInteger(this.allowed.size());
-			for (AllowedType object : this.allowed)
-				object.write(out, conn);
+                        for (int i =0; i < allowed.size(); i ++){
+                            ((AllowedType)allowed.elementAt(i)).write(out, conn);
+                        }
+
 		}
 
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
+		
 		OrderParamReference(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
@@ -1403,7 +1361,7 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 				this.allowed.add(new AllowedType(in));
 		}
 
-		@Override
+		 
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -1416,7 +1374,7 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			return buf.toString();
 		}
 
-		@Override
+		 
 		public void visit(TP03Visitor visitor) throws TPException
 		{
 			visitor.orderParams(this);
@@ -1442,7 +1400,7 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		/**
 		 * The list of references.
 		 */
-		public static class ReferencesType extends TPObject<TP03Visitor>
+		public static class ReferencesType extends TPObject
 		{
 			/**
 			 * A default constructor which initialises properties to their defaults.
@@ -1466,14 +1424,14 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 				this.reference=value;
 			}
 
-			@Override
+			 
 			public int findByteLength()
 			{
 				return super.findByteLength()
 					 + 4;
 			}
 
-			public void write(TPDataOutput out, Connection<?> conn) throws IOException
+			public void write(TPDataOutput out, Connection conn) throws IOException
 			{
 				out.writeInteger(this.reference);
 			}
@@ -1497,13 +1455,13 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			/**
 			 * A special "internal" constructor that reads contents from a stream.
 			 */
-			@SuppressWarnings("unused")
+			
 			ReferencesType(TPDataInput in) throws IOException
 			{
 				this.reference=in.readInteger32();
 			}
 
-			@Override
+			 
 			public String toString()
 			{
 				StringBuilder buf=new StringBuilder();
@@ -1516,24 +1474,25 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 
 		}
 
-		private java.util.List<ReferencesType> references=new java.util.ArrayList<ReferencesType>();
+		private java.util.Vector references=new java.util.Vector();
 
-		public java.util.List<ReferencesType> getReferences()
+		public java.util.Vector getReferences()
 		{
 			return this.references;
 		}
 
-		@SuppressWarnings("unused")
-		private void setReferences(java.util.List<ReferencesType> value)
+		
+		private void setReferences(java.util.Vector value)
 		{
-			for (ReferencesType object : value)
-				this.references.add(new ReferencesType(object));
+                        for (int i =0; i < value.size(); i++){
+                            this.references.addElement(new ReferencesType((ReferencesType)value.elementAt(i)));
+                        }
 		}
 
 		/**
 		 * A list of allowed valid reference types.
 		 */
-		public static class AllowedType extends TPObject<TP03Visitor>
+		public static class AllowedType extends TPObject
 		{
 			/**
 			 * A default constructor which initialises properties to their defaults.
@@ -1552,20 +1511,20 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 				return this.reftype;
 			}
 
-			@SuppressWarnings("unused")
+			
 			private void setReftype(int value)
 			{
 				this.reftype=value;
 			}
 
-			@Override
+			 
 			public int findByteLength()
 			{
 				return super.findByteLength()
 					 + 4;
 			}
 
-			public void write(TPDataOutput out, Connection<?> conn) throws IOException
+			public void write(TPDataOutput out, Connection conn) throws IOException
 			{
 				out.writeInteger(this.reftype);
 			}
@@ -1581,13 +1540,13 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			/**
 			 * A special "internal" constructor that reads contents from a stream.
 			 */
-			@SuppressWarnings("unused")
+			
 			AllowedType(TPDataInput in) throws IOException
 			{
 				this.reftype=in.readInteger32();
 			}
 
-			@Override
+			 
 			public String toString()
 			{
 				StringBuilder buf=new StringBuilder();
@@ -1600,21 +1559,24 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 
 		}
 
-		private java.util.List<AllowedType> allowed=new java.util.ArrayList<AllowedType>();
+		private java.util.Vector allowed=new java.util.Vector();
 
-		public java.util.List<AllowedType> getAllowed()
+		public java.util.Vector getAllowed()
 		{
-			return java.util.Collections.unmodifiableList(allowed);
+                        return allowed;
+			
 		}
 
-		@SuppressWarnings("unused")
-		private void setAllowed(java.util.List<AllowedType> value)
+		
+		private void setAllowed(java.util.Vector value)
 		{
-			for (AllowedType object : value)
-				this.allowed.add(new AllowedType(object));
+                        for (int i = 0; i < value.size(); i++){
+                                this.allowed.add(new AllowedType((AllowedType)value.elementAt(i)));
+                        }
+
 		}
 
-		@Override
+		 
 		public int findByteLength()
 		{
 			return super.findByteLength()
@@ -1622,22 +1584,25 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 				 + findByteLength(this.allowed);
 		}
 
-		@Override
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		 
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			super.write(out, conn);
 			out.writeInteger(this.references.size());
-			for (ReferencesType object : this.references)
-				object.write(out, conn);
-			out.writeInteger(this.allowed.size());
-			for (AllowedType object : this.allowed)
-				object.write(out, conn);
+                        for (int i = 0; i < references.size(); i ++){
+                            ((ReferencesType)references.elementAt(i)).write(out, conn);
+                        }
+                        out.writeInteger(this.allowed.size());
+			for (int i = 0; i < allowed.size(); i ++){
+                            ((AllowedType)allowed.elementAt(i)).write(out, conn);
+                        }
+
 		}
 
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
+		
 		OrderParamReferenceList(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
@@ -1649,7 +1614,7 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 				this.allowed.add(new AllowedType(in));
 		}
 
-		@Override
+		 
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -1662,7 +1627,7 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			return buf.toString();
 		}
 
-		@Override
+		 
 		public void visit(TP03Visitor visitor) throws TPException
 		{
 			visitor.orderParams(this);
@@ -1670,7 +1635,7 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 
 	}
 
-	@Override
+	 
 	public String toString()
 	{
 		StringBuilder buf=new StringBuilder();

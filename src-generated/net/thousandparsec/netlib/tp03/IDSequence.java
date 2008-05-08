@@ -47,7 +47,7 @@ public abstract class IDSequence extends Response
 	/**
 	 * Modification Times of each ID
 	 */
-	public static class ModtimesType extends TPObject<TP03Visitor>
+	public static class ModtimesType extends TPObject
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -86,7 +86,6 @@ public abstract class IDSequence extends Response
 			this.modtime=value;
 		}
 
-		@Override
 		public int findByteLength()
 		{
 			return super.findByteLength()
@@ -94,7 +93,7 @@ public abstract class IDSequence extends Response
 				 + 8;
 		}
 
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			out.writeInteger(this.id);
 			out.writeInteger(this.modtime);
@@ -121,14 +120,13 @@ public abstract class IDSequence extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
+
 		ModtimesType(TPDataInput in) throws IOException
 		{
 			this.id=in.readInteger32();
 			this.modtime=in.readInteger64();
 		}
 
-		@Override
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -143,27 +141,26 @@ public abstract class IDSequence extends Response
 
 	}
 
-	private java.util.List<ModtimesType> modtimes=new java.util.ArrayList<ModtimesType>();
-
-	public java.util.List<ModtimesType> getModtimes()
+	
+        private java.util.Vector modtimes = new java.util.Vector();
+	public java.util.Vector getModtimes()
 	{
 		return this.modtimes;
 	}
 
-	@SuppressWarnings("unused")
-	private void setModtimes(java.util.List<ModtimesType> value)
+	private void setModtimes(java.util.Vector value)
 	{
-		for (ModtimesType object : value)
-			this.modtimes.add(new ModtimesType(object));
+                for (int i = 0; i < value.size(); i++){
+                    this.modtimes.addElement(new ModtimesType((ModtimesType)value.elementAt(i)));
+                }
+
 	}
 
-	@Override
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		//NOP (not a leaf class)
 	}
 
-	@Override
 	public int findByteLength()
 	{
 		return super.findByteLength()
@@ -172,32 +169,32 @@ public abstract class IDSequence extends Response
 			 + findByteLength(this.modtimes);
 	}
 
-	@Override
-	public void write(TPDataOutput out, Connection<?> conn) throws IOException
+	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
 		super.write(out, conn);
 		out.writeInteger(this.key);
 		out.writeInteger(this.remaining);
 		out.writeInteger(this.modtimes.size());
-		for (ModtimesType object : this.modtimes)
-			object.write(out, conn);
+                for (int i = 0; i < modtimes.size(); i++){
+                    ((ModtimesType)modtimes.elementAt(i)).write(out, conn);
+                }
+
 	}
 
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
+
 	IDSequence(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);
 		this.key=in.readInteger32();
 		this.remaining=in.readInteger32();
-		this.modtimes.clear();
+		this.modtimes.removeAllElements();
 		for (int length=in.readInteger32(); length > 0; length--)
-			this.modtimes.add(new ModtimesType(in));
+			this.modtimes.addElement(new ModtimesType(in));
 	}
 
-	@Override
 	public String toString()
 	{
 		StringBuilder buf=new StringBuilder();

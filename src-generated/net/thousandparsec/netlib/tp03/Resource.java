@@ -132,13 +132,13 @@ public class Resource extends Response
 		this.modtime=value;
 	}
 
-	@Override
+	
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);
 	}
 
-	@Override
+	
 	public int findByteLength()
 	{
 		return super.findByteLength()
@@ -153,8 +153,8 @@ public class Resource extends Response
 			 + 8;
 	}
 
-	@Override
-	public void write(TPDataOutput out, Connection<?> conn) throws IOException
+	
+	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
 		super.write(out, conn);
 		out.writeInteger(this.id);
@@ -171,7 +171,7 @@ public class Resource extends Response
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
+	
 	Resource(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);
@@ -186,7 +186,7 @@ public class Resource extends Response
 		this.modtime=in.readInteger64();
 	}
 
-	@Override
+	
 	public String toString()
 	{
 		StringBuilder buf=new StringBuilder();

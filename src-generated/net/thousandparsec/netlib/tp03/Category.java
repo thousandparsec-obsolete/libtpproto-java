@@ -72,13 +72,13 @@ public class Category extends Response
 		this.description=value;
 	}
 
-	@Override
+
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);
 	}
 
-	@Override
+
 	public int findByteLength()
 	{
 		return super.findByteLength()
@@ -88,8 +88,8 @@ public class Category extends Response
 			 + findByteLength(this.description);
 	}
 
-	@Override
-	public void write(TPDataOutput out, Connection<?> conn) throws IOException
+
+	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
 		super.write(out, conn);
 		out.writeInteger(this.id);
@@ -101,7 +101,7 @@ public class Category extends Response
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
+
 	Category(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);
@@ -111,7 +111,7 @@ public class Category extends Response
 		this.description=in.readString();
 	}
 
-	@Override
+
 	public String toString()
 	{
 		StringBuilder buf=new StringBuilder();

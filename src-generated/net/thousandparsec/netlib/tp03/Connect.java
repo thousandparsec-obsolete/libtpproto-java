@@ -41,21 +41,18 @@ public class Connect extends Request
 		this.string=value;
 	}
 
-	@Override
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);
 	}
 
-	@Override
 	public int findByteLength()
 	{
 		return super.findByteLength()
 			 + findByteLength(this.string);
 	}
 
-	@Override
-	public void write(TPDataOutput out, Connection<?> conn) throws IOException
+	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
 		super.write(out, conn);
 		out.writeString(this.string);
@@ -64,14 +61,12 @@ public class Connect extends Request
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	Connect(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);
 		this.string=in.readString();
 	}
 
-	@Override
 	public String toString()
 	{
 		StringBuilder buf=new StringBuilder();

@@ -48,7 +48,7 @@ public class Component extends Response
 		this.modtime=value;
 	}
 
-	public static class CategoriesType extends TPObject<TP03Visitor>
+	public static class CategoriesType extends TPObject
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -69,14 +69,13 @@ public class Component extends Response
 			this.category=value;
 		}
 
-		@Override
 		public int findByteLength()
 		{
 			return super.findByteLength()
 				 + 4;
 		}
 
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			out.writeInteger(this.category);
 		}
@@ -100,13 +99,11 @@ public class Component extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		CategoriesType(TPDataInput in) throws IOException
 		{
 			this.category=in.readInteger32();
 		}
 
-		@Override
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -119,18 +116,19 @@ public class Component extends Response
 
 	}
 
-	private java.util.List<CategoriesType> categories=new java.util.ArrayList<CategoriesType>();
-
-	public java.util.List<CategoriesType> getCategories()
+	private java.util.Vector categories = new java.util.Vector();
+	
+        public java.util.Vector getCategories()
 	{
 		return this.categories;
 	}
 
-	@SuppressWarnings("unused")
-	private void setCategories(java.util.List<CategoriesType> value)
+	private void setCategories(java.util.Vector value)
 	{
-		for (CategoriesType object : value)
-			this.categories.add(new CategoriesType(object));
+                for (int i = 0; i < value.size(); i++){
+                    categories.addElement(new CategoriesType((CategoriesType)value.elementAt(i)));
+                }
+		
 	}
 
 	private String name=new String();
@@ -172,7 +170,7 @@ public class Component extends Response
 		this.requirements=value;
 	}
 
-	public static class PropertiesType extends TPObject<TP03Visitor>
+	public static class PropertiesType extends TPObject
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -208,7 +206,6 @@ public class Component extends Response
 			this.valuefunc=value;
 		}
 
-		@Override
 		public int findByteLength()
 		{
 			return super.findByteLength()
@@ -216,7 +213,7 @@ public class Component extends Response
 				 + findByteLength(this.valuefunc);
 		}
 
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			out.writeInteger(this.id);
 			out.writeString(this.valuefunc);
@@ -243,14 +240,12 @@ public class Component extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		PropertiesType(TPDataInput in) throws IOException
 		{
 			this.id=in.readInteger32();
 			this.valuefunc=in.readString();
 		}
 
-		@Override
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -265,27 +260,27 @@ public class Component extends Response
 
 	}
 
-	private java.util.List<PropertiesType> properties=new java.util.ArrayList<PropertiesType>();
-
-	public java.util.List<PropertiesType> getProperties()
+	
+        private java.util.Vector properties = new java.util.Vector();
+	public java.util.Vector getProperties()
 	{
 		return this.properties;
 	}
 
-	@SuppressWarnings("unused")
-	private void setProperties(java.util.List<PropertiesType> value)
+	//private void setProperties(java.util.List<PropertiesType> value)
+        private void setProperties(java.util.Vector value)
 	{
-		for (PropertiesType object : value)
-			this.properties.add(new PropertiesType(object));
+		for(int i = 0; i < value.size(); i ++){
+                    this.properties.addElement(new PropertiesType((PropertiesType)value.elementAt(i)));
+                }
+
 	}
 
-	@Override
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);
 	}
 
-	@Override
 	public int findByteLength()
 	{
 		return super.findByteLength()
@@ -298,44 +293,45 @@ public class Component extends Response
 			 + findByteLength(this.properties);
 	}
 
-	@Override
-	public void write(TPDataOutput out, Connection<?> conn) throws IOException
+	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
 		super.write(out, conn);
 		out.writeInteger(this.id);
 		out.writeInteger(this.modtime);
 		out.writeInteger(this.categories.size());
-		for (CategoriesType object : this.categories)
-			object.write(out, conn);
+		for (int i = 0; i < categories.size(); i++){
+                    ((CategoriesType)categories.elementAt(i)).write(out, conn);
+                }
+
 		out.writeString(this.name);
 		out.writeString(this.description);
 		out.writeString(this.requirements);
 		out.writeInteger(this.properties.size());
-		for (PropertiesType object : this.properties)
-			object.write(out, conn);
+                for (int i = 0; i < properties.size(); i++){
+                    ((PropertiesType)properties.elementAt(i)).write(out, conn);
+                }
+
 	}
 
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	Component(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);
 		this.id=in.readInteger32();
 		this.modtime=in.readInteger64();
-		this.categories.clear();
+		this.categories.removeAllElements();
 		for (int length=in.readInteger32(); length > 0; length--)
-			this.categories.add(new CategoriesType(in));
+			this.categories.addElement(new CategoriesType(in));
 		this.name=in.readString();
 		this.description=in.readString();
 		this.requirements=in.readString();
-		this.properties.clear();
+		this.properties.removeAllElements();
 		for (int length=in.readInteger32(); length > 0; length--)
-			this.properties.add(new PropertiesType(in));
+			this.properties.addElement(new PropertiesType(in));
 	}
 
-	@Override
 	public String toString()
 	{
 		StringBuilder buf=new StringBuilder();

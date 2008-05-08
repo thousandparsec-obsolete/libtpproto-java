@@ -64,7 +64,7 @@ public class OrderDesc extends Response
 		this.description=value;
 	}
 
-	public static class ParametersType extends TPObject<TP03Visitor>
+	public static class ParametersType extends TPObject
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -116,7 +116,6 @@ public class OrderDesc extends Response
 			this.description=value;
 		}
 
-		@Override
 		public int findByteLength()
 		{
 			return super.findByteLength()
@@ -125,7 +124,7 @@ public class OrderDesc extends Response
 				 + findByteLength(this.description);
 		}
 
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			out.writeString(this.name);
 			out.writeInteger(this.type);
@@ -155,7 +154,6 @@ public class OrderDesc extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		ParametersType(TPDataInput in) throws IOException
 		{
 			this.name=in.readString();
@@ -163,7 +161,6 @@ public class OrderDesc extends Response
 			this.description=in.readString();
 		}
 
-		@Override
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -180,18 +177,18 @@ public class OrderDesc extends Response
 
 	}
 
-	private java.util.List<ParametersType> parameters=new java.util.ArrayList<ParametersType>();
-
-	public java.util.List<ParametersType> getParameters()
+	private java.util.Vector parameters = new java.util.Vector();
+	public java.util.Vector getParameters()
 	{
 		return this.parameters;
 	}
 
-	@SuppressWarnings("unused")
-	private void setParameters(java.util.List<ParametersType> value)
+	private void setParameters(java.util.Vector value)
 	{
-		for (ParametersType object : value)
-			this.parameters.add(new ParametersType(object));
+                for (int i = 0; i < value.size(); i ++){
+                    this.parameters.addElement(new ParametersType((ParametersType)value.elementAt(i)));
+                }
+
 	}
 
 	/**
@@ -209,13 +206,11 @@ public class OrderDesc extends Response
 		this.modtime=value;
 	}
 
-	@Override
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);
 	}
 
-	@Override
 	public int findByteLength()
 	{
 		return super.findByteLength()
@@ -226,36 +221,35 @@ public class OrderDesc extends Response
 			 + 8;
 	}
 
-	@Override
-	public void write(TPDataOutput out, Connection<?> conn) throws IOException
+	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
 		super.write(out, conn);
 		out.writeInteger(this.id);
 		out.writeString(this.name);
 		out.writeString(this.description);
 		out.writeInteger(this.parameters.size());
-		for (ParametersType object : this.parameters)
-			object.write(out, conn);
+                for (int i = 0; i < parameters.size(); i++){
+                    ((ParametersType)parameters.elementAt(i)).write(out, conn);
+                }
+
 		out.writeInteger(this.modtime);
 	}
 
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	OrderDesc(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);
 		this.id=in.readInteger32();
 		this.name=in.readString();
 		this.description=in.readString();
-		this.parameters.clear();
+		this.parameters.removeAllElements();
 		for (int length=in.readInteger32(); length > 0; length--)
-			this.parameters.add(new ParametersType(in));
+			this.parameters.addElement(new ParametersType(in));
 		this.modtime=in.readInteger64();
 	}
 
-	@Override
 	public String toString()
 	{
 		StringBuilder buf=new StringBuilder();

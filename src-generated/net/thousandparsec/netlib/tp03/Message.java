@@ -51,7 +51,7 @@ public class Message extends Response
 		this.slot=value;
 	}
 
-	public static class MsgtypelistType extends TPObject<TP03Visitor>
+	public static class MsgtypelistType extends TPObject
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -75,14 +75,13 @@ public class Message extends Response
 			this.msgtype=value;
 		}
 
-		@Override
 		public int findByteLength()
 		{
 			return super.findByteLength()
 				 + 4;
 		}
 
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			out.writeInteger(this.msgtype);
 		}
@@ -106,13 +105,12 @@ public class Message extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
+
 		MsgtypelistType(TPDataInput in) throws IOException
 		{
 			this.msgtype=in.readInteger32();
 		}
 
-		@Override
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -125,18 +123,18 @@ public class Message extends Response
 
 	}
 
-	private java.util.List<MsgtypelistType> msgtypelist=new java.util.ArrayList<MsgtypelistType>();
-
-	public java.util.List<MsgtypelistType> getMsgtypelist()
+	private java.util.Vector msgtypelist = new java.util.Vector();
+	public java.util.Vector getMsgtypelist()
 	{
 		return this.msgtypelist;
 	}
 
-	@SuppressWarnings("unused")
-	private void setMsgtypelist(java.util.List<MsgtypelistType> value)
+	private void setMsgtypelist(java.util.Vector value)
 	{
-		for (MsgtypelistType object : value)
-			this.msgtypelist.add(new MsgtypelistType(object));
+                for (int i = 0; i < value.size(); i++){
+                    this.msgtypelist.addElement(new MsgtypelistType((MsgtypelistType)value.elementAt(i)));
+                }
+
 	}
 
 	private String subject=new String();
@@ -181,7 +179,7 @@ public class Message extends Response
 	/**
 	 * A list of as described in the Generic Reference System
 	 */
-	public static class ReferencesType extends TPObject<TP03Visitor>
+	public static class ReferencesType extends TPObject
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -217,7 +215,6 @@ public class Message extends Response
 			this.id=value;
 		}
 
-		@Override
 		public int findByteLength()
 		{
 			return super.findByteLength()
@@ -225,7 +222,7 @@ public class Message extends Response
 				 + 4;
 		}
 
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			out.writeInteger(this.type);
 			out.writeInteger(this.id);
@@ -252,14 +249,13 @@ public class Message extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
+
 		ReferencesType(TPDataInput in) throws IOException
 		{
 			this.type=in.readInteger32();
 			this.id=in.readInteger32();
 		}
 
-		@Override
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -274,27 +270,26 @@ public class Message extends Response
 
 	}
 
-	private java.util.List<ReferencesType> references=new java.util.ArrayList<ReferencesType>();
-
-	public java.util.List<ReferencesType> getReferences()
+	
+        private java.util.Vector references = new java.util.Vector();
+	public java.util.Vector getReferences()
 	{
 		return this.references;
 	}
 
-	@SuppressWarnings("unused")
-	private void setReferences(java.util.List<ReferencesType> value)
+	private void setReferences(java.util.Vector value)
 	{
-		for (ReferencesType object : value)
-			this.references.add(new ReferencesType(object));
+                for (int i = 0; i < value.size(); i++){
+                    this.references.addElement(new ReferencesType((ReferencesType)value.elementAt(i)));
+                }
+
 	}
 
-	@Override
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);
 	}
 
-	@Override
 	public int findByteLength()
 	{
 		return super.findByteLength()
@@ -307,44 +302,45 @@ public class Message extends Response
 			 + findByteLength(this.references);
 	}
 
-	@Override
-	public void write(TPDataOutput out, Connection<?> conn) throws IOException
+	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
 		super.write(out, conn);
 		out.writeInteger(this.id);
 		out.writeInteger(this.slot);
 		out.writeInteger(this.msgtypelist.size());
-		for (MsgtypelistType object : this.msgtypelist)
-			object.write(out, conn);
+                for (int i =0; i < msgtypelist.size(); i++){
+                    ((MsgtypelistType)msgtypelist.elementAt(i)).write(out, conn);
+                }
+
 		out.writeString(this.subject);
 		out.writeString(this.body);
 		out.writeInteger(this.turn);
 		out.writeInteger(this.references.size());
-		for (ReferencesType object : this.references)
-			object.write(out, conn);
+                for (int i = 0; i < references.size(); i++){
+                    ((ReferencesType)references.elementAt(i)).write(out, conn);
+                }
+
 	}
 
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	Message(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);
 		this.id=in.readInteger32();
 		this.slot=in.readInteger32();
-		this.msgtypelist.clear();
+		this.msgtypelist.removeAllElements();
 		for (int length=in.readInteger32(); length > 0; length--)
-			this.msgtypelist.add(new MsgtypelistType(in));
+			this.msgtypelist.addElement(new MsgtypelistType(in));
 		this.subject=in.readString();
 		this.body=in.readString();
 		this.turn=in.readInteger32();
-		this.references.clear();
+		this.references.removeAllElements();
 		for (int length=in.readInteger32(); length > 0; length--)
-			this.references.add(new ReferencesType(in));
+			this.references.addElement(new ReferencesType(in));
 	}
 
-	@Override
 	public String toString()
 	{
 		StringBuilder buf=new StringBuilder();

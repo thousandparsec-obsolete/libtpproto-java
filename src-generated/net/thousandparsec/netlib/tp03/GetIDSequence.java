@@ -59,13 +59,11 @@ public abstract class GetIDSequence extends Request
 		this.amount=value;
 	}
 
-	@Override
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		//NOP (not a leaf class)
 	}
 
-	@Override
 	public int findByteLength()
 	{
 		return super.findByteLength()
@@ -74,8 +72,7 @@ public abstract class GetIDSequence extends Request
 			 + 4;
 	}
 
-	@Override
-	public void write(TPDataOutput out, Connection<?> conn) throws IOException
+	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
 		super.write(out, conn);
 		out.writeInteger(this.key);
@@ -86,7 +83,7 @@ public abstract class GetIDSequence extends Request
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
+
 	GetIDSequence(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);
@@ -95,7 +92,6 @@ public abstract class GetIDSequence extends Request
 		this.amount=in.readInteger32();
 	}
 
-	@Override
 	public String toString()
 	{
 		StringBuilder buf=new StringBuilder();

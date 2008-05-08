@@ -4,7 +4,7 @@ import net.thousandparsec.netlib.*;
 
 import java.io.IOException;
 
-public abstract class Response extends Frame<TP03Visitor>
+public abstract class Response extends Frame
 {
 	protected Response(int id)
 	{
@@ -16,14 +16,14 @@ public abstract class Response extends Frame<TP03Visitor>
 		//NOP (not a leaf class)
 	}
 
-	@Override
+	
 	public int findByteLength()
 	{
 		return super.findByteLength();
 	}
 
-	@Override
-	public void write(TPDataOutput out, Connection<?> conn) throws IOException
+	
+	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
 		super.write(out, conn);
 	}
@@ -31,13 +31,13 @@ public abstract class Response extends Frame<TP03Visitor>
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
+	
 	Response(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);
 	}
 
-	@Override
+	
 	public String toString()
 	{
 		StringBuilder buf=new StringBuilder();

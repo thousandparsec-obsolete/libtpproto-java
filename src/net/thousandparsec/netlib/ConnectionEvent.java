@@ -6,7 +6,6 @@ package net.thousandparsec.netlib;
  * 
  * @author ksobolewski
  */
-//ublic class ConnectionEvent<V extends Visitor>
 public class ConnectionEvent
 {
 	public static enum Type

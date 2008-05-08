@@ -11,7 +11,6 @@ package net.thousandparsec.netlib;
  * 
  * @author ksobolewski
  */
-//public interface ConnectionListener<V extends Visitor>
 public interface ConnectionListener
 {
 	/**

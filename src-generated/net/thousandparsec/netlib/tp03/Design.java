@@ -48,7 +48,7 @@ public class Design extends Response
 		this.modtime=value;
 	}
 
-	public static class CategoriesType extends TPObject<TP03Visitor>
+	public static class CategoriesType extends TPObject
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -69,14 +69,13 @@ public class Design extends Response
 			this.category=value;
 		}
 
-		@Override
 		public int findByteLength()
 		{
 			return super.findByteLength()
 				 + 4;
 		}
 
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			out.writeInteger(this.category);
 		}
@@ -100,13 +99,11 @@ public class Design extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		CategoriesType(TPDataInput in) throws IOException
 		{
 			this.category=in.readInteger32();
 		}
 
-		@Override
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -119,18 +116,19 @@ public class Design extends Response
 
 	}
 
-	private java.util.List<CategoriesType> categories=new java.util.ArrayList<CategoriesType>();
-
-	public java.util.List<CategoriesType> getCategories()
+	private java.util.Vector categories = new java.util.Vector();
+	public java.util.Vector getCategories()
 	{
 		return this.categories;
 	}
 
-	@SuppressWarnings("unused")
-	private void setCategories(java.util.List<CategoriesType> value)
+
+	private void setCategories(java.util.Vector value)
 	{
-		for (CategoriesType object : value)
-			this.categories.add(new CategoriesType(object));
+                for(int i = 0; i < value.size(); i++){
+                    this.categories.addElement(new CategoriesType((CategoriesType)value.elementAt(i)));
+                }
+		
 	}
 
 	private String name=new String();
@@ -181,7 +179,7 @@ public class Design extends Response
 		this.owner=value;
 	}
 
-	public static class ComponentsType extends TPObject<TP03Visitor>
+	public static class ComponentsType extends TPObject
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -214,7 +212,7 @@ public class Design extends Response
 			this.componentnum=value;
 		}
 
-		@Override
+
 		public int findByteLength()
 		{
 			return super.findByteLength()
@@ -222,7 +220,7 @@ public class Design extends Response
 				 + 4;
 		}
 
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			out.writeInteger(this.componentid);
 			out.writeInteger(this.componentnum);
@@ -249,14 +247,14 @@ public class Design extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
+
 		ComponentsType(TPDataInput in) throws IOException
 		{
 			this.componentid=in.readInteger32();
 			this.componentnum=in.readInteger32();
 		}
 
-		@Override
+
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -271,18 +269,19 @@ public class Design extends Response
 
 	}
 
-	private java.util.List<ComponentsType> components=new java.util.ArrayList<ComponentsType>();
-
-	public java.util.List<ComponentsType> getComponents()
+	private java.util.Vector components = new java.util.Vector();
+	public java.util.Vector getComponents()
 	{
 		return this.components;
 	}
 
-	@SuppressWarnings("unused")
-	private void setComponents(java.util.List<ComponentsType> value)
+
+	private void setComponents(java.util.Vector value)
 	{
-		for (ComponentsType object : value)
-			this.components.add(new ComponentsType(object));
+		for(int i = 0; i < value.size(); i ++){
+                    this.components.addElement(new ComponentsType((ComponentsType)value.elementAt(i)));
+                }
+
 	}
 
 	private String feedback=new String();
@@ -297,7 +296,7 @@ public class Design extends Response
 		this.feedback=value;
 	}
 
-	public static class PropertiesType extends TPObject<TP03Visitor>
+	public static class PropertiesType extends TPObject
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -333,7 +332,6 @@ public class Design extends Response
 			this.value=value;
 		}
 
-		@Override
 		public int findByteLength()
 		{
 			return super.findByteLength()
@@ -341,7 +339,7 @@ public class Design extends Response
 				 + findByteLength(this.value);
 		}
 
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			out.writeInteger(this.id);
 			out.writeString(this.value);
@@ -368,14 +366,12 @@ public class Design extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		PropertiesType(TPDataInput in) throws IOException
 		{
 			this.id=in.readInteger32();
 			this.value=in.readString();
 		}
 
-		@Override
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -390,27 +386,27 @@ public class Design extends Response
 
 	}
 
-	private java.util.List<PropertiesType> properties=new java.util.ArrayList<PropertiesType>();
-
-	public java.util.List<PropertiesType> getProperties()
+	private java.util.Vector properties = new java.util.Vector();
+	public java.util.Vector getProperties()
 	{
 		return this.properties;
 	}
 
-	@SuppressWarnings("unused")
-	private void setProperties(java.util.List<PropertiesType> value)
+	private void setProperties(java.util.Vector value)
 	{
-		for (PropertiesType object : value)
-			this.properties.add(new PropertiesType(object));
+                for (int i = 0; i < value.size(); i++){
+                    this.properties.addElement(new PropertiesType((PropertiesType)value.elementAt(i)));
+                }
+
 	}
 
-	@Override
+
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);
 	}
 
-	@Override
+
 	public int findByteLength()
 	{
 		return super.findByteLength()
@@ -426,54 +422,57 @@ public class Design extends Response
 			 + findByteLength(this.properties);
 	}
 
-	@Override
-	public void write(TPDataOutput out, Connection<?> conn) throws IOException
+
+	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
 		super.write(out, conn);
 		out.writeInteger(this.id);
 		out.writeInteger(this.modtime);
 		out.writeInteger(this.categories.size());
-		for (CategoriesType object : this.categories)
-			object.write(out, conn);
+                for(int i = 0; i < categories.size(); i++){
+                    ((CategoriesType)categories.elementAt(i)).write(out, conn);
+                }
 		out.writeString(this.name);
 		out.writeString(this.description);
 		out.writeInteger(this.usage);
 		out.writeInteger(this.owner);
 		out.writeInteger(this.components.size());
-		for (ComponentsType object : this.components)
-			object.write(out, conn);
+		for(int i = 0; i < components.size(); i++){
+                    ((ComponentsType)components.elementAt(i)).write(out, conn);
+                }
 		out.writeString(this.feedback);
 		out.writeInteger(this.properties.size());
-		for (PropertiesType object : this.properties)
-			object.write(out, conn);
+                for(int i = 0; i < properties.size(); i ++){
+                    ((PropertiesType)properties.elementAt(i)).write(out, conn);
+                }
+
 	}
 
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
+
 	Design(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);
 		this.id=in.readInteger32();
 		this.modtime=in.readInteger64();
-		this.categories.clear();
+		this.categories.removeAllElements();
 		for (int length=in.readInteger32(); length > 0; length--)
-			this.categories.add(new CategoriesType(in));
+			this.categories.addElement(new CategoriesType(in));
 		this.name=in.readString();
 		this.description=in.readString();
 		this.usage=in.readInteger32();
 		this.owner=in.readInteger32();
-		this.components.clear();
+		this.components.removeAllElements();
 		for (int length=in.readInteger32(); length > 0; length--)
-			this.components.add(new ComponentsType(in));
+			this.components.addElement(new ComponentsType(in));
 		this.feedback=in.readString();
-		this.properties.clear();
+		this.properties.removeAllElements();
 		for (int length=in.readInteger32(); length > 0; length--)
-			this.properties.add(new PropertiesType(in));
+			this.properties.addElement(new PropertiesType(in));
 	}
 
-	@Override
 	public String toString()
 	{
 		StringBuilder buf=new StringBuilder();

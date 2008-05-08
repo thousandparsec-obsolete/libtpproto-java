@@ -17,7 +17,6 @@ import java.io.IOException;
  * @see Connection
  * @author ksobolewski
  */
-//public abstract class Frame<V extends Visitor> extends TPObject<V> implements Visitable<V>
 public abstract class Frame extends TPObject implements Visitable
 {
 	private final int id;

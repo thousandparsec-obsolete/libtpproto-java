@@ -17,7 +17,7 @@ public abstract class GetWithID extends Request
 	/**
 	 * The IDs to get.
 	 */
-	public static class IdsType extends TPObject<TP03Visitor>
+	public static class IdsType extends TPObject
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -38,14 +38,13 @@ public abstract class GetWithID extends Request
 			this.id=value;
 		}
 
-		@Override
 		public int findByteLength()
 		{
 			return super.findByteLength()
 				 + 4;
 		}
 
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			out.writeInteger(this.id);
 		}
@@ -69,13 +68,12 @@ public abstract class GetWithID extends Request
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
+
 		IdsType(TPDataInput in) throws IOException
 		{
 			this.id=in.readInteger32();
 		}
 
-		@Override
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -88,55 +86,52 @@ public abstract class GetWithID extends Request
 
 	}
 
-	private java.util.List<IdsType> ids=new java.util.ArrayList<IdsType>();
-
-	public java.util.List<IdsType> getIds()
+        private java.util.Vector ids = new java.util.Vector();
+	public java.util.Vector getIds()
 	{
 		return this.ids;
 	}
 
-	@SuppressWarnings("unused")
-	private void setIds(java.util.List<IdsType> value)
+	private void setIds(java.util.Vector value)
 	{
-		for (IdsType object : value)
-			this.ids.add(new IdsType(object));
+                for (int i = 0; i < value.size(); i++){
+                    this.ids.addElement(new IdsType((IdsType)value.elementAt(i)));
+                }
+
 	}
 
-	@Override
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		//NOP (not a leaf class)
 	}
 
-	@Override
 	public int findByteLength()
 	{
 		return super.findByteLength()
 			 + findByteLength(this.ids);
 	}
 
-	@Override
-	public void write(TPDataOutput out, Connection<?> conn) throws IOException
+	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
 		super.write(out, conn);
 		out.writeInteger(this.ids.size());
-		for (IdsType object : this.ids)
-			object.write(out, conn);
+                for (int i=0; i < ids.size(); i++){
+                    ((IdsType)ids.elementAt(i)).write(out, conn);
+                }
+
 	}
 
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	GetWithID(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);
-		this.ids.clear();
+		this.ids.removeAllElements();
 		for (int length=in.readInteger32(); length > 0; length--)
-			this.ids.add(new IdsType(in));
+			this.ids.addElement(new IdsType(in));
 	}
 
-	@Override
 	public String toString()
 	{
 		StringBuilder buf=new StringBuilder();

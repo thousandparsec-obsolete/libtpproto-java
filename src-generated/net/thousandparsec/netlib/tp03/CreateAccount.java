@@ -81,13 +81,11 @@ public class CreateAccount extends Request
 		this.comment=value;
 	}
 
-	@Override
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);
 	}
 
-	@Override
 	public int findByteLength()
 	{
 		return super.findByteLength()
@@ -97,8 +95,7 @@ public class CreateAccount extends Request
 			 + findByteLength(this.comment);
 	}
 
-	@Override
-	public void write(TPDataOutput out, Connection<?> conn) throws IOException
+	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
 		super.write(out, conn);
 		out.writeString(this.username);
@@ -110,7 +107,6 @@ public class CreateAccount extends Request
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	CreateAccount(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);
@@ -120,7 +116,7 @@ public class CreateAccount extends Request
 		this.comment=in.readString();
 	}
 
-	@Override
+
 	public String toString()
 	{
 		StringBuilder buf=new StringBuilder();

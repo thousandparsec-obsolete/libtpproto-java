@@ -51,13 +51,11 @@ public class Login extends Request
 		this.password=value;
 	}
 
-	@Override
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);
 	}
 
-	@Override
 	public int findByteLength()
 	{
 		return super.findByteLength()
@@ -65,8 +63,7 @@ public class Login extends Request
 			 + findByteLength(this.password);
 	}
 
-	@Override
-	public void write(TPDataOutput out, Connection<?> conn) throws IOException
+	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
 		super.write(out, conn);
 		out.writeString(this.username);
@@ -76,7 +73,7 @@ public class Login extends Request
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
+
 	Login(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);
@@ -84,7 +81,6 @@ public class Login extends Request
 		this.password=in.readString();
 	}
 
-	@Override
 	public String toString()
 	{
 		StringBuilder buf=new StringBuilder();

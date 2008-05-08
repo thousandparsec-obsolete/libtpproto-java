@@ -90,13 +90,11 @@ public class Fail extends Response
 		this.result=value;
 	}
 
-	@Override
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);
 	}
 
-	@Override
 	public int findByteLength()
 	{
 		return super.findByteLength()
@@ -104,8 +102,7 @@ public class Fail extends Response
 			 + findByteLength(this.result);
 	}
 
-	@Override
-	public void write(TPDataOutput out, Connection<?> conn) throws IOException
+	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
 		super.write(out, conn);
 		out.writeInteger(this.code.value);
@@ -115,13 +112,15 @@ public class Fail extends Response
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	Fail(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);
 		code: {
 			int value=in.readInteger32();
-			for (Code e : Code.values())
+			/*for (int i =0; i < ; i++){
+                            
+                        }*/
+                        for (Code e : Code.values())
 				if (e.value == value)
 				{
 					this.code=e;
@@ -132,7 +131,6 @@ public class Fail extends Response
 		this.result=in.readString();
 	}
 
-	@Override
 	public String toString()
 	{
 		StringBuilder buf=new StringBuilder();

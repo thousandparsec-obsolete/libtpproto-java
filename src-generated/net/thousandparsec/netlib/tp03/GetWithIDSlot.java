@@ -32,7 +32,7 @@ public abstract class GetWithIDSlot extends Request
 	/**
 	 * The slots on the thing to get.
 	 */
-	public static class SlotsType extends TPObject<TP03Visitor>
+	public static class SlotsType extends TPObject
 	{
 		/**
 		 * A default constructor which initialises properties to their defaults.
@@ -53,14 +53,13 @@ public abstract class GetWithIDSlot extends Request
 			this.slot=value;
 		}
 
-		@Override
 		public int findByteLength()
 		{
 			return super.findByteLength()
 				 + 4;
 		}
 
-		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
 			out.writeInteger(this.slot);
 		}
@@ -84,13 +83,12 @@ public abstract class GetWithIDSlot extends Request
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
+
 		SlotsType(TPDataInput in) throws IOException
 		{
 			this.slot=in.readInteger32();
 		}
 
-		@Override
 		public String toString()
 		{
 			StringBuilder buf=new StringBuilder();
@@ -103,27 +101,26 @@ public abstract class GetWithIDSlot extends Request
 
 	}
 
-	private java.util.List<SlotsType> slots=new java.util.ArrayList<SlotsType>();
-
-	public java.util.List<SlotsType> getSlots()
+	
+        private java.util.Vector slots = new java.util.Vector();
+	public java.util.Vector getSlots()
 	{
 		return this.slots;
 	}
 
-	@SuppressWarnings("unused")
-	private void setSlots(java.util.List<SlotsType> value)
+	private void setSlots(java.util.Vector value)
 	{
-		for (SlotsType object : value)
-			this.slots.add(new SlotsType(object));
+                for(int i = 0; i < value.size(); i++){
+                    this.slots.addElement(new SlotsType((SlotsType)value.elementAt(i)));
+                }
+
 	}
 
-	@Override
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		//NOP (not a leaf class)
 	}
 
-	@Override
 	public int findByteLength()
 	{
 		return super.findByteLength()
@@ -131,30 +128,29 @@ public abstract class GetWithIDSlot extends Request
 			 + findByteLength(this.slots);
 	}
 
-	@Override
-	public void write(TPDataOutput out, Connection<?> conn) throws IOException
+	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
 		super.write(out, conn);
 		out.writeInteger(this.id);
 		out.writeInteger(this.slots.size());
-		for (SlotsType object : this.slots)
-			object.write(out, conn);
+                for ( int i = 0; i < this.slots.size(); i ++){
+                    ((SlotsType)slots.elementAt(i)).write(out, conn);
+                }
+
 	}
 
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	GetWithIDSlot(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);
 		this.id=in.readInteger32();
-		this.slots.clear();
+		this.slots.removeAllElements();
 		for (int length=in.readInteger32(); length > 0; length--)
-			this.slots.add(new SlotsType(in));
+			this.slots.addElement(new SlotsType(in));
 	}
 
-	@Override
 	public String toString()
 	{
 		StringBuilder buf=new StringBuilder();

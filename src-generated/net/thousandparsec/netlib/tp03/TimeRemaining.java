@@ -36,21 +36,21 @@ public class TimeRemaining extends Response
 		this.time=value;
 	}
 
-	@Override
+	//public void visit(Visitor visitor) throws TPException
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);
 	}
 
-	@Override
+	
 	public int findByteLength()
 	{
 		return super.findByteLength()
 			 + 4;
 	}
 
-	@Override
-	public void write(TPDataOutput out, Connection<?> conn) throws IOException
+	
+	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
 		super.write(out, conn);
 		out.writeInteger(this.time);
@@ -59,14 +59,14 @@ public class TimeRemaining extends Response
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
+	
 	TimeRemaining(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);
 		this.time=in.readInteger32();
 	}
 
-	@Override
+	
 	public String toString()
 	{
 		StringBuilder buf=new StringBuilder();

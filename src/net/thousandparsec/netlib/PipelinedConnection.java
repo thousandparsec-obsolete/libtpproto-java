@@ -40,13 +40,11 @@ import java.util.concurrent.LinkedBlockingQueue;
  * 
  * @author ksobolewski
  */
-//public class PipelinedConnection<V extends Visitor>
 public class PipelinedConnection
 {
 	public static final int DEFAULT_QUEUE_DEPTH=32;
 
-	//private final Connection<V> conn;
-        private final Connection conn;
+	private final Connection conn;
 	private final Map<Integer, BlockingQueue<Frame<V>>> pipelines;
 	private final Future<Void> receiverFuture;
 
@@ -105,8 +103,7 @@ public class PipelinedConnection
 	 * 
 	 * @return a new sequential view of this {@link PipelinedConnection}
 	 */
-	public SequentialConnection<V> createPipeline()
-        //public SequentialConnection createPipeline()
+	public SequentialConnection createPipeline()
 	{
 		return new Pipeline();
 	}
@@ -138,8 +135,7 @@ public class PipelinedConnection
 		}
 	}
 
-	//private class Pipeline implements SequentialConnection<V>
-        private class Pipeline implements SequentialConnection
+	private class Pipeline implements SequentialConnection
 	{
 		private final BlockingQueue<Frame<V>> incoming=new LinkedBlockingQueue<Frame<V>>();
 		private int lastSeq=0;
@@ -148,7 +144,6 @@ public class PipelinedConnection
 		{
 		}
 
-		//private void sendFrame(Frame<V> frame) throws IOException
                 private void sendFrame(Frame frame) throws IOException
 		{
 			if (lastSeq < 0)
@@ -176,7 +171,6 @@ public class PipelinedConnection
 			}
 		}
 
-		//private Frame<V> receiveFrame() throws InterruptedException
                 private Frame receiveFrame() throws InterruptedException
 		{
 			if (lastSeq < 0)
@@ -230,7 +224,7 @@ public class PipelinedConnection
 			lastSeq=-1;
 		}
 
-		public Connection<V> getConnection()
+		public Connection getConnection()
 		{
 			return PipelinedConnection.this.getConnection();
 		}
