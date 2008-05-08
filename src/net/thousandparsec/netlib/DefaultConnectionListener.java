@@ -30,7 +30,7 @@ public class DefaultConnectionListener implements ConnectionListener
 		if (printSent)
 		{
 			Frame frame=ev.getFrame();
-			System.err.printf("%s: Sent frame seq %d, type %d (%s)%n", getClass().getName(), frame.getSequenceNumber(), frame.getFrameType(), frame.toString());
+			System.err.println(getClass().getName()+": Sent frame seq " + frame.getSequenceNumber() + ", type" + frame.getFrameType() + " " + frame.toString());
 		}
 	}
 
@@ -40,12 +40,13 @@ public class DefaultConnectionListener implements ConnectionListener
 		if (ev.isAsync())
 		{
 			if (printReceivedAsync)
-				System.err.printf("%s: Received asynchronous frame seq %d, type %d (%s)%n", getClass().getName(), frame.getSequenceNumber(), frame.getFrameType(), frame.toString());
+				System.err.println(getClass().getName() + ": Received asynchronous frame seq " + frame.getSequenceNumber() + ", type " + frame.getFrameType()+" "+frame.toString() );
 		}
 		else
 		{
 			if (printReceived)
-				System.err.printf("%s: Received frame seq %d, type %d (%s)%n", getClass().getName(), frame.getSequenceNumber(), frame.getFrameType(), frame.toString());
+                            System.err.println(getClass().getName()+": Received frame seq " + frame.getSequenceNumber() + ", type" + frame.getFrameType() + " " + frame.toString());
+                            
 		}
 	}
 
@@ -54,7 +55,8 @@ public class DefaultConnectionListener implements ConnectionListener
 		if (printError)
 		{
 			System.err.println("Connection error:");
-			ev.getException().printStackTrace(System.err);
+                        ev.getException().printStackTrace();
+			
 		}
 	}
 }

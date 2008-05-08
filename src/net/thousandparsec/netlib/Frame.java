@@ -32,15 +32,15 @@ public abstract class Frame extends TPObject implements Visitable
 		this(id);
 	}
 
-	//public void write(TPDataOutput out, Connection<?> conn) throws IOException
-        public void write(TPDataOutput out, Connection conn) throws IOException
+	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
 		switch (conn.getCompatibility())
 		{
 			case 3:
 				//magic
-				out.writeCharacter(getStringBytes(String.format("TP%02d", conn.getCompatibility())));
-				//sequence
+				//out.writeCharacter(getStringBytes(String.format("TP%02d", conn.getCompatibility())));
+                                out.writeCharacter(getStringBytes("TP02"+ conn.getCompatibility()));
+                                //sequence
 				out.writeInteger(this.seq=conn.getNextFrameSequence());
 				//type
 				out.writeInteger(id);
