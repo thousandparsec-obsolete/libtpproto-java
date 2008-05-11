@@ -97,8 +97,35 @@ public interface OutputGenerator
 	 */
 	void endPacket(List<Property> properties) throws IOException;
 
+	/**
+	 * Called at the start of a parameterset; parametersets are another type of
+	 * protocol-level objects, equal to frames, which define additional
+	 * structure associated with a particular property (of
+	 * {@link StructureHandler.PropertyType#useparameters} type).
+	 * <p>
+	 * This is an event used only to set things up, because it hapens before any
+	 * comments associated with the parameterset (in {@code packet/description}
+	 * element). The actual start of parameterset is indicated by
+	 * {@link #startParameterSetType()} event.
+	 * <p>
+	 * TODO: reorg this to include the comment as one of the parameterset
+	 * parameters
+	 * 
+	 * @param targetDir
+	 *            the directory where output should be written to (used to set
+	 *            up an output stream and forget)
+	 * @param name
+	 *            the parameterset's name
+	 * @throws IOException
+	 */
 	void startParameterSet(File targetDir, String name) throws IOException;
 
+	/**
+	 * Called at the actual start of parameterset definition, after comments and
+	 * before the definitions of individual parameters.
+	 * 
+	 * @throws IOException
+	 */
 	void startParameterSetType() throws IOException;
 
 	void startParameter(String name, int id) throws IOException;
