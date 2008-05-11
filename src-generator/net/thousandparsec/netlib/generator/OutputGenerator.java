@@ -279,10 +279,52 @@ public interface OutputGenerator
 	 */
 	void generatePropertyDefinition(int nestingLevel, Property property) throws IOException;
 
+	/**
+	 * Called at the start of an enumeration. This happens for all properties
+	 * (of any structure) of enumeration type and happens before the property
+	 * itself is being generated. This call indicates the start of enumeration;
+	 * the individual values are indicated by calls to
+	 * {@link #generateEnumerationValue(int, String, String)}.
+	 * 
+	 * @param nestingLevel
+	 *            a nesting level of the object containing this enumeration
+	 * @param enumNname
+	 *            the name of this enumeration in camel case (with the first
+	 *            character upper-cased)
+	 * @param valueType
+	 *            name of the type of this enumeration's values
+	 * @throws IOException
+	 */
 	void startEnumeration(int nestingLevel, String enumNname, String valueType) throws IOException;
 
+	/**
+	 * Called once for each enueration value (see
+	 * {@link #startEnumeration(int, String, String)}).
+	 * 
+	 * @param nestingLevel
+	 *            a nesting level of the object containing this enumeration
+	 * @param name
+	 *            name of this enumeration value
+	 * @param value
+	 *            the exact value of this enumeration, er, value
+	 * @throws IOException
+	 */
 	void generateEnumerationValue(int nestingLevel, String name, String value) throws IOException;
 
+	/**
+	 * Called at the end of an enumeration. The name and value type are the same
+	 * as in the call to corresponding
+	 * {@link #startEnumeration(int, String, String)}.
+	 * 
+	 * @param nestingLevel
+	 *            a nesting level of the object containing this enumeration
+	 * @param enumName
+	 *            the name of this enumeration in camel case (with the first
+	 *            character upper-cased)
+	 * @param valueType
+	 *            name of the type of this enumeration's values
+	 * @throws IOException
+	 */
 	void endEnumeration(int nestingLevel, String enumName, String valueType) throws IOException;
 
 	/**
