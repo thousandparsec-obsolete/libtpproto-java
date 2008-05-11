@@ -262,6 +262,21 @@ public interface OutputGenerator
 	 */
 	void endComment(int nestingLevel) throws IOException;
 
+	/**
+	 * Called to generate a property definition (which might or might not
+	 * include getters and setters, depending on the target language). This
+	 * event is heavily reused, just as {@code structure} element is reused in
+	 * the protocol definition; it is called for each property definition of
+	 * every structure which means that the implementation should remember for
+	 * previous events which object this property belongs to. Hopefully this
+	 * doesn't matter anyway.
+	 * 
+	 * @param nestingLevel
+	 *            a nesting level of the object containing this property
+	 * @param property
+	 *            the data of this property as a {@link Property} object
+	 * @throws IOException
+	 */
 	void generatePropertyDefinition(int nestingLevel, Property property) throws IOException;
 
 	void startEnum(int nestingLevel, String enumNname, String valueType) throws IOException;
