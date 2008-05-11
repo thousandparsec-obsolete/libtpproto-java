@@ -40,10 +40,10 @@ public class JavaOutputGenerator implements OutputGenerator
 	private File targetDir;
 	private PrintWriter out;
 
-	/* for packets */
-	private int packetType;
-	private String basePacket;
-	private String packetName;
+	/* for frames */
+	private int frameType;
+	private String baseFrame;
+	private String frameName;
 
 	/* for parameter sets */
 	private String parameterSetName;
@@ -99,13 +99,13 @@ public class JavaOutputGenerator implements OutputGenerator
 		this.compat=compat;
 	}
 
-	public void startFrame(File targetDir, int packetType, String basePacket, String packetName) throws IOException
+	public void startFrame(File targetDir, int frameType, String baseFrame, String frameName) throws IOException
 	{
 		this.targetDir=createTargetDir(targetDir);
-		this.out=createTargetFile(new File(this.targetDir, packetName+".java"));
-		this.packetType=packetType;
-		this.basePacket=basePacket;
-		this.packetName=packetName;
+		this.out=createTargetFile(new File(this.targetDir, frameName+".java"));
+		this.frameType=frameType;
+		this.baseFrame=baseFrame;
+		this.frameName=frameName;
 
 		printPreamble(this.out);
 	}
@@ -127,13 +127,13 @@ public class JavaOutputGenerator implements OutputGenerator
 	{
 		try
 		{
-			printVisitorMethod(0, "frame", basePacket != null);
+			printVisitorMethod(0, "frame", baseFrame != null);
 			printFindLengthMethod(0, properties);
 			printWriteMethod(0, properties, true);
 
-			printInputConstructor(0, packetName, properties, true);
+			printInputConstructor(0, frameName, properties, true);
 
-			printToStringMethod(0, packetName, properties, true, out);
+			printToStringMethod(0, frameName, properties, true, out);
 
 			//TODO: printEqualsMethod();
 
@@ -144,9 +144,9 @@ public class JavaOutputGenerator implements OutputGenerator
 			PrintWriter bak=out;
 			this.targetDir=null;
 			this.out=null;
-			this.packetType=0;
-			this.basePacket=null;
-			this.packetName=null;
+			this.frameType=0;
+			this.baseFrame=null;
+			this.frameName=null;
 
 			bak.close();
 			checkError(bak);
@@ -265,7 +265,7 @@ public class JavaOutputGenerator implements OutputGenerator
 			out.printf("%s	@Override%n", indent);
 		out.printf("%s	public void visit(TP%02dVisitor visitor) throws TPException%n", indent, compat);
 		out.printf("%s	{%n", indent);
-		if (packetType != -1)
+		if (frameType != -1)
 			out.printf("%s		visitor.%s(this);%n", indent, type);
 		else
 			out.printf("%s		//NOP (not a leaf class)%n", indent);
@@ -537,7 +537,7 @@ public class JavaOutputGenerator implements OutputGenerator
 					break;
 			}
 		}
-		if (overrides && basePacket != null)
+		if (overrides && baseFrame != null)
 			out.printf("%s		buf.append(\"; super:\").append(super.toString());%n", indent);
 		out.printf("%s		buf.append(\"}\");%n", indent);
 		out.printf("%s		return buf.toString();%n", indent);
@@ -608,10 +608,10 @@ public class JavaOutputGenerator implements OutputGenerator
 					visitor.println("	}");
 					visitor.println();
 				}
-				for (NamedEntity packet : group.getValue())
-					if (packet.id != -1)
+				for (NamedEntity frame : group.getValue())
+					if (frame.id != -1)
 					{
-						visitor.printf("	public void %s(%s %s) throws TPException%n", group.getKey(), packet.name, group.getKey());
+						visitor.printf("	public void %s(%s %s) throws TPException%n", group.getKey(), frame.name, group.getKey());
 						visitor.println("	{");
 						visitor.printf("		unhandled%s(%s);%n", camelPrefix("", group.getKey()), group.getKey());
 						visitor.println("	}");
@@ -700,9 +700,9 @@ public class JavaOutputGenerator implements OutputGenerator
 			frameDecoder.println("	{");
 			frameDecoder.println("		switch (id)");
 			frameDecoder.println("		{");
-			for (NamedEntity packet : entities.get("frame"))
-				if (packet.id != -1)
-					frameDecoder.printf("			case %s.FRAME_TYPE: return new %s(id, in);%n", packet.name, packet.name);
+			for (NamedEntity frame : entities.get("frame"))
+				if (frame.id != -1)
+					frameDecoder.printf("			case %s.FRAME_TYPE: return new %s(id, in);%n", frame.name, frame.name);
 			frameDecoder.println("			default: throw new IllegalArgumentException(\"Invalid Frame id: \"+id);");
 			frameDecoder.println("		}");
 			frameDecoder.println("	}");
@@ -738,28 +738,28 @@ public class JavaOutputGenerator implements OutputGenerator
 	public void startFrameType() throws IOException
 	{
 		out.write("public ");
-		if (packetType == -1)
+		if (frameType == -1)
 			out.write("abstract ");
-		out.printf("class %s extends %s%n", packetName, basePacket == null ? String.format("Frame<TP%02dVisitor>", compat) : basePacket);
+		out.printf("class %s extends %s%n", frameName, baseFrame == null ? String.format("Frame<TP%02dVisitor>", compat) : baseFrame);
 		out.println("{");
-		if (packetType != -1)
+		if (frameType != -1)
 		{
-			out.printf("	public static final int FRAME_TYPE=%d;%n", packetType);
+			out.printf("	public static final int FRAME_TYPE=%d;%n", frameType);
 			out.println();
 		}
 
 		//first constructor, for general public and subclasses
-		out.printf("	protected %s(int id)%n", packetName);
+		out.printf("	protected %s(int id)%n", frameName);
 		out.println("	{");
 		out.println("		super(id);");
 		out.println("	}");
 		out.println();
 		
-		//(note: id == -1 is no id is a base class for other packets)
+		//(note: id == -1 is no id is a base class for other frames)
 		//(but then, it should not have readonly properties...)
-		if (packetType != -1)
+		if (frameType != -1)
 		{
-			out.printf("	public %s()%n", packetName);
+			out.printf("	public %s()%n", frameName);
 			out.println("	{");
 			out.println("		super(FRAME_TYPE);");
 			out.println("	}");
