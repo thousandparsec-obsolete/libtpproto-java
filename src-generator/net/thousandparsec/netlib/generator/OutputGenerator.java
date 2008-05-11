@@ -5,6 +5,28 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This is an interface of receivers of "domain events" from the
+ * {@link Generator}.
+ * <p>
+ * The generator converts a protocol description file to a stream of events, for
+ * each of which there is a corresponding method called in this interface. In
+ * addition to event handlers, this interface also provides some additional
+ * information specific to the target language, such as concrete integer type
+ * names.
+ * <p>
+ * <stron>This is a stateful object</strong>: the information given to the
+ * event handler methods is usually not the full context, so the implementation
+ * should keep track of previous invocations (events) and react accordingly when
+ * the behaviour depends on it (fortunately there are not that many places where
+ * it matters).
+ * 
+ * @see Generator
+ * @see Property
+ * @see NamedEntity
+ * @see UseparametersTypeField
+ * @author ksobolewski
+ */
 public interface OutputGenerator
 {
 	/**
