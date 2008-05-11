@@ -35,6 +35,8 @@ import org.xml.sax.helpers.XMLReaderFactory;
  * TODO: Allow implementations of {@link OutputGenerator} other than that for
  * Java.
  * 
+ * @see OutputGenerator
+ * @see StackedHandler
  * @author ksobolewski
  */
 public class Generator extends StackedHandler<StackedHandler<?>>
