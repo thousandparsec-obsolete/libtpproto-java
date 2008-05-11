@@ -879,7 +879,7 @@ public class JavaOutputGenerator implements OutputGenerator
 		checkError(out);
 	}
 
-	public void printPropertyDef(int level, Property property) throws IOException
+	public void generatePropertyDefinition(int level, Property property) throws IOException
 	{
 		Indent indent=new Indent(level);
 		switch (property.type)
@@ -933,10 +933,14 @@ public class JavaOutputGenerator implements OutputGenerator
 		}
 		out.println();
 
+		printPropertyGetter(level, property);
+		//print setter even if read-only (*might* be useful)
+		printPropertySetter(level, property);
+
 		checkError(out);
 	}
 
-	public void printPropertyGetter(int level, Property property) throws IOException
+	private void printPropertyGetter(int level, Property property) throws IOException
 	{
 		Indent indent=new Indent(level);
 		switch (property.type)
@@ -1047,7 +1051,7 @@ public class JavaOutputGenerator implements OutputGenerator
 		checkError(out);
 	}
 
-	public void printPropertySetter(int level, Property property) throws IOException
+	private void printPropertySetter(int level, Property property) throws IOException
 	{
 		//to modify list property use the getter and modify the List
 		Indent indent=new Indent(level);

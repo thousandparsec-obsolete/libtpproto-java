@@ -262,11 +262,7 @@ public interface OutputGenerator
 	 */
 	void endComment(int nestingLevel) throws IOException;
 
-	void printPropertyDef(int nestingLevel, Property property) throws IOException;
-
-	void printPropertyGetter(int nestingLevel, Property property) throws IOException;
-
-	void printPropertySetter(int nestingLevel, Property property) throws IOException;
+	void generatePropertyDefinition(int nestingLevel, Property property) throws IOException;
 
 	void startEnum(int nestingLevel, String enumNname, String valueType) throws IOException;
 

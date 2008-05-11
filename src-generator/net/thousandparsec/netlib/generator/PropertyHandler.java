@@ -139,10 +139,7 @@ class PropertyHandler extends StructuredElementHandler<StructureHandler<?>>
 
 				Property prop=parent.parent.addProperty(this.name, type, valueType, valueSubtype, size, readOnly, useparametersTypeField);
 
-				parent.generator.generator.printPropertyDef(parent.level, prop);
-				parent.generator.generator.printPropertyGetter(parent.level, prop);
-				//print setter even if read-only (*might* be useful)
-				parent.generator.generator.printPropertySetter(parent.level, prop);
+				parent.generator.generator.generatePropertyDefinition(parent.level, prop);
 			}
 			super.endElement(uri, localName, name);
 		}
