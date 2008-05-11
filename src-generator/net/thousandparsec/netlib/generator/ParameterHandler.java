@@ -13,12 +13,15 @@ import org.xml.sax.SAXException;
  */
 class ParameterHandler extends StackedHandler<ParametersetHandler>
 {
-	private final String name;
+	protected final String name;
+	protected final int id;
+	protected boolean hasDescStruct=false;
 
 	ParameterHandler(ParametersetHandler parent, String name, int id) throws SAXException
 	{
 		super(parent);
 		this.name=name;
+		this.id=id;
 
 		try
 		{
@@ -46,7 +49,7 @@ class ParameterHandler extends StackedHandler<ParametersetHandler>
 					pushHandler(new UsestructHandler(this));
 				else if (name.equals("descstruct"))
 				{
-					parent.hasParameterDesc();
+					hasDescStruct=true;
 					pushHandler(new DescstructHandler(this));
 				}
 			}
