@@ -128,16 +128,68 @@ public interface OutputGenerator
 	 */
 	void startParameterSetType() throws IOException;
 
+	/**
+	 * Called at the start of individual parameter of parameterset. This happens
+	 * after the comments for the parameter are generated and before calls to
+	 * {@link #startParameterStruct()} and/or
+	 * {@link #startParameterDescStruct()}.
+	 * <p>
+	 * TODO: reorg this to include the comment as one of the parameter
+	 * parameters
+	 * 
+	 * @param name
+	 *            the parameter's name
+	 * @param id
+	 *            the parameter's identifier (which is unique in scope of the
+	 *            enclosing parameterset)
+	 * @throws IOException
+	 */
 	void startParameter(String name, int id) throws IOException;
 
+	/**
+	 * Called at the actual start of individual parameterset's parameter
+	 * structure, after comments and before properties.
+	 * 
+	 * @throws IOException
+	 */
 	void startParameterStruct() throws IOException;
 
+	/**
+	 * Called at the end of parameter's structure definition.
+	 * 
+	 * @param properties
+	 *            a list of properties in the structure as {@link Property}
+	 *            objects
+	 * @throws IOException
+	 */
 	void endParameterStruct(List<Property> properties) throws IOException;
 
+	/**
+	 * Called at the actual start of individual parameterset's parameter
+	 * description structure (used in parameter description frames), after
+	 * comments and before properties.
+	 * 
+	 * @throws IOException
+	 */
 	void startParameterDescStruct() throws IOException;
 
+	/**
+	 * Called at the end of parameter's description structure definition.
+	 * 
+	 * @param properties
+	 *            a list of properties in the structure as {@link Property}
+	 *            objects
+	 * @throws IOException
+	 */
 	void endParameterDescStruct(List<Property> properties) throws IOException;
 
+	/**
+	 * Called at the end of individual parameterset's parameter.
+	 * 
+	 * @param name
+	 *            the parameter's name
+	 * @throws IOException
+	 */
 	void endParameter(String name) throws IOException;
 
 	void endParameterSet(File targetDir, List<NamedEntity> parameters, List<NamedEntity> parameterDescs) throws IOException;
