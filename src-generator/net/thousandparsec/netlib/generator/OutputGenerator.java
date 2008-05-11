@@ -221,6 +221,7 @@ public interface OutputGenerator
 	 *            the directory where any output should be written to
 	 * @param entities
 	 *            a map of entities: frames and parameters in parametersets
+	 * @throws IOException
 	 */
 	void endProtocol(File targetDir, Map<String, List<NamedEntity>> entities) throws IOException;
 
