@@ -94,13 +94,11 @@ class ParametersetHandler extends StackedHandler<ProtocolHandler>
 					parent.addEntityGroup(this.name.substring(0, 1).toLowerCase()+this.name.substring(1)+"Desc", parameterDescs);
 				parent.parent.generator.endParameterSet(targetDir, parameters, parameterDescs);
 			}
-			else if (getDepth() == 1 && currentParameterHandler != null)
+			else if (getDepth() == 1 && currentParameterHandler != null && currentParameterHandler.hasDescStruct)
 			{
-				if (currentParameterHandler.hasDescStruct)
-				{
-					hasParameterDesc=true;
-					parameterDescs.add(new NamedEntity(this.name+"Desc."+currentParameterHandler.name, currentParameterHandler.id));
-				}
+				hasParameterDesc=true;
+				parameterDescs.add(new NamedEntity(this.name+"Desc."+currentParameterHandler.name, currentParameterHandler.id));
+				currentParameterHandler=null;
 			}
 			super.endElement(uri, localName, name);
 		}
