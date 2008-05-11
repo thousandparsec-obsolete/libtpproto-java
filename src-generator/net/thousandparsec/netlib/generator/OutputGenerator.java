@@ -225,10 +225,47 @@ public interface OutputGenerator
 	 */
 	void endProtocol(File targetDir, Map<String, List<NamedEntity>> entities) throws IOException;
 
+	/**
+	 * Called when a comment is about to be generated. This is a heavily reused
+	 * event as comments are generated before many elements (such as frames and
+	 * parameters). This event is used to indicate a start of the comment; the
+	 * contents are indicated by one or more calls to
+	 * {@link #continueComment(int, int, char[], int, int)}.
+	 * 
+	 * @param nestingLevel
+	 *            a nesting level of the element being commented
+	 * @param correction
+	 *            about to be removed ;)
+	 * @throws IOException
+	 */
 	void startComment(int nestingLevel, int correction) throws IOException;
 
+	/**
+	 * Called as a continuation of a comment with a chunk of characters.
+	 * 
+	 * @param nestingLevel
+	 *            a nesting level of the element being commented
+	 * @param correction
+	 *            about to be removed ;)
+	 * @param ch
+	 *            array of characters of the comment chunk
+	 * @param start
+	 *            index of the start of the first character of the chunk
+	 * @param length
+	 *            length of the chunk
+	 * @throws IOException
+	 */
 	void continueComment(int nestingLevel, int correction, char[] ch, int start, int length) throws IOException;
 
+	/**
+	 * Called at the end of a comment.
+	 * 
+	 * @param nestingLevel
+	 *            a nesting level of the element being commented
+	 * @param correction
+	 *            about to be removed ;)
+	 * @throws IOException
+	 */
 	void endComment(int nestingLevel, int correction) throws IOException;
 
 	void printPropertyDef(int nestingLevel, Property property) throws IOException;
