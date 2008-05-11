@@ -77,6 +77,12 @@ public interface OutputGenerator
 	 */
 	void startPacket(File targetDir, int id, String basePacket, String packetName) throws IOException;
 
+	/**
+	 * Called at the actual start of frame definition, after comments and before
+	 * the definitions of properties.
+	 * 
+	 * @throws IOException
+	 */
 	void startPacketType() throws IOException;
 
 	void endPacket(List<Property> properties) throws IOException;
