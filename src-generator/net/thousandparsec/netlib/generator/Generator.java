@@ -12,10 +12,28 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
- * The generator's main class is itself a {@link StackedHandler} for the highest
- * level (even above the topmost {@code protocol} element). This class houses
- * the {@link #generator} field which should be used by other handlers to
- * generate output (in correct order).
+ * The main class of Thousand Parsec protocol description parser and generator.
+ * <p>
+ * The generator parses a protocol description file (given as the first
+ * argument) and outputs implementation files to a directory (given as the
+ * second argument). The target language is determined by an implementation of
+ * {@link OutputGenerator} interface. This interface receives a stream of
+ * "domain events", in a similar way it's done in SAX parsers; the generator
+ * converts a stream of XML events of the protocol description file to events
+ * such as "procotol start", "frame start", "frame end", "protocol end" etc.
+ * <p>
+ * The parsing is done by a stack of hierarchical
+ * {@link org.xml.sax.ContentHandler}s, usually subclasses of
+ * {@link StackedHandler} class, which simplifies handling of subelements. The
+ * handlers are called in specific places of the XML astructure, from where the
+ * apropriate methods of {@link OutputGenerator} are called. The generator's
+ * main class is itself a {@link StackedHandler} for the highest level (even
+ * above the topmost {@code protocol} element). This class houses the
+ * {@link #generator} field which should be used by other handlers to generate
+ * output (in correct order).
+ * <p>
+ * TODO: Allow implementations of {@link OutputGenerator} other than that for
+ * Java.
  * 
  * @author ksobolewski
  */
