@@ -85,6 +85,16 @@ public interface OutputGenerator
 	 */
 	void startPacketType() throws IOException;
 
+	/**
+	 * Called at the end of frame definition. The list of properties given is
+	 * just a useful coda that frees the implementation from remembering them
+	 * itself, because all the properties had already been indicated by separate
+	 * events.
+	 * 
+	 * @param properties
+	 *            the list of properties as {@link Property} objects
+	 * @throws IOException
+	 */
 	void endPacket(List<Property> properties) throws IOException;
 
 	void startParameterSet(File targetDir, String name) throws IOException;
