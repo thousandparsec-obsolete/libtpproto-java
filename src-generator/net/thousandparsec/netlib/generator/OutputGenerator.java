@@ -41,8 +41,40 @@ public interface OutputGenerator
 	 */
 	String getIntegerTypeName(int size) throws IllegalArgumentException;
 
+	/**
+	 * Called at the start of a protocol version definition. Please note that
+	 * this method <strong>may</strong> (theoretically) be called more than
+	 * once during the lifetime of this object.
+	 * 
+	 * @param compat
+	 *            the protocol version number (compatibility level)
+	 * @throws IOException
+	 */
 	void startProtocol(int compat) throws IOException;
 
+	/**
+	 * Called at the start of a definition of a protocol frame (AKA packet). Not
+	 * all parts of the definition are given here (yet); for example the frame
+	 * direction is missing.
+	 * <p>
+	 * This is an event used only to set things up, because it hapens before any
+	 * comments associated with the frame (in {@code packet/longname} element).
+	 * The actual start of frame is indicated by {@link #startPacketType()}
+	 * event.
+	 * <p>
+	 * TODO: reorg this to include the comment as one of the frame parameters
+	 * 
+	 * @param targetDir
+	 *            the directory where output should be written to (used to set
+	 *            up an output stream and forget)
+	 * @param id
+	 *            the frame's identifier
+	 * @param basePacket
+	 *            the base frame which this frame "extends"
+	 * @param packetName
+	 *            the frame's name
+	 * @throws IOException
+	 */
 	void startPacket(File targetDir, int id, String basePacket, String packetName) throws IOException;
 
 	void startPacketType() throws IOException;
