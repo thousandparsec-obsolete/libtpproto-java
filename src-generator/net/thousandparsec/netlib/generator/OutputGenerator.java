@@ -281,10 +281,10 @@ public interface OutputGenerator
 
 	/**
 	 * Called at the start of an enumeration. This happens for all properties
-	 * (of any structure) of enumeration type and happens before the property
-	 * itself is being generated. This call indicates the start of enumeration;
-	 * the individual values are indicated by calls to
-	 * {@link #generateEnumerationValue(int, String, String)}.
+	 * (of any structure) of {@link StructureHandler.PropertyType#enumeration}
+	 * type and happens before the property itself is being generated. This call
+	 * indicates the start of enumeration; the individual values are indicated
+	 * by calls to {@link #generateEnumerationValue(int, String, String)}.
 	 * 
 	 * @param nestingLevel
 	 *            a nesting level of the object containing this enumeration
@@ -329,10 +329,36 @@ public interface OutputGenerator
 
 	/**
 	 * Called for inner types in structures (only). Which structure it is (under
-	 * packet, under parameter/usestruct or under packet/descstruct) should be
-	 * remembered from calls to {@code start*()} methods.
+	 * {@code packet}, under {@code parameter/usestruct} or under
+	 * {@code parameter/descstruct}) should be remembered from previous calls
+	 * to {@code start*()} methods. An inner type is generated for each property
+	 * of types {@link StructureHandler.PropertyType#group} and
+	 * {@link StructureHandler.PropertyType#list}; the
+	 * {@link StructureHandler.PropertyType#enumeration} is handled specially
+	 * (see {@link #startEnumeration(int, String, String)}). Note that each
+	 * group (and list) can have its own structure with groups and lists; this
+	 * can create a sinificantly complex hierarchy of nested inner types.
+	 * 
+	 * @param nestingLevel
+	 *            a nesting level of the object containing this inner type
+	 * @param name
+	 *            name of this inner type in camel case
+	 * @throws IOException
 	 */
 	void startInnerType(int nestingLevel, String name) throws IOException;
 
+	/**
+	 * Called at the end of an inner type (see
+	 * {@link #startInnerType(int, String)}).
+	 * 
+	 * @param nestingLevel
+	 *            a nesting level of the object containing this inner type
+	 * @param name
+	 *            name of this inner type in camel case
+	 * @param properties
+	 *            a list of properties of this inner type as {@link Property}
+	 *            objects
+	 * @throws IOException
+	 */
 	void endInnerType(int nestingLevel, String name, List<Property> properties) throws IOException;
 }
