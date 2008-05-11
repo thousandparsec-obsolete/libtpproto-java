@@ -73,30 +73,30 @@ public interface OutputGenerator
 	 */
 	void endProtocol(File targetDir, Map<String, List<NamedEntity>> entities) throws IOException;
 
-	void startComment(int level, int correction) throws IOException;
+	void startComment(int nestingLevel, int correction) throws IOException;
 
-	void continueComment(int level, int correction, char[] ch, int start, int length) throws IOException;
+	void continueComment(int nestingLevel, int correction, char[] ch, int start, int length) throws IOException;
 
-	void endComment(int level, int correction) throws IOException;
+	void endComment(int nestingLevel, int correction) throws IOException;
 
-	void printPropertyDef(int level, Property property) throws IOException;
+	void printPropertyDef(int nestingLevel, Property property) throws IOException;
 
-	void printPropertyGetter(int level, Property property) throws IOException;
+	void printPropertyGetter(int nestingLevel, Property property) throws IOException;
 
-	void printPropertySetter(int level, Property property) throws IOException;
+	void printPropertySetter(int nestingLevel, Property property) throws IOException;
 
-	void startEnum(int level, String enumNname, String valueType) throws IOException;
+	void startEnum(int nestingLevel, String enumNname, String valueType) throws IOException;
 
-	void printEnumValue(int level, String name, String value) throws IOException;
+	void printEnumValue(int nestingLevel, String name, String value) throws IOException;
 
-	void endEnum(int level, String enumName, String valueType) throws IOException;
+	void endEnum(int nestingLevel, String enumName, String valueType) throws IOException;
 
 	/**
 	 * Called for inner types in structures (only). Which structure it is (under
 	 * packet, under parameter/usestruct or under packet/descstruct) should be
 	 * remembered from calls to {@code start*()} methods.
 	 */
-	void startInnerType(int level, String name) throws IOException;
+	void startInnerType(int nestingLevel, String name) throws IOException;
 
-	void endInnerType(int level, String name, List<Property> properties) throws IOException;
+	void endInnerType(int nestingLevel, String name, List<Property> properties) throws IOException;
 }
