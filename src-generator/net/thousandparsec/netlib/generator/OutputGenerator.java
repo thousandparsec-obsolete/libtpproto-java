@@ -30,10 +30,14 @@ import java.util.Map;
 public interface OutputGenerator
 {
 	/**
+	 * Returns a type name corresponding to integer types defined by Thousand
+	 * Parser protocol (any version).
+	 * 
 	 * @param size
 	 *            size of the type in bits
 	 * @return type name of the integer type in target language
 	 * @throws IllegalArgumentException
+	 *             if the bit width is invalid
 	 */
 	String getIntegerTypeName(int size) throws IllegalArgumentException;
 
