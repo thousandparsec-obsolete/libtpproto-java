@@ -99,7 +99,7 @@ public class JavaOutputGenerator implements OutputGenerator
 		this.compat=compat;
 	}
 
-	public void startPacket(File targetDir, int packetType, String basePacket, String packetName) throws IOException
+	public void startFrame(File targetDir, int packetType, String basePacket, String packetName) throws IOException
 	{
 		this.targetDir=createTargetDir(targetDir);
 		this.out=createTargetFile(new File(this.targetDir, packetName+".java"));
@@ -123,7 +123,7 @@ public class JavaOutputGenerator implements OutputGenerator
 		checkError(out);
 	}
 
-	public void endPacket(List<Property> properties) throws IOException
+	public void endFrame(List<Property> properties) throws IOException
 	{
 		try
 		{
@@ -735,7 +735,7 @@ public class JavaOutputGenerator implements OutputGenerator
 		}
 	}
 
-	public void startPacketType() throws IOException
+	public void startFrameType() throws IOException
 	{
 		out.write("public ");
 		if (packetType == -1)

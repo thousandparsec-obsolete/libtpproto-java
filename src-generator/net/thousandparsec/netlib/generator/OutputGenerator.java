@@ -59,7 +59,7 @@ public interface OutputGenerator
 	 * <p>
 	 * This is an event used only to set things up, because it hapens before any
 	 * comments associated with the frame (in {@code packet/longname} element).
-	 * The actual start of frame is indicated by {@link #startPacketType()}
+	 * The actual start of frame is indicated by {@link #startFrameType()}
 	 * event.
 	 * <p>
 	 * TODO: reorg this to include the comment as one of the frame parameters
@@ -69,13 +69,13 @@ public interface OutputGenerator
 	 *            up an output stream and forget)
 	 * @param id
 	 *            the frame's identifier
-	 * @param basePacket
+	 * @param baseFrame
 	 *            the base frame which this frame "extends"
-	 * @param packetName
+	 * @param frameName
 	 *            the frame's name
 	 * @throws IOException
 	 */
-	void startPacket(File targetDir, int id, String basePacket, String packetName) throws IOException;
+	void startFrame(File targetDir, int id, String baseFrame, String frameName) throws IOException;
 
 	/**
 	 * Called at the actual start of frame definition, after comments and before
@@ -83,7 +83,7 @@ public interface OutputGenerator
 	 * 
 	 * @throws IOException
 	 */
-	void startPacketType() throws IOException;
+	void startFrameType() throws IOException;
 
 	/**
 	 * Called at the end of frame definition. The list of properties given is
@@ -95,7 +95,7 @@ public interface OutputGenerator
 	 *            the list of properties as {@link Property} objects
 	 * @throws IOException
 	 */
-	void endPacket(List<Property> properties) throws IOException;
+	void endFrame(List<Property> properties) throws IOException;
 
 	/**
 	 * Called at the start of a parameterset; parametersets are another type of

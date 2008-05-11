@@ -31,7 +31,7 @@ class PacketHandler extends StructuredElementHandler<ProtocolHandler>
 
 		try
 		{
-			parent.parent.generator.startPacket(targetDir, id, basePacket, packetName);
+			parent.parent.generator.startFrame(targetDir, id, basePacket, packetName);
 		}
 		catch (IOException ex)
 		{
@@ -43,7 +43,7 @@ class PacketHandler extends StructuredElementHandler<ProtocolHandler>
 	{
 		if (!classdefWritten)
 		{
-			parent.parent.generator.startPacketType();
+			parent.parent.generator.startFrameType();
 			classdefWritten=true;
 		}
 	}
@@ -82,7 +82,7 @@ class PacketHandler extends StructuredElementHandler<ProtocolHandler>
 			if (getDepth() == 0)
 			{
 				ensurePacketType();
-				parent.parent.generator.endPacket(getProperties());
+				parent.parent.generator.endFrame(getProperties());
 			}
 			super.endElement(uri, localName, name);
 		}
