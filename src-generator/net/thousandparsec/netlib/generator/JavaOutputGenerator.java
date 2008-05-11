@@ -221,7 +221,7 @@ public class JavaOutputGenerator implements OutputGenerator
 		this.parameterType=-1;
 	}
 
-	public void endParameterSet(File targetDir, List<NamedEntity> parameters, List<NamedEntity> parameterDescs) throws IOException
+	public void endParameterSet(List<NamedEntity> parameters, List<NamedEntity> parameterDescs) throws IOException
 	{
 		try
 		{

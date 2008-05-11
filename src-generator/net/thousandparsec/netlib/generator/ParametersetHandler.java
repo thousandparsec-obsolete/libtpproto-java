@@ -17,7 +17,6 @@ import org.xml.sax.SAXException;
  */
 class ParametersetHandler extends StackedHandler<ProtocolHandler>
 {
-	private final File targetDir;
 	private final String name;
 	private final List<NamedEntity> parameters;
 	private final List<NamedEntity> parameterDescs;
@@ -37,7 +36,6 @@ class ParametersetHandler extends StackedHandler<ProtocolHandler>
 	ParametersetHandler(ProtocolHandler parent, File targetDir, String name) throws SAXException
 	{
 		super(parent);
-		this.targetDir=targetDir;
 		this.name=name;
 		this.parameters=new ArrayList<NamedEntity>();
 		this.parameterDescs=new ArrayList<NamedEntity>();
@@ -92,7 +90,7 @@ class ParametersetHandler extends StackedHandler<ProtocolHandler>
 				parent.addEntityGroup(this.name.substring(0, 1).toLowerCase()+this.name.substring(1), parameters);
 				if (hasParameterDesc)
 					parent.addEntityGroup(this.name.substring(0, 1).toLowerCase()+this.name.substring(1)+"Desc", parameterDescs);
-				parent.parent.generator.endParameterSet(targetDir, parameters, parameterDescs);
+				parent.parent.generator.endParameterSet(parameters, parameterDescs);
 			}
 			else if (getDepth() == 1 && currentParameterHandler != null && currentParameterHandler.hasDescStruct)
 			{

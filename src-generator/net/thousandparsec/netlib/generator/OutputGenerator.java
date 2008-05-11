@@ -199,9 +199,6 @@ public interface OutputGenerator
 	 * list of parameters that have a parameter description structure (in
 	 * addition to the regular structure).
 	 * 
-	 * @param targetDir
-	 *            the directory where output should be written to (used to set
-	 *            up an output stream and forget)
 	 * @param parameters
 	 *            a list of parameters in this parameterset
 	 * @param parameterDescs
@@ -209,7 +206,7 @@ public interface OutputGenerator
 	 *            description structure
 	 * @throws IOException
 	 */
-	void endParameterSet(File targetDir, List<NamedEntity> parameters, List<NamedEntity> parameterDescs) throws IOException;
+	void endParameterSet(List<NamedEntity> parameters, List<NamedEntity> parameterDescs) throws IOException;
 
 	/**
 	 * The {@code entities} parameter is a map from a group name to a list of
