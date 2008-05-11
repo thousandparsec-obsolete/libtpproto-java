@@ -1117,7 +1117,7 @@ public class JavaOutputGenerator implements OutputGenerator
 		checkError(out);
 	}
 
-	public void startEnum(int level, String enumName, String valueType) throws IOException
+	public void startEnumeration(int level, String enumName, String valueType) throws IOException
 	{
 		Indent indent=new Indent(level);
 		out.printf("%spublic enum %s%n", indent, enumName);
@@ -1125,12 +1125,12 @@ public class JavaOutputGenerator implements OutputGenerator
 
 		//print the "null-object" enum value
 		//assume that no enumeration has a value with @id=-1 (so far it's true)
-		printEnumValue(level, "$none$", "-1");
+		generateEnumerationValue(level, "$none$", "-1");
 
 		checkError(out);
 	}
 
-	public void printEnumValue(int level, String name, String value) throws IOException
+	public void generateEnumerationValue(int level, String name, String value) throws IOException
 	{
 		Indent indent=new Indent(level);
 		out.printf("%s	%s(%s),%n", indent, name, value);
@@ -1139,7 +1139,7 @@ public class JavaOutputGenerator implements OutputGenerator
 		checkError(out);
 	}
 
-	public void endEnum(int level, String enumName, String valueType) throws IOException
+	public void endEnumeration(int level, String enumName, String valueType) throws IOException
 	{
 		Indent indent=new Indent(level);
 		out.printf("%s	;%n", indent);

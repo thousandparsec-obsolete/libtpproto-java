@@ -279,11 +279,11 @@ public interface OutputGenerator
 	 */
 	void generatePropertyDefinition(int nestingLevel, Property property) throws IOException;
 
-	void startEnum(int nestingLevel, String enumNname, String valueType) throws IOException;
+	void startEnumeration(int nestingLevel, String enumNname, String valueType) throws IOException;
 
-	void printEnumValue(int nestingLevel, String name, String value) throws IOException;
+	void generateEnumerationValue(int nestingLevel, String name, String value) throws IOException;
 
-	void endEnum(int nestingLevel, String enumName, String valueType) throws IOException;
+	void endEnumeration(int nestingLevel, String enumName, String valueType) throws IOException;
 
 	/**
 	 * Called for inner types in structures (only). Which structure it is (under
