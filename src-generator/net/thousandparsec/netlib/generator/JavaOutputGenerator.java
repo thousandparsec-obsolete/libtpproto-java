@@ -15,7 +15,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import net.thousandparsec.netlib.generator.StructureHandler.PropertyType;
 import net.thousandparsec.netlib.generator.UseparametersTypeField.SearchPathElement;
 
 public class JavaOutputGenerator implements OutputGenerator
@@ -352,7 +351,7 @@ public class JavaOutputGenerator implements OutputGenerator
 				case string:
 					//integer and enumeration are the same type physically, so fold enumeration to integer
 					out.printf("%s		out.%s(this.%s);%n", indent,
-						camelPrefix("write", (p.type == PropertyType.enumeration ? PropertyType.integer : p.type).name()),
+						camelPrefix("write", (p.type == Property.PropertyType.enumeration ? Property.PropertyType.integer : p.type).name()),
 						p.name);
 					break;
 
@@ -387,7 +386,7 @@ public class JavaOutputGenerator implements OutputGenerator
 			for (Iterator<Property> pit=writableProperties.iterator(); pit.hasNext(); )
 			{
 				Property p=pit.next();
-				if (p.type == PropertyType.list)
+				if (p.type == Property.PropertyType.list)
 					out.printf("java.util.List<%s> %s", p.targetType, p.name);
 				else
 					out.printf("%s %s", p.targetType, p.name);
@@ -1056,7 +1055,7 @@ public class JavaOutputGenerator implements OutputGenerator
 		//to modify list property use the getter and modify the List
 		Indent indent=new Indent(level);
 
-		boolean isPublic=!property.readOnly && property.type != PropertyType.list;
+		boolean isPublic=!property.readOnly && property.type != Property.PropertyType.list;
 		if (!isPublic)
 			out.printf("%s@SuppressWarnings(\"unused\")%n", indent);
 

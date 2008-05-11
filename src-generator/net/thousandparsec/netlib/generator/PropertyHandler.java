@@ -8,8 +8,8 @@ import org.xml.sax.SAXException;
 /**
  * {@link PropertyHandler} and its subclasses handle elements contained in a
  * {@code structure} element, where each represents one "property" of a packet
- * or another property ({@link StructureHandler.PropertyType#group} or
- * {@link StructureHandler.PropertyType#list}).
+ * or another property ({@link Property.PropertyType#group} or
+ * {@link Property.PropertyType#list}).
  * <p>
  * A property has additional properties, like {@link #getValueType() value type}
  * and {@link #getName() name}; value type is the name of a type used (or
@@ -25,7 +25,7 @@ class PropertyHandler extends StructuredElementHandler<StructureHandler<?>>
 {
 	private String valueType;
 	private String valueSubtype;
-	protected final StructureHandler.PropertyType type;
+	protected final Property.PropertyType type;
 	private final int size;
 	protected final boolean readOnly;
 	private String name;
@@ -37,12 +37,12 @@ class PropertyHandler extends StructuredElementHandler<StructureHandler<?>>
 	 * the beginning of this element. Remember to set it with
 	 * {@link #setValueType(String)} later.
 	 */
-	PropertyHandler(StructureHandler<?> parent, StructureHandler.PropertyType type, int size, boolean readOnly)
+	PropertyHandler(StructureHandler<?> parent, Property.PropertyType type, int size, boolean readOnly)
 	{
 		this(parent, type, null, null, size, readOnly);
 	}
 
-	PropertyHandler(StructureHandler<?> parent, StructureHandler.PropertyType type, String valueType, String valueSubtype, int size, boolean readOnly)
+	PropertyHandler(StructureHandler<?> parent, Property.PropertyType type, String valueType, String valueSubtype, int size, boolean readOnly)
 	{
 		super(parent);
 		this.valueType=valueType;

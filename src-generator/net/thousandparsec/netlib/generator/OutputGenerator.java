@@ -55,7 +55,7 @@ import java.util.Map;
  * 			<li>{@link #startFrameType()}</li>
  * 			<li>For each property:
  * 				<ul>
- * 					<li>IF it is a {@link StructureHandler.PropertyType#enumeration}:
+ * 					<li>IF it is a {@link Property.PropertyType#enumeration enumeration}:
  * 						<ul>
  * 							<li>{@link #startEnumeration(int, String, String)}</li>
  * 							<li>For each enumeration value:
@@ -67,7 +67,7 @@ import java.util.Map;
  * 						</ul>
  * 					</li>
  * 					<li>
- * 						IF it is a {@link StructureHandler.PropertyType#group} or {@link StructureHandler.PropertyType#list}:
+ * 						IF it is a {@link Property.PropertyType#group group} or {@link Property.PropertyType#list list}:
  * 						<ul>
  * 							<li>{@link #startComment(int)}, {@link #continueComment(int, char[], int, int)}, {@link #endComment(int)} (if present)</li>
  * 							<li>{@link #startInnerType(int, String)}</li>
@@ -165,7 +165,7 @@ public interface OutputGenerator
 	 * Called at the start of a parameterset; parametersets are another type of
 	 * protocol-level objects, equal to frames, which define additional
 	 * structure associated with a particular property (of
-	 * {@link StructureHandler.PropertyType#useparameters} type).
+	 * {@link Property.PropertyType#useparameters useparameters} type).
 	 * <p>
 	 * This is an event used only to set things up, because it hapens before any
 	 * comments associated with the parameterset (in {@code packet/description}
@@ -345,7 +345,7 @@ public interface OutputGenerator
 
 	/**
 	 * Called at the start of an enumeration. This happens for all properties
-	 * (of any structure) of {@link StructureHandler.PropertyType#enumeration}
+	 * (of any structure) of {@link Property.PropertyType#enumeration enumeration}
 	 * type and happens before the property itself is being generated. This call
 	 * indicates the start of enumeration; the individual values are indicated
 	 * by calls to {@link #generateEnumerationValue(int, String, String)}.
@@ -396,9 +396,9 @@ public interface OutputGenerator
 	 * {@code packet}, under {@code parameter/usestruct} or under
 	 * {@code parameter/descstruct}) should be remembered from previous calls
 	 * to {@code start*()} methods. An inner type is generated for each property
-	 * of types {@link StructureHandler.PropertyType#group} and
-	 * {@link StructureHandler.PropertyType#list}; the
-	 * {@link StructureHandler.PropertyType#enumeration} is handled specially
+	 * of types {@link Property.PropertyType#group group} and
+	 * {@link Property.PropertyType#list list}; the
+	 * {@link Property.PropertyType#enumeration enumeration} is handled specially
 	 * (see {@link #startEnumeration(int, String, String)}). Note that each
 	 * group (and list) can have its own structure with groups and lists; this
 	 * can create a sinificantly complex hierarchy of nested inner types.

@@ -24,7 +24,7 @@ class EnumerationHandler extends PropertyHandler
 
 	EnumerationHandler(StructureHandler<?> parent, String valueType, int size, String style, boolean readOnly)
 	{
-		super(parent, StructureHandler.PropertyType.enumeration, valueType, valueType, style.equals("mask") ? -size : size, readOnly);
+		super(parent, Property.PropertyType.enumeration, valueType, valueType, style.equals("mask") ? -size : size, readOnly);
 	}
 
 	@Override

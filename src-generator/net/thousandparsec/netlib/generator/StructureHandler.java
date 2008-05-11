@@ -6,7 +6,7 @@ import org.xml.sax.SAXException;
 
 /**
  * This handler processes the {@code structure} element, recognising type
- * elements (with the help of {@link PropertyType} enum) and creates proper
+ * elements (with the help of {@link Property.PropertyType} enum) and creates proper
  * handler for the type element. This handler can have parents of different
  * types so the parent type is a generic type extending plain
  * {@link StackedHandler}; to preserve the link to the {@link Generator} (top
@@ -18,11 +18,6 @@ import org.xml.sax.SAXException;
  */
 class StructureHandler<P extends StructuredElementHandler<?>> extends StackedHandler<P>
 {
-	static boolean booleanFromString(String s)
-	{
-		return "yes".equalsIgnoreCase(s) || "true".equalsIgnoreCase(s);
-	}
-
 	protected final Generator generator;
 	protected final int level;
 
@@ -42,7 +37,7 @@ class StructureHandler<P extends StructuredElementHandler<?>> extends StackedHan
 
 			try
 			{
-				pushHandler(PropertyType.valueOf(localName).makeHandler(this, generator, atts));
+				pushHandler(Property.PropertyType.valueOf(localName).makeHandler(this, generator, atts));
 			}
 			catch (IllegalArgumentException ex)
 			{
@@ -51,82 +46,5 @@ class StructureHandler<P extends StructuredElementHandler<?>> extends StackedHan
 		}
 		else
 			super.startElement(uri, localName, name, atts);
-	}
-
-	static enum PropertyType
-	{
-		character
-		{
-			@Override
-			<P extends StructuredElementHandler<?>> PropertyHandler makeHandler(StructureHandler<P> parent, Generator generator, Attributes xmlAtts) throws NumberFormatException, SAXException
-			{
-				int size=Integer.parseInt(xmlAtts.getValue("size"));
-				return new PropertyHandler(parent, character, "byte[]", null, size, booleanFromString(xmlAtts.getValue("readonly")));
-			}
-		},
-		integer
-		{
-			@Override
-			<P extends StructuredElementHandler<?>> PropertyHandler makeHandler(StructureHandler<P> parent, Generator generator, Attributes xmlAtts) throws NumberFormatException, SAXException
-			{
-				int size=Integer.parseInt(xmlAtts.getValue("size"));
-				return new PropertyHandler(parent, integer, generator.generator.getIntegerTypeName(size), null, size / 8, booleanFromString(xmlAtts.getValue("readonly")));
-			}
-		},
-		string
-		{
-			@Override
-			<P extends StructuredElementHandler<?>> PropertyHandler makeHandler(StructureHandler<P> parent, Generator generator, Attributes xmlAtts) throws NumberFormatException, SAXException
-			{
-				return new PropertyHandler(parent, string, "String", null, 0, booleanFromString(xmlAtts.getValue("readonly")));
-			}
-		},
-		enumeration
-		{
-			@Override
-			<P extends StructuredElementHandler<?>> PropertyHandler makeHandler(StructureHandler<P> parent, Generator generator, Attributes xmlAtts) throws NumberFormatException, SAXException
-			{
-				int size=Integer.parseInt(xmlAtts.getValue("size"));
-				return new EnumerationHandler(parent, generator.generator.getIntegerTypeName(size), size / 8, xmlAtts.getValue("style"), booleanFromString(xmlAtts.getValue("readonly")));
-			}
-		},
-		list
-		{
-			@Override
-			<P extends StructuredElementHandler<?>> PropertyHandler makeHandler(StructureHandler<P> parent, Generator generator, Attributes xmlAtts) throws NumberFormatException, SAXException
-			{
-				return new GroupHandler(parent, list, booleanFromString(xmlAtts.getValue("readonly")));
-			}
-		},
-		group
-		{
-			@Override
-			<P extends StructuredElementHandler<?>> PropertyHandler makeHandler(StructureHandler<P> parent, Generator generator, Attributes xmlAtts) throws NumberFormatException, SAXException
-			{
-				//DTD says that group is never read only, hmm
-				return new GroupHandler(parent, group, booleanFromString(xmlAtts.getValue("readonly")));
-			}
-		},
-		useparameters
-		{
-			@Override
-			<P extends StructuredElementHandler<?>> PropertyHandler makeHandler(StructureHandler<P> parent, Generator generator, Attributes xmlAtts) throws NumberFormatException, SAXException
-			{
-				//I assume that useparameters is always read only
-				return new UseparametersHandler(parent, xmlAtts.getValue("ref"));
-			}
-		},
-		descparameter
-		{
-			@Override
-			<P extends StructuredElementHandler<?>> PropertyHandler makeHandler(StructureHandler<P> parent, Generator generator, Attributes xmlAtts) throws NumberFormatException, SAXException
-			{
-				//I assume that descparameter is always read only
-				return new PropertyHandler(parent, descparameter, xmlAtts.getValue("ref")+"Desc", xmlAtts.getValue("typefield"), 0, true);
-			}
-		};
-
-		@SuppressWarnings("unused") //stupid Eclipse :P
-		abstract <P extends StructuredElementHandler<?>> PropertyHandler makeHandler(StructureHandler<P> structureHandler, Generator generator, Attributes xmlAtts) throws NumberFormatException, SAXException;
 	}
 }
