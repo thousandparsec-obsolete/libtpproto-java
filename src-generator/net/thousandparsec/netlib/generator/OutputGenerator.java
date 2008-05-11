@@ -192,6 +192,23 @@ public interface OutputGenerator
 	 */
 	void endParameter(String name) throws IOException;
 
+	/**
+	 * Called at the end of parameterset. The lists of parameters and parameter
+	 * descriptions are given as a reference, because all parameters were
+	 * indicated by separate events. The list of parameter descriptions is a
+	 * list of parameters that have a parameter description structure (in
+	 * addition to the regular structure).
+	 * 
+	 * @param targetDir
+	 *            the directory where output should be written to (used to set
+	 *            up an output stream and forget)
+	 * @param parameters
+	 *            a list of parameters in this parameterset
+	 * @param parameterDescs
+	 *            a list of parameters in this parameterset that have a
+	 *            description structure
+	 * @throws IOException
+	 */
 	void endParameterSet(File targetDir, List<NamedEntity> parameters, List<NamedEntity> parameterDescs) throws IOException;
 
 	/**
