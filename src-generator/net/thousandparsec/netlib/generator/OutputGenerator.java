@@ -209,8 +209,18 @@ public interface OutputGenerator
 	void endParameterSet(List<NamedEntity> parameters, List<NamedEntity> parameterDescs) throws IOException;
 
 	/**
-	 * The {@code entities} parameter is a map from a group name to a list of
-	 * entities; there is at least one group named "frame".
+	 * Called at the end of protocol definition. The {@code entities} parameter
+	 * is a map from a group name to a list of entities; there is at least one
+	 * group named "frame" and the rest are lists of parameters (keyed by
+	 * parameterset name) and parameter descriptions (keyed by parameterset name
+	 * with "Desc" prefix). This method is usually used to create "plumbing"
+	 * such as visitor classes (which need to know all entities present in the
+	 * protocol).
+	 * 
+	 * @param targetDir
+	 *            the directory where any output should be written to
+	 * @param entities
+	 *            a map of entities: frames and parameters in parametersets
 	 */
 	void endProtocol(File targetDir, Map<String, List<NamedEntity>> entities) throws IOException;
 
