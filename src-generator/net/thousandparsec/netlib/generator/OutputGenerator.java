@@ -20,6 +20,70 @@ import java.util.Map;
  * should keep track of previous invocations (events) and react accordingly when
  * the behaviour depends on it (fortunately there are not that many places where
  * it matters).
+ * <p>
+ * The sequence of calls is approximately as follows:
+ * <ul>
+ * 	<li>{@link #startProtocol(int)}</li>
+ * 	<li>For each parameterset:
+ * 		<ul>
+ * 			<li>{@link #startParameterSet(File, String)}</li>
+ * 			<li>{@link #startComment(int)}, {@link #continueComment(int, char[], int, int)}, {@link #endComment(int)} (if present)</li>
+ * 			<li>{@link #startParameterSetType()}</li>
+ * 			<li>For each parameter:
+ * 				<ul>
+ * 					<li>{@link #startParameter(String, int)}</li>
+ * 					<li>IF it has a {@code descstruct} element:
+ * 						<ul>
+ * 							<li>{@link #startParameterDescStruct()}</li>
+ * 							<li>[the same as "For each property" below]</li>
+ * 							<li>{@link #endParameterDescStruct(List)}</li>
+ * 						</ul>
+ * 					</li>
+ * 					<li>{@link #startParameterStruct()}</li>
+ * 					<li>[the same as "For each property" below]</li>
+ * 					<li>{@link #endParameterStruct(List)}</li>
+ * 					<li>{@link #endParameter(String)}</li>
+ * 				</ul>
+ * 			</li>
+ * 			<li>{@link #endParameterSet(List, List)}</li>
+ * 		</ul>
+ * 	</li>
+ * 	<li>For each packet/frame:
+ * 		<ul>
+ * 			<li>{@link #startFrame(File, int, String, String)}</li>
+ * 			<li>{@link #startComment(int)}, {@link #continueComment(int, char[], int, int)}, {@link #endComment(int)} (if present)</li>
+ * 			<li>{@link #startFrameType()}</li>
+ * 			<li>For each property:
+ * 				<ul>
+ * 					<li>IF it is a {@link StructureHandler.PropertyType#enumeration}:
+ * 						<ul>
+ * 							<li>{@link #startEnumeration(int, String, String)}</li>
+ * 							<li>For each enumeration value:
+ * 								<ul>
+ * 									<li>{@link #generateEnumerationValue(int, String, String)}</li>
+ * 								</ul>
+ * 							</li>
+ * 							<li>{@link #endEnumeration(int, String, String)}</li>
+ * 						</ul>
+ * 					</li>
+ * 					<li>
+ * 						IF it is a {@link StructureHandler.PropertyType#group} or {@link StructureHandler.PropertyType#list}:
+ * 						<ul>
+ * 							<li>{@link #startComment(int)}, {@link #continueComment(int, char[], int, int)}, {@link #endComment(int)} (if present)</li>
+ * 							<li>{@link #startInnerType(int, String)}</li>
+ * 							<li>[the same as "For each property" above]</li>
+ * 							<li>{@link #endInnerType(int, String, List)}</li>
+ * 						</ul>
+ * 					</li>
+ * 					<li>{@link #startComment(int)}, {@link #continueComment(int, char[], int, int)}, {@link #endComment(int)} (if present)</li>
+ * 					<li>{@link #generatePropertyDefinition(int, Property)}</li>
+ * 				</ul>
+ * 			</li>
+ * 			<li>{@link #endFrame(List)}</li>
+ * 		</ul>
+ * 	</li>
+ * 	<li>{@link #endProtocol(File, Map)}</li>
+ * </ul>
  * 
  * @see Generator
  * @see Property
