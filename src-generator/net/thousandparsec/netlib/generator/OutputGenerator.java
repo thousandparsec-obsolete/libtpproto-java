@@ -288,14 +288,14 @@ public interface OutputGenerator
 	 * 
 	 * @param nestingLevel
 	 *            a nesting level of the object containing this enumeration
-	 * @param enumNname
+	 * @param enumName
 	 *            the name of this enumeration in camel case (with the first
 	 *            character upper-cased)
 	 * @param valueType
 	 *            name of the type of this enumeration's values
 	 * @throws IOException
 	 */
-	void startEnumeration(int nestingLevel, String enumNname, String valueType) throws IOException;
+	void startEnumeration(int nestingLevel, String enumName, String valueType) throws IOException;
 
 	/**
 	 * Called once for each enueration value (see
