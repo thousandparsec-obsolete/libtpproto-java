@@ -230,23 +230,19 @@ public interface OutputGenerator
 	 * event as comments are generated before many elements (such as frames and
 	 * parameters). This event is used to indicate a start of the comment; the
 	 * contents are indicated by one or more calls to
-	 * {@link #continueComment(int, int, char[], int, int)}.
+	 * {@link #continueComment(int, char[], int, int)}.
 	 * 
 	 * @param nestingLevel
 	 *            a nesting level of the element being commented
-	 * @param correction
-	 *            about to be removed ;)
 	 * @throws IOException
 	 */
-	void startComment(int nestingLevel, int correction) throws IOException;
+	void startComment(int nestingLevel) throws IOException;
 
 	/**
 	 * Called as a continuation of a comment with a chunk of characters.
 	 * 
 	 * @param nestingLevel
 	 *            a nesting level of the element being commented
-	 * @param correction
-	 *            about to be removed ;)
 	 * @param ch
 	 *            array of characters of the comment chunk
 	 * @param start
@@ -255,18 +251,16 @@ public interface OutputGenerator
 	 *            length of the chunk
 	 * @throws IOException
 	 */
-	void continueComment(int nestingLevel, int correction, char[] ch, int start, int length) throws IOException;
+	void continueComment(int nestingLevel, char[] ch, int start, int length) throws IOException;
 
 	/**
 	 * Called at the end of a comment.
 	 * 
 	 * @param nestingLevel
 	 *            a nesting level of the element being commented
-	 * @param correction
-	 *            about to be removed ;)
 	 * @throws IOException
 	 */
-	void endComment(int nestingLevel, int correction) throws IOException;
+	void endComment(int nestingLevel) throws IOException;
 
 	void printPropertyDef(int nestingLevel, Property property) throws IOException;
 

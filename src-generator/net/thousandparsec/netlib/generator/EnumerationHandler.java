@@ -44,7 +44,7 @@ class EnumerationHandler extends PropertyHandler
 				super.startElement(uri, localName, name, atts);
 				lastName=atts.getValue("name");
 				lastValue=atts.getValue("id");
-				pushHandler(new TextCommentHandler(this, parent.generator.generator, parent.level, 1));
+				pushHandler(new TextCommentHandler(this, parent.generator.generator, parent.level + 1));
 			}
 			else
 				super.startElement(uri, localName, name, atts);

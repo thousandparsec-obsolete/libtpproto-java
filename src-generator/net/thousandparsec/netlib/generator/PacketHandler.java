@@ -58,7 +58,7 @@ class PacketHandler extends StructuredElementHandler<ProtocolHandler>
 				super.startElement(uri, localName, name, atts);
 				//TODO: use description too (need to somehow coalesce the comments if both are present)
 				if (localName.equals("longname"))
-					pushHandler(new TextCommentHandler(this, this.parent.parent.generator, 0, 0));
+					pushHandler(new TextCommentHandler(this, this.parent.parent.generator, 0));
 				else if (localName.equals("structure"))
 				{
 					ensurePacketType();

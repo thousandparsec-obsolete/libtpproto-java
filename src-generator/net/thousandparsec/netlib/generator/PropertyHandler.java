@@ -105,7 +105,7 @@ class PropertyHandler extends StructuredElementHandler<StructureHandler<?>>
 					//do you hate XML already?
 					pushHandler(new TextCollectorHandler(this, nameCollector=new StringBuilder()));
 				else if (localName.equals("description"))
-					pushHandler(new TextCommentHandler(this, parent.generator.generator, parent.level, 0));
+					pushHandler(new TextCommentHandler(this, parent.generator.generator, parent.level));
 				else if (localName.equals("subtype"))
 				{
 					//subtype means that the value is taken from the subclass - we handle it manually where it's needed

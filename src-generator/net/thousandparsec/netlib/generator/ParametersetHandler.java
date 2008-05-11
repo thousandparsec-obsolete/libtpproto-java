@@ -59,7 +59,7 @@ class ParametersetHandler extends StackedHandler<ProtocolHandler>
 			{
 				super.startElement(uri, localName, name, atts);
 				if (localName.equals("description"))
-					pushHandler(new TextCommentHandler(this, parent.parent.generator, 0, 0));
+					pushHandler(new TextCommentHandler(this, parent.parent.generator, 0));
 				else if (localName.equals("parameter"))
 				{
 					ensureParameterSetType();

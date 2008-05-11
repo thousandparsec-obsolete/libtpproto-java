@@ -854,26 +854,26 @@ public class JavaOutputGenerator implements OutputGenerator
 		checkError(out);
 	}
 
-	public void startComment(int level, int correction) throws IOException
+	public void startComment(int level) throws IOException
 	{
-		out.printf("%s/**", new Indent(level + correction));
+		out.printf("%s/**", new Indent(level));
 		out.println();
 
 		checkError(out);
 	}
 
-	public void continueComment(int level, int correction, char[] ch, int start, int length) throws IOException
+	public void continueComment(int level, char[] ch, int start, int length) throws IOException
 	{
-		out.printf("%s * ", new Indent(level + correction));
+		out.printf("%s * ", new Indent(level));
 		out.write(ch, start, length);
 		out.println();
 
 		checkError(out);
 	}
 
-	public void endComment(int level, int correction) throws IOException
+	public void endComment(int level) throws IOException
 	{
-		out.printf("%s */", new Indent(level + correction));
+		out.printf("%s */", new Indent(level));
 		out.println();
 
 		checkError(out);

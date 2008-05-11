@@ -15,16 +15,14 @@ class TextCommentHandler extends StackedHandler<StackedHandler<?>>
 {
 	private final OutputGenerator generator;
 	private final int level;
-	private final int correction;
 
-	TextCommentHandler(StackedHandler<?> parent, OutputGenerator generator, int level, int correction) throws IOException
+	TextCommentHandler(StackedHandler<?> parent, OutputGenerator generator, int level) throws IOException
 	{
 		super(parent);
 		this.generator=generator;
 		this.level=level;
-		this.correction=correction;
 
-		generator.startComment(level, correction);
+		generator.startComment(level);
 	}
 
 	@Override
@@ -32,7 +30,7 @@ class TextCommentHandler extends StackedHandler<StackedHandler<?>>
 	{
 		try
 		{
-			generator.continueComment(level, correction, ch, start, length);
+			generator.continueComment(level, ch, start, length);
 			super.characters(ch, start, length);
 		}
 		catch (IOException ex)
@@ -46,7 +44,7 @@ class TextCommentHandler extends StackedHandler<StackedHandler<?>>
 	{
 		try
 		{
-			generator.endComment(level, correction);
+			generator.endComment(level);
 			super.endElement(uri, localName, name);
 		}
 		catch (IOException ex)

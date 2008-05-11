@@ -44,7 +44,7 @@ class ParameterHandler extends StackedHandler<ParametersetHandler>
 			{
 				super.startElement(uri, localName, name, atts);
 				if (name.equals("description"))
-					pushHandler(new TextCommentHandler(this, parent.parent.parent.generator, 1, 0));
+					pushHandler(new TextCommentHandler(this, parent.parent.parent.generator, 1));
 				else if (name.equals("usestruct"))
 					pushHandler(new UsestructHandler(this));
 				else if (name.equals("descstruct"))
