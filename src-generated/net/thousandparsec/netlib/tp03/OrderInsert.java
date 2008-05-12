@@ -44,11 +44,12 @@ public class OrderInsert extends Order
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{OrderInsert");
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		
+		return "{OrderInsert"
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

@@ -76,12 +76,12 @@ public abstract class GetWithID extends Request
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{IdsType");
-			buf.append("; id: ");
-			buf.append(String.valueOf(this.id));
-			buf.append("}");
-			return buf.toString();
+			
+			return "{IdsType"
+                            + "; id: "
+                            + String.valueOf(this.id)
+                            + "}";
+			
 		}
 
 	}
@@ -134,13 +134,14 @@ public abstract class GetWithID extends Request
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{GetWithID");
-		buf.append("; ids: ");
-		buf.append(String.valueOf(this.ids));
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		
+		return "{GetWithID"
+                    + "; ids: "
+                    + String.valueOf(this.ids)
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

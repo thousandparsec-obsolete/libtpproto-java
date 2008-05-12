@@ -46,11 +46,11 @@ public class GetOrderDescIDs extends GetIDSequence
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{GetOrderDescIDs");
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{GetOrderDescIDs"
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

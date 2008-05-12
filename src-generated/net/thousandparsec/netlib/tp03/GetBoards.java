@@ -46,11 +46,11 @@ public class GetBoards extends GetWithID
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{GetBoards");
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{GetBoards"
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

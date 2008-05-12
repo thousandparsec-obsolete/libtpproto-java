@@ -46,11 +46,12 @@ public class GetComponent extends GetWithID
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{GetComponent");
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{GetComponent"
+                    + "; super:"
+                    + super.toString()
+                    + "}"
+                    
+		
 	}
 
 }

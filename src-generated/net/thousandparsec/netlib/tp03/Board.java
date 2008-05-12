@@ -133,21 +133,21 @@ public class Board extends Response
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{Board");
-		buf.append("; id: ");
-		buf.append(String.valueOf(this.id));
-		buf.append("; name: ");
-		buf.append(String.valueOf(this.name));
-		buf.append("; description: ");
-		buf.append(String.valueOf(this.description));
-		buf.append("; messages: ");
-		buf.append(String.valueOf(this.messages));
-		buf.append("; modtime: ");
-		buf.append(String.valueOf(this.modtime));
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{Board"
+                    +"; id: "
+                    +String.valueOf(this.id)
+                    +"; name: "
+                    +String.valueOf(this.name)
+                    +"; description: "
+                    +String.valueOf(this.description)
+                    +"; messages: "
+                    +String.valueOf(this.messages)
+                    +"; modtime: "
+                    +String.valueOf(this.modtime)
+                    +"; super: "
+                    +super.toString()
+                    +"}";
+
 	}
 
 }

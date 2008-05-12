@@ -30,7 +30,7 @@ public class GetMessage extends GetWithIDSlot
 	{
 		return super.findByteLength();
 	}
-	public void write(TPDataOutput out, Connection<?> conn) throws IOException
+	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
 		super.write(out, conn);
 	}
@@ -45,11 +45,11 @@ public class GetMessage extends GetWithIDSlot
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{GetMessage");
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{GetMessage"
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+                		
 	}
 
 }

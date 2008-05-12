@@ -47,11 +47,12 @@ public class ModifyDesign extends Design
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{ModifyDesign");
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		
+		return "{ModifyDesign"
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+                    
 	}
 
 }

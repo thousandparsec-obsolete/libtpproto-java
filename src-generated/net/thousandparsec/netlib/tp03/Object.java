@@ -174,16 +174,16 @@ public class Object extends Response
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{PosType");
-			buf.append("; x: ");
-			buf.append(String.valueOf(this.x));
-			buf.append("; y: ");
-			buf.append(String.valueOf(this.y));
-			buf.append("; z: ");
-			buf.append(String.valueOf(this.z));
-			buf.append("}");
-			return buf.toString();
+			
+			return "{PosType"
+                            + "; x: "
+                            + String.valueOf(this.x)
+                            + "; y: "
+                            + String.valueOf(this.y)
+                            + "; z: "
+                            + String.valueOf(this.z)
+                            + "}";
+			
 		}
 
 	}
@@ -293,16 +293,16 @@ public class Object extends Response
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{VelType");
-			buf.append("; x: ");
-			buf.append(String.valueOf(this.x));
-			buf.append("; y: ");
-			buf.append(String.valueOf(this.y));
-			buf.append("; z: ");
-			buf.append(String.valueOf(this.z));
-			buf.append("}");
-			return buf.toString();
+			
+			return "{VelType"
+                            + "; x: "
+                            + String.valueOf(this.x)
+                            + "; y: "
+                            + String.valueOf(this.y)
+                            + "; z: "
+                            + String.valueOf(this.z)
+                            + "}";
+			
 		}
 
 	}
@@ -384,12 +384,12 @@ public class Object extends Response
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{ContainsType");
-			buf.append("; id: ");
-			buf.append(String.valueOf(this.id));
-			buf.append("}");
-			return buf.toString();
+			
+			return "{ContainsType"
+                            + "; id: "
+                            + String.valueOf(this.id)
+                            + "}";
+                            
 		}
 
 	}
@@ -474,12 +474,12 @@ public class Object extends Response
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{OrdertypesType");
-			buf.append("; id: ");
-			buf.append(String.valueOf(this.id));
-			buf.append("}");
-			return buf.toString();
+			
+			return "{OrdertypesType"
+                            + "; id: "
+                            + String.valueOf(this.id)
+                            + "}";
+                            
 		}
 
 	}
@@ -532,7 +532,7 @@ public class Object extends Response
 
 	public byte[] getPadding()
 	{
-		return this.padding.clone();
+		return (byte [])this.padding.clone(); // check this later
 	}
 
 	public void setPadding(byte[] value)
@@ -630,35 +630,36 @@ public class Object extends Response
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{Object");
-		buf.append("; id: ");
-		buf.append(String.valueOf(this.id));
-		buf.append("; otype: ");
-		buf.append(String.valueOf(this.otype));
-		buf.append("; name: ");
-		buf.append(String.valueOf(this.name));
-		buf.append("; size: ");
-		buf.append(String.valueOf(this.size));
-		buf.append("; pos: ");
-		buf.append(String.valueOf(this.pos));
-		buf.append("; vel: ");
-		buf.append(String.valueOf(this.vel));
-		buf.append("; contains: ");
-		buf.append(String.valueOf(this.contains));
-		buf.append("; ordertypes: ");
-		buf.append(String.valueOf(this.ordertypes));
-		buf.append("; orders: ");
-		buf.append(String.valueOf(this.orders));
-		buf.append("; modtime: ");
-		buf.append(String.valueOf(this.modtime));
-		buf.append("; padding: ");
-		buf.append(java.util.Arrays.toString(this.padding));
-		buf.append("; object: ");
-		buf.append(String.valueOf(this.object));
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		
+		return "{Object"
+                    + "; id: "
+                    + String.valueOf(this.id)
+                    + "; otype: "
+                    + String.valueOf(this.otype)
+                    + "; name: "
+                    + String.valueOf(this.name)
+                    + "; size: "
+                    + String.valueOf(this.size)
+                    + "; pos: "
+                    + String.valueOf(this.pos)
+                    + "; vel: "
+                    + String.valueOf(this.vel)
+                    + "; contains: "
+                    + String.valueOf(this.contains)
+                    + "; ordertypes: "
+                    + String.valueOf(this.ordertypes)
+                    + "; orders: "
+                    + String.valueOf(this.orders)
+                    + "; modtime: "
+                    + String.valueOf(this.modtime)
+                    + "; padding: "
+                    + java.util.Arrays.toString(this.padding)
+                    + "; object: "
+                    + String.valueOf(this.object)
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

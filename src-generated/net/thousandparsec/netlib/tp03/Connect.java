@@ -69,13 +69,13 @@ public class Connect extends Request
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{Connect");
-		buf.append("; string: ");
-		buf.append(String.valueOf(this.string));
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{Connect"
+                    +"; string: "
+                    +String.valueOf(this.string)
+                    +"; super:"
+                    +super.toString()
+                    +"}";
+		
 	}
 
 }

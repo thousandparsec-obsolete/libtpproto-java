@@ -163,16 +163,16 @@ public class OrderDesc extends Response
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{ParametersType");
-			buf.append("; name: ");
-			buf.append(String.valueOf(this.name));
-			buf.append("; type: ");
-			buf.append(String.valueOf(this.type));
-			buf.append("; description: ");
-			buf.append(String.valueOf(this.description));
-			buf.append("}");
-			return buf.toString();
+			
+			return "{ParametersType"
+                            + "; name: "
+                            + String.valueOf(this.name)
+                            + "; type: "
+                            + String.valueOf(this.type)
+                            + "; description: "
+                            + String.valueOf(this.description)
+                            + "}";
+                            
 		}
 
 	}
@@ -252,21 +252,22 @@ public class OrderDesc extends Response
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{OrderDesc");
-		buf.append("; id: ");
-		buf.append(String.valueOf(this.id));
-		buf.append("; name: ");
-		buf.append(String.valueOf(this.name));
-		buf.append("; description: ");
-		buf.append(String.valueOf(this.description));
-		buf.append("; parameters: ");
-		buf.append(String.valueOf(this.parameters));
-		buf.append("; modtime: ");
-		buf.append(String.valueOf(this.modtime));
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		
+		return "{OrderDesc"
+                    + "; id: "
+                    + String.valueOf(this.id)
+                    + "; name: "
+                    + String.valueOf(this.name)
+                    + "; description: "
+                    + String.valueOf(this.description)
+                    + "; parameters: "
+                    + String.valueOf(this.parameters)
+                    + "; modtime: "
+                    + String.valueOf(this.modtime)
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

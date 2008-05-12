@@ -51,11 +51,7 @@ public class AddCategory extends Category
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{AddCategory");
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+                return "(AddCategory; super:" +super.toString()+")";
 	}
 
 }

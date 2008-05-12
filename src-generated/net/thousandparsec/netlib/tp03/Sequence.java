@@ -65,13 +65,13 @@ public class Sequence extends Response
 	
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{Sequence");
-		buf.append("; number: ");
-		buf.append(String.valueOf(this.number));
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{Sequence"
+                    + "; number: "
+                    + String.valueOf(this.number)
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

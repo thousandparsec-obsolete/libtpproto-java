@@ -112,12 +112,11 @@ public class Property extends Response
 		
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{CategoriesType");
-			buf.append("; category: ");
-			buf.append(String.valueOf(this.category));
-			buf.append("}");
-			return buf.toString();
+			return "{CategoriesType"
+                            + "; category: "
+                            + String.valueOf(this.category)
+                            + "}";
+			
 		}
 
 	}
@@ -281,29 +280,29 @@ public class Property extends Response
 	
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{Property");
-		buf.append("; id: ");
-		buf.append(String.valueOf(this.id));
-		buf.append("; modtime: ");
-		buf.append(String.valueOf(this.modtime));
-		buf.append("; categories: ");
-		buf.append(String.valueOf(this.categories));
-		buf.append("; rank: ");
-		buf.append(String.valueOf(this.rank));
-		buf.append("; name: ");
-		buf.append(String.valueOf(this.name));
-		buf.append("; displayname: ");
-		buf.append(String.valueOf(this.displayname));
-		buf.append("; description: ");
-		buf.append(String.valueOf(this.description));
-		buf.append("; calculatefunc: ");
-		buf.append(String.valueOf(this.calculatefunc));
-		buf.append("; requirementfunc: ");
-		buf.append(String.valueOf(this.requirementfunc));
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{Property"
+                    + "; id: "
+                    + String.valueOf(this.id)
+                    + "; modtime: "
+                    + String.valueOf(this.modtime)
+                    + "; categories: "
+                    + String.valueOf(this.categories)
+                    + "; rank: "
+                    + String.valueOf(this.rank)
+                    + "; name: "
+                    + String.valueOf(this.name)
+                    + "; displayname: "
+                    + String.valueOf(this.displayname)
+                    + "; description: "
+                    + String.valueOf(this.description)
+                    + "; calculatefunc: "
+                    + String.valueOf(this.calculatefunc)
+                    + "; requirementfunc: "
+                    + String.valueOf(this.requirementfunc)
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

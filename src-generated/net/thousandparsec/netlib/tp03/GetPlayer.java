@@ -47,11 +47,11 @@ public class GetPlayer extends GetWithID
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{GetPlayer");
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{GetPlayer"
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

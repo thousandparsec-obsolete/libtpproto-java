@@ -51,11 +51,11 @@ public class RemoveCategory extends GetCategory
 	
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{RemoveCategory");
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{RemoveCategory"
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

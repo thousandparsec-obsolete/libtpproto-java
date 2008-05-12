@@ -91,12 +91,13 @@ public abstract class GetWithIDSlot extends Request
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{SlotsType");
-			buf.append("; slot: ");
-			buf.append(String.valueOf(this.slot));
-			buf.append("}");
-			return buf.toString();
+			
+			return "{SlotsType"
+                            + "; slot: "
+                            + String.valueOf(this.slot)
+                            + "}";
+                            
+			
 		}
 
 	}
@@ -153,15 +154,16 @@ public abstract class GetWithIDSlot extends Request
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{GetWithIDSlot");
-		buf.append("; id: ");
-		buf.append(String.valueOf(this.id));
-		buf.append("; slots: ");
-		buf.append(String.valueOf(this.slots));
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		
+		return "{GetWithIDSlot"
+                    + "; id: "
+                    + String.valueOf(this.id)
+                    + "; slots: "
+                    + String.valueOf(this.slots)
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

@@ -113,12 +113,12 @@ public class Message extends Response
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{MsgtypelistType");
-			buf.append("; msgtype: ");
-			buf.append(String.valueOf(this.msgtype));
-			buf.append("}");
-			return buf.toString();
+			
+			return "{MsgtypelistType"
+                            + "; msgtype: "
+                            + String.valueOf(this.msgtype)
+                            + "}";
+			
 		}
 
 	}
@@ -258,14 +258,14 @@ public class Message extends Response
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{ReferencesType");
-			buf.append("; type: ");
-			buf.append(String.valueOf(this.type));
-			buf.append("; id: ");
-			buf.append(String.valueOf(this.id));
-			buf.append("}");
-			return buf.toString();
+			
+			return "{ReferencesType"
+                            + "; type: "
+                            + String.valueOf(this.type)
+                            + "; id: "
+                            + String.valueOf(this.id)
+                            + "}";
+			
 		}
 
 	}
@@ -343,25 +343,26 @@ public class Message extends Response
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{Message");
-		buf.append("; id: ");
-		buf.append(String.valueOf(this.id));
-		buf.append("; slot: ");
-		buf.append(String.valueOf(this.slot));
-		buf.append("; msgtypelist: ");
-		buf.append(String.valueOf(this.msgtypelist));
-		buf.append("; subject: ");
-		buf.append(String.valueOf(this.subject));
-		buf.append("; body: ");
-		buf.append(String.valueOf(this.body));
-		buf.append("; turn: ");
-		buf.append(String.valueOf(this.turn));
-		buf.append("; references: ");
-		buf.append(String.valueOf(this.references));
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		
+		return "{Message"
+                    + "; id: "
+                    + String.valueOf(this.id)
+                    + "; slot: "
+                    + String.valueOf(this.slot)
+                    + "; msgtypelist: "
+                    + String.valueOf(this.msgtypelist)
+                    + "; subject: "
+                    + String.valueOf(this.subject)
+                    + "; body: "
+                    + String.valueOf(this.body)
+                    + "; turn: "
+                    + String.valueOf(this.turn)
+                    + "; references: "
+                    + String.valueOf(this.references)
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

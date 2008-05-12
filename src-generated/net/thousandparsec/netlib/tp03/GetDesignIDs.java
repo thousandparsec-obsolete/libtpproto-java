@@ -47,11 +47,11 @@ public class GetDesignIDs extends GetIDSequence
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{GetDesignIDs");
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{GetDesignIDs"
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

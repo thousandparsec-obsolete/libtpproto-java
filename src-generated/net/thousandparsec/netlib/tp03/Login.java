@@ -83,15 +83,16 @@ public class Login extends Request
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{Login");
-		buf.append("; username: ");
-		buf.append(String.valueOf(this.username));
-		buf.append("; password: ");
-		buf.append(String.valueOf(this.password));
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		
+		return "{Login"
+                    + "; username: "
+                    + String.valueOf(this.username)
+                    + "; password: "
+                    + String.valueOf(this.password)
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

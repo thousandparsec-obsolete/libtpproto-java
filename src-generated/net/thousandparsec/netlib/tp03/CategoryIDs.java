@@ -50,11 +50,11 @@ public class CategoryIDs extends IDSequence
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{CategoryIDs");
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{CategoryIDs"
+                    +"; super:"
+                    +super.toString()
+                    +"}";
+
 	}
 
 }

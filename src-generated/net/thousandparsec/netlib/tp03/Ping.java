@@ -51,11 +51,11 @@ public class Ping extends Request
 	
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{Ping");
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{Ping"
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

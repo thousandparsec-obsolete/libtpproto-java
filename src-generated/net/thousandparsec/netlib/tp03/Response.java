@@ -40,10 +40,9 @@ public abstract class Response extends Frame
 	
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{Response");
-		buf.append("}");
-		return buf.toString();
+		return "{Response"
+                    + "}";
+		
 	}
 
 }

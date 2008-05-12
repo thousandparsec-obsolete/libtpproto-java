@@ -46,11 +46,11 @@ public class GetComponentIDs extends GetIDSequence
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{GetComponentIDs");
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{GetComponentIDs"
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+                    
 	}
 
 }

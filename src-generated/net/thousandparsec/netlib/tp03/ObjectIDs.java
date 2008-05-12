@@ -48,11 +48,12 @@ public class ObjectIDs extends IDSequence
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{ObjectIDs");
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		
+		return "{ObjectIDs"
+                    + "; super:")
+                    + super.toString()
+                    + "}";
+                    
 	}
 
 }

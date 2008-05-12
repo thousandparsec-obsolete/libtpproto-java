@@ -68,13 +68,13 @@ public class Redirect extends Response
 	
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{Redirect");
-		buf.append("; URI: ");
-		buf.append(String.valueOf(this.URI));
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{Redirect"
+                    + "; URI: "
+                    + String.valueOf(this.URI)
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

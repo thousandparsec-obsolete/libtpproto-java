@@ -114,19 +114,19 @@ public class Category extends Response
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{Category");
-		buf.append("; id: ");
-		buf.append(String.valueOf(this.id));
-		buf.append("; modtime: ");
-		buf.append(String.valueOf(this.modtime));
-		buf.append("; name: ");
-		buf.append(String.valueOf(this.name));
-		buf.append("; description: ");
-		buf.append(String.valueOf(this.description));
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{Category"
+                    +"; id: "
+                    +String.valueOf(this.id)
+                    +"; modtime: "
+                    +String.valueOf(this.modtime)
+                    +"; name: "
+                    +String.valueOf(this.name)
+                    +"; description: "
+                    +String.valueOf(this.description)
+                    +"; super:"
+                    +super.toString()
+                    +"}";
+		
 	}
 
 }

@@ -150,16 +150,15 @@ public class OrderParams extends TPObject implements Visitable
 
 			public String toString()
 			{
-				StringBuilder buf=new StringBuilder();
-				buf.append("{PosType");
-				buf.append("; x: ");
-				buf.append(String.valueOf(this.x));
-				buf.append("; y: ");
-				buf.append(String.valueOf(this.y));
-				buf.append("; z: ");
-				buf.append(String.valueOf(this.z));
-				buf.append("}");
-				return buf.toString();
+				return "{PosType"
+                                    + "; x: "
+                                    + String.valueOf(this.x)
+                                    + "; y: "
+                                    + String.valueOf(this.y)
+                                    + "; z: "
+                                    + String.valueOf(this.z)
+                                    + "}";
+				
 			}
 
 		}
@@ -200,12 +199,11 @@ public class OrderParams extends TPObject implements Visitable
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{OrderParamAbsSpaceCoords");
-			buf.append("; pos: ");
-			buf.append(String.valueOf(this.pos));
-			buf.append("}");
-			return buf.toString();
+			return "{OrderParamAbsSpaceCoords"
+                            + "; pos: "
+                            + String.valueOf(this.pos)
+                            + "}";
+			
 		}
 
 		public void visit(TP03Visitor visitor) throws TPException
@@ -287,14 +285,13 @@ public class OrderParams extends TPObject implements Visitable
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{OrderParamTime");
-			buf.append("; turns: ");
-			buf.append(String.valueOf(this.turns));
-			buf.append("; maxtime: ");
-			buf.append(String.valueOf(this.maxtime));
-			buf.append("}");
-			return buf.toString();
+			return "{OrderParamTime"
+                            + "; turns: "
+                            + String.valueOf(this.turns)
+                            + "; maxtime: "
+                            + String.valueOf(this.maxtime)
+                            + "}";
+			
 		}
 
 		public void visit(TP03Visitor visitor) throws TPException
@@ -358,12 +355,11 @@ public class OrderParams extends TPObject implements Visitable
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{OrderParamObject");
-			buf.append("; objectid: ");
-			buf.append(String.valueOf(this.objectid));
-			buf.append("}");
-			return buf.toString();
+			return "{OrderParamObject"
+                            + "; objectid: "
+                            + String.valueOf(this.objectid)
+                            + "}";
+			
 		}
 
 		public void visit(TP03Visitor visitor) throws TPException
@@ -482,14 +478,13 @@ public class OrderParams extends TPObject implements Visitable
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{OrderParamPlayer");
-			buf.append("; playerid: ");
-			buf.append(String.valueOf(this.playerid));
-			buf.append("; mask: ");
-			buf.append(String.valueOf(this.mask));
-			buf.append("}");
-			return buf.toString();
+			return "{OrderParamPlayer"
+                            + "; playerid: "
+                            + String.valueOf(this.playerid)
+                            + "; mask: "
+                            + String.valueOf(this.mask)
+                            + "}";
+                            
 		}
 
 		public void visit(TP03Visitor visitor) throws TPException
@@ -622,16 +617,15 @@ public class OrderParams extends TPObject implements Visitable
 
 			public String toString()
 			{
-				StringBuilder buf=new StringBuilder();
-				buf.append("{RelposType");
-				buf.append("; x: ");
-				buf.append(String.valueOf(this.x));
-				buf.append("; y: ");
-				buf.append(String.valueOf(this.y));
-				buf.append("; z: ");
-				buf.append(String.valueOf(this.z));
-				buf.append("}");
-				return buf.toString();
+				return "{RelposType"
+                                    + "; x: "
+                                    + String.valueOf(this.x)
+                                    + "; y: "
+                                    + String.valueOf(this.y)
+                                    + "; z: "
+                                    + String.valueOf(this.z)
+                                    + "}";
+				
 			}
 
 		}
@@ -675,14 +669,13 @@ public class OrderParams extends TPObject implements Visitable
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{OrderParamRelSpaceCoords");
-			buf.append("; objectid: ");
-			buf.append(String.valueOf(this.objectid));
-			buf.append("; relpos: ");
-			buf.append(String.valueOf(this.relpos));
-			buf.append("}");
-			return buf.toString();
+			return "{OrderParamRelSpaceCoords"
+                            + "; objectid: "
+                            + String.valueOf(this.objectid)
+                            + "; relpos: "
+                            + String.valueOf(this.relpos)
+                            + "}";
+                            
 		}
 
 		public void visit(TP03Visitor visitor) throws TPException
@@ -800,18 +793,17 @@ public class OrderParams extends TPObject implements Visitable
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{OrderParamRange");
-			buf.append("; value: ");
-			buf.append(String.valueOf(this.value));
-			buf.append("; minvalue: ");
-			buf.append(String.valueOf(this.minvalue));
-			buf.append("; maxvalue: ");
-			buf.append(String.valueOf(this.maxvalue));
-			buf.append("; increment: ");
-			buf.append(String.valueOf(this.increment));
-			buf.append("}");
-			return buf.toString();
+			return "{OrderParamRange"
+                            + "; value: "
+                            + String.valueOf(this.value)
+                            + "; minvalue: "
+                            + String.valueOf(this.minvalue)
+                            + "; maxvalue: "
+                            + String.valueOf(this.maxvalue)
+                            + "; increment: "
+                            + String.valueOf(this.increment)
+                            + "}";
+			
 		}
 
 		public void visit(TP03Visitor visitor) throws TPException
@@ -931,16 +923,15 @@ public class OrderParams extends TPObject implements Visitable
 
 			public String toString()
 			{
-				StringBuilder buf=new StringBuilder();
-				buf.append("{PossibleselectionsType");
-				buf.append("; id: ");
-				buf.append(String.valueOf(this.id));
-				buf.append("; name: ");
-				buf.append(String.valueOf(this.name));
-				buf.append("; maxnum: ");
-				buf.append(String.valueOf(this.maxnum));
-				buf.append("}");
-				return buf.toString();
+				return "{PossibleselectionsType"
+                                    + "; id: "
+                                    + String.valueOf(this.id)
+                                    + "; name: "
+                                    + String.valueOf(this.name)
+                                    + "; maxnum: "
+                                    + String.valueOf(this.maxnum)
+                                    + "}";
+				
 			}
 
 		}
@@ -1045,14 +1036,13 @@ public class OrderParams extends TPObject implements Visitable
 
 			public String toString()
 			{
-				StringBuilder buf=new StringBuilder();
-				buf.append("{SelectionType");
-				buf.append("; id: ");
-				buf.append(String.valueOf(this.id));
-				buf.append("; number: ");
-				buf.append(String.valueOf(this.number));
-				buf.append("}");
-				return buf.toString();
+				return "{SelectionType"
+                                    + "; id: "
+                                    + String.valueOf(this.id)
+                                    + "; number: "
+                                    + String.valueOf(this.number)
+                                    + "}";
+				
 			}
 
 		}
@@ -1100,24 +1090,23 @@ public class OrderParams extends TPObject implements Visitable
 		OrderParamList(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
-			this.possibleselections.clear();
+			this.possibleselections.removeAllElements();
 			for (int length=in.readInteger32(); length > 0; length--)
-				this.possibleselections.add(new PossibleselectionsType(in));
-			this.selection.clear();
+				this.possibleselections.addElement(new PossibleselectionsType(in));
+			this.selection.removeAllElements();
 			for (int length=in.readInteger32(); length > 0; length--)
-				this.selection.add(new SelectionType(in));
+				this.selection.addElement(new SelectionType(in));
 		}
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{OrderParamList");
-			buf.append("; possibleselections: ");
-			buf.append(String.valueOf(this.possibleselections));
-			buf.append("; selection: ");
-			buf.append(String.valueOf(this.selection));
-			buf.append("}");
-			return buf.toString();
+			return "{OrderParamList"
+                            + "; possibleselections: "
+                            + String.valueOf(this.possibleselections)
+                            + "; selection: "
+                            + String.valueOf(this.selection)
+                            + "}";
+			
 		}
 
 		public void visit(TP03Visitor visitor) throws TPException
@@ -1196,14 +1185,13 @@ public class OrderParams extends TPObject implements Visitable
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{OrderParamString");
-			buf.append("; maxlength: ");
-			buf.append(String.valueOf(this.maxlength));
-			buf.append("; string: ");
-			buf.append(String.valueOf(this.string));
-			buf.append("}");
-			return buf.toString();
+			return "{OrderParamString"
+                            + "; maxlength: "
+                            + String.valueOf(this.maxlength)
+                            + "; string: "
+                            + String.valueOf(this.string)
+                            + "}";
+			
 		}
 
 		public void visit(TP03Visitor visitor) throws TPException
@@ -1301,12 +1289,11 @@ public class OrderParams extends TPObject implements Visitable
 			 
 			public String toString()
 			{
-				StringBuilder buf=new StringBuilder();
-				buf.append("{AllowedType");
-				buf.append("; reftype: ");
-				buf.append(String.valueOf(this.reftype));
-				buf.append("}");
-				return buf.toString();
+				return "{AllowedType"
+                                    + "; reftype: "
+                                    + String.valueOf(this.reftype)
+                                    + "}";
+				
 			}
 
 		}
@@ -1356,22 +1343,21 @@ public class OrderParams extends TPObject implements Visitable
 		{
 			super(id, in);
 			this.reference=in.readInteger32();
-			this.allowed.clear();
+			this.allowed.removeAllElements();
 			for (int length=in.readInteger32(); length > 0; length--)
-				this.allowed.add(new AllowedType(in));
+				this.allowed.addElement(new AllowedType(in));
 		}
 
 		 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{OrderParamReference");
-			buf.append("; reference: ");
-			buf.append(String.valueOf(this.reference));
-			buf.append("; allowed: ");
-			buf.append(String.valueOf(this.allowed));
-			buf.append("}");
-			return buf.toString();
+			return "{OrderParamReference"
+                            + "; reference: "
+                            + String.valueOf(this.reference)
+                            + "; allowed: "
+                            + String.valueOf(this.allowed)
+                            + "}";
+			
 		}
 
 		 
@@ -1464,12 +1450,11 @@ public class OrderParams extends TPObject implements Visitable
 			 
 			public String toString()
 			{
-				StringBuilder buf=new StringBuilder();
-				buf.append("{ReferencesType");
-				buf.append("; reference: ");
-				buf.append(String.valueOf(this.reference));
-				buf.append("}");
-				return buf.toString();
+				return "{ReferencesType"
+                                    + "; reference: "
+                                    + String.valueOf(this.reference)
+                                    + "}";
+				
 			}
 
 		}
@@ -1549,12 +1534,11 @@ public class OrderParams extends TPObject implements Visitable
 			 
 			public String toString()
 			{
-				StringBuilder buf=new StringBuilder();
-				buf.append("{AllowedType");
-				buf.append("; reftype: ");
-				buf.append(String.valueOf(this.reftype));
-				buf.append("}");
-				return buf.toString();
+				return "{AllowedType"
+                                    + "; reftype: "
+                                    + String.valueOf(this.reftype)
+                                    + "}";
+				
 			}
 
 		}
@@ -1571,7 +1555,7 @@ public class OrderParams extends TPObject implements Visitable
 		private void setAllowed(java.util.Vector value)
 		{
                         for (int i = 0; i < value.size(); i++){
-                                this.allowed.add(new AllowedType((AllowedType)value.elementAt(i)));
+                                this.allowed.addElement(new AllowedType((AllowedType)value.elementAt(i)));
                         }
 
 		}
@@ -1606,25 +1590,24 @@ public class OrderParams extends TPObject implements Visitable
 		OrderParamReferenceList(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
-			this.references.clear();
+			this.references.removeAllElements();
 			for (int length=in.readInteger32(); length > 0; length--)
-				this.references.add(new ReferencesType(in));
-			this.allowed.clear();
+				this.references.addElement(new ReferencesType(in));
+			this.allowed.removeAllElements();
 			for (int length=in.readInteger32(); length > 0; length--)
-				this.allowed.add(new AllowedType(in));
+				this.allowed.addElement(new AllowedType(in));
 		}
 
 		 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{OrderParamReferenceList");
-			buf.append("; references: ");
-			buf.append(String.valueOf(this.references));
-			buf.append("; allowed: ");
-			buf.append(String.valueOf(this.allowed));
-			buf.append("}");
-			return buf.toString();
+			return "{OrderParamReferenceList"
+                            + "; references: "
+                            + String.valueOf(this.references)
+                            + "; allowed: "
+                            + String.valueOf(this.allowed)
+                            + "}";
+			
 		}
 
 		 
@@ -1638,10 +1621,9 @@ public class OrderParams extends TPObject implements Visitable
 	 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{OrderParams");
-		buf.append("}");
-		return buf.toString();
+		return "{OrderParams"
+                    + "}";
+		
 	}
 
 	public static OrderParams create(int id, TPDataInput in) throws IOException

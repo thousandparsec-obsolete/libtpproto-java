@@ -189,29 +189,29 @@ public class Resource extends Response
 	
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{Resource");
-		buf.append("; id: ");
-		buf.append(String.valueOf(this.id));
-		buf.append("; singularname: ");
-		buf.append(String.valueOf(this.singularname));
-		buf.append("; pluralname: ");
-		buf.append(String.valueOf(this.pluralname));
-		buf.append("; singularunitname: ");
-		buf.append(String.valueOf(this.singularunitname));
-		buf.append("; pluralunitname: ");
-		buf.append(String.valueOf(this.pluralunitname));
-		buf.append("; description: ");
-		buf.append(String.valueOf(this.description));
-		buf.append("; weight: ");
-		buf.append(String.valueOf(this.weight));
-		buf.append("; size: ");
-		buf.append(String.valueOf(this.size));
-		buf.append("; modtime: ");
-		buf.append(String.valueOf(this.modtime));
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{Resource"
+                    + "; id: "
+                    + String.valueOf(this.id)
+                    + "; singularname: "
+                    + String.valueOf(this.singularname)
+                    + "; pluralname: "
+                    + String.valueOf(this.pluralname)
+                    + "; singularunitname: "
+                    + String.valueOf(this.singularunitname)
+                    + "; pluralunitname: "
+                    + String.valueOf(this.pluralunitname)
+                    + "; description: "
+                    + String.valueOf(this.description)
+                    + "; weight: "
+                    + String.valueOf(this.weight)
+                    + "; size: "
+                    + String.valueOf(this.size)
+                    + "; modtime: "
+                    + String.valueOf(this.modtime)
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

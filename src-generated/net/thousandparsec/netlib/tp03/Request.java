@@ -40,10 +40,9 @@ public abstract class Request extends Frame
 	
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{Request");
-		buf.append("}");
-		return buf.toString();
+		return "{Request"
+                    + "}";
+		
 	}
 
 }

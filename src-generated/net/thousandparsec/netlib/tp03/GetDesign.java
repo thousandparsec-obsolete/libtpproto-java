@@ -46,11 +46,11 @@ public class GetDesign extends GetWithID
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{GetDesign");
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{GetDesign"
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

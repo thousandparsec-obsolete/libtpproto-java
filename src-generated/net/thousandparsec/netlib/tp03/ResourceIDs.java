@@ -51,11 +51,11 @@ public class ResourceIDs extends IDSequence
 	
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{ResourceIDs");
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{ResourceIDs"
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

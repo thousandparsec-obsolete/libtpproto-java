@@ -47,11 +47,11 @@ public class GetObjectsByPos extends Request
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{GetObjectsByPos");
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{GetObjectsByPos"
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

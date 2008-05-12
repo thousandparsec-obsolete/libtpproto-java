@@ -106,12 +106,11 @@ public class Design extends Response
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{CategoriesType");
-			buf.append("; category: ");
-			buf.append(String.valueOf(this.category));
-			buf.append("}");
-			return buf.toString();
+			return "{CategoriesType"
+                            +"; category: "
+                            +String.valueOf(this.category)
+                            +"}";
+			
 		}
 
 	}
@@ -257,14 +256,13 @@ public class Design extends Response
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{ComponentsType");
-			buf.append("; componentid: ");
-			buf.append(String.valueOf(this.componentid));
-			buf.append("; componentnum: ");
-			buf.append(String.valueOf(this.componentnum));
-			buf.append("}");
-			return buf.toString();
+			return "{ComponentsType"
+                            +"; componentid: "
+                            +String.valueOf(this.componentid)
+                            +"; componentnum: "
+                            +String.valueOf(this.componentnum)
+                            +"}";
+			
 		}
 
 	}
@@ -374,14 +372,13 @@ public class Design extends Response
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{PropertiesType");
-			buf.append("; id: ");
-			buf.append(String.valueOf(this.id));
-			buf.append("; value: ");
-			buf.append(String.valueOf(this.value));
-			buf.append("}");
-			return buf.toString();
+			return "{PropertiesType"
+                            +"; id: "
+                            +String.valueOf(this.id)
+                            +"; value: "
+                            +String.valueOf(this.value)
+                            +"}";
+			
 		}
 
 	}
@@ -475,31 +472,31 @@ public class Design extends Response
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{Design");
-		buf.append("; id: ");
-		buf.append(String.valueOf(this.id));
-		buf.append("; modtime: ");
-		buf.append(String.valueOf(this.modtime));
-		buf.append("; categories: ");
-		buf.append(String.valueOf(this.categories));
-		buf.append("; name: ");
-		buf.append(String.valueOf(this.name));
-		buf.append("; description: ");
-		buf.append(String.valueOf(this.description));
-		buf.append("; usage: ");
-		buf.append(String.valueOf(this.usage));
-		buf.append("; owner: ");
-		buf.append(String.valueOf(this.owner));
-		buf.append("; components: ");
-		buf.append(String.valueOf(this.components));
-		buf.append("; feedback: ");
-		buf.append(String.valueOf(this.feedback));
-		buf.append("; properties: ");
-		buf.append(String.valueOf(this.properties));
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{Design"
+                    +"; id: "
+                    +String.valueOf(this.id)
+                    +"; modtime: "
+                    +String.valueOf(this.modtime)
+                    +"; categories: "
+                    +String.valueOf(this.categories)
+                    +"; name: "
+                    +String.valueOf(this.name)
+                    +"; description: "
+                    +String.valueOf(this.description)
+                    +"; usage: "
+                    +String.valueOf(this.usage)
+                    +"; owner: "
+                    +String.valueOf(this.owner)
+                    +"; components: "
+                    +String.valueOf(this.components)
+                    +"; feedback: "
+                    +String.valueOf(this.feedback)
+                    +"; properties: "
+                    +String.valueOf(this.properties)
+                    +"; super:"
+                    +super.toString()
+                    +"}";
+		
 	}
 
 }

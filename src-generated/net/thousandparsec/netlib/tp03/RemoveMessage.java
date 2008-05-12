@@ -51,11 +51,11 @@ public class RemoveMessage extends GetMessage
 	
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{RemoveMessage");
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{RemoveMessage"
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

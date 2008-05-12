@@ -154,14 +154,14 @@ public class Order extends Response
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{ResourcesType");
-			buf.append("; id: ");
-			buf.append(String.valueOf(this.id));
-			buf.append("; amount: ");
-			buf.append(String.valueOf(this.amount));
-			buf.append("}");
-			return buf.toString();
+			
+			return "{ResourcesType"
+                            + "; id: "
+                            + String.valueOf(this.id)
+                            + "; amount: "
+                            + String.valueOf(this.amount)
+                            + "}";
+			
 		}
 
 	}
@@ -192,11 +192,14 @@ public class Order extends Response
 		try
 		{
 			if (template.getId() != getOtype())
-				throw new TPException(String.format("ParameterSet id does not match frame's parameter set id: %d != %d", template.getId(), getOtype()));
+				throw new TPException("ParameterSet id does not match frame's parameter set id: "+ template.getID() + " != " + getOtype());
 			TPDataInput in=new TPInputStream(new java.io.ByteArrayInputStream(this.orderparams));
 			//java.util.List<OrderParams> ret=new java.util.ArrayList<OrderParams>();
                         java.util.Vector ret = new java.util.Vector();
-			
+			/*for (int i = 0; i < template.getParameters().size(); i++){
+                            
+                            
+                        }*/
                         for (OrderDesc.ParametersType template0 : template.getParameters())
 			{
 				ret.addElement(OrderParams.create(template0.getType(), in));
@@ -235,7 +238,7 @@ public class Order extends Response
 	}
 
 	
-	public void write(TPDataOutput out, Connection<?> conn) throws IOException
+	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
 		super.write(out, conn);
 		out.writeInteger(this.id);
@@ -243,8 +246,9 @@ public class Order extends Response
 		out.writeInteger(this.otype);
 		out.writeInteger(this.turns);
 		out.writeInteger(this.resources.size());
-		for (ResourcesType object : this.resources)
-			object.write(out, conn);
+                for (int i = 0; i < resources.size(); i++){
+                    ((ResourcesType)resources.elementAt(i)).write(out, conn);
+                }
 		out.writeCharacter(this.orderparams);
 	}
 
@@ -267,23 +271,24 @@ public class Order extends Response
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{Order");
-		buf.append("; id: ");
-		buf.append(String.valueOf(this.id));
-		buf.append("; slot: ");
-		buf.append(String.valueOf(this.slot));
-		buf.append("; otype: ");
-		buf.append(String.valueOf(this.otype));
-		buf.append("; turns: ");
-		buf.append(String.valueOf(this.turns));
-		buf.append("; resources: ");
-		buf.append(String.valueOf(this.resources));
-		buf.append("; orderparams: ");
-		buf.append("<indirect>");
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		
+		return "{Order"
+                    + "; id: "
+                    + String.valueOf(this.id)
+                    + "; slot: "
+                    + String.valueOf(this.slot)
+                    + "; otype: "
+                    + String.valueOf(this.otype)
+                    + "; turns: "
+                    + String.valueOf(this.turns)
+                    + "; resources: "
+                    + String.valueOf(this.resources)
+                    + "; orderparams: "
+                    + "<indirect>"
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

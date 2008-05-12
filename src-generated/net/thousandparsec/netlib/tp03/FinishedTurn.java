@@ -46,11 +46,11 @@ public class FinishedTurn extends Request
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{FinishedTurn");
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{FinishedTurn"
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

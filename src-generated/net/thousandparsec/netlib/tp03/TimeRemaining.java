@@ -69,13 +69,13 @@ public class TimeRemaining extends Response
 	
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{TimeRemaining");
-		buf.append("; time: ");
-		buf.append(String.valueOf(this.time));
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{TimeRemaining"
+                    + "; time: "
+                    + String.valueOf(this.time)
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

@@ -46,11 +46,11 @@ public class GetObjectsByID extends GetWithID
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{GetObjectsByID");
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{GetObjectsByID"
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+                    
 	}
 
 }

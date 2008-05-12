@@ -50,11 +50,11 @@ public class ComponentIDs extends IDSequence
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{ComponentIDs");
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{ComponentIDs"
+                    +"; super:"
+                    +super.toString()
+                    +"}";
+		
 	}
 
 }

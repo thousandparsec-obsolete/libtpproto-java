@@ -129,14 +129,14 @@ public abstract class IDSequence extends Response
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{ModtimesType");
-			buf.append("; id: ");
-			buf.append(String.valueOf(this.id));
-			buf.append("; modtime: ");
-			buf.append(String.valueOf(this.modtime));
-			buf.append("}");
-			return buf.toString();
+			
+			return "{ModtimesType"
+                            + "; id: "
+                            + String.valueOf(this.id)
+                            + "; modtime: "
+                            + String.valueOf(this.modtime)
+                            + "}";
+			
 		}
 
 	}
@@ -197,17 +197,18 @@ public abstract class IDSequence extends Response
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{IDSequence");
-		buf.append("; key: ");
-		buf.append(String.valueOf(this.key));
-		buf.append("; remaining: ");
-		buf.append(String.valueOf(this.remaining));
-		buf.append("; modtimes: ");
-		buf.append(String.valueOf(this.modtimes));
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		
+		return "{IDSequence"
+                    + "; key: "
+                    + String.valueOf(this.key)
+                    + "; remaining: "
+                    + String.valueOf(this.remaining)
+                    + "; modtimes: "
+                    + String.valueOf(this.modtimes)
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

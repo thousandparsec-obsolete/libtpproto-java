@@ -47,11 +47,12 @@ public class GetPropertyIDs extends GetIDSequence
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{GetPropertyIDs");
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		
+		return "{GetPropertyIDs"
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

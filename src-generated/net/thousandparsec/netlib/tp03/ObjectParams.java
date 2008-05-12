@@ -90,12 +90,12 @@ public class ObjectParams extends TPObject implements Visitable
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{Universe");
-			buf.append("; age: ");
-			buf.append(String.valueOf(this.age));
-			buf.append("}");
-			return buf.toString();
+			
+			return "{Universe"
+                            + "; age: "
+                            + String.valueOf(this.age)
+                            + "}";
+			
 		}
 
 		public void visit(TP03Visitor visitor) throws TPException
@@ -138,10 +138,10 @@ public class ObjectParams extends TPObject implements Visitable
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{Galaxy");
-			buf.append("}");
-			return buf.toString();
+			
+			return "{Galaxy"
+                            + "}";
+			
 		}
 
 		public void visit(TP03Visitor visitor) throws TPException
@@ -184,10 +184,10 @@ public class ObjectParams extends TPObject implements Visitable
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{StarSystem");
-			buf.append("}");
-			return buf.toString();
+			
+			return "{StarSystem"
+                            + "}";
+                            
 		}
 
 		public void visit(TP03Visitor visitor) throws TPException
@@ -320,18 +320,18 @@ public class ObjectParams extends TPObject implements Visitable
 
 			public String toString()
 			{
-				StringBuilder buf=new StringBuilder();
-				buf.append("{ResourcesType");
-				buf.append("; id: ");
-				buf.append(String.valueOf(this.id));
-				buf.append("; units: ");
-				buf.append(String.valueOf(this.units));
-				buf.append("; unitsminable: ");
-				buf.append(String.valueOf(this.unitsminable));
-				buf.append("; unitsinaccessible: ");
-				buf.append(String.valueOf(this.unitsinaccessible));
-				buf.append("}");
-				return buf.toString();
+				
+				return "{ResourcesType"
+                                    + "; id: "
+                                    + String.valueOf(this.id)
+                                    + "; units: "
+                                    + String.valueOf(this.units)
+                                    + "; unitsminable: "
+                                    + String.valueOf(this.unitsminable)
+                                    + "; unitsinaccessible: "
+                                    + String.valueOf(this.unitsinaccessible)
+                                    + "}";
+				
 			}
 
 		}
@@ -385,14 +385,14 @@ public class ObjectParams extends TPObject implements Visitable
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{Planet");
-			buf.append("; owner: ");
-			buf.append(String.valueOf(this.owner));
-			buf.append("; resources: ");
-			buf.append(String.valueOf(this.resources));
-			buf.append("}");
-			return buf.toString();
+			
+			return "{Planet"
+                            + "; owner: "
+                            + String.valueOf(this.owner)
+                            + "; resources: "
+                            + String.valueOf(this.resources)
+                            + "}";
+			
 		}
 
 		public void visit(TP03Visitor visitor) throws TPException
@@ -493,14 +493,14 @@ public class ObjectParams extends TPObject implements Visitable
 
 			public String toString()
 			{
-				StringBuilder buf=new StringBuilder();
-				buf.append("{ShipsType");
-				buf.append("; type: ");
-				buf.append(String.valueOf(this.type));
-				buf.append("; count: ");
-				buf.append(String.valueOf(this.count));
-				buf.append("}");
-				return buf.toString();
+				
+				return "{ShipsType"
+                                    + "; type: "
+                                    + String.valueOf(this.type)
+                                    + "; count: "
+                                    + String.valueOf(this.count)
+                                    + "}";
+				
 			}
 
 		}
@@ -572,16 +572,16 @@ public class ObjectParams extends TPObject implements Visitable
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{Fleet");
-			buf.append("; owner: ");
-			buf.append(String.valueOf(this.owner));
-			buf.append("; ships: ");
-			buf.append(String.valueOf(this.ships));
-			buf.append("; damage: ");
-			buf.append(String.valueOf(this.damage));
-			buf.append("}");
-			return buf.toString();
+			
+			return "{Fleet"
+                            + "; owner: "
+                            + String.valueOf(this.owner)
+                            + "; ships: "
+                            + String.valueOf(this.ships)
+                            + "; damage: "
+                            + String.valueOf(this.damage)
+                            + "}";
+			
 		}
 
 		public void visit(TP03Visitor visitor) throws TPException
@@ -593,10 +593,10 @@ public class ObjectParams extends TPObject implements Visitable
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{ObjectParams");
-		buf.append("}");
-		return buf.toString();
+		
+		return "{ObjectParams"
+                    + "}";
+		
 	}
 
 	public static ObjectParams create(int id, TPDataInput in) throws IOException

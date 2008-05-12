@@ -47,11 +47,12 @@ public class GetTimeRemaining extends Request
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{GetTimeRemaining");
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		
+		return "{GetTimeRemaining"
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

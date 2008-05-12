@@ -64,13 +64,13 @@ public class GetObjectIDsByContainer extends Request
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{GetObjectIDsByContainer");
-		buf.append("; id: ");
-		buf.append(String.valueOf(this.id));
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{GetObjectIDsByContainer"
+                    + "; id: "
+                    + String.valueOf(this.id)
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

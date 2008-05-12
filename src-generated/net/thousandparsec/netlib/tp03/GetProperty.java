@@ -46,11 +46,12 @@ public class GetProperty extends GetWithID
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{GetProperty");
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		
+		return "{GetProperty"
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

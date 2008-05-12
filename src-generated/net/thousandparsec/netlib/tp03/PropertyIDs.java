@@ -51,11 +51,11 @@ public class PropertyIDs extends IDSequence
 	
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{PropertyIDs");
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{PropertyIDs"
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

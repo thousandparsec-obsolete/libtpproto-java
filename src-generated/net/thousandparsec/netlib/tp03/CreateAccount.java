@@ -119,19 +119,19 @@ public class CreateAccount extends Request
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{CreateAccount");
-		buf.append("; username: ");
-		buf.append(String.valueOf(this.username));
-		buf.append("; password: ");
-		buf.append(String.valueOf(this.password));
-		buf.append("; email: ");
-		buf.append(String.valueOf(this.email));
-		buf.append("; comment: ");
-		buf.append(String.valueOf(this.comment));
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{CreateAccount"
+                    +"; username: "
+                    +String.valueOf(this.username)
+                    +"; password: "
+                    +String.valueOf(this.password)
+                    +"; email: "
+                    +String.valueOf(this.email)
+                    +"; comment: "
+                    +String.valueOf(this.comment)
+                    +"; super:"
+                    +super.toString()
+                    +"}";
+		
 	}
 
 }

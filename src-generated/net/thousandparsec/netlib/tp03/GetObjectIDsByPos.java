@@ -118,16 +118,15 @@ public class GetObjectIDsByPos extends Request
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{PosType");
-			buf.append("; x: ");
-			buf.append(String.valueOf(this.x));
-			buf.append("; y: ");
-			buf.append(String.valueOf(this.y));
-			buf.append("; z: ");
-			buf.append(String.valueOf(this.z));
-			buf.append("}");
-			return buf.toString();
+			return "{PosType"
+                            + "; x: "
+                            + String.valueOf(this.x)
+                            + "; y: "
+                            + String.valueOf(this.y)
+                            + "; z: "
+                            + String.valueOf(this.z)
+                            + "}";
+			
 		}
 
 	}
@@ -190,15 +189,15 @@ public class GetObjectIDsByPos extends Request
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{GetObjectIDsByPos");
-		buf.append("; pos: ");
-		buf.append(String.valueOf(this.pos));
-		buf.append("; r: ");
-		buf.append(String.valueOf(this.r));
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{GetObjectIDsByPos"
+                    + "; pos: "
+                    + String.valueOf(this.pos)
+                    + "; r: "
+                    + String.valueOf(this.r)
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

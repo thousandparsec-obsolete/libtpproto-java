@@ -46,11 +46,11 @@ public class GetOrderDesc extends GetWithID
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{GetOrderDesc");
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{GetOrderDesc"
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

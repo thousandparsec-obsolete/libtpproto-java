@@ -343,7 +343,7 @@ public class TP03Visitor extends Visitor
 	public void unhandledObjectParams(ObjectParams objectParams) throws TPException
 	{
 		if (errorOnUnhandled)
-			throw new TPException(String.format("Unexpected objectParams: type %d (%s)", objectParams.getParameterType(), objectParams.toString()));
+			throw new TPException("Unexpected objectParams: type " + objectParams.getParameterType()+ "("+objectParams.toString()+")");
 	}
 
 	public void objectParams(ObjectParams.Universe objectParams) throws TPException
@@ -374,7 +374,7 @@ public class TP03Visitor extends Visitor
 	public void unhandledOrderParams(OrderParams orderParams) throws TPException
 	{
 		if (errorOnUnhandled)
-			throw new TPException(String.format("Unexpected orderParams: type %d (%s)", orderParams.getParameterType(), orderParams.toString()));
+			throw new TPException("Unexpected orderParams: type "+orderParams.getParameterType()+ "("+orderParams.toString()+")");
 	}
 
 	public void orderParams(OrderParams.OrderParamAbsSpaceCoords orderParams) throws TPException

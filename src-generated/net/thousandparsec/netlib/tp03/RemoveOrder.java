@@ -51,11 +51,11 @@ public class RemoveOrder extends GetWithIDSlot
 	
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{RemoveOrder");
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{RemoveOrder"
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

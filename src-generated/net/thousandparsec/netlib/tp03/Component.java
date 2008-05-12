@@ -106,12 +106,11 @@ public class Component extends Response
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{CategoriesType");
-			buf.append("; category: ");
-			buf.append(String.valueOf(this.category));
-			buf.append("}");
-			return buf.toString();
+			return "{CategoriesType"
+                            +"; category: "
+                            +String.valueOf(this.category)
+                            +"}";
+			
 		}
 
 	}
@@ -248,14 +247,13 @@ public class Component extends Response
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{PropertiesType");
-			buf.append("; id: ");
-			buf.append(String.valueOf(this.id));
-			buf.append("; valuefunc: ");
-			buf.append(String.valueOf(this.valuefunc));
-			buf.append("}");
-			return buf.toString();
+			return "{PropertiesType"
+                            +"; id: "
+                            +String.valueOf(this.id)
+                            +"; valuefunc: "
+                            +String.valueOf(this.valuefunc)
+                            +"}";
+			
 		}
 
 	}
@@ -334,25 +332,25 @@ public class Component extends Response
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{Component");
-		buf.append("; id: ");
-		buf.append(String.valueOf(this.id));
-		buf.append("; modtime: ");
-		buf.append(String.valueOf(this.modtime));
-		buf.append("; categories: ");
-		buf.append(String.valueOf(this.categories));
-		buf.append("; name: ");
-		buf.append(String.valueOf(this.name));
-		buf.append("; description: ");
-		buf.append(String.valueOf(this.description));
-		buf.append("; requirements: ");
-		buf.append(String.valueOf(this.requirements));
-		buf.append("; properties: ");
-		buf.append(String.valueOf(this.properties));
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{Component"
+                    +"; id: "
+                    +String.valueOf(this.id)
+                    +"; modtime: "
+                    +String.valueOf(this.modtime)
+                    +"; categories: "
+                    +String.valueOf(this.categories)
+                    +"; name: "
+                    +String.valueOf(this.name)
+                    +"; description: "
+                    +String.valueOf(this.description)
+                    +"; requirements: "
+                    +String.valueOf(this.requirements)
+                    +"; properties: "
+                    +String.valueOf(this.properties)
+                    +"; super:"
+                    +super.toString()
+                    +"}";
+		
 	}
 
 }

@@ -181,12 +181,11 @@ public class Features extends Response
 
 		public String toString()
 		{
-			StringBuilder buf=new StringBuilder();
-			buf.append("{FeaturesType");
-			buf.append("; feature: ");
-			buf.append(String.valueOf(this.feature));
-			buf.append("}");
-			return buf.toString();
+			return "{FeaturesType"
+                            + "; feature: "
+                            + String.valueOf(this.feature)
+                            + "}";
+			
 		}
 
 	}
@@ -239,13 +238,13 @@ public class Features extends Response
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{Features");
-		buf.append("; features: ");
-		buf.append(String.valueOf(this.features));
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		return "{Features"
+                    + "; features: "
+                    + String.valueOf(this.features)
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }

@@ -62,13 +62,14 @@ public class Okay extends Response
 
 	public String toString()
 	{
-		StringBuilder buf=new StringBuilder();
-		buf.append("{Okay");
-		buf.append("; result: ");
-		buf.append(String.valueOf(this.result));
-		buf.append("; super:").append(super.toString());
-		buf.append("}");
-		return buf.toString();
+		
+		return "{Okay"
+                    + "; result: "
+                    + String.valueOf(this.result)
+                    + "; super:"
+                    + super.toString()
+                    + "}";
+		
 	}
 
 }
