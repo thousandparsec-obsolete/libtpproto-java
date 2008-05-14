@@ -15,7 +15,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import net.thousandparsec.netlib.generator.StructureHandler.PropertyType;
 import net.thousandparsec.netlib.generator.UseparametersTypeField.SearchPathElement;
 
 public class JavaOutputGenerator implements OutputGenerator
@@ -40,10 +39,10 @@ public class JavaOutputGenerator implements OutputGenerator
 	private File targetDir;
 	private PrintWriter out;
 
-	/* for packets */
-	private int packetType;
-	private String basePacket;
-	private String packetName;
+	/* for frames */
+	private int frameType;
+	private String baseFrame;
+	private String frameName;
 
 	/* for parameter sets */
 	private String parameterSetName;
@@ -99,13 +98,13 @@ public class JavaOutputGenerator implements OutputGenerator
 		this.compat=compat;
 	}
 
-	public void startPacket(File targetDir, int packetType, String basePacket, String packetName) throws IOException
+	public void startFrame(File targetDir, int frameType, String baseFrame, String frameName) throws IOException
 	{
 		this.targetDir=createTargetDir(targetDir);
-		this.out=createTargetFile(new File(this.targetDir, packetName+".java"));
-		this.packetType=packetType;
-		this.basePacket=basePacket;
-		this.packetName=packetName;
+		this.out=createTargetFile(new File(this.targetDir, frameName+".java"));
+		this.frameType=frameType;
+		this.baseFrame=baseFrame;
+		this.frameName=frameName;
 
 		printPreamble(this.out);
 	}
@@ -123,17 +122,17 @@ public class JavaOutputGenerator implements OutputGenerator
 		checkError(out);
 	}
 
-	public void endPacket(List<Property> properties) throws IOException
+	public void endFrame(List<Property> properties) throws IOException
 	{
 		try
 		{
-			printVisitorMethod(0, "frame", basePacket != null);
+			printVisitorMethod(0, "frame", baseFrame != null);
 			printFindLengthMethod(0, properties);
 			printWriteMethod(0, properties, true);
 
-			printInputConstructor(0, packetName, properties, true);
+			printInputConstructor(0, frameName, properties, true);
 
-			printToStringMethod(0, packetName, properties, true, out);
+			printToStringMethod(0, frameName, properties, true, out);
 
 			//TODO: printEqualsMethod();
 
@@ -144,9 +143,9 @@ public class JavaOutputGenerator implements OutputGenerator
 			PrintWriter bak=out;
 			this.targetDir=null;
 			this.out=null;
-			this.packetType=0;
-			this.basePacket=null;
-			this.packetName=null;
+			this.frameType=0;
+			this.baseFrame=null;
+			this.frameName=null;
 
 			bak.close();
 			checkError(bak);
@@ -221,7 +220,7 @@ public class JavaOutputGenerator implements OutputGenerator
 		this.parameterType=-1;
 	}
 
-	public void endParameterSet(File targetDir, List<NamedEntity> parameters, List<NamedEntity> parameterDescs) throws IOException
+	public void endParameterSet(List<NamedEntity> parameters, List<NamedEntity> parameterDescs) throws IOException
 	{
 		try
 		{
@@ -265,7 +264,7 @@ public class JavaOutputGenerator implements OutputGenerator
 			out.printf("%s	@Override%n", indent);
 		out.printf("%s	public void visit(TP%02dVisitor visitor) throws TPException%n", indent, compat);
 		out.printf("%s	{%n", indent);
-		if (packetType != -1)
+		if (frameType != -1)
 			out.printf("%s		visitor.%s(this);%n", indent, type);
 		else
 			out.printf("%s		//NOP (not a leaf class)%n", indent);
@@ -352,7 +351,7 @@ public class JavaOutputGenerator implements OutputGenerator
 				case string:
 					//integer and enumeration are the same type physically, so fold enumeration to integer
 					out.printf("%s		out.%s(this.%s);%n", indent,
-						camelPrefix("write", (p.type == PropertyType.enumeration ? PropertyType.integer : p.type).name()),
+						camelPrefix("write", (p.type == Property.PropertyType.enumeration ? Property.PropertyType.integer : p.type).name()),
 						p.name);
 					break;
 
@@ -387,7 +386,7 @@ public class JavaOutputGenerator implements OutputGenerator
 			for (Iterator<Property> pit=writableProperties.iterator(); pit.hasNext(); )
 			{
 				Property p=pit.next();
-				if (p.type == PropertyType.list)
+				if (p.type == Property.PropertyType.list)
 					out.printf("java.util.List<%s> %s", p.targetType, p.name);
 				else
 					out.printf("%s %s", p.targetType, p.name);
@@ -537,7 +536,7 @@ public class JavaOutputGenerator implements OutputGenerator
 					break;
 			}
 		}
-		if (overrides && basePacket != null)
+		if (overrides && baseFrame != null)
 			out.printf("%s		buf.append(\"; super:\").append(super.toString());%n", indent);
 		out.printf("%s		buf.append(\"}\");%n", indent);
 		out.printf("%s		return buf.toString();%n", indent);
@@ -608,10 +607,10 @@ public class JavaOutputGenerator implements OutputGenerator
 					visitor.println("	}");
 					visitor.println();
 				}
-				for (NamedEntity packet : group.getValue())
-					if (packet.id != -1)
+				for (NamedEntity frame : group.getValue())
+					if (frame.id != -1)
 					{
-						visitor.printf("	public void %s(%s %s) throws TPException%n", group.getKey(), packet.name, group.getKey());
+						visitor.printf("	public void %s(%s %s) throws TPException%n", group.getKey(), frame.name, group.getKey());
 						visitor.println("	{");
 						visitor.printf("		unhandled%s(%s);%n", camelPrefix("", group.getKey()), group.getKey());
 						visitor.println("	}");
@@ -700,9 +699,9 @@ public class JavaOutputGenerator implements OutputGenerator
 			frameDecoder.println("	{");
 			frameDecoder.println("		switch (id)");
 			frameDecoder.println("		{");
-			for (NamedEntity packet : entities.get("frame"))
-				if (packet.id != -1)
-					frameDecoder.printf("			case %s.FRAME_TYPE: return new %s(id, in);%n", packet.name, packet.name);
+			for (NamedEntity frame : entities.get("frame"))
+				if (frame.id != -1)
+					frameDecoder.printf("			case %s.FRAME_TYPE: return new %s(id, in);%n", frame.name, frame.name);
 			frameDecoder.println("			default: throw new IllegalArgumentException(\"Invalid Frame id: \"+id);");
 			frameDecoder.println("		}");
 			frameDecoder.println("	}");
@@ -735,31 +734,31 @@ public class JavaOutputGenerator implements OutputGenerator
 		}
 	}
 
-	public void startPacketType() throws IOException
+	public void startFrameType() throws IOException
 	{
 		out.write("public ");
-		if (packetType == -1)
+		if (frameType == -1)
 			out.write("abstract ");
-		out.printf("class %s extends %s%n", packetName, basePacket == null ? String.format("Frame<TP%02dVisitor>", compat) : basePacket);
+		out.printf("class %s extends %s%n", frameName, baseFrame == null ? String.format("Frame<TP%02dVisitor>", compat) : baseFrame);
 		out.println("{");
-		if (packetType != -1)
+		if (frameType != -1)
 		{
-			out.printf("	public static final int FRAME_TYPE=%d;%n", packetType);
+			out.printf("	public static final int FRAME_TYPE=%d;%n", frameType);
 			out.println();
 		}
 
 		//first constructor, for general public and subclasses
-		out.printf("	protected %s(int id)%n", packetName);
+		out.printf("	protected %s(int id)%n", frameName);
 		out.println("	{");
 		out.println("		super(id);");
 		out.println("	}");
 		out.println();
 		
-		//(note: id == -1 is no id is a base class for other packets)
+		//(note: id == -1 is no id is a base class for other frames)
 		//(but then, it should not have readonly properties...)
-		if (packetType != -1)
+		if (frameType != -1)
 		{
-			out.printf("	public %s()%n", packetName);
+			out.printf("	public %s()%n", frameName);
 			out.println("	{");
 			out.println("		super(FRAME_TYPE);");
 			out.println("	}");
@@ -854,32 +853,32 @@ public class JavaOutputGenerator implements OutputGenerator
 		checkError(out);
 	}
 
-	public void startComment(int level, int correction) throws IOException
+	public void startComment(int level) throws IOException
 	{
-		out.printf("%s/**", new Indent(level + correction));
+		out.printf("%s/**", new Indent(level));
 		out.println();
 
 		checkError(out);
 	}
 
-	public void continueComment(int level, int correction, char[] ch, int start, int length) throws IOException
+	public void continueComment(int level, char[] ch, int start, int length) throws IOException
 	{
-		out.printf("%s * ", new Indent(level + correction));
+		out.printf("%s * ", new Indent(level));
 		out.write(ch, start, length);
 		out.println();
 
 		checkError(out);
 	}
 
-	public void endComment(int level, int correction) throws IOException
+	public void endComment(int level) throws IOException
 	{
-		out.printf("%s */", new Indent(level + correction));
+		out.printf("%s */", new Indent(level));
 		out.println();
 
 		checkError(out);
 	}
 
-	public void printPropertyDef(int level, Property property) throws IOException
+	public void generatePropertyDefinition(int level, Property property) throws IOException
 	{
 		Indent indent=new Indent(level);
 		switch (property.type)
@@ -933,10 +932,14 @@ public class JavaOutputGenerator implements OutputGenerator
 		}
 		out.println();
 
+		printPropertyGetter(level, property);
+		//print setter even if read-only (*might* be useful)
+		printPropertySetter(level, property);
+
 		checkError(out);
 	}
 
-	public void printPropertyGetter(int level, Property property) throws IOException
+	private void printPropertyGetter(int level, Property property) throws IOException
 	{
 		Indent indent=new Indent(level);
 		switch (property.type)
@@ -1047,12 +1050,12 @@ public class JavaOutputGenerator implements OutputGenerator
 		checkError(out);
 	}
 
-	public void printPropertySetter(int level, Property property) throws IOException
+	private void printPropertySetter(int level, Property property) throws IOException
 	{
 		//to modify list property use the getter and modify the List
 		Indent indent=new Indent(level);
 
-		boolean isPublic=!property.readOnly && property.type != PropertyType.list;
+		boolean isPublic=!property.readOnly && property.type != Property.PropertyType.list;
 		if (!isPublic)
 			out.printf("%s@SuppressWarnings(\"unused\")%n", indent);
 
@@ -1113,7 +1116,7 @@ public class JavaOutputGenerator implements OutputGenerator
 		checkError(out);
 	}
 
-	public void startEnum(int level, String enumName, String valueType) throws IOException
+	public void startEnumeration(int level, String enumName, String valueType) throws IOException
 	{
 		Indent indent=new Indent(level);
 		out.printf("%spublic enum %s%n", indent, enumName);
@@ -1121,12 +1124,12 @@ public class JavaOutputGenerator implements OutputGenerator
 
 		//print the "null-object" enum value
 		//assume that no enumeration has a value with @id=-1 (so far it's true)
-		printEnumValue(level, "$none$", "-1");
+		generateEnumerationValue(level, "$none$", "-1");
 
 		checkError(out);
 	}
 
-	public void printEnumValue(int level, String name, String value) throws IOException
+	public void generateEnumerationValue(int level, String name, String value) throws IOException
 	{
 		Indent indent=new Indent(level);
 		out.printf("%s	%s(%s),%n", indent, name, value);
@@ -1135,7 +1138,7 @@ public class JavaOutputGenerator implements OutputGenerator
 		checkError(out);
 	}
 
-	public void endEnum(int level, String enumName, String valueType) throws IOException
+	public void endEnumeration(int level, String enumName, String valueType) throws IOException
 	{
 		Indent indent=new Indent(level);
 		out.printf("%s	;%n", indent);

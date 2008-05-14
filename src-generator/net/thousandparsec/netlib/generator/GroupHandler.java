@@ -10,8 +10,8 @@ import org.xml.sax.SAXException;
 /**
  * This handler is for type elements under a {@code structure} element which can
  * have additional structure, i.e.
- * {@link StructureHandler.PropertyType#group groups} and
- * {@link StructureHandler.PropertyType#list lists}. They are almost identical
+ * {@link Property.PropertyType#group groups} and
+ * {@link Property.PropertyType#list lists}. They are almost identical
  * (list is a sequence of groups) so this class handles both.
  * <p>
  * The generated code is (as in Java) a nested class with properties as
@@ -78,7 +78,7 @@ class GroupHandler extends PropertyHandler
 
 	private StringBuilder longNameCollector;
 
-	GroupHandler(StructureHandler<?> parent, StructureHandler.PropertyType type, boolean readOnly)
+	GroupHandler(StructureHandler<?> parent, Property.PropertyType type, boolean readOnly)
 	{
 		super(parent, type, 0, readOnly);
 	}

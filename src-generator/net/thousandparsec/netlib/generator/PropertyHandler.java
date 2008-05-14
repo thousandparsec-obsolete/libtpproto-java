@@ -8,8 +8,8 @@ import org.xml.sax.SAXException;
 /**
  * {@link PropertyHandler} and its subclasses handle elements contained in a
  * {@code structure} element, where each represents one "property" of a packet
- * or another property ({@link StructureHandler.PropertyType#group} or
- * {@link StructureHandler.PropertyType#list}).
+ * or another property ({@link Property.PropertyType#group} or
+ * {@link Property.PropertyType#list}).
  * <p>
  * A property has additional properties, like {@link #getValueType() value type}
  * and {@link #getName() name}; value type is the name of a type used (or
@@ -25,7 +25,7 @@ class PropertyHandler extends StructuredElementHandler<StructureHandler<?>>
 {
 	private String valueType;
 	private String valueSubtype;
-	protected final StructureHandler.PropertyType type;
+	protected final Property.PropertyType type;
 	private final int size;
 	protected final boolean readOnly;
 	private String name;
@@ -37,12 +37,12 @@ class PropertyHandler extends StructuredElementHandler<StructureHandler<?>>
 	 * the beginning of this element. Remember to set it with
 	 * {@link #setValueType(String)} later.
 	 */
-	PropertyHandler(StructureHandler<?> parent, StructureHandler.PropertyType type, int size, boolean readOnly)
+	PropertyHandler(StructureHandler<?> parent, Property.PropertyType type, int size, boolean readOnly)
 	{
 		this(parent, type, null, null, size, readOnly);
 	}
 
-	PropertyHandler(StructureHandler<?> parent, StructureHandler.PropertyType type, String valueType, String valueSubtype, int size, boolean readOnly)
+	PropertyHandler(StructureHandler<?> parent, Property.PropertyType type, String valueType, String valueSubtype, int size, boolean readOnly)
 	{
 		super(parent);
 		this.valueType=valueType;
@@ -105,7 +105,7 @@ class PropertyHandler extends StructuredElementHandler<StructureHandler<?>>
 					//do you hate XML already?
 					pushHandler(new TextCollectorHandler(this, nameCollector=new StringBuilder()));
 				else if (localName.equals("description"))
-					pushHandler(new TextCommentHandler(this, parent.generator.generator, parent.level, 0));
+					pushHandler(new TextCommentHandler(this, parent.generator.generator, parent.level));
 				else if (localName.equals("subtype"))
 				{
 					//subtype means that the value is taken from the subclass - we handle it manually where it's needed
@@ -139,10 +139,7 @@ class PropertyHandler extends StructuredElementHandler<StructureHandler<?>>
 
 				Property prop=parent.parent.addProperty(this.name, type, valueType, valueSubtype, size, readOnly, useparametersTypeField);
 
-				parent.generator.generator.printPropertyDef(parent.level, prop);
-				parent.generator.generator.printPropertyGetter(parent.level, prop);
-				//print setter even if read-only (*might* be useful)
-				parent.generator.generator.printPropertySetter(parent.level, prop);
+				parent.generator.generator.generatePropertyDefinition(parent.level, prop);
 			}
 			super.endElement(uri, localName, name);
 		}

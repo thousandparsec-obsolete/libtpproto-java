@@ -24,7 +24,7 @@ class EnumerationHandler extends PropertyHandler
 
 	EnumerationHandler(StructureHandler<?> parent, String valueType, int size, String style, boolean readOnly)
 	{
-		super(parent, StructureHandler.PropertyType.enumeration, valueType, valueType, style.equals("mask") ? -size : size, readOnly);
+		super(parent, Property.PropertyType.enumeration, valueType, valueType, style.equals("mask") ? -size : size, readOnly);
 	}
 
 	@Override
@@ -37,14 +37,14 @@ class EnumerationHandler extends PropertyHandler
 			if (getDepth() == 0 && localName.equals("values"))
 			{
 				super.startElement(uri, localName, name, atts);
-				parent.generator.generator.startEnum(parent.level, camelName, getValueSubtype());
+				parent.generator.generator.startEnumeration(parent.level, camelName, getValueSubtype());
 			}
 			else if (getDepth() == 1)
 			{
 				super.startElement(uri, localName, name, atts);
 				lastName=atts.getValue("name");
 				lastValue=atts.getValue("id");
-				pushHandler(new TextCommentHandler(this, parent.generator.generator, parent.level, 1));
+				pushHandler(new TextCommentHandler(this, parent.generator.generator, parent.level + 1));
 			}
 			else
 				super.startElement(uri, localName, name, atts);
@@ -64,7 +64,7 @@ class EnumerationHandler extends PropertyHandler
 			if (getDepth() == 2)
 			{
 				super.endElement(uri, localName, name);
-				parent.generator.generator.printEnumValue(parent.level, lastName, lastValue);
+				parent.generator.generator.generateEnumerationValue(parent.level, lastName, lastValue);
 			}
 			else if (getDepth() == 1)
 			{
@@ -72,7 +72,7 @@ class EnumerationHandler extends PropertyHandler
 				if (localName.equals("name"))
 					setValueType(camelName=getName().substring(0, 1).toUpperCase()+getName().substring(1));
 				else if (localName.equals("values"))
-					parent.generator.generator.endEnum(parent.level, camelName, getValueSubtype());
+					parent.generator.generator.endEnumeration(parent.level, camelName, getValueSubtype());
 			}
 			else
 				super.endElement(uri, localName, name);

@@ -9,7 +9,7 @@ public class UseparametersTypeField
 	public final String indirectFrameCheckField;
 	public final List<SearchPathElement> searchPath;
 
-	public UseparametersTypeField(String localField, String indirectFrame, String indirectFrameCheckField, List<SearchPathElement> searchPath)
+	UseparametersTypeField(String localField, String indirectFrame, String indirectFrameCheckField, List<SearchPathElement> searchPath)
 	{
 		this.localField=localField;
 		this.indirectFrame=indirectFrame;

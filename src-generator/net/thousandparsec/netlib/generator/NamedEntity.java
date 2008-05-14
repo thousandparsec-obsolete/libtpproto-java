@@ -1,9 +1,9 @@
 package net.thousandparsec.netlib.generator;
 
-class NamedEntity
+public class NamedEntity
 {
-	final String name;
-	final int id;
+	public final String name;
+	public final int id;
 
 	NamedEntity(String name, int id)
 	{

@@ -3,7 +3,6 @@ package net.thousandparsec.netlib.generator;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.thousandparsec.netlib.generator.StructureHandler.PropertyType;
 import net.thousandparsec.netlib.generator.UseparametersTypeField.SearchPathElement;
 
 import org.xml.sax.Attributes;
@@ -19,7 +18,7 @@ class UseparametersHandler extends PropertyHandler
 
 	UseparametersHandler(StructureHandler<?> parent, String ref)
 	{
-		super(parent, PropertyType.useparameters, ref, null, 0, true);
+		super(parent, Property.PropertyType.useparameters, ref, null, 0, true);
 	}
 
 	protected void addSearchPathElement(SearchPathElement element)
