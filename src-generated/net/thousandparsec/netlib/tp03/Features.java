@@ -36,93 +36,191 @@ public class Features extends Response
 		/**
 		 * Features which the server supports.
 		 */
-                class FeatureCode{
+                static class FeatureCode{
                     public final int VALUE;
                     
                     private FeatureCode(int value){
                         VALUE= value;
                     }
                 }
-                class Feature{
+                static class Feature{
+                        static FeatureCode[] codes = new FeatureCode[16];
                     
+                        static final FeatureCode $none$ = new FeatureCode(-1);
+
+			/**
+			 * Secure Connection available on this port.
+			 */
+			static final FeatureCode SecureHere = new FeatureCode(0x1);
+
+			/**
+			 * Secure Connection available on another port.
+			 */
+			static final FeatureCode SecureThere = new FeatureCode(0x2);
+
+			/**
+			 * HTTP Tunneling available on this port.
+			 */
+			static final FeatureCode HTTPHere = new FeatureCode(0x3);
+
+			/**
+			 * HTTP Tunneling available on another port.
+			 */
+			static final FeatureCode HTTPThere = new FeatureCode(0x4);
+
+			/**
+			 * Support Keep alive frames.
+			 */
+			static final FeatureCode KeepAlive = new FeatureCode(0x5);
+
+			/**
+			 * Support server side property calculation.
+			 */
+			static final FeatureCode PropertyCalc = new FeatureCode(0x6);
+
+			/**
+			 * Account creation is allowed.
+			 */
+			static final FeatureCode AccountCreate = new FeatureCode(0x3E8);
+
+			/**
+			 * Sends Object ID Sequences in descending modified time order.
+			 */
+			static final FeatureCode DescObjectID = new FeatureCode(0x10000);
+
+			/**
+			 * Sends Order Description ID Sequences in descending modified time order.
+			 */
+			static final FeatureCode DescOrderID = new FeatureCode(0x10001);
+
+			/**
+			 * Sends Board ID Sequences in descending modified time order.
+			 */
+			static final FeatureCode DescBoardID = new FeatureCode(0x10002);
+
+			/**
+			 * Sends Resource Description ID Sequences in descending modified time order.
+			 */
+			static final FeatureCode DescResourceID = new FeatureCode(0x10003);
+
+			/**
+			 * Sends Category Description ID Sequences in descending modified time order.
+			 */
+			static final FeatureCode DescCategoryID = new FeatureCode(0x10004);
+
+			/**
+			 * Sends Design ID Sequences in descending modified time order.
+			 */
+			static final FeatureCode DescDesignID = new FeatureCode(0x10005);
+
+			/**
+			 * Sends Component ID Sequences in descending modified time order.
+			 */
+			static final FeatureCode DescComponentID = new FeatureCode(0x10006);
+
+			/**
+			 * Sends Property ID Sequences in descending modified time order.
+			 */
+			static final FeatureCode DescPropertyID = new FeatureCode(0x10007);
+                        
+                        static FeatureCode[] values(){
+                            codes[0] =$none$ ;
+                            codes[1] = SecureHere;
+                            codes[2] = SecureThere;
+                            codes[3] = HTTPHere;
+                            codes[4] = HTTPThere;
+                            codes[5] = KeepAlive;
+                            codes[6] = PropertyCalc;
+                            codes[7] = AccountCreate;
+                            codes[8] = DescObjectID;
+                            codes[9] = DescOrderID;
+                            codes[10] = DescBoardID;
+                            codes[11] = DescResourceID;
+                            codes[12] = DescCategoryID;
+                            codes[13] = DescDesignID;
+                            codes[14] = DescComponentID;
+                            codes[15] = DescPropertyID;
+                            return codes;
+                        }
+                        
                 }
-		public enum Feature
+		/*public enum Feature
 		{
 			$none$(-1),
 
 			/**
 			 * Secure Connection available on this port.
-			 */
+			 *
 			SecureHere(0x1),
 
 			/**
 			 * Secure Connection available on another port.
-			 */
+			 *
 			SecureThere(0x2),
 
 			/**
 			 * HTTP Tunneling available on this port.
-			 */
+			 *
 			HTTPHere(0x3),
 
 			/**
 			 * HTTP Tunneling available on another port.
-			 */
+			 *
 			HTTPThere(0x4),
 
 			/**
 			 * Support Keep alive frames.
-			 */
+			 *
 			KeepAlive(0x5),
 
 			/**
 			 * Support server side property calculation.
-			 */
+			 *
 			PropertyCalc(0x6),
 
 			/**
 			 * Account creation is allowed.
-			 */
+			 *
 			AccountCreate(0x3E8),
 
 			/**
 			 * Sends Object ID Sequences in descending modified time order.
-			 */
+			 *
 			DescObjectID(0x10000),
 
 			/**
 			 * Sends Order Description ID Sequences in descending modified time order.
-			 */
+			 *
 			DescOrderID(0x10001),
 
 			/**
 			 * Sends Board ID Sequences in descending modified time order.
-			 */
+			 *
 			DescBoardID(0x10002),
 
 			/**
 			 * Sends Resource Description ID Sequences in descending modified time order.
-			 */
+			 *
 			DescResourceID(0x10003),
 
 			/**
 			 * Sends Category Description ID Sequences in descending modified time order.
-			 */
+			 *
 			DescCategoryID(0x10004),
 
 			/**
 			 * Sends Design ID Sequences in descending modified time order.
-			 */
+			 *
 			DescDesignID(0x10005),
 
 			/**
 			 * Sends Component ID Sequences in descending modified time order.
-			 */
+			 *
 			DescComponentID(0x10006),
 
 			/**
 			 * Sends Property ID Sequences in descending modified time order.
-			 */
+			 *
 			DescPropertyID(0x10007),
 
 			;
@@ -131,16 +229,16 @@ public class Features extends Response
 			{
 				this.value=value;
 			}
-		}
+		}*/
 
-		private Feature feature=Feature.$none$;
+		private FeatureCode feature=Feature.$none$;
 
-		public Feature getFeature()
+		public FeatureCode getFeature()
 		{
 			return this.feature;
 		}
 
-		public void setFeature(Feature value)
+		public void setFeature(FeatureCode value)
 		{
 			this.feature=value;
 		}
@@ -153,13 +251,13 @@ public class Features extends Response
 
 		public void write(TPDataOutput out, Connection conn) throws IOException
 		{
-			out.writeInteger(this.feature.value);
+			out.writeInteger(this.feature.VALUE);
 		}
 
 		/**
 		 * A convenience constructor for easy initialisation of non-read only fields.
 		 */
-		public FeaturesType(Feature feature)
+		public FeaturesType(FeatureCode feature)
 		{
 			setFeature(feature);
 		}
@@ -179,9 +277,9 @@ public class Features extends Response
 		{
 			feature: {
 				int value=in.readInteger32();
-                                Feature[] fval = Feature.values();
+                                FeatureCode[] fval = Feature.values();
                                 for (int i = 0; i < fval.length; i++){
-                                    if( fval[i].value == value){
+                                    if( fval[i].VALUE == value){
                                         this.feature=fval[i];
                                         break feature;
                                     }

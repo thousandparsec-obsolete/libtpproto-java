@@ -23,10 +23,10 @@ public class Fail extends Response
 	 */
         static class ErrorCode
         {
-            public final int VALUE;
+            public final int value;
             
-            private ErrorCode(int value){
-                VALUE= value;
+            private ErrorCode(int val){
+                value= val;
             }
             
         }
@@ -34,11 +34,29 @@ public class Fail extends Response
         {
             static ErrorCode[] codes = new ErrorCode[7];
             static final ErrorCode $none$ = new ErrorCode(-1);
+            /**
+             * Protocol Error, Something went wrong with the protocol
+             */
             static final ErrorCode protocol = new ErrorCode(0);
+            /**
+             * Frame Error, One of the frames sent was bad or corrupted
+             */
             static final ErrorCode Frame = new ErrorCode(1);
+            /**
+             * Unavailable Permanently, This operation is unavailable
+             */            
             static final ErrorCode UnavailablePermanently = new ErrorCode(2);
+            /**
+             * Unavailable Temporarily, This operation is unavailable at this moment
+             */
             static final ErrorCode UnavailableTemporarily = new ErrorCode(3);
+            /**
+             * No Such Thing, The object/order/message does not exist
+             */
             static final ErrorCode NoSuchThing = new ErrorCode(4);
+            /**
+             * Permission Denied, You don't have permission to do this operation
+             */
             static final ErrorCode PermissionDenied = new ErrorCode(5);
             
             
@@ -54,49 +72,6 @@ public class Fail extends Response
                 return codes;
             }
         }
-
-            
-	/*public enum Code
-	{
-		$none$(-1),
-
-		/**
-		 * Protocol Error, Something went wrong with the protocol
-		 *
-		Protocol(0),
-
-		/**
-		 * Frame Error, One of the frames sent was bad or corrupted
-		 *
-		Frame(1),
-
-		/**
-		 * Unavailable Permanently, This operation is unavailable
-		 *
-		UnavailablePermanently(2),
-
-		/**
-		 * Unavailable Temporarily, This operation is unavailable at this moment
-		 *
-		UnavailableTemporarily(3),
-
-		/**
-		 * No Such Thing, The object/order/message does not exist
-		 *
-		NoSuchThing(4),
-
-		/**
-		 * Permission Denied, You don't have permission to do this operation
-		 *
-		PermissionDenied(5),
-
-		;
-		public final int value;
-		private Code(int value)
-		{
-			this.value=value;
-		}
-	}*/
 
 	private ErrorCode code=Code.$none$;
 
@@ -144,7 +119,7 @@ public class Fail extends Response
 	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
 		super.write(out, conn);
-		out.writeInteger(this.code.VALUE);
+		out.writeInteger(this.code.value);
 		out.writeString(this.result);
 	}
 
@@ -158,7 +133,7 @@ public class Fail extends Response
 			int value=in.readInteger32();
                         ErrorCode[] values = Code.values();
                         for (int i =0; i < values.length ; i++){
-                            if (values[i].VALUE ==value){
+                            if (values[i].value ==value){
                                 this.code=values[i];
                                 break code;
                             }

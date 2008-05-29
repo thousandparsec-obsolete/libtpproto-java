@@ -191,8 +191,9 @@ public class Order extends Response
 	{
 		try
 		{
+                        int i = template.getId();
 			if (template.getId() != getOtype())
-				throw new TPException("ParameterSet id does not match frame's parameter set id: "+ template.getID() + " != " + getOtype());
+				throw new TPException("ParameterSet id does not match frame's parameter set id: "+ template.getId() + " != " + getOtype());
 			TPDataInput in=new TPInputStream(new java.io.ByteArrayInputStream(this.orderparams));
 			//java.util.List<OrderParams> ret=new java.util.ArrayList<OrderParams>();
                         java.util.Vector ret = new java.util.Vector();
@@ -201,6 +202,7 @@ public class Order extends Response
                             
                         }*/
                         for (OrderDesc.ParametersType template0 : template.getParameters())
+                            
 			{
 				ret.addElement(OrderParams.create(template0.getType(), in));
 			}
