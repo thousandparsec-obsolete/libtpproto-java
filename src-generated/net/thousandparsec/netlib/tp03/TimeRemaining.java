@@ -36,7 +36,11 @@ public class TimeRemaining extends Response
 		this.time=value;
 	}
 
-	//public void visit(Visitor visitor) throws TPException
+        public void visit(Visitor visitor) throws TPException
+        {
+            System.out.println("warning: visit method called in TimeRemaining.java");
+            visit(visitor);
+        }
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);

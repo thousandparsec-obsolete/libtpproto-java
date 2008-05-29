@@ -217,7 +217,11 @@ public class Property extends Response
 	{
 		this.requirementfunc=value;
 	}
-
+        public void visit(Visitor visitor) throws TPException
+        {
+            System.out.println("warning: visit method called in Property.java");
+            visit(visitor);
+        }
 	
 	public void visit(TP03Visitor visitor) throws TPException
 	{

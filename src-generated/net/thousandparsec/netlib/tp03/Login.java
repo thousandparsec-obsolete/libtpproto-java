@@ -50,7 +50,11 @@ public class Login extends Request
 	{
 		this.password=value;
 	}
-
+        public void visit(Visitor visitor) throws TPException
+        {
+            System.out.println("warning: visit method called in Login.java");
+            visit(visitor);
+        }
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);

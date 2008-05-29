@@ -179,13 +179,14 @@ public class PipelinedConnection
 			return incoming.take();
 		}
 
-		public <F extends Frame<V>> F receiveFrame(Class<F> expectedClass) throws TPException
+		public Frame receiveFrame(Class expectedClass) throws TPException
 		{
 			try
 			{
-				Frame<V> frame=receiveFrame();
+				Frame frame=receiveFrame();
 				if (!expectedClass.isInstance(frame))
-					throw new TPException(String.format("Unexpected frame: type %d (%s) while expecting %s", frame.getFrameType(), frame.toString(), expectedClass.getSimpleName()));
+                                        //throw new TPException(String.format("Unexpected frame: type %d (%s) while expecting %s", frame.getFrameType(), frame.toString(), expectedClass.getSimpleName()));
+					throw new TPException("Unexpected frame: type "+frame.getFrameType()+" ("+frame.toString()+") while expecting "+expectedClass.getSimpleName());
 				else
 					return expectedClass.cast(frame);
 			}
@@ -195,13 +196,13 @@ public class PipelinedConnection
 			}
 		}
 
-		public <F extends Frame<V>> F sendFrame(Frame<V> frame, Class<F> responseClass) throws IOException, TPException
+		public Frame sendFrame(Frame frame, Class responseClass) throws IOException, TPException
 		{
 			sendFrame(frame);
 			return receiveFrame(responseClass);
 		}
 
-		public void sendFrame(Frame<V> frame, V responseVisitor) throws IOException, TPException
+		public void sendFrame(Frame frame, Visitor responseVisitor) throws IOException, TPException
 		{
 			try
 			{

@@ -20,7 +20,11 @@ public class GetBoards extends GetWithID
 	{
 		super(FRAME_TYPE);
 	}
-
+        public void visit(Visitor visitor) throws TPException
+        {
+            System.out.println("warning: visit method called in GetBoards.java");
+            visit(visitor);
+        }
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);

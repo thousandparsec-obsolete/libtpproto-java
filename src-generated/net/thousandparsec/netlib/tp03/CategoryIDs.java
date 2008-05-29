@@ -20,7 +20,11 @@ public class CategoryIDs extends IDSequence
 	{
 		super(FRAME_TYPE);
 	}
-
+        public void visit(Visitor visitor) throws TPException
+        {
+            System.out.println("warning: visit method called in CategoryIDs.java");
+            visit(visitor);
+        }
 
 	public void visit(TP03Visitor visitor) throws TPException
 	{

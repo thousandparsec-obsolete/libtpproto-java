@@ -36,6 +36,16 @@ public class Features extends Response
 		/**
 		 * Features which the server supports.
 		 */
+                class FeatureCode{
+                    public final int VALUE;
+                    
+                    private FeatureCode(int value){
+                        VALUE= value;
+                    }
+                }
+                class Feature{
+                    
+                }
 		public enum Feature
 		{
 			$none$(-1),
@@ -169,12 +179,14 @@ public class Features extends Response
 		{
 			feature: {
 				int value=in.readInteger32();
-				for (Feature e : Feature.values())
-					if (e.value == value)
-					{
-						this.feature=e;
-						break feature;
-					}
+                                Feature[] fval = Feature.values();
+                                for (int i = 0; i < fval.length; i++){
+                                    if( fval[i].value == value){
+                                        this.feature=fval[i];
+                                        break feature;
+                                    }
+                                }
+
 				throw new IOException("Invalid value for enum 'feature': "+value);
 			}
 		}
@@ -203,7 +215,11 @@ public class Features extends Response
                 }
 
 	}
-
+        public void visit(Visitor visitor) throws TPException
+        {
+            System.out.println("warning: visit method called");
+            visit(visitor);
+        }
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);

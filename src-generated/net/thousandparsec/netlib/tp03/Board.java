@@ -92,7 +92,12 @@ public class Board extends Response
 	{
 		this.modtime=value;
 	}
-
+        
+        public void visit(Visitor visitor) throws TPException
+        {
+            System.out.println("warning: visit method called in Board.java");
+            visit(visitor);
+        }
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);

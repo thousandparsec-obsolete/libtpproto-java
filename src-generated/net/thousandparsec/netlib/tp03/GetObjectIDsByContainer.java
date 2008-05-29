@@ -35,7 +35,11 @@ public class GetObjectIDsByContainer extends Request
 	{
 		this.id=value;
 	}
-
+        public void visit(Visitor visitor) throws TPException
+        {
+            System.out.println("warning: visit method called in GetObjectIDsByContainer");
+            visit(visitor);
+        }
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);

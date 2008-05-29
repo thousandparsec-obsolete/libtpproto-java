@@ -20,7 +20,11 @@ public class GetBoardIDs extends GetIDSequence
 	{
 		super(FRAME_TYPE);
 	}
-
+        public void visit(Visitor visitor) throws TPException
+        {
+            System.out.println("warning: visit method called GetBoardIDs.java");
+            visit(visitor);
+        }
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);
@@ -49,7 +53,7 @@ public class GetBoardIDs extends GetIDSequence
 		return "{GetBoardIDs"
                     + "; super:"
                     + super.toString()
-                    + "}"
+                    + "}";
 
 	}
 

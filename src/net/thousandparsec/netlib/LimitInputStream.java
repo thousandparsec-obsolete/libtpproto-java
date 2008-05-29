@@ -1,6 +1,6 @@
 package net.thousandparsec.netlib;
 
-import java.io.FilterInputStream;
+import net.thousandparsec.util.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 

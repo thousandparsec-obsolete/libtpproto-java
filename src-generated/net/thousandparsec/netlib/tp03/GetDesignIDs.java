@@ -20,7 +20,11 @@ public class GetDesignIDs extends GetIDSequence
 	{
 		super(FRAME_TYPE);
 	}
-
+        public void visit(Visitor visitor) throws TPException
+        {
+            System.out.println("warning: visit method called in GetDesignIDs");
+            visit(visitor);
+        }
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);

@@ -20,7 +20,11 @@ public class GetOrderDesc extends GetWithID
 	{
 		super(FRAME_TYPE);
 	}
-
+        public void visit(Visitor visitor) throws TPException
+        {
+            System.out.println("warning: visit method called in GetOrderDesc.java");
+            visit(visitor);
+        }
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);
@@ -31,7 +35,7 @@ public class GetOrderDesc extends GetWithID
 		return super.findByteLength();
 	}
 
-	public void write(TPDataOutput out, Connection<?> conn) throws IOException
+	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
 		super.write(out, conn);
 	}

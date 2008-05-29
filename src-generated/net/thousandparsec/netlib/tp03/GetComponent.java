@@ -20,7 +20,11 @@ public class GetComponent extends GetWithID
 	{
 		super(FRAME_TYPE);
 	}
-
+        public void visit(Visitor visitor) throws TPException
+        {
+            System.out.println("warning: visit method called in GetComponent.java");
+            visit(visitor);
+        }
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);
@@ -49,7 +53,7 @@ public class GetComponent extends GetWithID
 		return "{GetComponent"
                     + "; super:"
                     + super.toString()
-                    + "}"
+                    + "}";
                     
 		
 	}

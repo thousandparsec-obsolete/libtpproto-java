@@ -36,7 +36,11 @@ public class ObjectParams extends TPObject implements Visitable
 	{
 		//NOP
 	}
-
+        public void visit(Visitor visitor) throws TPException
+        {
+            System.out.println("warning: visit method called in OrderDesc.java in ObjectParams.java");
+            visit(visitor);
+        }
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		throw new RuntimeException();

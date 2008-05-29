@@ -8,6 +8,7 @@ package net.thousandparsec.netlib;
  */
 public class ConnectionEvent
 {
+        
 	public static enum Type
 	{
 		FRAME_SENT,
@@ -16,12 +17,10 @@ public class ConnectionEvent
 	}
 
 	private final Type type;
-	//private final Frame<V> frame;
-        private final Frame frame;
+	private final Frame frame;
 	private final boolean isAsync;
 	private final Exception exception;
 
-	//ConnectionEvent(Type type, Frame<V> frame, boolean isAsync, Exception exception)
         ConnectionEvent(Type type, Frame frame, boolean isAsync, Exception exception)
 	{
 		this.type=type;
@@ -29,14 +28,11 @@ public class ConnectionEvent
 		this.isAsync=isAsync;
 		this.exception=exception;
 	}
-
 	public Type getType()
 	{
 		return type;
 	}
-
-	//public Frame<V> getFrame()
-        public Frame getFrame()
+	public Frame getFrame()
 	{
 		return frame;
 	}

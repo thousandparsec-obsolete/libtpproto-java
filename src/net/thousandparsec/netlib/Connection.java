@@ -4,21 +4,21 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.Socket;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+//import java.net.Socket;
+//import java.net.URI;
+//import java.net.URISyntaxException;
+//import java.net.UnknownHostException;
+//import java.util.ArrayList;
+//import java.util.Collections;
+//import java.util.List;
 import java.util.Vector;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+//import java.util.concurrent.Callable;
+//import java.util.concurrent.ExecutorService;
+//import java.util.concurrent.Executors;
+//import java.util.concurrent.Future;
 
-import javax.net.ssl.SSLSocketFactory;
+//import javax.net.ssl.SSLSocketFactory;
 
 /**
  * This class implements the basic client connection for the Thousand Parsec
@@ -609,8 +609,7 @@ public class Connection
 	 * @throws IOException
 	 *             on any I/O error
 	 */
-	//public void sendFrame(Frame<V> frame) throws IOException
-        public void sendFrame(Frame frame) throws IOException
+	public void sendFrame(Frame frame) throws IOException
 	{
 		synchronized (lockSend)
 		{

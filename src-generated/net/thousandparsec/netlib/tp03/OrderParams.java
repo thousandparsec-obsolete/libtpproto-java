@@ -36,7 +36,11 @@ public class OrderParams extends TPObject implements Visitable
 	{
 		//NOP
 	}
-
+        public void visit(Visitor visitor) throws TPException
+        {
+            System.out.println("warning: visit method called in OrderParams.java");
+            visit(visitor);
+        }
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		throw new RuntimeException();
@@ -402,33 +406,33 @@ public class OrderParams extends TPObject implements Visitable
 		/**
 		 * Mask for not allowed player Ids (On bits are NOT allowed to be chosen)
 		 */
-		public enum Mask
+		/*public enum Mask
 		{
 			$none$(-1),
 
 			/**
 			 * Allies
-			 */
+			 *
 			allies(0x01),
 
 			/**
 			 * Trading Partners
-			 */
+			 *
 			tradingpartners(0x02),
 
 			/**
 			 * Neutral
-			 */
+			 *
 			neutral(0x04),
 
 			/**
 			 * Enemies
-			 */
+			 *
 			enemies(0x08),
 
 			/**
 			 * Non-players
-			 */
+			 *
 			nonplayers(0x10),
 
 			;
@@ -437,7 +441,7 @@ public class OrderParams extends TPObject implements Visitable
 			{
 				this.value=value;
 			}
-		}
+		}*/
 
 		private int mask;
 

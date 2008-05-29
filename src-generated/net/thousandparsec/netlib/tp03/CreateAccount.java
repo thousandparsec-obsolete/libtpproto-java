@@ -80,7 +80,11 @@ public class CreateAccount extends Request
 	{
 		this.comment=value;
 	}
-
+        public void visit(Visitor visitor) throws TPException
+        {
+            System.out.println("warning: visit method called in CreateAccount.java");
+            visit(visitor);
+        }
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);

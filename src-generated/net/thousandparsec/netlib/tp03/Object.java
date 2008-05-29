@@ -555,7 +555,11 @@ public class Object extends Response
 	{
 		throw new RuntimeException();
 	}
-
+        public void visit(Visitor visitor) throws TPException
+        {
+            System.out.println("warning: visit method called in Objet.java");
+            visit(visitor);
+        }
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);
@@ -653,7 +657,8 @@ public class Object extends Response
                     + "; modtime: "
                     + String.valueOf(this.modtime)
                     + "; padding: "
-                    + java.util.Arrays.toString(this.padding)
+                    //+ java.util.Arrays.toString(this.padding)
+                    + this.padding
                     + "; object: "
                     + String.valueOf(this.object)
                     + "; super:"

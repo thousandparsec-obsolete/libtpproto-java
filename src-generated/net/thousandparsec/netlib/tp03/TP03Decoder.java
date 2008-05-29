@@ -14,7 +14,7 @@ public class TP03Decoder implements FrameDecoder
 			
 			public void unhandledFrame(Frame frame) throws TPException
 			{
-				throw new TPException(String.format("Unexpected frame type %d", frame.getFrameType()));
+				throw new TPException("Unexpected frame type " + frame.getFrameType());
 			}
 
 			
@@ -26,7 +26,7 @@ public class TP03Decoder implements FrameDecoder
 			
 			public void frame(Fail frame) throws TPException
 			{
-				throw new TPException(String.format("Server said 'Fail': %d (%s)", frame.getCode().value, frame.getResult()));
+				throw new TPException("Server said 'Fail': " + frame.getCode().value +" ("+ frame.getResult()+")");
 			}
 		};
 

@@ -71,7 +71,11 @@ public class Category extends Response
 	{
 		this.description=value;
 	}
-
+        public void visit(Visitor visitor) throws TPException
+        {
+            System.out.println("warning: visit method called in Category.java");
+            visit(visitor);
+        }
 
 	public void visit(TP03Visitor visitor) throws TPException
 	{

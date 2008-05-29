@@ -157,7 +157,11 @@ public class GetObjectIDsByPos extends Request
 	{
 		this.r=value;
 	}
-
+        public void visit(Visitor visitor) throws TPException
+        {
+            System.out.println("warning: visit method called in GetObjectIDsByPos.java");
+            visit(visitor);
+        }
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);

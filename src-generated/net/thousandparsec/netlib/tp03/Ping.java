@@ -21,7 +21,11 @@ public class Ping extends Request
 		super(FRAME_TYPE);
 	}
 
-	
+	        public void visit(Visitor visitor) throws TPException
+        {
+            System.out.println("warning: visit method called in Ping.java");
+            visit(visitor);
+        }
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);

@@ -132,7 +132,11 @@ public class Resource extends Response
 		this.modtime=value;
 	}
 
-	
+	public void visit(Visitor visitor) throws TPException
+        {
+            System.out.println("warning: visit method called in Resource.java");
+            visit(visitor);
+        }
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);

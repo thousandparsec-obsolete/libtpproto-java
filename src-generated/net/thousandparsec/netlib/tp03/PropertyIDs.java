@@ -20,7 +20,11 @@ public class PropertyIDs extends IDSequence
 	{
 		super(FRAME_TYPE);
 	}
-
+        public void visit(Visitor visitor) throws TPException
+        {
+            System.out.println("warning: visit method called in PropertyIDs.java");
+            visit(visitor);
+        }
 	
 	public void visit(TP03Visitor visitor) throws TPException
 	{

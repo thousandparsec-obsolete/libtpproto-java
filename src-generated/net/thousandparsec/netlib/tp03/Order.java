@@ -218,7 +218,11 @@ public class Order extends Response
 	{
 		throw new RuntimeException();
 	}
-
+        public void visit(Visitor visitor) throws TPException
+        {
+            System.out.println("warning: visit method called in Order.java");
+            visit(visitor);
+        }
 	
 	public void visit(TP03Visitor visitor) throws TPException
 	{

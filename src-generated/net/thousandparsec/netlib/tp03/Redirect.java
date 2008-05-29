@@ -35,7 +35,11 @@ public class Redirect extends Response
 		this.URI=value;
 	}
 
-	
+	public void visit(Visitor visitor) throws TPException
+        {
+            System.out.println("warning: visit method called in Redirect.java");
+            visit(visitor);
+        }
 	public void visit(TP03Visitor visitor) throws TPException
 	{
 		visitor.frame(this);
