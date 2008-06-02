@@ -186,7 +186,8 @@ public class PipelinedConnection
 				Frame frame=receiveFrame();
 				if (!expectedClass.isInstance(frame))
                                         //throw new TPException(String.format("Unexpected frame: type %d (%s) while expecting %s", frame.getFrameType(), frame.toString(), expectedClass.getSimpleName()));
-					throw new TPException("Unexpected frame: type "+frame.getFrameType()+" ("+frame.toString()+") while expecting "+expectedClass.getSimpleName());
+					//throw new TPException("Unexpected frame: type "+frame.getFrameType()+" ("+frame.toString()+") while expecting "+expectedClass.getSimpleName());
+                                    throw new TPException("Unexpected frame: type "+frame.getFrameType()+" ("+frame.toString()+") while expecting "+expectedClass.getName());
 				else
 					return expectedClass.cast(frame);
 			}
@@ -241,8 +242,8 @@ public class PipelinedConnection
 		{
 			try
 			{
-				Connection<V> conn=getConnection();
-				Frame<V> frame;
+				Connection conn=getConnection();
+				Frame frame;
 				while (true)
 					try
 					{
