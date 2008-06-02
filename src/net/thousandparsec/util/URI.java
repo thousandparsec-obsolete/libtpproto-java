@@ -36,16 +36,17 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package java.net;
-
-import gnu.java.lang.CPStringBuilder;
+//package java.net;
+package net.thousandparsec.util;
+    
+//import gnu.java.lang.CPStringBuilder;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+//import java.io.ObjectInputStream;
+//import java.io.ObjectOutputStream;
+//import java.io.Serializable;
+//import java.util.regex.Matcher;
+//import java.util.regex.Pattern;
 
 /**
  * <p>
@@ -158,7 +159,7 @@ import java.util.regex.Pattern;
  * @since 1.4
  */
 public final class URI 
-  implements Comparable<URI>, Serializable
+  //implements Comparable<URI>, 
 {
   /**
    * For serialization compatability.
@@ -299,7 +300,7 @@ public final class URI
     catch (URISyntaxException x)
       {
 	// Should not happen.
-	throw new RuntimeException(x);
+	throw new RuntimeException(x.getMessage());
       }
   }
 
@@ -436,7 +437,8 @@ public final class URI
       }
     catch (java.io.UnsupportedEncodingException x2)
       {
-	throw (Error) new InternalError().initCause(x2);
+	//throw (Error) new InternalError().initCause(x2);
+        throw new Error(x2.getMessage());
       }
   }
 
@@ -485,7 +487,8 @@ public final class URI
    */
   private static String quote(String str, String legalCharacters)
   {
-    CPStringBuilder sb = new CPStringBuilder(str.length());
+    //CPStringBuilder sb = new CPStringBuilder(str.length());
+      StringBuffer sb = new StringBuffer(str.length());
     for (int i = 0; i < str.length(); i++)
       {
 	char c = str.charAt(i);
@@ -663,8 +666,9 @@ public final class URI
       }
     catch (URISyntaxException e)
       {
-	throw (IllegalArgumentException) new IllegalArgumentException()
-	      .initCause(e);
+	//throw (IllegalArgumentException) new IllegalArgumentException()
+	      //.initCause(e);
+        throw new IllegalArgumentException(e.getMessage());
       }
   }
 
@@ -749,8 +753,9 @@ public final class URI
       }
     catch (URISyntaxException e)
       {
-	throw (Error) new InternalError("Normalized URI variant could not "+
-					"be constructed").initCause(e);
+	//throw (Error) new InternalError("Normalized URI variant could not "+ "be constructed").initCause(e);
+        throw new Error("Normalized URI variant could not be constructed");
+            //.initCause(e);***
       }
   }
 
@@ -780,29 +785,31 @@ public final class URI
        This follows the algorithm in section 5.2.4. of RFC3986,
        but doesn't modify the input buffer.
     */
-    CPStringBuilder input = new CPStringBuilder(relativePath);
-    CPStringBuilder output = new CPStringBuilder();
+    //CPStringBuilder input = new CPStringBuilder(relativePath);
+      StringBuffer input = new StringBuffer(relativePath);
+    //CPStringBuilder output = new CPStringBuilder();
+      StringBuffer output = new StringBuffer();
     int start = 0;
     while (start < input.length())
       {
 	/* A */
-	if (input.indexOf("../",start) == start)
+	if (input.toString().indexOf("../",start) == start)
 	  {
 	    start += 3;
 	    continue;
 	  }
-	if (input.indexOf("./",start) == start)
+	if (input.toString().indexOf("./",start) == start)
 	  {
 	    start += 2;
 	    continue;
 	  }
 	/* B */
-	if (input.indexOf("/./",start) == start)
+	if (input.toString().indexOf("/./",start) == start)
 	  {
 	    start += 2;
 	    continue;
 	  }
-	if (input.indexOf("/.",start) == start
+	if (input.toString().indexOf("/.",start) == start
 	    && input.charAt(start + 2) != '.')
 	  {
 	    start += 1;
@@ -810,13 +817,13 @@ public final class URI
 	    continue;
 	  }
 	/* C */
-	if (input.indexOf("/../",start) == start)
+	if (input.toString().indexOf("/../",start) == start)
 	  {
 	    start += 3;
 	    removeLastSegment(output);
 	    continue;
 	  }
-	if (input.indexOf("/..",start) == start)
+	if (input.toString().indexOf("/..",start) == start)
 	  {
 	    start += 2;
 	    input.setCharAt(start,'/');
@@ -824,27 +831,27 @@ public final class URI
 	    continue;
 	  }
 	/* D */
-	if (start == input.length() - 1 && input.indexOf(".",start) == start)
+	if (start == input.length() - 1 && input.toString().indexOf(".",start) == start)
 	  {
 	    input.delete(0,1);
 	    continue;
 	  }
-	if (start == input.length() - 2 && input.indexOf("..",start) == start)
+	if (start == input.length() - 2 && input.toString().indexOf("..",start) == start)
 	  {
 	    input.delete(0,2);
 	    continue;
 	  }
 	/* E */
-	int indexOfSlash = input.indexOf("/",start);
+	int indexOfSlash = input.toString().indexOf("/",start);
 	while (indexOfSlash == start)
 	  {
 	    output.append("/");
 	    ++start;
-	    indexOfSlash = input.indexOf("/",start);
+	    indexOfSlash = input.toString().indexOf("/",start);
 	  }
 	if (indexOfSlash == -1)
 	  indexOfSlash = input.length();
-	output.append(input.substring(start, indexOfSlash));
+	output.append(input.toString().substring(start, indexOfSlash));
         start = indexOfSlash;
       }
     return output.toString();
@@ -855,9 +862,10 @@ public final class URI
    *
    * @param buffer the buffer containing the path.
    */
-  private void removeLastSegment(CPStringBuilder buffer)
+  //private void removeLastSegment(CPStringBuilder buffer)
+  private void removeLastSegment(StringBuffer buffer)
   {
-    int lastSlash = buffer.lastIndexOf("/");
+    int lastSlash = buffer.toString().lastIndexOf('/');
     if (lastSlash == -1)
       buffer.setLength(0);
     else
@@ -901,7 +909,8 @@ public final class URI
 	      path = "";
 	    if (! (path.startsWith("/")))
 	      {
-		CPStringBuilder basepath = new CPStringBuilder(this.path);
+		//CPStringBuilder basepath = new CPStringBuilder(this.path);
+                StringBuffer basepath = new StringBuffer(this.path);
 		int i = this.path.lastIndexOf('/');
 
 		if (i >= 0)
@@ -915,8 +924,9 @@ public final class URI
       }
     catch (URISyntaxException e)
       {
-	throw (Error) new InternalError("Resolved URI variant could not "+
-					"be constructed").initCause(e);
+	throw new Error("Resolved URI variant could not be constructed");
+           // .initCause(e);*****
+
       }
   }
 
@@ -986,8 +996,8 @@ public final class URI
       }
     catch (URISyntaxException e)
       {
-	throw (Error) new InternalError("Relativized URI variant could not "+
-					"be constructed").initCause(e);       
+	throw new Error("Relativized URI variant could not be constructed");
+        //.initCause(e);       
       }
   }
 
@@ -1285,7 +1295,8 @@ public final class URI
       return -1;
     if (scheme != null)
       {
-	int sCompare = scheme.compareToIgnoreCase(uri.getScheme()); 
+	//int sCompare = scheme.compareToIgnoreCase(uri.getScheme()); 
+        int sCompare = (scheme.toLowerCase()).compareTo(uri.getScheme().toLowerCase()); 
 	if (sCompare != 0)
 	  return sCompare;
       }
@@ -1390,8 +1401,10 @@ public final class URI
   {
     String strRep = toString();
     boolean inNonAsciiBlock = false;
-    CPStringBuilder buffer = new CPStringBuilder();
-    CPStringBuilder encBuffer = null;
+    //CPStringBuilder buffer = new CPStringBuilder();
+    StringBuffer buffer = new StringBuffer();
+    //CPStringBuilder encBuffer = null;
+    StringBuffer encBuffer = null;
     for (int i = 0; i < strRep.length(); i++)
       {
 	char c = strRep.charAt(i);
@@ -1408,7 +1421,8 @@ public final class URI
 	  {
 	    if (!inNonAsciiBlock)
 	      {
-		encBuffer = new CPStringBuilder();
+		//encBuffer = new CPStringBuilder();
+                encBuffer = new StringBuffer();
 		inNonAsciiBlock = true;
 	      }
 	    encBuffer.append(c);
@@ -1430,7 +1444,8 @@ public final class URI
   {
     try
       {
-	CPStringBuilder sb = new CPStringBuilder(); 
+	//CPStringBuilder sb = new CPStringBuilder(); 
+        StringBuffer sb = new StringBuffer();
 	// this is far from optimal, but it works
 	byte[] utf8 = str.getBytes("utf-8");
 	for (int j = 0; j < utf8.length; j++)
@@ -1443,7 +1458,8 @@ public final class URI
       }
     catch (java.io.UnsupportedEncodingException x)
       {
-	throw (Error) new InternalError("Escaping error").initCause(x);
+	//throw (Error) new InternalError("Escaping error").initCause(x);
+        throw new Error("Escaping error");
       }
   }
 
