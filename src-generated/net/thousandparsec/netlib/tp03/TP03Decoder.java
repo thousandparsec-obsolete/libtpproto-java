@@ -32,7 +32,8 @@ public class TP03Decoder implements FrameDecoder
 
 	public Connection
 		makeConnection(URI serverUri, boolean autologin, TP03Visitor asyncVisitor)
-		throws UnknownHostException, IOException, TPException
+		//throws UnknownHostException, IOException, TPException
+                throws IOException, TPException
 	{
 		Connection connection=Connection.makeConnection(this, serverUri, asyncVisitor);
 		if (autologin)
