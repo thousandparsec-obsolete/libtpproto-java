@@ -1,40 +1,75 @@
 package net.thousandparsec.netlib;
 
-import java.util.Calendar;
-
 /**
- * A tuple of CennectionEvent, the type of the connection event (FRAME_SENT, FRAME_RECEIVED, CONNECTION_ERROR), and the time when it occurred,
- * in a formatted {@link String} of the form: [hh:mm:ss].
- * Class originally designed for LoggerConnectionListener.
+ * A container for {@link CennectionEvent} and the time when it occurred, in standard 'long' form.
+ * Class originally designed for {@link LoggerConnectionListener}.
  * 
  * @author Victor Ivri
  */
-public class ConnectionEventTuple 
+public class ConnectionEventTuple
 {
-	ConnectionEvent<Visitor> conEvent;
-	String time;
-	String evType;
+	private final ConnectionEvent<Visitor> conEvent;
+	private final long time; //in milliseconds from Epoch
 	
+	/*
+	 * 	Dummy constructor; never used.
+	 */
 	private ConnectionEventTuple(){
-		//dummy constructor
+		conEvent = null;
+		time = 0;
 	}
 	
 	/**
 	 * Constructor for ConnectionEventTuple.
 	 * 
 	 * @param event {@link ConnectionEvent<Visitor>}
-	 * @param type String : FRAME_SENT, FRAME_RECEIVED, CONNECTION_ERROR.
 	 */
-	protected ConnectionEventTuple(ConnectionEvent<Visitor> event, String type) 
+	public ConnectionEventTuple(ConnectionEvent<Visitor> event) 
 	{
-		time = setTime();
+		time = System.currentTimeMillis();
 		conEvent = event;
-		evType = type;
 	}
 	
-	private String setTime()
+	/**
+	 * @return time in milliseconds from Epoch. Same as in {@link System}.getCurrentTimeMillis()
+	 */
+	public long getTime()
 	{
-		String formattedTime = "[" + Calendar.HOUR + ":" + Calendar.MINUTE + ":" + Calendar.SECOND + "]";
-		return formattedTime;
+		return time;
 	}
+	
+	/**
+	 * @return the reference object {@link Frame}<Visitor> of the {@link ConnectionEvent}.
+	 * Note that the reference is of the object directly, and not of a copy of it,
+	 * thus there may be situations where it is not safe.
+	 */
+	public Frame<Visitor> getFrame()
+	{
+		return this.conEvent.getFrame();
+	}
+	
+	/**
+	 * @return the {@link ConnectionEvent.Type} of the {@link ConnectionEvent}.
+	 */
+	public ConnectionEvent.Type getType()
+	{
+		return conEvent.getType();
+	}
+	
+	/**
+	 * @return true if the {@link ConnectionEvent} is asynchronous; false otherwise.
+	 */
+	public boolean getIsAsynch()
+	{
+		return conEvent.isAsync();
+	}
+	
+	/**
+	 * @return a reference to the {@link Exception} object of the {@link ConnectionEvent}, or null if none exists.
+	 */
+	public Exception getException()
+	{
+		return conEvent.getException();
+	}
+	
 }
