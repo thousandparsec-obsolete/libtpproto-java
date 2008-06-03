@@ -1,22 +1,22 @@
 package net.thousandparsec.netlib;
 
-import java.util.*;
-import java.util.concurrent.*;
-import java.io.*;
-
+import java.io.PrintStream;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * A {@link ConnectionEvent} logger, that utilizes a list structure.
- * Logs the connection events in memory, and periodically dumps them either to standard-out, or to a file.
- * 
- * This class is thread safe.
+ * A {@link ConnectionEvent} logger, that utilizes a list structure. Logs the
+ * connection events in memory, and periodically dumps them either to
+ * standard-out, or to a file. This class is thread safe.
  * 
  * @author Victor Ivri
- *
  */
-public class LoggerConnectionListener<V extends Visitor> implements ConnectionListener
+public class LoggerConnectionListener<V extends Visitor> implements ConnectionListener<V>
 {
-	private final ConcurrentLinkedQueue<ConnectionEventTuple> connectionEventLog;
+	private final Queue<ConnectionEventTuple<V>> connectionEventLog;
 	private final Calendar sessionStart;
 	private final PrintStream printStream;
 	private final int dumpWhenReachSize;
@@ -26,7 +26,7 @@ public class LoggerConnectionListener<V extends Visitor> implements ConnectionLi
 	 */
 	public LoggerConnectionListener()
 	{
-		connectionEventLog = new ConcurrentLinkedQueue<ConnectionEventTuple>(); // a thread-safe class
+		connectionEventLog = new ConcurrentLinkedQueue<ConnectionEventTuple<V>>(); // a thread-safe class
 		sessionStart = Calendar.getInstance();
 		printStream = null;
 		dumpWhenReachSize = 0;
@@ -44,7 +44,7 @@ public class LoggerConnectionListener<V extends Visitor> implements ConnectionLi
 	 */
 	public LoggerConnectionListener(int sizeLimit, PrintStream ps)
 	{
-		connectionEventLog = new ConcurrentLinkedQueue<ConnectionEventTuple>(); // a thread-safe class
+		connectionEventLog = new ConcurrentLinkedQueue<ConnectionEventTuple<V>>(); // a thread-safe class
 		printStream = ps;
 		dumpWhenReachSize = sizeLimit;
 		sessionStart = Calendar.getInstance();
@@ -53,27 +53,27 @@ public class LoggerConnectionListener<V extends Visitor> implements ConnectionLi
 	/**
 	 * Adds a {@link ConnectionEvent} to the log of events.
 	 */
-	public synchronized void connectionError(ConnectionEvent ev) 
+	public synchronized void connectionError(ConnectionEvent<V> ev) 
 	{
-		connectionEventLog.add(new ConnectionEventTuple(ev));
+		connectionEventLog.add(new ConnectionEventTuple<V>(ev));
 		dumpIfReachedLimit();
 	}
 
 	/**
 	 * Adds a {@link ConnectionEvent} to the log of events.
 	 */
-	public synchronized void frameReceived(ConnectionEvent ev) 
+	public synchronized void frameReceived(ConnectionEvent<V> ev) 
 	{
-		connectionEventLog.add(new ConnectionEventTuple(ev));
+		connectionEventLog.add(new ConnectionEventTuple<V>(ev));
 		dumpIfReachedLimit();
 	}
 
 	/**
 	 * Adds a {@link ConnectionEvent} to the log of events.
 	 */
-	public synchronized void frameSent(ConnectionEvent ev) 
+	public synchronized void frameSent(ConnectionEvent<V> ev) 
 	{
-		connectionEventLog.add(new ConnectionEventTuple(ev));
+		connectionEventLog.add(new ConnectionEventTuple<V>(ev));
 		dumpIfReachedLimit();
 	}
 	
@@ -86,6 +86,8 @@ public class LoggerConnectionListener<V extends Visitor> implements ConnectionLi
 	}
 	
 	/**
+	 * TODO: This javadoc seems out of date, even with my change to return *modifiable* queue
+	 * (it's the point of it to be consumed by clients, right?...)
 	 * 
 	 * @return 
 	 * an immutable, synchronized <ConnectionEventTuple>{@link Collection}<ConnectionEventTuple>, 
@@ -107,9 +109,9 @@ public class LoggerConnectionListener<V extends Visitor> implements ConnectionLi
   	 *	}
   	 *
 	 */
-	public synchronized Collection<ConnectionEventTuple> getLog()
+	public synchronized Queue<ConnectionEventTuple<V>> getLog()
 	{
-		return Collections.unmodifiableCollection(connectionEventLog); 
+		return connectionEventLog; 
 	}
 	
 	/**
@@ -172,7 +174,7 @@ public class LoggerConnectionListener<V extends Visitor> implements ConnectionLi
 			
 			while (connectionEventLog.peek() != null)
 			{
-				ConnectionEventTuple cet = connectionEventLog.poll(); //get and remove event
+				ConnectionEventTuple<V> cet = connectionEventLog.poll(); //get and remove event
 				Exception ex = cet.getException();
 				String exception;
 				if (ex == null)

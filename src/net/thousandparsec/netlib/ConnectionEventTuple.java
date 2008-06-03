@@ -1,30 +1,23 @@
 package net.thousandparsec.netlib;
 
 /**
- * A container for {@link CennectionEvent} and the time when it occurred, in standard 'long' form.
- * Class originally designed for {@link LoggerConnectionListener}.
+ * A container for {@link ConnectionEvent} and the time when it occurred, in
+ * standard 'long' form. Class originally designed for
+ * {@link LoggerConnectionListener}.
  * 
  * @author Victor Ivri
  */
-public class ConnectionEventTuple
+public class ConnectionEventTuple<V extends Visitor>
 {
-	private final ConnectionEvent<Visitor> conEvent;
+	private final ConnectionEvent<V> conEvent;
 	private final long time; //in milliseconds from Epoch
-	
-	/*
-	 * 	Dummy constructor; never used.
-	 */
-	private ConnectionEventTuple(){
-		conEvent = null;
-		time = 0;
-	}
 	
 	/**
 	 * Constructor for ConnectionEventTuple.
 	 * 
-	 * @param event {@link ConnectionEvent<Visitor>}
+	 * @param event {@link ConnectionEvent}
 	 */
-	public ConnectionEventTuple(ConnectionEvent<Visitor> event) 
+	public ConnectionEventTuple(ConnectionEvent<V> event) 
 	{
 		time = System.currentTimeMillis();
 		conEvent = event;
@@ -43,7 +36,7 @@ public class ConnectionEventTuple
 	 * Note that the reference is of the object directly, and not of a copy of it,
 	 * thus there may be situations where it is not safe.
 	 */
-	public Frame<Visitor> getFrame()
+	public Frame<V> getFrame()
 	{
 		return this.conEvent.getFrame();
 	}
