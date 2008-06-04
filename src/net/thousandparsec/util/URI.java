@@ -346,7 +346,7 @@ public final class URI
    * @return either the matched content, <code>null</code> for undefined
    *         values, or an empty string for a URI part with empty content.
    */
-  private static String getURIGroup(Matcher match, int group)
+  /*private static String getURIGroup(Matcher match, int group)
   {
     String matched = match.group(group);
     if (matched == null || matched.length() == 0)
@@ -358,7 +358,7 @@ public final class URI
 	  return "";
       }
     return matched;
-  }
+  }*/
 
   /**
    * Sets fields of this URI by parsing the given string.
@@ -380,30 +380,44 @@ public final class URI
           scheme = rawString.substring(0,rawString.indexOf(':'));
           index=rawString.indexOf(':');
           currentIndex = index;
+          
+          /*
+           * Set the raw scheme specific part: that is, all data after the scheme
+           * 
+           */
+          rawSchemeSpecificPart = rawString.substring(index+1, rawString.indexOf('#'));
+          schemeSpecificPart = unquote(rawSchemeSpecificPart);
+          
           /*
            * Checks for // in the URI, and moves past it if it exists 
            */
           if (rawString.charAt(index+1) == rawString.charAt(index+2) && rawString.charAt(index+1)=='/'){
               currentIndex +=2;
           }
+          
           /*
            * A '/' may not exist at the end of the URI, we must check for that, by catching any negative values returned by indexOf
            */
+          
           if(rawString.indexOf('/', currentIndex) < 0){
               authority = rawString.substring(currentIndex);
           }
+          
           /*
            * Else the // does exist and we can handle it too
            */
           else{
               authority = rawString.substring(currentIndex, str.indexOf('/', currentIndex));
           }
+          
           /*
            * Handles the Path part
            * First, change the index and the current index to the start of the next part of the path.
            */
+          
           index=rawString.indexOf('/',currentIndex);
           currentIndex=index;
+          
           /*
            * Paths can end at a '?' a '#', or at the end of the file
            */
@@ -411,10 +425,12 @@ public final class URI
           if(rawString.indexOf('?',currentIndex) < 0 && rawString.indexOf('#', currentIndex) < 0){
               path = rawString.substring(currentIndex);
           }
+          
           //if no ? but a # go to #
           else if(rawString.indexOf('?', currentIndex) < 0 && rawString.indexOf('#', currentIndex) > 0 ){
               path = rawString.substring(currentIndex, rawString.indexOf('#', currentIndex));
           }
+          
           //if ? and a #, and the # is before the ?, go to the # if the ? is before the # go to the ?
           else if (rawString.indexOf('?', currentIndex) > 0 && rawString.indexOf('#', currentIndex) > 0){
               if(rawString.indexOf('?', currentIndex) < rawString.indexOf('#', currentIndex)){
@@ -425,12 +441,15 @@ public final class URI
               }
               
           }
+          
           //if there's a ? and no #, go to the ?
           else if (rawString.indexOf('?', currentIndex) > 0 ) {
               path = rawString.substring(currentIndex, rawString.indexOf('?',currentIndex));
           }
+          
           else{
-              //malformedURI Exception?	
+              //malformedURI Exception?	return for now
+              return;
           }
           
           /*
@@ -441,14 +460,17 @@ public final class URI
           if(rawString.indexOf('?', currentIndex)<0){
               return;
           }
+          
           //no fragment, so go to end of string as query
           if(rawString.indexOf('#', currentIndex) < 0){
               query = rawString.substring(currentIndex);
           }
+          
           //fragment exists, go to fragment
           else if(rawString.indexOf('#', currentIndex) > 0){
               query = rawString.substring(currentIndex+1, rawString.indexOf('#', currentIndex));
           }
+          
          /* Handles the Fragment Part
           */ 
       }
@@ -775,7 +797,7 @@ public final class URI
   {
     if (rawAuthority != null)
       {
-	Matcher matcher = AUTHORITY_PATTERN.matcher(rawAuthority);
+	//Matcher matcher = AUTHORITY_PATTERN.matcher(rawAuthority);
 
 	if (matcher.matches())
 	  {
@@ -791,16 +813,13 @@ public final class URI
 		}
 	      catch (NumberFormatException e)
 		{
-		  URISyntaxException use =
-		    new URISyntaxException
-		      (string, "doesn't match URI regular expression");
-		  use.initCause(e);
+		  URISyntaxException use = new URISyntaxException (string, "doesn't match proper URI format");
+		  //use.initCause(e);
 		  throw use;
 		}
 	  }
 	else
-	  throw new URISyntaxException(string,
-				       "doesn't match URI regular expression");
+	  throw new URISyntaxException(string, "doesn't match proper URI Format");
       }
     return this;
   }
