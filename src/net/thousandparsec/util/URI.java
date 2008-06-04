@@ -394,20 +394,26 @@ public final class URI
           if (rawString.charAt(index+1) == rawString.charAt(index+2) && rawString.charAt(index+1)=='/'){
               currentIndex +=2;
           }
+          /*
+           * Raw user info, starts at // or : and ends at an @ if no @, no user info exists
+           */
+          if(rawString.indexOf('@', currentIndex) > 0){
+              rawUserInfo = rawString.substring(currentIndex, rawString.indexOf('@', currentIndex));
+          }
           
           /*
            * A '/' may not exist at the end of the URI, we must check for that, by catching any negative values returned by indexOf
            */
           
           if(rawString.indexOf('/', currentIndex) < 0){
-              authority = rawString.substring(currentIndex);
+              rawAuthority = rawString.substring(currentIndex);
           }
           
           /*
            * Else the // does exist and we can handle it too
            */
           else{
-              authority = rawString.substring(currentIndex, str.indexOf('/', currentIndex));
+              rawAuthority = rawString.substring(currentIndex, str.indexOf('/', currentIndex));
           }
           
           /*
@@ -423,28 +429,28 @@ public final class URI
            */
           //if no ? and no #, go to end
           if(rawString.indexOf('?',currentIndex) < 0 && rawString.indexOf('#', currentIndex) < 0){
-              path = rawString.substring(currentIndex);
+              rawPath = rawString.substring(currentIndex);
           }
           
           //if no ? but a # go to #
           else if(rawString.indexOf('?', currentIndex) < 0 && rawString.indexOf('#', currentIndex) > 0 ){
-              path = rawString.substring(currentIndex, rawString.indexOf('#', currentIndex));
+              rawPath = rawString.substring(currentIndex, rawString.indexOf('#', currentIndex));
           }
           
           //if ? and a #, and the # is before the ?, go to the # if the ? is before the # go to the ?
           else if (rawString.indexOf('?', currentIndex) > 0 && rawString.indexOf('#', currentIndex) > 0){
               if(rawString.indexOf('?', currentIndex) < rawString.indexOf('#', currentIndex)){
-                  path= rawString.substring(currentIndex, rawString.indexOf('?', currentIndex));	
+                  rawPath= rawString.substring(currentIndex, rawString.indexOf('?', currentIndex));	
               }
               else if(rawString.indexOf('?', currentIndex) > rawString.indexOf('#', currentIndex)){
-                  path= rawString.substring(currentIndex, rawString.indexOf('#', currentIndex));
+                  rawPath= rawString.substring(currentIndex, rawString.indexOf('#', currentIndex));
               }
               
           }
           
           //if there's a ? and no #, go to the ?
           else if (rawString.indexOf('?', currentIndex) > 0 ) {
-              path = rawString.substring(currentIndex, rawString.indexOf('?',currentIndex));
+              rawPath = rawString.substring(currentIndex, rawString.indexOf('?',currentIndex));
           }
           
           else{
@@ -463,12 +469,12 @@ public final class URI
           
           //no fragment, so go to end of string as query
           if(rawString.indexOf('#', currentIndex) < 0){
-              query = rawString.substring(currentIndex);
+              rawQuery = rawString.substring(currentIndex);
           }
           
           //fragment exists, go to fragment
           else if(rawString.indexOf('#', currentIndex) > 0){
-              query = rawString.substring(currentIndex+1, rawString.indexOf('#', currentIndex));
+              rawQuery = rawString.substring(currentIndex+1, rawString.indexOf('#', currentIndex));
           }
           
          /* Handles the Fragment Part
