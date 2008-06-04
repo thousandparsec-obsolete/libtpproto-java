@@ -369,110 +369,110 @@ public final class URI
    */
   private void parseURI(String str) throws URISyntaxException
   {
-    //Matcher matcher = URI_PATTERN.matcher(str);
-    String rawString = str;
-    int index =0;
-    int currentIndex=0;
-    /*
-     * Get the Scheme from the raw string
-     * 
-     */ 
-    scheme = rawString.substring(0,rawString.indexOf(':'));
-    index=rawString.indexOf(':');
-    currentIndex = index;
-    /*
-     * Checks for // in the URI, and moves past it if it exists 
-     * 
-     */
-    if (rawString.charAt(index+1) == rawString.charAt(index+2) && rawString.charAt(index+1)=='/'){
-	currentIndex +=2;
-    }
-    /*
-     * A '/' may not exist at the end of the URI, we must check for that, by catching any negative values returned by indexOf
-     */
-    if(rawString.indexOf('/', currentIndex) < 0){
-			authority = rawString.substring(currentIndex);
-    }
-    /*
-     * Else the // does exist and we can handle it too
-     */
-    else{
-	authority = rawString.substring(currentIndex, str.indexOf('/', currentIndex));
-    }
-    /*
-     * Handles the Path part
-     * First, change the index and the current index to the start of the next part of the path.
-     */
-    index=rawString.indexOf('/',currentIndex);
-    currentIndex=index;
-    /*
-     * Paths can end at a '?' a '#', or at the end of the file
-     */
-    //if no ? and no #, go to end
-    if(rawString.indexOf('?',currentIndex) < 0 && rawString.indexOf('#', currentIndex) < 0){
-        path = rawString.substring(currentIndex);
-    }
-    //if no ? but a # go to #
-    else if(rawString.indexOf('?', currentIndex) < 0 && rawString.indexOf('#', currentIndex) > 0 ){
-        path = rawString.substring(currentIndex, rawString.indexOf('#', currentIndex));
-    }
-    //if ? and a #, and the # is before the ?, go to the # if the ? is before the # go to the ?
-    else if (rawString.indexOf('?', currentIndex) > 0 && rawString.indexOf('#', currentIndex) > 0){
-        if(rawString.indexOf('?', currentIndex) < rawString.indexOf('#', currentIndex)){
-            path= rawString.substring(currentIndex, rawString.indexOf('?', currentIndex));	
-        }
-        else if(rawString.indexOf('?', currentIndex) > rawString.indexOf('#', currentIndex)){
-            path= rawString.substring(currentIndex, rawString.indexOf('#', currentIndex));
-        }
-
-    }
-    //if there's a ? and no #, go to the ?
-    else if (rawString.indexOf('?', currentIndex) > 0 ) {
-        path = rawString.substring(currentIndex, rawString.indexOf('?',currentIndex));
-    }
-    else{
-        //malformedURI Exception?	
-    }
-    
-    /*
-     * Handles the query part.
-     * //Query starts at ? ends at #
-     * //if no query exists, we're done, so return
-     */ 
-    if(rawString.indexOf('?', currentIndex)<0){
-        return;
-    }
-    //no fragment, so go to end of string as query
-    if(rawString.indexOf('#', currentIndex) < 0){
-        query = rawString.substring(currentIndex);
-    }
-    //fragment exists, go to fragment
-    else if(rawString.indexOf('#', currentIndex) > 0){
-        query = rawString.substring(currentIndex+1, rawString.indexOf('#', currentIndex));
-    }
-
-    /* Handles the Fragment Part
-     * 
-     * 
-     */ 
-    
-    if (matcher.matches())
+      try
       {
-	scheme = getURIGroup(matcher, SCHEME_GROUP);//done
-	rawSchemeSpecificPart = matcher.group(SCHEME_SPEC_PART_GROUP);
-	schemeSpecificPart = unquote(rawSchemeSpecificPart);
-	if (!isOpaque())
-	  {
-	    rawAuthority = getURIGroup(matcher, AUTHORITY_GROUP);//done
-	    rawPath = matcher.group(PATH_GROUP);
-	    rawQuery = getURIGroup(matcher, QUERY_GROUP);
-	  }
-	rawFragment = getURIGroup(matcher, FRAGMENT_GROUP);
+          String rawString = str;
+          int index =0;
+          int currentIndex=0;
+          /*
+           * Get the Scheme from the raw string
+           */
+          scheme = rawString.substring(0,rawString.indexOf(':'));
+          index=rawString.indexOf(':');
+          currentIndex = index;
+          /*
+           * Checks for // in the URI, and moves past it if it exists 
+           */
+          if (rawString.charAt(index+1) == rawString.charAt(index+2) && rawString.charAt(index+1)=='/'){
+              currentIndex +=2;
+          }
+          /*
+           * A '/' may not exist at the end of the URI, we must check for that, by catching any negative values returned by indexOf
+           */
+          if(rawString.indexOf('/', currentIndex) < 0){
+              authority = rawString.substring(currentIndex);
+          }
+          /*
+           * Else the // does exist and we can handle it too
+           */
+          else{
+              authority = rawString.substring(currentIndex, str.indexOf('/', currentIndex));
+          }
+          /*
+           * Handles the Path part
+           * First, change the index and the current index to the start of the next part of the path.
+           */
+          index=rawString.indexOf('/',currentIndex);
+          currentIndex=index;
+          /*
+           * Paths can end at a '?' a '#', or at the end of the file
+           */
+          //if no ? and no #, go to end
+          if(rawString.indexOf('?',currentIndex) < 0 && rawString.indexOf('#', currentIndex) < 0){
+              path = rawString.substring(currentIndex);
+          }
+          //if no ? but a # go to #
+          else if(rawString.indexOf('?', currentIndex) < 0 && rawString.indexOf('#', currentIndex) > 0 ){
+              path = rawString.substring(currentIndex, rawString.indexOf('#', currentIndex));
+          }
+          //if ? and a #, and the # is before the ?, go to the # if the ? is before the # go to the ?
+          else if (rawString.indexOf('?', currentIndex) > 0 && rawString.indexOf('#', currentIndex) > 0){
+              if(rawString.indexOf('?', currentIndex) < rawString.indexOf('#', currentIndex)){
+                  path= rawString.substring(currentIndex, rawString.indexOf('?', currentIndex));	
+              }
+              else if(rawString.indexOf('?', currentIndex) > rawString.indexOf('#', currentIndex)){
+                  path= rawString.substring(currentIndex, rawString.indexOf('#', currentIndex));
+              }
+              
+          }
+          //if there's a ? and no #, go to the ?
+          else if (rawString.indexOf('?', currentIndex) > 0 ) {
+              path = rawString.substring(currentIndex, rawString.indexOf('?',currentIndex));
+          }
+          else{
+              //malformedURI Exception?	
+          }
+          
+          /*
+           * Handles the query part.
+           * //Query starts at ? ends at #
+           * //if no query exists, we're done, so return
+           */ 
+          if(rawString.indexOf('?', currentIndex)<0){
+              return;
+          }
+          //no fragment, so go to end of string as query
+          if(rawString.indexOf('#', currentIndex) < 0){
+              query = rawString.substring(currentIndex);
+          }
+          //fragment exists, go to fragment
+          else if(rawString.indexOf('#', currentIndex) > 0){
+              query = rawString.substring(currentIndex+1, rawString.indexOf('#', currentIndex));
+          }
+         /* Handles the Fragment Part
+          */ 
       }
-    else
-      throw new URISyntaxException(str,
-				   "doesn't match URI regular expression");
-    parseServerAuthority();
+      catch(Exception e){
+          throw new URISyntaxException(str, "doesn't match accepted URI Pattern");
+      }
+
+      
+
+      
+      /*if (matcher.matches())
+       {
+       scheme = getURIGroup(matcher, SCHEME_GROUP);//done
+       rawSchemeSpecificPart = matcher.group(SCHEME_SPEC_PART_GROUP);
+       schemeSpecificPart = unquote(rawSchemeSpecificPart);
+       if (!isOpaque())
+       {
+       rawAuthority = getURIGroup(matcher, AUTHORITY_GROUP);//done
+       rawPath = matcher.group(PATH_GROUP);
+       rawQuery = getURIGroup(matcher, QUERY_GROUP);
+       }
+       rawFragment = getURIGroup(matcher, FRAGMENT_GROUP);
+       }*/
+      
 
     // We must eagerly unquote the parts, because this is the only time
     // we may throw an exception.
