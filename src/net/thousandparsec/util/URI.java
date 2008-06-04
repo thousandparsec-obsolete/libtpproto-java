@@ -436,11 +436,21 @@ public final class URI
     
     /*
      * Handles the query part.
-     * 
-     * 
+     * //Query starts at ? ends at #
+     * //if no query exists, we're done, so return
      */ 
-    
-    
+    if(rawString.indexOf('?', currentIndex)<0){
+        return;
+    }
+    //no fragment, so go to end of string as query
+    if(rawString.indexOf('#', currentIndex) < 0){
+        query = rawString.substring(currentIndex);
+    }
+    //fragment exists, go to fragment
+    else if(rawString.indexOf('#', currentIndex) > 0){
+        query = rawString.substring(currentIndex+1, rawString.indexOf('#', currentIndex));
+    }
+
     /* Handles the Fragment Part
      * 
      * 
