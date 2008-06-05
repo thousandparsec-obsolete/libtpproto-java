@@ -1,8 +1,7 @@
 package net.thousandparsec.netlib;
 
 import java.io.IOException;
-//import java.net.URI;
-//import java.net.UnknownHostException;
+import net.thousandparsec.util.URI;
 
 /**
  * This is an interface for frame decoders automatically generated for a specific
@@ -35,7 +34,6 @@ public interface FrameDecoder
 	 *            the server
 	 * @see Connection#makeConnection(FrameDecoder, URI, Visitor)
 	 */
-	Connection makeConnection(String serverUri, boolean autologin, Visitor asyncVisitor) throws IOException, TPException; //Check this later
-        //Connection makeConnection(URI serverUri, boolean autologin, Visitor asyncVisitor) throws UnknownHostException, IOException, TPException;
-	Frame decodeFrame(int id, TPDataInput in) throws IOException;
+	Connection makeConnection(URI serverUri, boolean autologin, Visitor asyncVisitor) throws IOException, TPException; //Check this later (UnknownHostException)
+        Frame decodeFrame(int id, TPDataInput in) throws IOException;
 }
