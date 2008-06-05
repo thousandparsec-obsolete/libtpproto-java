@@ -12,6 +12,8 @@ import java.io.OutputStream;
 //import java.util.Collections;
 //import java.util.List;
 import java.util.Vector;
+import net.thousandparsec.util.URI;
+import net.thousandparsec.util.URISyntaxException;
 
 //import java.util.concurrent.Callable;
 //import java.util.concurrent.ExecutorService;
@@ -97,14 +99,15 @@ public class Connection
 
             /**
              * Secure (by SSL/TLS) Thousand Parsec connection via HTTPS tunnel.
+             * Shouldn't need this one.
              */
-            static final MethodCode https = new MethodCode(443);
+            //static final MethodCode https = new MethodCode(443);
             
             public MethodCode[] values(){
                 codes[0] = tp;
                 codes[1] = tps;
                 codes[2] = http;
-                codes[3] = https;
+                //codes[3] = https;
             }
         }
 
@@ -156,7 +159,7 @@ public class Connection
                 throws IOException
 	{
 		int port=serverUri.getPort();
-		return port == -1
+		return port == -1 
 			? makeConnection(
 				frameDecoder,
 				serverUri.getHost(),
@@ -213,19 +216,25 @@ public class Connection
 		//throws UnknownHostException, IOException
                 throws IOException
 	{
-		switch (method)
-		{
-			case tp:
-				return makeTPConnection(frameDecoder, host, asyncVisitor);
-			case tps:
-				return makeTPSConnection(frameDecoder, host, asyncVisitor);
-			case http:
-				return makeHTTPConnection(frameDecoder, host, asyncVisitor);
-			case https:
-				return makeHTTPSConnection(frameDecoder, host, asyncVisitor);
-			default:
-				throw new IllegalArgumentException("Unknown connection method");
-		}
+		if(method.equals(Method.tp)){
+                    return makeTPConnection(frameDecoder, host, asyncVisitor);
+                }
+                /*else if(method.equals(Method.tps)){
+                    return makeTPSConnection(frameDecoder, host, asyncVisitor);
+                }*/
+                
+                else if(method.equals(Method.http)){
+                    return makeHTTPConnection(frameDecoder, host, asyncVisitor);
+                }
+                /*else if(method.equals(Method.https)){
+                    return makeHTTPSConnection(frameDecoder, host, asyncVisitor);
+                }*/
+                //default
+                else{
+                    throw new IllegalArgumentException("Unknown connection method");
+                }
+               
+		
 	}
 
 	/**
