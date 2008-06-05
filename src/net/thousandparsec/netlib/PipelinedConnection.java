@@ -1,7 +1,7 @@
 package net.thousandparsec.netlib;
 
 import java.io.IOException;
-import java.util.Collections;
+/*import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
@@ -10,7 +10,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;*/
+
+import java.util.Hashtable;
 
 /**
  * This wrapper around {@link Connection} implements a functionality exposing
@@ -45,7 +47,8 @@ public class PipelinedConnection
 	public static final int DEFAULT_QUEUE_DEPTH=32;
 
 	private final Connection conn;
-	private final Map<Integer, BlockingQueue<Frame<V>>> pipelines;
+	//private final Map<Integer, BlockingQueue<Frame<V>>> pipelines;
+        private final Hashtable pipelines;
 	private final Future<Void> receiverFuture;
 
 	/**
@@ -55,13 +58,13 @@ public class PipelinedConnection
 	 * @param conn
 	 *            the underlying {@link Connection}
 	 */
-	//public PipelinedConnection(Connection<V> conn)
-        public PipelinedConnection(Connection conn)
+	public PipelinedConnection(Connection conn)
 	{
 		this.conn=conn;
 		//we need something stronger that ConcurrentMap
-		this.pipelines=Collections.synchronizedMap(new HashMap<Integer, BlockingQueue<Frame<V>>>());
-		ExecutorService exec=Executors.newSingleThreadExecutor();
+		//this.pipelines=Collections.synchronizedMap(new HashMap<Integer, BlockingQueue<Frame<V>>>());
+                this.pipelines = new Hashtable();
+		ExecutorService exec=Executors.newSingleThreadExecutor(); //*** What do i do here?
 		this.receiverFuture=exec.submit(new ReceiverTask());
 		//it is safe to do here, per shutdown() contract: it waits for tasks to finish, and then shuts down
 		exec.shutdown();
@@ -76,7 +79,8 @@ public class PipelinedConnection
 	 * 
 	 * @return a map from sequence number to a pipeline's {@link BlockingQueue}
 	 */
-	Map<Integer, BlockingQueue<Frame<V>>> getPipelineQueues()
+	//Map<Integer, BlockingQueue<Frame<V>>> getPipelineQueues()
+        Hashtable getPipelineQueues()
 	{
 		return pipelines;
 	}
@@ -86,8 +90,7 @@ public class PipelinedConnection
 	 * 
 	 * @return the underlying {@link Connection}
 	 */
-	//public Connection<V> getConnection()
-        public Connection getConnection()
+	public Connection getConnection()
 	{
 		return conn;
 	}
@@ -128,9 +131,13 @@ public class PipelinedConnection
 		{
 			//check for errors in the receiver task
 			//(ignore interupt, as it's purpose is to stop waiting)
-			try {receiverFuture.get();} catch (InterruptedException ignore) {}
+			try {
+                            receiverFuture.get();
+                        } catch (InterruptedException ignore) {
+                        
+                        }
 			//check if the pipelines were closed properly
-			if (!pipelines.keySet().isEmpty())
+			if (!pipelines.isEmpty()) //***Check This!
 				throw new IOException("Not all pipelines were closed properly");
 		}
 	}
@@ -161,13 +168,14 @@ public class PipelinedConnection
 			 * the new sequence number into which a response might slip
 			 * and generate an "unexpected frame" error.
 			 */
-			Map<Integer, BlockingQueue<Frame<V>>> queues=getPipelineQueues();
+			//Map<Integer, BlockingQueue<Frame<V>>> queues=getPipelineQueues();
+                        Hashtable queues = getPipelineQueues();
 			synchronized (queues)
 			{
-				queues.remove(lastSeq);
+				queues.remove(new Integer(lastSeq)); //*** Check This!
 				getConnection().sendFrame(frame);
 				lastSeq=frame.getSequenceNumber();
-				queues.put(lastSeq, incoming);
+				queues.put(new Integer(lastSeq), incoming);
 			}
 		}
 
