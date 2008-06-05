@@ -36,17 +36,10 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-//package java.net;
+
 package net.thousandparsec.util;
-    
-//import gnu.java.lang.CPStringBuilder;
 
 import java.io.IOException;
-//import java.io.ObjectInputStream;
-//import java.io.ObjectOutputStream;
-//import java.io.Serializable;
-//import java.util.regex.Matcher;
-//import java.util.regex.Pattern;
 
 /**
  * <p>
@@ -280,16 +273,7 @@ public final class URI
   private transient String fragment;
   private String string;
 
-  /**
-   * Static initializer to pre-compile the regular expressions.
-   */
-  /*static
-  {
-    URI_PATTERN = Pattern.compile(URI_REGEXP);
-    AUTHORITY_PATTERN = Pattern.compile(AUTHORITY_REGEXP);
-  }*/
-
-  private void readObject(ObjectInputStream is)
+    /*private void readObject(ObjectInputStream is)
     throws ClassNotFoundException, IOException
   {
     this.string = (String) is.readObject();
@@ -302,14 +286,14 @@ public final class URI
 	// Should not happen.
 	throw new RuntimeException(x.getMessage());
       }
-  }
+  }*/
 
-  private void writeObject(ObjectOutputStream os) throws IOException
+  /*private void writeObject(ObjectOutputStream os) throws IOException
   {
     if (string == null)
       string = toString(); 
     os.writeObject(string);
-  }
+  }*/
 
   /**
    * <p>
@@ -556,26 +540,9 @@ public final class URI
           throw new URISyntaxException(str, "doesn't match accepted URI Pattern");
       }
       
-      
-      
-      
-      /*if (matcher.matches())
-       {
-       scheme = getURIGroup(matcher, SCHEME_GROUP);//done
-       rawSchemeSpecificPart = matcher.group(SCHEME_SPEC_PART_GROUP);
-       schemeSpecificPart = unquote(rawSchemeSpecificPart);
-       if (!isOpaque())
-       {
-       rawAuthority = getURIGroup(matcher, AUTHORITY_GROUP);//done
-       rawPath = matcher.group(PATH_GROUP);
-       rawQuery = getURIGroup(matcher, QUERY_GROUP);
-       }
-       rawFragment = getURIGroup(matcher, FRAGMENT_GROUP);
-       }*/
-      
-      
       // We must eagerly unquote the parts, because this is the only time
       // we may throw an exception.
+      schemeSpecificPart = unquote(rawSchemeSpecificPart);
       authority = unquote(rawAuthority);
       userInfo = unquote(rawUserInfo);
       host = unquote(rawHost);
@@ -671,8 +638,7 @@ public final class URI
    */
   private static String quote(String str, String legalCharacters)
   {
-    //CPStringBuilder sb = new CPStringBuilder(str.length());
-      StringBuffer sb = new StringBuffer(str.length());
+    StringBuffer sb = new StringBuffer(str.length());
     for (int i = 0; i < str.length(); i++)
       {
 	char c = str.charAt(i);
@@ -870,7 +836,7 @@ public final class URI
    *         information, host and port components.
    * @throws URISyntaxException if the given string violates RFC 2396
    */
-  public URI parseServerAuthority() throws URISyntaxException
+  /*public URI parseServerAuthority() throws URISyntaxException
   {
     if (rawAuthority != null)
       {
@@ -899,7 +865,7 @@ public final class URI
 	  throw new URISyntaxException(string, "doesn't match proper URI Format");
       }
     return this;
-  }
+  }*/
 
   /**
    * <p>
@@ -966,10 +932,8 @@ public final class URI
        This follows the algorithm in section 5.2.4. of RFC3986,
        but doesn't modify the input buffer.
     */
-    //CPStringBuilder input = new CPStringBuilder(relativePath);
-      StringBuffer input = new StringBuffer(relativePath);
-    //CPStringBuilder output = new CPStringBuilder();
-      StringBuffer output = new StringBuffer();
+    StringBuffer input = new StringBuffer(relativePath);
+    StringBuffer output = new StringBuffer();
     int start = 0;
     while (start < input.length())
       {
@@ -1043,7 +1007,6 @@ public final class URI
    *
    * @param buffer the buffer containing the path.
    */
-  //private void removeLastSegment(CPStringBuilder buffer)
   private void removeLastSegment(StringBuffer buffer)
   {
     int lastSlash = buffer.toString().lastIndexOf('/');
@@ -1090,7 +1053,7 @@ public final class URI
 	      path = "";
 	    if (! (path.startsWith("/")))
 	      {
-		//CPStringBuilder basepath = new CPStringBuilder(this.path);
+		
                 StringBuffer basepath = new StringBuffer(this.path);
 		int i = this.path.lastIndexOf('/');
 
@@ -1189,13 +1152,13 @@ public final class URI
    * not be found, or if some other error occurred while constructing the URL
    * @throws IllegalArgumentException If the URI is not absolute
    */
-  public URL toURL() throws IllegalArgumentException, MalformedURLException
+  /*public URL toURL() throws IllegalArgumentException, MalformedURLException
   {
     if (isAbsolute())
       return new URL(this.toString());
 
     throw new IllegalArgumentException("not absolute");
-  }
+  }*/
 
   /**
    * Returns the scheme of the URI
@@ -1582,9 +1545,7 @@ public final class URI
   {
     String strRep = toString();
     boolean inNonAsciiBlock = false;
-    //CPStringBuilder buffer = new CPStringBuilder();
     StringBuffer buffer = new StringBuffer();
-    //CPStringBuilder encBuffer = null;
     StringBuffer encBuffer = null;
     for (int i = 0; i < strRep.length(); i++)
       {
@@ -1602,8 +1563,7 @@ public final class URI
 	  {
 	    if (!inNonAsciiBlock)
 	      {
-		//encBuffer = new CPStringBuilder();
-                encBuffer = new StringBuffer();
+		encBuffer = new StringBuffer();
 		inNonAsciiBlock = true;
 	      }
 	    encBuffer.append(c);
@@ -1625,8 +1585,7 @@ public final class URI
   {
     try
       {
-	//CPStringBuilder sb = new CPStringBuilder(); 
-        StringBuffer sb = new StringBuffer();
+	StringBuffer sb = new StringBuffer();
 	// this is far from optimal, but it works
 	byte[] utf8 = str.getBytes("utf-8");
 	for (int j = 0; j < utf8.length; j++)
@@ -1639,8 +1598,7 @@ public final class URI
       }
     catch (java.io.UnsupportedEncodingException x)
       {
-	//throw (Error) new InternalError("Escaping error").initCause(x);
-        throw new Error("Escaping error");
+	throw new Error("Escaping error");
       }
   }
 
