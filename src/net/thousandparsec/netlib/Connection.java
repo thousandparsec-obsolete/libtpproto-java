@@ -163,7 +163,8 @@ public class Connection
 			? makeConnection(
 				frameDecoder,
 				serverUri.getHost(),
-				Method.valueOf(serverUri.getScheme()),
+				//Method.valueOf(serverUri.getScheme()),
+                                //serverUri.getScheme(),
 				asyncVisitor)
 			: makeConnection(
 				frameDecoder,
@@ -186,7 +187,7 @@ public class Connection
 	 *             on a I/O error
 	 */
 	public static  Connection
-		makeConnection(FrameDecoder frameDecoder, String host, Method method, Visitor asyncVisitor)
+		makeConnection(FrameDecoder frameDecoder, String host, MethodCode method, Visitor asyncVisitor)
 		//throws UnknownHostException, IOException
                 throws IOException
 	{
@@ -212,7 +213,7 @@ public class Connection
 	 *             on a I/O error
 	 */
 	public static Connection
-		makeConnection(FrameDecoder frameDecoder, String host, Method method, int port, Visitor asyncVisitor)
+		makeConnection(FrameDecoder frameDecoder, String host, MethodCode method, int port, Visitor asyncVisitor)
 		//throws UnknownHostException, IOException
                 throws IOException
 	{
