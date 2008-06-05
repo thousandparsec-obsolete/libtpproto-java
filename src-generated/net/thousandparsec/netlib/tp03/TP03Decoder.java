@@ -3,7 +3,7 @@ package net.thousandparsec.netlib.tp03;
 import java.io.IOException;
 
 import net.thousandparsec.util.URI;
-import java.net.UnknownHostException;
+//import java.net.UnknownHostException;
 
 import net.thousandparsec.netlib.*;
 
@@ -29,7 +29,16 @@ public class TP03Decoder implements FrameDecoder
 				throw new TPException("Server said 'Fail': " + frame.getCode().value +" ("+ frame.getResult()+")");
 			}
 		};
-
+        /*
+         * Overloaded Method to solve visitor inheritance error
+         */
+        public Connection
+		makeConnection(URI serverUri, boolean autologin, Visitor asyncVisitor)
+		//throws UnknownHostException, IOException, TPException
+                throws IOException, TPException
+	{
+            makeConnection(serverUri, autologin, asyncVisitor);
+        }
 	public Connection
 		makeConnection(URI serverUri, boolean autologin, TP03Visitor asyncVisitor)
 		//throws UnknownHostException, IOException, TPException
