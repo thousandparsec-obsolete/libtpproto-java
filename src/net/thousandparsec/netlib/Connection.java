@@ -14,7 +14,7 @@ import java.io.OutputStream;
 import java.util.Vector;
 import net.thousandparsec.util.URI;
 import net.thousandparsec.util.URISyntaxException;
-
+import javax.microedition.io.SocketConnection;
 //import java.util.concurrent.Callable;
 //import java.util.concurrent.ExecutorService;
 //import java.util.concurrent.Executors;
@@ -109,6 +109,26 @@ public class Connection
                 codes[2] = http;
                 //codes[3] = https;
             }
+            /**
+             * Takes in a string that represents one of the protocols, compares them to the current protocols, 
+             * throws an IllegalArguementException if it is not the correct one.
+             * @param str
+             * @return
+             */
+            public static MethodCode valueOf(String str){
+                if(str.equals("tp")){
+                    return tp;
+                }
+                else if(str.equals("tps")){
+                    return tps;
+                }
+                else if(str.equals("http")){
+                    return http;
+                }
+                /*else if(str.equals("https")){
+                    return https;
+                } */              
+            }
         }
 
 	/**
@@ -163,7 +183,7 @@ public class Connection
 			? makeConnection(
 				frameDecoder,
 				serverUri.getHost(),
-				//Method.valueOf(serverUri.getScheme()),
+				Method.valueOf(serverUri.getScheme()),
                                 //serverUri.getScheme(),
 				asyncVisitor)
 			: makeConnection(
@@ -301,7 +321,8 @@ public class Connection
 	/*public static Connection
 		//makeTPSConnection(FrameDecoder<V> frameDecoder, String host, V asyncVisitor)
                 makeTPSConnection(FrameDecoder frameDecoder, String host, Visitor asyncVisitor)
-		throws UnknownHostException, IOException
+		//throws UnknownHostException, IOException
+                throws IOException
 	{
 		return makeTPSConnection(
 			frameDecoder,
@@ -429,18 +450,14 @@ public class Connection
 
 	private final Object lockSend=new Object();
 	private final Object lockRecv=new Object();
-	//private final FrameDecoder<V> frameDecoder;
-        private final FrameDecoder frameDecoder;
-	private final Socket socket;
-	//private final V asyncVisitor;
-        private final Visitor asyncVisitor;
+	private final FrameDecoder frameDecoder;
+	private final SocketConnection socket;
+	private final Visitor asyncVisitor;
 	private final InputStream in;
 	private final TPInputStream tpin;
 	private final OutputStream out;
 	private final TPOutputStream tpout;
-	//private final List<ConnectionListener<V>> listeners;
-        //private final List<ConnectionListener<V>> listeners;
-        private final Vector listeners;
+	private final Vector listeners;
 	//start with sequence 1 not to mistake response for the first frame for asynchronous frame
 	private int seq=1;
 
@@ -462,7 +479,8 @@ public class Connection
 	 * @throws IOException
 	 *             on any I/O error during connection setup
 	 */
-	public Connection(FrameDecoder frameDecoder, Socket socket, Visitor asyncVisitor) throws IOException
+	//public Connection(FrameDecoder frameDecoder, Socket socket, Visitor asyncVisitor) throws IOException
+        public Connection(FrameDecoder frameDecoder, SocketConnection socket, Visitor asyncVisitor) throws IOException
 	{
 		if (asyncVisitor == null)
 			throw new IllegalArgumentException("asyncVisitor");
@@ -471,9 +489,9 @@ public class Connection
 		this.socket=socket;
 		this.asyncVisitor=asyncVisitor;
 
-		this.in=socket.getInputStream();
+		this.in=socket.openInputStream();
 		this.tpin=new TPInputStream(this.in);
-		this.out=socket.getOutputStream();
+		this.out=socket.openOutputStream();
 		this.tpout=new TPOutputStream(this.out);
 		//this.listeners=new ArrayList<ConnectionListener<V>>();
                 this.listeners = new Vector();
@@ -785,7 +803,9 @@ public class Connection
 	{
 		synchronized (lockSend)
 		{
-			socket.shutdownOutput();
+                    //socket.shutdownOutput();
+                    //in.close();
+                    out.close();
 		}
 	}
 }
