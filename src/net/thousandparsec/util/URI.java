@@ -374,118 +374,190 @@ public final class URI
           String rawString = str;
           int index =0;
           int currentIndex=0;
+	/*
+         *first, if the string is empty, throw a URISyntaxException
+         */
+         if(rawString.length()==0){             
+              throw new URISyntaxException(rawString, "doesn't match accepted URI Pattern");
+         }
           /*
-           * Get the Scheme from the raw string
+           *no ':' means the scheme is the only present thing in the URI
            */
-          scheme = rawString.substring(0,rawString.indexOf(':'));
-          index=rawString.indexOf(':');
-          currentIndex = index;
-          
-          /*
-           * Set the raw scheme specific part: that is, all data after the scheme
-           * 
-           */
-          rawSchemeSpecificPart = rawString.substring(index+1, rawString.indexOf('#'));
-          schemeSpecificPart = unquote(rawSchemeSpecificPart);
-          
-          /*
-           * Checks for // in the URI, and moves past it if it exists 
-           */
-          if (rawString.charAt(index+1) == rawString.charAt(index+2) && rawString.charAt(index+1)=='/'){
-              currentIndex +=2;
+          if(rawString.indexOf(':') < 0){
+              scheme = rawString;
           }
-          /*
-           * Raw user info, starts at // or : and ends at an @ if no @, no user info exists
-           */
-          if(rawString.indexOf('@', currentIndex) > 0){
-              rawUserInfo = rawString.substring(currentIndex, rawString.indexOf('@', currentIndex));
-          }
-          
-          /*
-           * A '/' may not exist at the end of the URI, we must check for that, by catching any negative values returned by indexOf
-           */
-          
-          if(rawString.indexOf('/', currentIndex) < 0){
-              rawAuthority = rawString.substring(currentIndex);
-          }
-          
-          /*
-           * Else the // does exist and we can handle it too
-           */
           else{
-              rawAuthority = rawString.substring(currentIndex, str.indexOf('/', currentIndex));
+              scheme = rawString.substring(index,rawString.indexOf(':'));
           }
-          
           /*
-           * Handles the Path part
-           * First, change the index and the current index to the start of the next part of the path.
+           *Move the index up
            */
-          
-          index=rawString.indexOf('/',currentIndex);
-          currentIndex=index;
-          
+          index = rawString.indexOf(':');
           /*
-           * Paths can end at a '?' a '#', or at the end of the file
+           * Parse the rawSchemeSpecificPart if we are not at the end of the file
            */
-          //if no ? and no #, go to end
-          if(rawString.indexOf('?',currentIndex) < 0 && rawString.indexOf('#', currentIndex) < 0){
-              rawPath = rawString.substring(currentIndex);
-          }
-          
-          //if no ? but a # go to #
-          else if(rawString.indexOf('?', currentIndex) < 0 && rawString.indexOf('#', currentIndex) > 0 ){
-              rawPath = rawString.substring(currentIndex, rawString.indexOf('#', currentIndex));
-          }
-          
-          //if ? and a #, and the # is before the ?, go to the # if the ? is before the # go to the ?
-          else if (rawString.indexOf('?', currentIndex) > 0 && rawString.indexOf('#', currentIndex) > 0){
-              if(rawString.indexOf('?', currentIndex) < rawString.indexOf('#', currentIndex)){
-                  rawPath= rawString.substring(currentIndex, rawString.indexOf('?', currentIndex));	
+          if(index < rawString.length()-1){
+              //Check if there's a # to end the scheme specific part at
+              if(rawString.indexOf('#', index) > 0){
+                  
+                  rawSchemeSpecificPart = rawString.substring(index+1, rawString.indexOf('#'));
               }
-              else if(rawString.indexOf('?', currentIndex) > rawString.indexOf('#', currentIndex)){
-                  rawPath= rawString.substring(currentIndex, rawString.indexOf('#', currentIndex));
+              //no #, go to end of file
+              else{
+                  rawSchemeSpecificPart = rawString.substring(index+1);
+              }
+          }
+          //move the currentIndex up to one past the index
+          currentIndex=index+1;
+          //First, check if we're at the end of the file. then check if there are two '/', move past them if so
+          if(index < rawString.length()-1){
+              if (rawString.charAt(index+1) == rawString.charAt(index+2) && rawString.charAt(index+1)=='/' ){
+                  currentIndex +=2;
+              }
+          }
+          //First, check if we're at the end of the file. UserInfo begins at // or : and ends at @
+          if(index < rawString.length()-1){
+              if(rawString.indexOf('@', currentIndex) > 0){
+                  rawUserInfo = rawString.substring(currentIndex, rawString.indexOf('@', currentIndex));
+              }
+          }
+          //Get the Authority segment. First check if we're at the end of string. There may not exist an ending / so have to check for that.
+          if(index < rawString.length()-1){
+              if(rawString.indexOf('/', currentIndex) < 0){
+                  authority = rawString.substring(currentIndex);
+              }
+              else{
+                  authority = rawString.substring(currentIndex, rawString.indexOf('/', currentIndex));
+              }
+          }
+          /*
+           *Get the Host
+           *First, check if we're not at the end of the string
+           *
+           */
+          if(index < rawString.length()-1){
+              //Begins at an @, ends at a :
+              //check if the @ is present denoting the Host
+              if(rawString.indexOf('@', currentIndex) > 0){
+                  //update indices
+                  index = rawString.indexOf('@', currentIndex);
+                  currentIndex = index;
+                  //Is present, check if a : exists for the start of the port
+                  if(rawString.indexOf(':', index) > 0){
+                      //exists, we go from index +1 to the index of :
+                      host = rawString.substring(index+1, rawString.indexOf(':',index));
+                  }
+                  //No ':' present, go to end of string
+                  else{
+                      host = rawString.substring(index+1);
+                  }
+              }
+          }
+          /*
+           *Get the port
+           *First, check if we're not at the end of the string
+           *
+           */
+          if(index < rawString.length()-1){
+              //Begins at : and ends at / or the end of the string
+              //check if : is present denoting the port
+              if(rawString.indexOf(':', currentIndex) > 0){
+                  //update indices
+                  index = rawString.indexOf(':', currentIndex);
+                  currentIndex = index;
+                  //Check if a / exists to separate the port from the path
+                  if(rawString.indexOf('/', index) > 0){
+                      //exists, we go from index + 1 to index of '/'
+                      port = Integer.parseInt(rawString.substring(index+1, rawString.indexOf('/', index)));
+                  }
+                  //No '/' present, go to end of string
+                  else{
+                      port = Integer.parseInt(rawString.substring(index+1));
+                  }
               }
               
           }
-          
-          //if there's a ? and no #, go to the ?
-          else if (rawString.indexOf('?', currentIndex) > 0 ) {
-              rawPath = rawString.substring(currentIndex, rawString.indexOf('?',currentIndex));
+          //Check if a path segment exists, a path starts at a / and ends at a ? or a #
+          if(rawString.indexOf('/', currentIndex) > 0){
+              index=rawString.indexOf('/',currentIndex);
+              currentIndex=index;
+              
+              //Handles the path segment. First, check if we're at the end of the string.
+              if(index < rawString.length()-1){
+                  //if no ? and no #, go to end
+                  if(rawString.indexOf('?',currentIndex) < 0 && rawString.indexOf('#', currentIndex) < 0){
+                      path = rawString.substring(currentIndex);
+                  }
+                  //if no ? but a # go to #
+                  else if(rawString.indexOf('?', currentIndex) < 0 && rawString.indexOf('#', currentIndex) > 0 ){
+                      path = rawString.substring(currentIndex, rawString.indexOf('#', currentIndex));
+                  }
+                  //if ? and a # 
+                  else if (rawString.indexOf('?', currentIndex) > 0 && rawString.indexOf('#', currentIndex) > 0){
+                      //if ? before # go to ?
+                      if(rawString.indexOf('?', currentIndex) < rawString.indexOf('#', currentIndex)){
+                          path= rawString.substring(currentIndex, rawString.indexOf('?', currentIndex));	
+                      }
+                      //if ? after # go to #
+                      else if(rawString.indexOf('?', currentIndex) > rawString.indexOf('#', currentIndex)){
+                          path= rawString.substring(currentIndex, rawString.indexOf('#', currentIndex));
+                      }
+                  }
+                  //if there's a ? and no #, go to the ?
+                  else if (rawString.indexOf('?', currentIndex) > 0 ) {
+                      path = rawString.substring(currentIndex, rawString.indexOf('?',currentIndex));
+                  }
+                  else{
+                      //malformedURI Exception?	
+                  }
+              }
           }
-          
-          else{
-              //malformedURI Exception?	return for now
-              return;
-          }
-          
           /*
-           * Handles the query part.
-           * //Query starts at ? ends at #
-           * //if no query exists, we're done, so return
-           */ 
-          if(rawString.indexOf('?', currentIndex)<0){
-              return;
+           *Handles the Query Segment
+           *First, Check if we're at the end of the string
+           */
+          if(index < rawString.length()-1){
+              //Query starts at ? ends at #
+              System.out.println(index);
+              System.out.println(rawString.indexOf('?'));
+              //Check if a query exists in the string
+              if(rawString.indexOf('?', currentIndex) > 0){
+                  //move the indices up
+                  index = rawString.indexOf('?', currentIndex);
+                  currentIndex = index;
+                  //check if fragments exist
+                  //no fragment, go to the end of the string
+                  if(rawString.indexOf('#', currentIndex) < 0){
+                      query = rawString.substring(currentIndex);
+                  }
+                  //fragment exists, go to fragment
+                  else if(rawString.indexOf('#', currentIndex) > 0){
+                      query = rawString.substring(currentIndex+1, rawString.indexOf('#', currentIndex));
+                  }
+              }
+          }
+          /*
+           *Handles the fragment Segment
+           *First, check if we're at the end of the String
+           */
+          if(index < rawString.length()-1){
+              //Fragment starts at # ends at end of string
+              //Check if a fragment exists in the string
+              if(rawString.indexOf('#', currentIndex) > 0){
+                  //move indices up
+                  index = rawString.indexOf('#', currentIndex);
+                  currentIndex = index;
+                  fragment=rawString.substring(currentIndex+1);
+              }
           }
           
-          //no fragment, so go to end of string as query
-          if(rawString.indexOf('#', currentIndex) < 0){
-              rawQuery = rawString.substring(currentIndex);
-          }
-          
-          //fragment exists, go to fragment
-          else if(rawString.indexOf('#', currentIndex) > 0){
-              rawQuery = rawString.substring(currentIndex+1, rawString.indexOf('#', currentIndex));
-          }
-          
-         /* Handles the Fragment Part
-          */ 
       }
       catch(Exception e){
           throw new URISyntaxException(str, "doesn't match accepted URI Pattern");
       }
-
       
-
+      
+      
       
       /*if (matcher.matches())
        {
@@ -501,17 +573,17 @@ public final class URI
        rawFragment = getURIGroup(matcher, FRAGMENT_GROUP);
        }*/
       
-
-    // We must eagerly unquote the parts, because this is the only time
-    // we may throw an exception.
-    authority = unquote(rawAuthority);
-    userInfo = unquote(rawUserInfo);
-    host = unquote(rawHost);
-    path = unquote(rawPath);
-    query = unquote(rawQuery);
-    fragment = unquote(rawFragment);
+      
+      // We must eagerly unquote the parts, because this is the only time
+      // we may throw an exception.
+      authority = unquote(rawAuthority);
+      userInfo = unquote(rawUserInfo);
+      host = unquote(rawHost);
+      path = unquote(rawPath);
+      query = unquote(rawQuery);
+      fragment = unquote(rawFragment);
   }
-
+  
   /**
    * Unquote "%" + hex quotes characters
    *
@@ -522,8 +594,7 @@ public final class URI
    * @exception URISyntaxException If the given string contains invalid
    * escape sequences.
    */
-  private static String unquote(String str) throws URISyntaxException
-  {
+  private static String unquote(String str) throws URISyntaxException  {
     if (str == null)
       return null;
     byte[] buf = new byte[str.length()];
