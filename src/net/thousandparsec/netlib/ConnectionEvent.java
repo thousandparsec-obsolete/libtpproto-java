@@ -15,6 +15,9 @@ public class ConnectionEvent
 		FRAME_RECEIVED,
 		CONNECTION_ERROR;
 	}
+        /*static class Type{
+            
+        }*/
 
 	private final Type type;
 	private final Frame frame;
