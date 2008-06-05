@@ -2,7 +2,7 @@ package net.thousandparsec.netlib.tp03;
 
 import java.io.IOException;
 
-import java.net.URI;
+import net.thousandparsec.util.URI;
 import java.net.UnknownHostException;
 
 import net.thousandparsec.netlib.*;
