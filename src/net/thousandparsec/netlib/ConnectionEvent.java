@@ -19,7 +19,7 @@ public class ConnectionEvent
             
         }*/
 
-	//private final Type type;
+	private final Type typeObject;
         private final int type;
 	private final Frame frame;
 	private final boolean isAsync;
@@ -28,6 +28,7 @@ public class ConnectionEvent
         //ConnectionEvent(Type type, Frame frame, boolean isAsync, Exception exception)
         ConnectionEvent(int type, Frame frame, boolean isAsync, Exception exception)
 	{
+                typeObject = new Type();
 		this.type=type;
 		this.frame=frame;
 		this.isAsync=isAsync;
@@ -35,7 +36,7 @@ public class ConnectionEvent
 	}
 	public Type getType()
 	{
-		return type;
+		return typeObject;
 	}
 	public Frame getFrame()
 	{
