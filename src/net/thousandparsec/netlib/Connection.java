@@ -570,8 +570,6 @@ public class Connection
                     l.frameSent(ev);
                 }
                 
-                //for (ConnectionListener<V> l : listeners)
-		//	l.frameSent(ev);
 	}
 
 	/**
