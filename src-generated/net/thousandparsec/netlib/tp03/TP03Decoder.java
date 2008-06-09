@@ -32,12 +32,12 @@ public class TP03Decoder implements FrameDecoder
         /*
          * Overloaded Method to solve visitor inheritance error
          */
-        public Connection
-		makeConnection(URI serverUri, boolean autologin, Visitor asyncVisitor)
+        public Connection makeConnection(URI serverUri, boolean autologin, Visitor asyncVisitor)
 		//throws UnknownHostException, IOException, TPException
                 throws IOException, TPException
 	{
-            makeConnection(serverUri, autologin, asyncVisitor);
+            Connection connection = makeConnection(serverUri, autologin, asyncVisitor);
+            return connection;
         }
 	public Connection
 		makeConnection(URI serverUri, boolean autologin, TP03Visitor asyncVisitor)
@@ -50,7 +50,36 @@ public class TP03Decoder implements FrameDecoder
 			String userInfo=serverUri.getUserInfo();
 			if (userInfo == null)
 				throw new TPException("Autologin enabled but no login info provided in the URI");
-			String[] data=userInfo.split(":", -1);
+			//index value to be set to the current ':'
+                        //String[] data=userInfo.split(":", -1);
+                        int counter=0;
+                        int index=0;
+                        //Set the size of the userInfo String Array
+                        while(index >-1){
+                            //if a : exists, increment a counter for another entry
+                            if(userInfo.indexOf(':', index) > 0)
+                                counter++;
+                            //Move the index up	
+                            index = userInfo.indexOf(':', index+1);
+			}
+                        //create the array
+                        String[] data = new String[counter];
+                        //reset the index and the counter for reuse
+                        index =0;
+                        counter=0;
+                        while(counter < data.length){
+                            //If no : exists, we go to end of the string
+                            if(userInfo.indexOf(":", index) < 0){
+				data[counter++] = userInfo.substring(index);
+                                break;
+                            }
+                            //else it does exist
+                            else{
+				data[counter++] = userInfo.substring(index, userInfo.indexOf(":", index));
+                            }
+                            //move the counter up
+                            index = userInfo.indexOf(":", index)+1;
+                        }
 			if (data.length != 2)
 				throw new TPException("Autologin enabled but login info provided in the URI is invalid");
 
