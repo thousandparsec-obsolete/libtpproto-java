@@ -86,28 +86,12 @@ public class LoggerConnectionListener<V extends Visitor> implements ConnectionLi
 	}
 	
 	/**
-	 * TODO: This javadoc seems out of date, even with my change to return *modifiable* queue
-	 * (it's the point of it to be consumed by clients, right?...)
-	 * 
 	 * @return 
-	 * an immutable, synchronized <ConnectionEventTuple>{@link Collection}<ConnectionEventTuple>, 
+	 * a {@link Queue} of {@link ConnectionEventTuple} objects, 
 	 * with the full log of {@link ConnectionEvent} properties, including the time of occurence.
-	 * The collection stores {@link ConnectionEventTuple} in FIFO manner.
+	 * The queue stores {@link ConnectionEventTuple} in FIFO manner.
 	 * 
-	 * NOTE: This Collection is an instance of {@link ConcurrentLinkedQueue}<ConnectionEventTuple>.
-	 * 
-	 * Warning: 
-	 * The user must manually synchronize on the returned list when iterating over it.
-	 * Failure to do so might result in nondeterministic behavior.
-	 * 
-	 * For example:
-	 *  
-  	 *	synchronized(list) {
-     * 	Iterator i = list.iterator(); // Must be in synchronized block
-     * 	while (i.hasNext())
-     *     operation(i.next());
-  	 *	}
-  	 *
+	 * NOTE: This queue is thread-safe.
 	 */
 	public synchronized Queue<ConnectionEventTuple<V>> getLog()
 	{
