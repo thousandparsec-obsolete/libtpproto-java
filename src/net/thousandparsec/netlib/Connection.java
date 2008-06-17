@@ -19,6 +19,7 @@ import javax.microedition.io.SocketConnection;
 //import java.util.concurrent.ExecutorService;
 //import java.util.concurrent.Executors;
 //import java.util.concurrent.Future;
+import javax.microedition.io.Connector;
 
 //import javax.net.ssl.SSLSocketFactory;
 
@@ -108,6 +109,7 @@ public class Connection
                 codes[1] = tps;
                 codes[2] = http;
                 //codes[3] = https;
+                return codes;
             }
             /**
              * Takes in a string that represents one of the protocols, compares them to the current protocols, 
@@ -127,7 +129,8 @@ public class Connection
                 }
                 /*else if(str.equals("https")){
                     return https;
-                } */              
+                } */    
+                return tp;
             }
         }
 
@@ -150,7 +153,7 @@ public class Connection
 	public static  Connection
 		makeConnection(FrameDecoder frameDecoder, String serverUri, Visitor asyncVisitor)
 		//throws URISyntaxException, UnknownHostException, IOException
-                throws IOException
+                throws IOException, URISyntaxException
 	{
 		return makeConnection(
 			frameDecoder,
@@ -302,8 +305,11 @@ public class Connection
 		//return new Connection<V>(
                 return new Connection(
 			frameDecoder,
-			new Socket(host, port),
+                        (SocketConnection)Connector.open(host+":"+port),
 			asyncVisitor);
+                
+                
+                //new Socket(host, port),
 	}
 
 	/**
@@ -770,7 +776,36 @@ public class Connection
 	 *            the {@link Visitor} which will receive incoming frames
 	 * @return a {@link Future} that represents the asynchronous task
 	 */
-	public Future<Void> receiveAllFramesAsync(final Visitor visitor)
+        /**
+         * This method instead of using Future, starts the process in a new thread.
+         */
+         class AsyncFrameReceiver extends Thread {
+             Visitor v;
+             public void run() {
+                 try{
+                     receiveAllFrames(v);
+                 }
+                 catch(EOFException eof){
+                     System.out.println("EOFException at connection - message received: "+eof.getMessage());
+                 }
+                 catch(IOException ioe){
+                     System.out.println("IOException at Connection - message received: " + ioe.getMessage());
+                 }
+                 catch(TPException tpe){
+                     System.out.println("TPException at Connection - message received: " + tpe.getMessage());
+                 }
+
+             }
+             AsyncFrameReceiver(final Visitor visitor){
+                 v = visitor;
+             }
+
+         }
+        
+        public void receiveAllFramesAsync(final Visitor visitor){
+            new AsyncFrameReceiver(visitor).start();
+        }
+	/*public Future<Void> receiveAllFramesAsync(final Visitor visitor)
 	{
 		final ExecutorService exec=Executors.newSingleThreadExecutor();
 		return exec.submit(new Callable<Void>()
@@ -788,7 +823,7 @@ public class Connection
 					}
 				}
 			});
-	}
+	}*/
 
 	/**
 	 * Shuts down this connection: the underlying socket's output is gracefully
