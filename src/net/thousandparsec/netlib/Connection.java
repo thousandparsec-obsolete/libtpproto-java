@@ -182,6 +182,9 @@ public class Connection
                 throws IOException
 	{
 		int port=serverUri.getPort();
+                System.out.println("Port is:" + port);
+                System.out.println("Method.valueOf(serverUri.getScheme()) is: " + Method.valueOf(serverUri.getScheme()));
+                System.out.println("serverURI.getScheme() is: " + serverUri.getScheme());
 		return port == -1 
 			? makeConnection(
 				frameDecoder,
@@ -305,7 +308,7 @@ public class Connection
 		//return new Connection<V>(
                 return new Connection(
 			frameDecoder,
-                        (SocketConnection)Connector.open(host+":"+port),
+                        (SocketConnection)Connector.open("socket" + "://"+host+":"+port),
 			asyncVisitor);
                 
                 
