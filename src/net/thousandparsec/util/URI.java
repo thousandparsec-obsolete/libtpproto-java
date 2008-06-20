@@ -502,8 +502,6 @@ public final class URI
            */
           if(index < rawString.length()-1){
               //Query starts at ? ends at #
-              System.out.println(index);
-              System.out.println(rawString.indexOf('?'));
               //Check if a query exists in the string
               if(rawString.indexOf('?', currentIndex) > 0){
                   //move the indices up
@@ -534,6 +532,7 @@ public final class URI
                   fragment=rawString.substring(currentIndex+1);
               }
           }
+          System.out.println("URI Object Completed");
           
       }
       catch(Exception e){
