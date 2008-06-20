@@ -1,11 +1,13 @@
 package net.thousandparsec.netlib.test;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.UnknownHostException;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
+//import java.net.URI;
+import net.thousandparsec.util.URI;
+import net.thousandparsec.util.URISyntaxException;
+//import java.net.URISyntaxException;
+//import java.net.UnknownHostException;
+//import java.util.concurrent.ExecutionException;
+//import java.util.concurrent.Future;
 
 import net.thousandparsec.netlib.Connection;
 import net.thousandparsec.netlib.DefaultConnectionListener;
@@ -24,26 +26,28 @@ import net.thousandparsec.netlib.tp03.ObjectParams.Universe;
 
 public class TestConnect extends TP03Visitor
 {
-	public static void main(String... args) throws UnknownHostException, IOException, URISyntaxException, InterruptedException, TPException
+	public static void main(String[] args) throws IOException, URISyntaxException, InterruptedException, TPException
 	{
 		TP03Decoder decoder=new TP03Decoder();
-		Connection<TP03Visitor> conn=decoder.makeConnection(
+		Connection conn=decoder.makeConnection(
 			new URI(args.length > 0 ? args[0] : "tp://guest:guest@demo1.thousandparsec.net/tp"),
 			true, new TP03Visitor(false));
-		conn.addConnectionListener(new DefaultConnectionListener<TP03Visitor>());
+		conn.addConnectionListener(new DefaultConnectionListener());
 		new TestConnect(conn).start();
 	}
 
-	private final Connection<TP03Visitor> conn;
+	private final Connection conn;
 
-	public TestConnect(Connection<TP03Visitor> conn)
+	public TestConnect(Connection conn)
 	{
 		this.conn=conn;
 	}
 
-	private void start() throws UnknownHostException, IOException, InterruptedException
+	public void start() throws IOException, InterruptedException
 	{
-		Future<Void> asyncTask=conn.receiveAllFramesAsync(this);
+                //asyncTask = conn.receiveAllFrames(this);
+                //Visitor asyncTask = conn.receiveAllFrames(this);
+		//Future<Void> asyncTask=conn.receiveAllFramesAsync(this);
 
 		try
 		{
@@ -51,58 +55,59 @@ public class TestConnect extends TP03Visitor
 
 			GetObjectsByID getObj=new GetObjectsByID();
 			//zero for top-level object is a typical magic number
-			getObj.getIds().add(new IdsType(0));
+			//getObj.getIds().add(new IdsType(0));
 			conn.sendFrame(getObj);
 		}
 		finally
 		{
 			try {conn.close();} catch (IOException ignore) {}
 			//get the null from task just to see if there was an exception
-			try
+			/*try
 			{
 				//but don't swallow the exception that could bring us to this finally block
-				asyncTask.get();
+				//asyncTask.get();
 			}
 			catch (ExecutionException ex)
 			{
 				ex.getCause().printStackTrace(System.err);
-			}
+			}*/
 		}
 	}
 
-	@Override
-	public void unhandledFrame(Frame<?> frame)
+
+	public void unhandledFrame(Frame frame)
 	{
-		System.out.printf("Got frame: %s%n",frame);
+                System.out.println("Got frame: " + frame);
+		//System.out.printf("Got frame: %s%n",frame);
 	}
 
-	@Override
+
 	public void frame(Okay frame)
 	{
-		System.out.printf("OK: %s%n", frame.getResult());
+		System.out.println("OK: "+ frame.getResult());
 	}
 
-	@Override
+
 	public void frame(Fail frame)
 	{
-		System.out.printf("Fail: %d (%s)%n", frame.getCode().value, frame.getResult());
+		System.out.println("Fail: "+frame.getCode()+"("+frame.getResult()+")");
 	}
 
-	@Override
+
 	public void frame(Object frame) throws TPException
 	{
 		frame.getObject().visit(this);
 	}
 
-	@Override
+
 	public void unhandledObjectParams(ObjectParams object)
 	{
-		System.out.printf("Got game object: %s%n", object);
+		System.out.println("Got game object: " + object);
 	}
 
-	@Override
+
 	public void objectParams(Universe object)
 	{
-		System.out.printf("Got Universe: age %d%n", object.getAge());
+		System.out.println("Got Universe: " + object.getAge());
 	}
 }
