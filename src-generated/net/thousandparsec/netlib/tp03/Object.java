@@ -558,7 +558,7 @@ public class Object extends Response
         public void visit(Visitor visitor) throws TPException
         {
             System.out.println("warning: visit method called in Objet.java");
-            visit(visitor);
+            visit((TP03Visitor)visitor);
         }
 	public void visit(TP03Visitor visitor) throws TPException
 	{

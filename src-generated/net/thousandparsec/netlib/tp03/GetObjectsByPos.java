@@ -23,7 +23,7 @@ public class GetObjectsByPos extends Request
         public void visit(Visitor visitor) throws TPException
         {
             System.out.println("warning: visit method called in GetObjectsByPos");
-            visit(visitor);
+            visit((TP03Visitor)visitor);
         }
 	public void visit(TP03Visitor visitor) throws TPException
 	{

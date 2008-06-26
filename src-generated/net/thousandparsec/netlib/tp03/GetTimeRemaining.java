@@ -23,7 +23,7 @@ public class GetTimeRemaining extends Request
         public void visit(Visitor visitor) throws TPException
         {
             System.out.println("warning: visit method called in GetTimeRemaining.java");
-            visit(visitor);
+            visit((TP03Visitor)visitor);
         }
 	public void visit(TP03Visitor visitor) throws TPException
 	{

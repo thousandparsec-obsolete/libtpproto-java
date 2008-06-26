@@ -23,7 +23,7 @@ public class GetCategoryIDs extends GetIDSequence
         public void visit(Visitor visitor) throws TPException
         {
             System.out.println("warning: visit method called in GetCategoryIDs.java");
-            visit(visitor);
+            visit((TP03Visitor)visitor);
         }
 	public void visit(TP03Visitor visitor) throws TPException
 	{

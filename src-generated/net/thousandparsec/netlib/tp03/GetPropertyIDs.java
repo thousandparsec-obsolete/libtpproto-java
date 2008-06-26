@@ -23,7 +23,7 @@ public class GetPropertyIDs extends GetIDSequence
         public void visit(Visitor visitor) throws TPException
         {
             System.out.println("warning: visit method called in GetPropertyIDs.java");
-            visit(visitor);
+            visit((TP03Visitor)visitor);
         }
 	public void visit(TP03Visitor visitor) throws TPException
 	{

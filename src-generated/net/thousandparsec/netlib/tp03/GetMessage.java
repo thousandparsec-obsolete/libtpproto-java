@@ -23,7 +23,7 @@ public class GetMessage extends GetWithIDSlot
         public void visit(Visitor visitor) throws TPException
         {
             System.out.println("warning: visit method called in GetMessage");
-            visit(visitor);
+            visit((TP03Visitor)visitor);
         }
 	public void visit(TP03Visitor visitor) throws TPException
 	{

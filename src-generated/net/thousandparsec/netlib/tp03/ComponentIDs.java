@@ -23,7 +23,7 @@ public class ComponentIDs extends IDSequence
         public void visit(Visitor visitor) throws TPException
         {
             System.out.println("warning: visit method called in ComponentIDs.java");
-            visit(visitor);
+            visit((TP03Visitor)visitor);
         }
 
 	public void visit(TP03Visitor visitor) throws TPException

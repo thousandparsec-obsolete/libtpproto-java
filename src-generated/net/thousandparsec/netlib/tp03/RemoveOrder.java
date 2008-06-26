@@ -23,7 +23,7 @@ public class RemoveOrder extends GetWithIDSlot
         public void visit(Visitor visitor) throws TPException
         {
             System.out.println("warning: visit method called in RemoveOrder.java");
-            visit(visitor);
+            visit((TP03Visitor)visitor);
         }
 	
 	public void visit(TP03Visitor visitor) throws TPException

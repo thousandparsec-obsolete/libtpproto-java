@@ -101,8 +101,8 @@ public class Fail extends Response
 	}
         public void visit(Visitor visitor) throws TPException
         {
-            System.out.println("warning: visit method called");
-            visit(visitor);
+            System.out.println("warning: visit method called in Fail class");
+            visit((TP03Visitor)visitor);
         }
 	public void visit(TP03Visitor visitor) throws TPException
 	{
