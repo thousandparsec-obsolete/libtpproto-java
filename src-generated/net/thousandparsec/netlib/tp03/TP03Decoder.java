@@ -47,11 +47,14 @@ public class TP03Decoder implements FrameDecoder
 		Connection connection=Connection.makeConnection(this, serverUri, asyncVisitor);
 		if (autologin)
 		{
+                    /*
+                     * Split the user info into username and password.
+                     * 
+                     */
 			String userInfo=serverUri.getUserInfo();
 			if (userInfo == null)
 				throw new TPException("Autologin enabled but no login info provided in the URI");
 			//index value to be set to the current ':'
-                        //String[] data=userInfo.split(":", -1);
                         int counter=0;
                         int index=0;
                         //Set the size of the userInfo String Array
