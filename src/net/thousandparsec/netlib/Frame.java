@@ -34,16 +34,15 @@ public abstract class Frame extends TPObject implements Visitable
 
 	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
-		switch (conn.getCompatibility())
+            switch (conn.getCompatibility())
 		{
 			case 3:
-				//magic
-				//out.writeCharacter(getStringBytes(String.format("TP%02d", conn.getCompatibility())));
-                                out.writeCharacter(getStringBytes("TP02"+ conn.getCompatibility()));
+				//Write protocol version
+				out.writeCharacter(getStringBytes("TP0"+ conn.getCompatibility()));
                                 //sequence
-				out.writeInteger(this.seq=conn.getNextFrameSequence());
+                                out.writeInteger(this.seq=conn.getNextFrameSequence());
 				//type
-				out.writeInteger(id);
+                                out.writeInteger(id);
 				//payload length
 				out.writeInteger(findByteLength());
 				//(data should be written by subclass)
