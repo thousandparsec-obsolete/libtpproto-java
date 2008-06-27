@@ -48,11 +48,19 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 		public static final int PARAM_TYPE=0;
 
 		/**
-		 * A default constructor which initialises properties to their defaults.
+		 * A default constructor for subclasses, which initialises properties to their defaults.
 		 */
 		protected Universe(int id)
 		{
 			super(id);
+		}
+
+		/**
+		 * A default constructor for general public, which initialises properties to their defaults.
+		 */
+		public Universe()
+		{
+			super(PARAM_TYPE);
 		}
 
 		private int age;
@@ -116,11 +124,19 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 		public static final int PARAM_TYPE=1;
 
 		/**
-		 * A default constructor which initialises properties to their defaults.
+		 * A default constructor for subclasses, which initialises properties to their defaults.
 		 */
 		protected Galaxy(int id)
 		{
 			super(id);
+		}
+
+		/**
+		 * A default constructor for general public, which initialises properties to their defaults.
+		 */
+		public Galaxy()
+		{
+			super(PARAM_TYPE);
 		}
 
 		@Override
@@ -166,11 +182,19 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 		public static final int PARAM_TYPE=2;
 
 		/**
-		 * A default constructor which initialises properties to their defaults.
+		 * A default constructor for subclasses, which initialises properties to their defaults.
 		 */
 		protected StarSystem(int id)
 		{
 			super(id);
+		}
+
+		/**
+		 * A default constructor for general public, which initialises properties to their defaults.
+		 */
+		public StarSystem()
+		{
+			super(PARAM_TYPE);
 		}
 
 		@Override
@@ -216,11 +240,19 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 		public static final int PARAM_TYPE=3;
 
 		/**
-		 * A default constructor which initialises properties to their defaults.
+		 * A default constructor for subclasses, which initialises properties to their defaults.
 		 */
 		protected Planet(int id)
 		{
 			super(id);
+		}
+
+		/**
+		 * A default constructor for general public, which initialises properties to their defaults.
+		 */
+		public Planet()
+		{
+			super(PARAM_TYPE);
 		}
 
 		private int owner;
@@ -428,11 +460,19 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 		public static final int PARAM_TYPE=4;
 
 		/**
-		 * A default constructor which initialises properties to their defaults.
+		 * A default constructor for subclasses, which initialises properties to their defaults.
 		 */
 		protected Fleet(int id)
 		{
 			super(id);
+		}
+
+		/**
+		 * A default constructor for general public, which initialises properties to their defaults.
+		 */
+		public Fleet()
+		{
+			super(PARAM_TYPE);
 		}
 
 		private int owner;

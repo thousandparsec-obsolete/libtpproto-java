@@ -825,11 +825,19 @@ public class JavaOutputGenerator implements OutputGenerator
 		out.printf("%s	public static final int PARAM_TYPE=%d;%n", indent, parameterType);
 		out.println();
 		out.printf("%s	/**%n", indent);
-		out.printf("%s	 * A default constructor which initialises properties to their defaults.%n", indent);
+		out.printf("%s	 * A default constructor for subclasses, which initialises properties to their defaults.%n", indent);
 		out.printf("%s	 */%n", indent);
 		out.printf("%s	protected %s(int id)%n", indent, parameterName);
 		out.printf("%s	{%n", indent);
 		out.printf("%s		super(id);%n", indent, parameterName);
+		out.printf("%s	}%n", indent);
+		out.println();
+		out.printf("%s	/**%n", indent);
+		out.printf("%s	 * A default constructor for general public, which initialises properties to their defaults.%n", indent);
+		out.printf("%s	 */%n", indent);
+		out.printf("%s	public %s()%n", indent, parameterName);
+		out.printf("%s	{%n", indent);
+		out.printf("%s		super(PARAM_TYPE);%n", indent, parameterName);
 		out.printf("%s	}%n", indent);
 		out.println();
 	}

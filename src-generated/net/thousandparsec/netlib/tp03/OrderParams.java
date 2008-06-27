@@ -51,11 +51,19 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		public static final int PARAM_TYPE=0;
 
 		/**
-		 * A default constructor which initialises properties to their defaults.
+		 * A default constructor for subclasses, which initialises properties to their defaults.
 		 */
 		protected OrderParamAbsSpaceCoords(int id)
 		{
 			super(id);
+		}
+
+		/**
+		 * A default constructor for general public, which initialises properties to their defaults.
+		 */
+		public OrderParamAbsSpaceCoords()
+		{
+			super(PARAM_TYPE);
 		}
 
 		public static class PosType extends TPObject<TP03Visitor>
@@ -230,11 +238,19 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		public static final int PARAM_TYPE=1;
 
 		/**
-		 * A default constructor which initialises properties to their defaults.
+		 * A default constructor for subclasses, which initialises properties to their defaults.
 		 */
 		protected OrderParamTime(int id)
 		{
 			super(id);
+		}
+
+		/**
+		 * A default constructor for general public, which initialises properties to their defaults.
+		 */
+		public OrderParamTime()
+		{
+			super(PARAM_TYPE);
 		}
 
 		/**
@@ -324,11 +340,19 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		public static final int PARAM_TYPE=2;
 
 		/**
-		 * A default constructor which initialises properties to their defaults.
+		 * A default constructor for subclasses, which initialises properties to their defaults.
 		 */
 		protected OrderParamObject(int id)
 		{
 			super(id);
+		}
+
+		/**
+		 * A default constructor for general public, which initialises properties to their defaults.
+		 */
+		public OrderParamObject()
+		{
+			super(PARAM_TYPE);
 		}
 
 		/**
@@ -397,11 +421,19 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		public static final int PARAM_TYPE=3;
 
 		/**
-		 * A default constructor which initialises properties to their defaults.
+		 * A default constructor for subclasses, which initialises properties to their defaults.
 		 */
 		protected OrderParamPlayer(int id)
 		{
 			super(id);
+		}
+
+		/**
+		 * A default constructor for general public, which initialises properties to their defaults.
+		 */
+		public OrderParamPlayer()
+		{
+			super(PARAM_TYPE);
 		}
 
 		/**
@@ -528,11 +560,19 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		public static final int PARAM_TYPE=4;
 
 		/**
-		 * A default constructor which initialises properties to their defaults.
+		 * A default constructor for subclasses, which initialises properties to their defaults.
 		 */
 		protected OrderParamRelSpaceCoords(int id)
 		{
 			super(id);
+		}
+
+		/**
+		 * A default constructor for general public, which initialises properties to their defaults.
+		 */
+		public OrderParamRelSpaceCoords()
+		{
+			super(PARAM_TYPE);
 		}
 
 		/**
@@ -727,11 +767,19 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		public static final int PARAM_TYPE=5;
 
 		/**
-		 * A default constructor which initialises properties to their defaults.
+		 * A default constructor for subclasses, which initialises properties to their defaults.
 		 */
 		protected OrderParamRange(int id)
 		{
 			super(id);
+		}
+
+		/**
+		 * A default constructor for general public, which initialises properties to their defaults.
+		 */
+		public OrderParamRange()
+		{
+			super(PARAM_TYPE);
 		}
 
 		/**
@@ -863,11 +911,19 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		public static final int PARAM_TYPE=6;
 
 		/**
-		 * A default constructor which initialises properties to their defaults.
+		 * A default constructor for subclasses, which initialises properties to their defaults.
 		 */
 		protected OrderParamList(int id)
 		{
 			super(id);
+		}
+
+		/**
+		 * A default constructor for general public, which initialises properties to their defaults.
+		 */
+		public OrderParamList()
+		{
+			super(PARAM_TYPE);
 		}
 
 		/**
@@ -1175,11 +1231,19 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		public static final int PARAM_TYPE=7;
 
 		/**
-		 * A default constructor which initialises properties to their defaults.
+		 * A default constructor for subclasses, which initialises properties to their defaults.
 		 */
 		protected OrderParamString(int id)
 		{
 			super(id);
+		}
+
+		/**
+		 * A default constructor for general public, which initialises properties to their defaults.
+		 */
+		public OrderParamString()
+		{
+			super(PARAM_TYPE);
 		}
 
 		/**
@@ -1266,11 +1330,19 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		public static final int PARAM_TYPE=8;
 
 		/**
-		 * A default constructor which initialises properties to their defaults.
+		 * A default constructor for subclasses, which initialises properties to their defaults.
 		 */
 		protected OrderParamReference(int id)
 		{
 			super(id);
+		}
+
+		/**
+		 * A default constructor for general public, which initialises properties to their defaults.
+		 */
+		public OrderParamReference()
+		{
+			super(PARAM_TYPE);
 		}
 
 		/**
@@ -1432,11 +1504,19 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		public static final int PARAM_TYPE=9;
 
 		/**
-		 * A default constructor which initialises properties to their defaults.
+		 * A default constructor for subclasses, which initialises properties to their defaults.
 		 */
 		protected OrderParamReferenceList(int id)
 		{
 			super(id);
+		}
+
+		/**
+		 * A default constructor for general public, which initialises properties to their defaults.
+		 */
+		public OrderParamReferenceList()
+		{
+			super(PARAM_TYPE);
 		}
 
 		/**
