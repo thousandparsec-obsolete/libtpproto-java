@@ -2,7 +2,6 @@ package net.thousandparsec.netlib;
 
 import java.io.PrintStream;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
