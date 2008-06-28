@@ -140,9 +140,12 @@ public class GetObjectIDsByPos extends Request
 		return this.pos;
 	}
 
+	/**
+	 * NOTE: this method does not copy the value object.
+	 */
 	public void setPos(PosType value)
 	{
-		this.pos=new PosType(value);
+		this.pos=value;
 	}
 
 	/**

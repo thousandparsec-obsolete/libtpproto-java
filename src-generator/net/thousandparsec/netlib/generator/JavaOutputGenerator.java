@@ -1082,6 +1082,12 @@ public class JavaOutputGenerator implements OutputGenerator
 				valueType=property.targetType;
 		}
 
+		if (property.type == Property.PropertyType.group)
+		{
+			out.printf("%s/**%n", indent);
+			out.printf("%s * NOTE: this method does not copy the value object.%n", indent);
+			out.printf("%s */%n", indent);
+		}
 		out.printf("%s%s void %s(%s value)%n",
 			indent,
 			isPublic
@@ -1103,9 +1109,6 @@ public class JavaOutputGenerator implements OutputGenerator
 				break;
 
 			case group:
-				out.printf("%s	this.%s=new %s(value);%n", indent, property.name, property.targetType);
-				break;
-
 			case enumeration:
 			case integer:
 			case string:
@@ -1131,7 +1134,6 @@ public class JavaOutputGenerator implements OutputGenerator
 					out.printf("%s	}%n", indent);
 				}
 				else
-					//no copying here...
 					out.printf("%s	this.%s=value;%n", indent, property.name);
 				break;
 

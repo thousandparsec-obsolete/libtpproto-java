@@ -182,9 +182,12 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			return this.pos;
 		}
 
+		/**
+		 * NOTE: this method does not copy the value object.
+		 */
 		public void setPos(PosType value)
 		{
-			this.pos=new PosType(value);
+			this.pos=value;
 		}
 
 		@Override
@@ -706,9 +709,12 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			return this.relpos;
 		}
 
+		/**
+		 * NOTE: this method does not copy the value object.
+		 */
 		public void setRelpos(RelposType value)
 		{
-			this.relpos=new RelposType(value);
+			this.relpos=value;
 		}
 
 		@Override

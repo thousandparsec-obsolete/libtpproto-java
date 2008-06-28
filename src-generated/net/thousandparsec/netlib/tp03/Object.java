@@ -197,9 +197,12 @@ public class Object extends Response
 		return this.pos;
 	}
 
+	/**
+	 * NOTE: this method does not copy the value object.
+	 */
 	public void setPos(PosType value)
 	{
-		this.pos=new PosType(value);
+		this.pos=value;
 	}
 
 	public static class VelType extends TPObject<TP03Visitor>
@@ -318,9 +321,12 @@ public class Object extends Response
 		return this.vel;
 	}
 
+	/**
+	 * NOTE: this method does not copy the value object.
+	 */
 	public void setVel(VelType value)
 	{
-		this.vel=new VelType(value);
+		this.vel=value;
 	}
 
 	/**
