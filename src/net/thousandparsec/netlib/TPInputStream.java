@@ -64,4 +64,9 @@ public class TPInputStream implements TPDataInput
 	{
 		return orig == null ? null : orig.drain();
 	}
+
+	public void close() throws IOException
+	{
+		in.close();
+	}
 }

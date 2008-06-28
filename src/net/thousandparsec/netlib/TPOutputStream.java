@@ -55,4 +55,9 @@ public class TPOutputStream implements TPDataOutput
 	{
 		out.flush();
 	}
+
+	public void close() throws IOException
+	{
+		out.close();
+	}
 }
