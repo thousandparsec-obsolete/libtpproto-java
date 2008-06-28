@@ -6,7 +6,7 @@ import java.io.InputStream;
 
 /**
  * A default implementation of {@link TPDataInput} interface, which delegates
- * calls to an underlying {@link DataInputStream}.
+ * calls to an underlying {@link InputStream}.
  * 
  * @author ksobolewski
  */
