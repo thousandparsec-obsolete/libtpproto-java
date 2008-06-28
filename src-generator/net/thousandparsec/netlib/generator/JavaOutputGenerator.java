@@ -1113,6 +1113,28 @@ public class JavaOutputGenerator implements OutputGenerator
 				break;
 
 			case useparameters:
+				if (property.useparametersTypeField.isIndirect())
+				{
+					out.printf("%s	try%n", indent);
+					out.printf("%s	{%n", indent);
+					out.printf("%s		java.io.ByteArrayOutputStream bout=new java.io.ByteArrayOutputStream();%n", indent);
+					out.printf("%s		TPOutputStream out=new TPOutputStream(bout);%n", indent);
+					out.printf("%s		value.write(out, null);%n", indent);
+					out.printf("%s		out.flush();%n", indent);
+					out.printf("%s		bout.close();%n", indent);
+					out.printf("%s		this.%s=bout.toByteArray();%n", indent, property.name);
+					out.printf("%s	}%n", indent);
+					out.printf("%s	catch (IOException fatal)%n", indent);
+					out.printf("%s	{%n", indent);
+					out.printf("%s		//this should not happen with ByteArrayOutputStream%n", indent);
+					out.printf("%s		throw new RuntimeException(fatal);%n", indent);
+					out.printf("%s	}%n", indent);
+				}
+				else
+					//no copying here...
+					out.printf("%s	this.%s=value;%n", indent, property.name);
+				break;
+
 			case descparameter:
 				//TODO: should this be copyable?
 				out.printf("%s	throw new RuntimeException();%n", indent, property.name);

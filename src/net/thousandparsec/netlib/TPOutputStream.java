@@ -10,7 +10,7 @@ import java.io.OutputStream;
  * 
  * @author ksobolewski
  */
-class TPOutputStream implements TPDataOutput
+public class TPOutputStream implements TPDataOutput
 {
 	private final DataOutputStream out;
 

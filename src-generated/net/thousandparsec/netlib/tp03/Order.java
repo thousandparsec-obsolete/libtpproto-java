@@ -211,10 +211,22 @@ public class Order extends Response
 		}
 	}
 
-	@SuppressWarnings("unused")
-	private void setOrderparams(OrderParams value)
+	public void setOrderparams(OrderParams value)
 	{
-		throw new RuntimeException();
+		try
+		{
+			java.io.ByteArrayOutputStream bout=new java.io.ByteArrayOutputStream();
+			TPOutputStream out=new TPOutputStream(bout);
+			value.write(out, null);
+			out.flush();
+			bout.close();
+			this.orderparams=bout.toByteArray();
+		}
+		catch (IOException fatal)
+		{
+			//this should not happen with ByteArrayOutputStream
+			throw new RuntimeException(fatal);
+		}
 	}
 
 	@Override

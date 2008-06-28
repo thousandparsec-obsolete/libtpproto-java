@@ -18,7 +18,7 @@ class UseparametersHandler extends PropertyHandler
 
 	UseparametersHandler(StructureHandler<?> parent, String ref)
 	{
-		super(parent, Property.PropertyType.useparameters, ref, null, 0, true);
+		super(parent, Property.PropertyType.useparameters, ref, null, 0, false);
 	}
 
 	protected void addSearchPathElement(SearchPathElement element)

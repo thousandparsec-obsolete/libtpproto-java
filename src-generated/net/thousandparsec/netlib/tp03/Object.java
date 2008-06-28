@@ -558,10 +558,9 @@ public class Object extends Response
 		return this.object;
 	}
 
-	@SuppressWarnings("unused")
-	private void setObject(ObjectParams value)
+	public void setObject(ObjectParams value)
 	{
-		throw new RuntimeException();
+		this.object=value;
 	}
 
 	@Override
