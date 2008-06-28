@@ -217,8 +217,7 @@ public class Order extends Response
 			java.io.ByteArrayOutputStream bout=new java.io.ByteArrayOutputStream();
 			TPOutputStream out=new TPOutputStream(bout);
 			value.write(out, null);
-			out.flush();
-			bout.close();
+			out.close();
 			this.orderparams=bout.toByteArray();
 		}
 		catch (IOException fatal)

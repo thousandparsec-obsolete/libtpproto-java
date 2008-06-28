@@ -1122,8 +1122,7 @@ public class JavaOutputGenerator implements OutputGenerator
 					out.printf("%s		java.io.ByteArrayOutputStream bout=new java.io.ByteArrayOutputStream();%n", indent);
 					out.printf("%s		TPOutputStream out=new TPOutputStream(bout);%n", indent);
 					out.printf("%s		value.write(out, null);%n", indent);
-					out.printf("%s		out.flush();%n", indent);
-					out.printf("%s		bout.close();%n", indent);
+					out.printf("%s		out.close();%n", indent);
 					out.printf("%s		this.%s=bout.toByteArray();%n", indent, property.name);
 					out.printf("%s	}%n", indent);
 					out.printf("%s	catch (IOException fatal)%n", indent);
