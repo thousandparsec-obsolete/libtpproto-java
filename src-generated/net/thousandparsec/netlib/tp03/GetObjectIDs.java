@@ -42,7 +42,6 @@ public class GetObjectIDs extends GetIDSequence
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	GetObjectIDs(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

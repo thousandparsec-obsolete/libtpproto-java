@@ -56,7 +56,6 @@ public class Okay extends Response
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	Okay(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

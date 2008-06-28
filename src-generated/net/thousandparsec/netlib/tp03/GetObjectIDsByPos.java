@@ -108,7 +108,6 @@ public class GetObjectIDsByPos extends Request
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		PosType(TPDataInput in) throws IOException
 		{
 			this.x=in.readInteger64();
@@ -188,7 +187,6 @@ public class GetObjectIDsByPos extends Request
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	GetObjectIDsByPos(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

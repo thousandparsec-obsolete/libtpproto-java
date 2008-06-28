@@ -165,7 +165,6 @@ public class Object extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		PosType(TPDataInput in) throws IOException
 		{
 			this.x=in.readInteger64();
@@ -289,7 +288,6 @@ public class Object extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		VelType(TPDataInput in) throws IOException
 		{
 			this.x=in.readInteger64();
@@ -387,7 +385,6 @@ public class Object extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		ContainsType(TPDataInput in) throws IOException
 		{
 			this.id=in.readInteger32();
@@ -478,7 +475,6 @@ public class Object extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		OrdertypesType(TPDataInput in) throws IOException
 		{
 			this.id=in.readInteger32();
@@ -618,7 +614,6 @@ public class Object extends Response
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	Object(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

@@ -16,7 +16,8 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 		this.id=id;
 	}
 
-	ObjectParams(int id, TPDataInput in)
+	@SuppressWarnings("unused")
+	ObjectParams(int id, TPDataInput in) throws IOException
 	{
 		this(id);
 		//nothing to read
@@ -93,7 +94,6 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		Universe(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
@@ -154,7 +154,6 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		Galaxy(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
@@ -212,7 +211,6 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		StarSystem(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
@@ -361,7 +359,6 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 			/**
 			 * A special "internal" constructor that reads contents from a stream.
 			 */
-			@SuppressWarnings("unused")
 			ResourcesType(TPDataInput in) throws IOException
 			{
 				this.id=in.readInteger32();
@@ -424,7 +421,6 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		Planet(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
@@ -549,7 +545,6 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 			/**
 			 * A special "internal" constructor that reads contents from a stream.
 			 */
-			@SuppressWarnings("unused")
 			ShipsType(TPDataInput in) throws IOException
 			{
 				this.type=in.readInteger32();
@@ -621,7 +616,6 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		Fleet(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);

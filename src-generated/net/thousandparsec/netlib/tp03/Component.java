@@ -100,7 +100,6 @@ public class Component extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		CategoriesType(TPDataInput in) throws IOException
 		{
 			this.category=in.readInteger32();
@@ -243,7 +242,6 @@ public class Component extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		PropertiesType(TPDataInput in) throws IOException
 		{
 			this.id=in.readInteger32();
@@ -318,7 +316,6 @@ public class Component extends Response
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	Component(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

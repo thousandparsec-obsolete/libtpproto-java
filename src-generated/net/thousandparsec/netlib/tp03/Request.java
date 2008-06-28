@@ -31,7 +31,6 @@ public abstract class Request extends Frame<TP03Visitor>
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	Request(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

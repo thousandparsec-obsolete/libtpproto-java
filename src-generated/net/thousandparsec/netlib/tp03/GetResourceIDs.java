@@ -42,7 +42,6 @@ public class GetResourceIDs extends GetIDSequence
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	GetResourceIDs(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

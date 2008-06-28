@@ -42,7 +42,6 @@ public class FinishedTurn extends Request
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	FinishedTurn(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

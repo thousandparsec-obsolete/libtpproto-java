@@ -69,7 +69,6 @@ public abstract class GetWithID extends Request
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		IdsType(TPDataInput in) throws IOException
 		{
 			this.id=in.readInteger32();
@@ -127,7 +126,6 @@ public abstract class GetWithID extends Request
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	GetWithID(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

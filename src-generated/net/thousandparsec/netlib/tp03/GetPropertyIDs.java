@@ -42,7 +42,6 @@ public class GetPropertyIDs extends GetIDSequence
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	GetPropertyIDs(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

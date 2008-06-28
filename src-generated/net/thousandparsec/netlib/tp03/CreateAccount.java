@@ -110,7 +110,6 @@ public class CreateAccount extends Request
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	CreateAccount(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

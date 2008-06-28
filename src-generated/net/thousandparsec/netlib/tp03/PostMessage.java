@@ -42,7 +42,6 @@ public class PostMessage extends Message
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	PostMessage(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

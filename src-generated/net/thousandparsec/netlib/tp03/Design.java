@@ -100,7 +100,6 @@ public class Design extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		CategoriesType(TPDataInput in) throws IOException
 		{
 			this.category=in.readInteger32();
@@ -249,7 +248,6 @@ public class Design extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		ComponentsType(TPDataInput in) throws IOException
 		{
 			this.componentid=in.readInteger32();
@@ -368,7 +366,6 @@ public class Design extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		PropertiesType(TPDataInput in) throws IOException
 		{
 			this.id=in.readInteger32();
@@ -451,7 +448,6 @@ public class Design extends Response
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	Design(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

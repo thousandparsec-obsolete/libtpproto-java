@@ -124,7 +124,6 @@ public class Board extends Response
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	Board(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

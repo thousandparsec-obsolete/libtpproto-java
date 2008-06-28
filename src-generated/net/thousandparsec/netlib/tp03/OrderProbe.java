@@ -42,7 +42,6 @@ public class OrderProbe extends Order
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	OrderProbe(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

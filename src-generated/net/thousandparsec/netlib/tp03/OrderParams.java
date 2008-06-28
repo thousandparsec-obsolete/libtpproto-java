@@ -16,7 +16,8 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		this.id=id;
 	}
 
-	OrderParams(int id, TPDataInput in)
+	@SuppressWarnings("unused")
+	OrderParams(int id, TPDataInput in) throws IOException
 	{
 		this(id);
 		//nothing to read
@@ -150,7 +151,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			/**
 			 * A special "internal" constructor that reads contents from a stream.
 			 */
-			@SuppressWarnings("unused")
 			PosType(TPDataInput in) throws IOException
 			{
 				this.x=in.readInteger64();
@@ -207,7 +207,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		OrderParamAbsSpaceCoords(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
@@ -306,7 +305,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		OrderParamTime(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
@@ -390,7 +388,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		OrderParamObject(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
@@ -526,7 +523,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		OrderParamPlayer(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
@@ -677,7 +673,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			/**
 			 * A special "internal" constructor that reads contents from a stream.
 			 */
-			@SuppressWarnings("unused")
 			RelposType(TPDataInput in) throws IOException
 			{
 				this.x=in.readInteger64();
@@ -736,7 +731,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		OrderParamRelSpaceCoords(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
@@ -874,7 +868,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		OrderParamRange(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
@@ -1021,7 +1014,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			/**
 			 * A special "internal" constructor that reads contents from a stream.
 			 */
-			@SuppressWarnings("unused")
 			PossibleselectionsType(TPDataInput in) throws IOException
 			{
 				this.id=in.readInteger32();
@@ -1137,7 +1129,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			/**
 			 * A special "internal" constructor that reads contents from a stream.
 			 */
-			@SuppressWarnings("unused")
 			SelectionType(TPDataInput in) throws IOException
 			{
 				this.id=in.readInteger32();
@@ -1196,7 +1187,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		OrderParamList(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
@@ -1299,7 +1289,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		OrderParamString(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
@@ -1417,7 +1406,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			/**
 			 * A special "internal" constructor that reads contents from a stream.
 			 */
-			@SuppressWarnings("unused")
 			AllowedType(TPDataInput in) throws IOException
 			{
 				this.reftype=in.readInteger32();
@@ -1471,7 +1459,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		OrderParamReference(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);
@@ -1583,7 +1570,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			/**
 			 * A special "internal" constructor that reads contents from a stream.
 			 */
-			@SuppressWarnings("unused")
 			ReferencesType(TPDataInput in) throws IOException
 			{
 				this.reference=in.readInteger32();
@@ -1667,7 +1653,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 			/**
 			 * A special "internal" constructor that reads contents from a stream.
 			 */
-			@SuppressWarnings("unused")
 			AllowedType(TPDataInput in) throws IOException
 			{
 				this.reftype=in.readInteger32();
@@ -1723,7 +1708,6 @@ public class OrderParams extends TPObject<TP03Visitor> implements Visitable<TP03
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		OrderParamReferenceList(int id, TPDataInput in) throws IOException
 		{
 			super(id, in);

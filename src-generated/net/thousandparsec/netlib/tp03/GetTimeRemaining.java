@@ -42,7 +42,6 @@ public class GetTimeRemaining extends Request
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	GetTimeRemaining(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

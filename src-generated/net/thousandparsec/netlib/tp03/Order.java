@@ -149,7 +149,6 @@ public class Order extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		ResourcesType(TPDataInput in) throws IOException
 		{
 			this.id=in.readInteger32();
@@ -264,7 +263,6 @@ public class Order extends Response
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	Order(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

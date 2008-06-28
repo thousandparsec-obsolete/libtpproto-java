@@ -42,7 +42,6 @@ public class AddCategory extends Category
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	AddCategory(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

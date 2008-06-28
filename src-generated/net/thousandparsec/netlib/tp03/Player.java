@@ -90,7 +90,6 @@ public class Player extends Response
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	Player(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

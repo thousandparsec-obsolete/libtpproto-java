@@ -106,7 +106,6 @@ public class Message extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		MsgtypelistType(TPDataInput in) throws IOException
 		{
 			this.msgtype=in.readInteger32();
@@ -252,7 +251,6 @@ public class Message extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		ReferencesType(TPDataInput in) throws IOException
 		{
 			this.type=in.readInteger32();
@@ -327,7 +325,6 @@ public class Message extends Response
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	Message(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

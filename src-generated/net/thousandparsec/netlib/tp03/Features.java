@@ -166,7 +166,6 @@ public class Features extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		FeaturesType(TPDataInput in) throws IOException
 		{
 			feature: {
@@ -233,7 +232,6 @@ public class Features extends Response
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	Features(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

@@ -42,7 +42,6 @@ public class RemoveCategory extends GetCategory
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	RemoveCategory(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

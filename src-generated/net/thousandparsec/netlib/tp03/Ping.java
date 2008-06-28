@@ -42,7 +42,6 @@ public class Ping extends Request
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	Ping(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

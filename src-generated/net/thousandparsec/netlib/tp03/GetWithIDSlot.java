@@ -84,7 +84,6 @@ public abstract class GetWithIDSlot extends Request
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		SlotsType(TPDataInput in) throws IOException
 		{
 			this.slot=in.readInteger32();
@@ -144,7 +143,6 @@ public abstract class GetWithIDSlot extends Request
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	GetWithIDSlot(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

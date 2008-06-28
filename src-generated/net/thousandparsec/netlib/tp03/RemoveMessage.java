@@ -42,7 +42,6 @@ public class RemoveMessage extends GetMessage
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	RemoveMessage(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

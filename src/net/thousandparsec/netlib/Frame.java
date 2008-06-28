@@ -27,7 +27,8 @@ public abstract class Frame<V extends Visitor> extends TPObject<V> implements Vi
 		this.id=id;
 	}
 
-	protected Frame(int id, TPDataInput in)
+	@SuppressWarnings("unused")
+	protected Frame(int id, TPDataInput in) throws IOException
 	{
 		this(id);
 	}

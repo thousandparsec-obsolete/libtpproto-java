@@ -42,7 +42,6 @@ public class GetOrder extends GetWithIDSlot
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	GetOrder(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

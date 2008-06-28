@@ -42,7 +42,6 @@ public class GetDesignIDs extends GetIDSequence
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	GetDesignIDs(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

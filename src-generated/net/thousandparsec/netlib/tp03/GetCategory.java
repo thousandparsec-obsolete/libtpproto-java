@@ -42,7 +42,6 @@ public class GetCategory extends GetWithID
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	GetCategory(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

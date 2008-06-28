@@ -42,7 +42,6 @@ public class RemoveDesign extends GetDesign
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	RemoveDesign(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

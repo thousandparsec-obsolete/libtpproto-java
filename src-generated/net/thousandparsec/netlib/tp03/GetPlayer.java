@@ -42,7 +42,6 @@ public class GetPlayer extends GetWithID
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	GetPlayer(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

@@ -42,7 +42,6 @@ public class GetMessage extends GetWithIDSlot
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	GetMessage(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

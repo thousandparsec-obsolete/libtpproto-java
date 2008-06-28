@@ -121,7 +121,6 @@ public abstract class IDSequence extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		ModtimesType(TPDataInput in) throws IOException
 		{
 			this.id=in.readInteger32();
@@ -186,7 +185,6 @@ public abstract class IDSequence extends Response
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	IDSequence(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

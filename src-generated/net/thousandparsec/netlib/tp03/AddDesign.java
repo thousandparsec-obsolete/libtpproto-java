@@ -42,7 +42,6 @@ public class AddDesign extends Design
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	AddDesign(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

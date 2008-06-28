@@ -42,7 +42,6 @@ public class GetBoardIDs extends GetIDSequence
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	GetBoardIDs(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

@@ -42,7 +42,6 @@ public class ComponentIDs extends IDSequence
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	ComponentIDs(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

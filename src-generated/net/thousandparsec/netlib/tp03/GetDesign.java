@@ -42,7 +42,6 @@ public class GetDesign extends GetWithID
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	GetDesign(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

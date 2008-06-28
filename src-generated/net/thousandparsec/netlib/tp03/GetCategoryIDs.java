@@ -42,7 +42,6 @@ public class GetCategoryIDs extends GetIDSequence
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	GetCategoryIDs(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

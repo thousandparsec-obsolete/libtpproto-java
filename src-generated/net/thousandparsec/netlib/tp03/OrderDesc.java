@@ -155,7 +155,6 @@ public class OrderDesc extends Response
 		/**
 		 * A special "internal" constructor that reads contents from a stream.
 		 */
-		@SuppressWarnings("unused")
 		ParametersType(TPDataInput in) throws IOException
 		{
 			this.name=in.readString();
@@ -242,7 +241,6 @@ public class OrderDesc extends Response
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	OrderDesc(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

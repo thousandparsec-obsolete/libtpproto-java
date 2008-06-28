@@ -42,7 +42,6 @@ public class CategoryIDs extends IDSequence
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	CategoryIDs(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);

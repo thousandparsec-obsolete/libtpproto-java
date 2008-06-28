@@ -423,8 +423,6 @@ public class JavaOutputGenerator implements OutputGenerator
 		out.printf("%s	/**%n", indent);
 		out.printf("%s	 * A special \"internal\" constructor that reads contents from a stream.%n", indent);
 		out.printf("%s	 */%n", indent);
-		//we'll do everything to have warning-less generated code! :)
-		out.printf("%s	@SuppressWarnings(\"unused\")%n", indent);
 		if (overrides)
 			out.printf("%s	%s(int id, TPDataInput in) throws IOException%n", indent, typeName);
 		else
@@ -785,7 +783,8 @@ public class JavaOutputGenerator implements OutputGenerator
 		out.println("		this.id=id;");
 		out.println("	}");
 		out.println();
-		out.printf("	%s(int id, TPDataInput in)%n", className);
+		out.println("	@SuppressWarnings(\"unused\")");
+		out.printf("	%s(int id, TPDataInput in) throws IOException%n", className);
 		out.println("	{");
 		out.println("		this(id);");
 		out.println("		//nothing to read");

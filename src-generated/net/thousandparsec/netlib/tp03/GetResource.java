@@ -42,7 +42,6 @@ public class GetResource extends GetWithID
 	/**
 	 * A special "internal" constructor that reads contents from a stream.
 	 */
-	@SuppressWarnings("unused")
 	GetResource(int id, TPDataInput in) throws IOException
 	{
 		super(id, in);
