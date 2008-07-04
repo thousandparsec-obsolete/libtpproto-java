@@ -46,16 +46,32 @@ public class TestMidlet extends MIDlet {
        
     }*/
     public TestMidlet(){
+        Connection tc=null;
         try{
             	TP03Decoder decoder=new TP03Decoder();
                 System.out.println("TP03Decoder instantiated");
+                System.out.println("decoder.makeConnection");
 		Connection conn=decoder.makeConnection(
-                      new URI("tp://guest:guest@demo1.thousandparsec.net/tp"),true, new TP03Visitor(false));
-                      //new URI("tps://llnz.dyndns.org:6924/llnz-dev2"),true, new TP03Visitor(false));
+                      new URI("tp://brendan:a@192.168.0.180"), true, new TP03Visitor(false));
+                      //new URI("tp://guest:guest@demo1.thousandparsec.net"),true, new TP03Visitor(false));
+                      //new URI("tp://guest:guest@llnz.dyndns.org:6924/llnz-dev2"),true, new TP03Visitor(false));
                 System.out.println("Connection object made");
 		//conn.addConnectionListener(new DefaultConnectionListener());
 		//new TestConnect(conn).start();
+                tc=conn;
         }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        try
+		{
+			tc.sendFrame(new Ping());
+
+			GetObjectsByID getObj=new GetObjectsByID();
+			//zero for top-level object is a typical magic number
+			//getObj.getIds().add(new IdsType(0));
+			tc.sendFrame(getObj);
+		}
         catch(Exception e){
             e.printStackTrace();
         }
