@@ -210,13 +210,24 @@ public class Order extends Response
 		}
 	}
 
-	public void setOrderparams(OrderParams value)
+	public void setOrderparams(java.util.List<OrderParams> value, OrderDesc template) throws TPException
 	{
 		try
 		{
+			if (template.getId() != getOtype())
+				throw new TPException(String.format("ParameterSet id does not match frame's parameter set id: %d != %d", template.getId(), getOtype()));
 			java.io.ByteArrayOutputStream bout=new java.io.ByteArrayOutputStream();
 			TPOutputStream out=new TPOutputStream(bout);
-			value.write(out, null);
+			java.util.Iterator<OrderParams> pit=value.iterator();
+			for (OrderDesc.ParametersType template0 : template.getParameters())
+			{
+				if (!pit.hasNext())
+					throw new TPException("Insufficient values for ParameterSet orderparams");
+				OrderParams param=pit.next();
+				if (template0.getType() != param.getParameterType())
+					throw new TPException(String.format("Invalid parameter type; expected %d, got %d", template0.getType(), param.getParameterType()));
+				param.write(out, null);
+			}
 			out.close();
 			this.orderparams=bout.toByteArray();
 		}

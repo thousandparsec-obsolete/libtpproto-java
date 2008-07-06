@@ -999,10 +999,8 @@ public class JavaOutputGenerator implements OutputGenerator
 					Indent nestIndent=indent;
 					String srcVar="template";
 					String varType=property.useparametersTypeField.indirectFrame;
-					for (int i=0; i < property.useparametersTypeField.searchPath.size(); i++)
+					for (SearchPathElement elem : property.useparametersTypeField.searchPath)
 					{
-						SearchPathElement elem=property.useparametersTypeField.searchPath.get(i);
-
 						String varName=String.format("template%d", varCnt++);
 						varType=elem.type == SearchPathElement.Type.FINAL
 							? "int" //int?
@@ -1077,6 +1075,13 @@ public class JavaOutputGenerator implements OutputGenerator
 					? property.targetSubtype
 					: property.targetType;
 				break;
+			case useparameters:
+				if (property.useparametersTypeField.isIndirect())
+				{
+					valueType=String.format("java.util.List<%s>", property.targetType);
+					break;
+				}
+				//else FALLTHRU!
 			default:
 				valueType=property.targetType;
 		}
@@ -1087,13 +1092,19 @@ public class JavaOutputGenerator implements OutputGenerator
 			out.printf("%s * NOTE: this method does not copy the value object.%n", indent);
 			out.printf("%s */%n", indent);
 		}
-		out.printf("%s%s void %s(%s value)%n",
+		out.printf("%s%s void %s(%s value%s)%s%n",
 			indent,
 			isPublic
 				? "public"
 				: "private",
 			camelPrefix("set", property.name),
-			valueType);
+			valueType,
+			property.type == Property.PropertyType.useparameters && property.useparametersTypeField.isIndirect()
+				? String.format(", %s template", property.useparametersTypeField.indirectFrame)
+				: "",
+			property.type == Property.PropertyType.useparameters && property.useparametersTypeField.isIndirect()
+				? " throws TPException"
+				: "");
 		out.printf("%s{%n", indent);
 		switch (property.type)
 		{
@@ -1119,9 +1130,52 @@ public class JavaOutputGenerator implements OutputGenerator
 				{
 					out.printf("%s	try%n", indent);
 					out.printf("%s	{%n", indent);
+					out.printf("%s		if (template.%s() != %s())%n", indent, camelPrefix("get", property.useparametersTypeField.indirectFrameCheckField), camelPrefix("get", property.useparametersTypeField.localField));
+					out.printf("%s			throw new TPException(String.format(\"ParameterSet id does not match frame's parameter set id: %%d != %%d\", template.%s(), %s()));%n", indent, camelPrefix("get", property.useparametersTypeField.indirectFrameCheckField), camelPrefix("get", property.useparametersTypeField.localField));
 					out.printf("%s		java.io.ByteArrayOutputStream bout=new java.io.ByteArrayOutputStream();%n", indent);
 					out.printf("%s		TPOutputStream out=new TPOutputStream(bout);%n", indent);
-					out.printf("%s		value.write(out, null);%n", indent);
+					out.printf("%s		java.util.Iterator<%s> pit=value.iterator();%n", indent, property.targetType);
+
+					//please, take a seat, it's not a pretty sight!
+					//(copy-paste warning!)
+					int nest=0;
+					int varCnt=0;
+					Indent nestIndent=indent;
+					String srcVar="template";
+					String varType=property.useparametersTypeField.indirectFrame;
+					for (SearchPathElement elem : property.useparametersTypeField.searchPath)
+					{
+						String varName=String.format("template%d", varCnt++);
+						varType=elem.type == SearchPathElement.Type.FINAL
+							? "int" //int?
+							: varType+"."+elem.property.substring(0, 1).toUpperCase()+elem.property.substring(1)+"Type";
+
+						switch (elem.type)
+						{
+							case FIELD:
+								out.printf("%s		%s %s=%s.%s();%n", nestIndent, varType, varName, srcVar, camelPrefix("get", elem.property));
+								break;
+
+							case LIST:
+								out.printf("%s		for (%s %s : %s.%s())%n", nestIndent, varType, varName, srcVar, camelPrefix("get", elem.property));
+								out.printf("%s		{%n", nestIndent);
+								nestIndent=new Indent(level + ++nest);
+								break;
+
+							case FINAL:
+								out.printf("%s		if (!pit.hasNext())%n", nestIndent);
+								out.printf("%s			throw new TPException(\"Insufficient values for ParameterSet %s\");%n", nestIndent, property.name);
+								out.printf("%s		%s param=pit.next();%n", nestIndent, property.targetType);
+								out.printf("%s		if (%s.getType() != param.getParameterType())%n", nestIndent, srcVar);
+								out.printf("%s			throw new TPException(String.format(\"Invalid parameter type; expected %%d, got %%d\", %s.getType(), param.getParameterType()));%n", nestIndent, srcVar);
+								out.printf("%s		param.write(out, null);%n", nestIndent, srcVar);
+								break;
+						}
+						srcVar=varName;
+					}
+					while (nest != 0)
+						out.printf("%s		}%n", new Indent(level + --nest));
+
 					out.printf("%s		out.close();%n", indent);
 					out.printf("%s		this.%s=bout.toByteArray();%n", indent, property.name);
 					out.printf("%s	}%n", indent);
