@@ -228,6 +228,8 @@ public class Order extends Response
 					throw new TPException(String.format("Invalid parameter type; expected %d, got %d", template0.getType(), param.getParameterType()));
 				param.write(out, null);
 			}
+			if (pit.hasNext())
+				throw new TPException("Too many values for ParameterSet orderparams");
 			out.close();
 			this.orderparams=bout.toByteArray();
 		}

@@ -1176,6 +1176,8 @@ public class JavaOutputGenerator implements OutputGenerator
 					while (nest != 0)
 						out.printf("%s		}%n", new Indent(level + --nest));
 
+					out.printf("%s		if (pit.hasNext())%n", indent);
+					out.printf("%s			throw new TPException(\"Too many values for ParameterSet %s\");%n", indent, property.name);
 					out.printf("%s		out.close();%n", indent);
 					out.printf("%s		this.%s=bout.toByteArray();%n", indent, property.name);
 					out.printf("%s	}%n", indent);
