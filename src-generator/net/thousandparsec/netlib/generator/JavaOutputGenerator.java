@@ -1092,6 +1092,13 @@ public class JavaOutputGenerator implements OutputGenerator
 			out.printf("%s * NOTE: this method does not copy the value object.%n", indent);
 			out.printf("%s */%n", indent);
 		}
+		else if (property.type == Property.PropertyType.useparameters && property.useparametersTypeField.isIndirect())
+		{
+			out.printf("%s/**%n", indent);
+			out.printf("%s * The order of parameters in the List has to be exactly the same as if returned by accompying getter, that is depth-first search of the template's structure.%n", indent);
+			out.printf("%s * This method checks for underflows and overflows of the list and if the parameter's type matches the one expected by template.%n", indent);
+			out.printf("%s */%n", indent);
+		}
 		out.printf("%s%s void %s(%s value%s)%s%n",
 			indent,
 			isPublic
