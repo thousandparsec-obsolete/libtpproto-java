@@ -25,6 +25,8 @@ import net.thousandparsec.netlib.tp03.TP03Decoder;
 import net.thousandparsec.netlib.tp03.TP03Visitor;
 import net.thousandparsec.netlib.tp03.GetWithID.IdsType;
 import net.thousandparsec.netlib.tp03.ObjectParams.Universe;
+import net.thousandparsec.netlib.Visitor;
+import java.io.EOFException;
 
 /**
  * @author Brendan
@@ -56,25 +58,70 @@ public class TestMidlet extends MIDlet {
                       //new URI("tp://guest:guest@demo1.thousandparsec.net"),true, new TP03Visitor(false));
                       //new URI("tp://guest:guest@llnz.dyndns.org:6924/llnz-dev2"),true, new TP03Visitor(false));
                 System.out.println("Connection object made");
-		//conn.addConnectionListener(new DefaultConnectionListener());
-		//new TestConnect(conn).start();
+                conn.addConnectionListener(new DefaultConnectionListener());
+                new FrameReceiver(conn).sendAndReceive();
                 tc=conn;
         }
         catch(Exception e){
             e.printStackTrace();
         }
-        try
+       /* try
 		{
 			tc.sendFrame(new Ping());
 
 			GetObjectsByID getObj=new GetObjectsByID();
 			//zero for top-level object is a typical magic number
 			//getObj.getIds().add(new IdsType(0));
-			tc.sendFrame(getObj);
+                        tc.sendFrame(getObj);
+                        System.out.println("GetObj Reached in main");
 		}
         catch(Exception e){
             e.printStackTrace();
+        }*/
+    }
+    class FrameReceiver extends TP03Visitor {
+        Connection conn = null;
+        public FrameReceiver(Connection c){
+            conn = c;
+        }
+        public void sendAndReceive() throws IOException, TPException{
+            conn.receiveAllFramesAsync(this);
+            try{
+                System.out.println("Now in sendAndReceive");
+                //conn.receiveAllFrames(this);
+                System.out.println("All frames received");
+                System.out.println("Sending ping");
+                conn.sendFrame(new Ping());
+                System.out.println("Getting Objects by id");
+                GetObjectsByID getObj = new GetObjectsByID();
+                getObj.getIds().addElement(new IdsType(0));
+                getObj.getIds().addElement(new IdsType(1));
+                System.out.println("getObj made; sending getObj Frame");
+                conn.sendFrame(getObj);
+                //conn.receiveAllFramesAsync(this);
+                System.out.println("FrameReceiver: getObj passed");
+                System.out.println("---GetObject.toString()---\n" + getObj.toString());
+            }
+            catch(EOFException eof){
+                eof.printStackTrace();
+            }
+            catch(IOException ioe){
+                ioe.printStackTrace();
+            }
+
+            catch(Exception e){
+                System.out.println("Generic Exception catch - message is: " + e.getMessage());                
+            }
+            finally{
+                try{
+                    conn.close();
+                }
+                catch(IOException ioe){
+                    System.out.println("IOException in connection.close - reads: " + ioe.getMessage());
+                }
+            }
+            
         }
     }
-    
+
 }
