@@ -152,11 +152,11 @@
 		<manifest file="${manifest.generator}">
 			<attribute name="Built-By" value="${user.name}"/>
 			<attribute name="Main-Class" value="net.thousandparsec.netlib.generator.Generator"/>
-			<section name="net/thousandparsec/netlib/tp03/">
+			<section name="net/thousandparsec/netlib/generator/">
 				<attribute name="Specification-Title" value="Classfile generator for Thousand Parsec Java protocol client core"/>
 				<attribute name="Specification-Version" value="${version}"/>
 				<attribute name="Specification-Vendor" value="Krzysztof Sobolewski"/>
-				<attribute name="Implementation-Title" value="net.thousandparsec.netlib.tp03"/>
+				<attribute name="Implementation-Title" value="net.thousandparsec.netlib.generator"/>
 				<attribute name="Implementation-Version" value="${version.core.micro}"/>
 				<attribute name="Implementation-Vendor" value="Krzysztof Sobolewski"/>
 			</section>
