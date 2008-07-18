@@ -15,22 +15,27 @@
 	<property name="classes.dir" value="classes"/>
 	<property name="classes.core" value="${classes.dir}/core"/>
 	<property name="classes.proto-tp03" value="${classes.dir}/proto-tp03"/>
+	<property name="classes.proto-tp04" value="${classes.dir}/proto-tp04"/>
 	<property name="classes.generator" value="${classes.dir}/generator"/>
 	<property name="classes.test" value="${classes.dir}/test"/>
 
 	<property name="manifest.core" value="${classes.core}/META-INF/MANIFEST.MF"/>
 	<property name="manifest.proto-tp03" value="${classes.proto-tp03}/META-INF/MANIFEST.MF"/>
+	<property name="manifest.proto-tp04" value="${classes.proto-tp04}/META-INF/MANIFEST.MF"/>
 	<property name="manifest.generator" value="${classes.generator}/META-INF/MANIFEST.MF"/>
 
 	<property name="test-results.dir" value="test-output"/>
 	<property name="test-results.core" value="${test-results.dir}/core"/>
 	<property name="test-results.proto-tp03" value="${test-results.dir}/proto-tp03"/>
+	<property name="test-results.proto-tp04" value="${test-results.dir}/proto-tp04"/>
 
 	<property name="jar.dir" value="jars"/>
 	<property name="jar.core.name" value="libtpproto-java-core_${version.micro}.jar"/>
 	<property name="jar.core" value="${jar.dir}/${jar.core.name}"/>
 	<property name="jar.proto-tp03.name" value="libtpproto-java-proto-tp03_${version.micro}.jar"/>
 	<property name="jar.proto-tp03" value="${jar.dir}/${jar.proto-tp03.name}"/>
+	<property name="jar.proto-tp04.name" value="libtpproto-java-proto-tp04_${version.micro}.jar"/>
+	<property name="jar.proto-tp04" value="${jar.dir}/${jar.proto-tp04.name}"/>
 	<property name="jar.generator.name" value="libtpproto-java-generator_${version.micro}.jar"/>
 	<property name="jar.generator" value="${jar.dir}/${jar.generator.name}"/>
 
@@ -38,7 +43,7 @@
 
 	<taskdef resource="testngtasks" classpath="${libs.testng}"/>
 
-	<target name="compile.all" depends="compile.core,compile.proto-tp03,compile.generator"/>
+	<target name="compile.all" depends="compile.core,compile.proto-tp03,compile.proto-tp04,compile.generator"/>
 	<target name="compile.core">
 		<mkdir dir="${classes.core}"/>
 		<javac source="1.5" target="1.5" sourcepath="" destdir="${classes.core}" debug="true">
@@ -91,16 +96,8 @@
 			<classpath>
 				<path path="${classes.core}"/>
 			</classpath>
-			<include name="**"/>
+			<include name="**/tp03/*.java"/>
 		</javac>
-		<copy todir="${classes.proto-tp03}">
-			<fileset dir="${src.generated}">
-				<exclude name="**/*.java"/>
-			</fileset>
-			<fileset dir="${src.protohelpers}">
-				<exclude name="**/*.java"/>
-			</fileset>
-		</copy>
 		<mkdir dir="${manifest.proto-tp03}/.."/>
 		<manifest file="${manifest.proto-tp03}">
 			<attribute name="Built-By" value="${user.name}"/>
@@ -110,6 +107,32 @@
 				<attribute name="Specification-Version" value="${version}"/>
 				<attribute name="Specification-Vendor" value="Thousand Parsec"/>
 				<attribute name="Implementation-Title" value="net.thousandparsec.netlib.tp03"/>
+				<attribute name="Implementation-Version" value="${version.core.micro}"/>
+				<attribute name="Implementation-Vendor" value="Krzysztof Sobolewski"/>
+			</section>
+		</manifest>
+	</target>
+	<target name="compile.proto-tp04" depends="compile.core">
+		<mkdir dir="${classes.proto-tp04}"/>
+		<javac source="1.5" target="1.5" sourcepath="" destdir="${classes.proto-tp04}" debug="true">
+			<src>
+				<path path="${src.generated}"/>
+				<path path="${src.protohelpers}"/>
+			</src>
+			<classpath>
+				<path path="${classes.core}"/>
+			</classpath>
+			<include name="**/tp04/*.java"/>
+		</javac>
+		<mkdir dir="${manifest.proto-tp04}/.."/>
+		<manifest file="${manifest.proto-tp04}">
+			<attribute name="Built-By" value="${user.name}"/>
+			<attribute name="Class-Path" value="${jar.core}"/>
+			<section name="net/thousandparsec/netlib/tp04/">
+				<attribute name="Specification-Title" value="Thousand Parsec Java protocol client core library for protocol version 4"/>
+				<attribute name="Specification-Version" value="${version}"/>
+				<attribute name="Specification-Vendor" value="Thousand Parsec"/>
+				<attribute name="Implementation-Title" value="net.thousandparsec.netlib.tp04"/>
 				<attribute name="Implementation-Version" value="${version.core.micro}"/>
 				<attribute name="Implementation-Vendor" value="Krzysztof Sobolewski"/>
 			</section>
@@ -182,7 +205,7 @@
 		</testng>
 	</target>
 
-	<target name="jar.all" depends="jar.core,jar.proto-tp03,jar.generator"/>
+	<target name="jar.all" depends="jar.core,jar.proto-tp03,jar.proto-tp04,jar.generator"/>
 	<target name="jar.core" depends="compile.core">
 		<mkdir dir="${jar.dir}"/>
 		<jar destfile="${jar.core}" manifest="${manifest.core}">
@@ -193,6 +216,12 @@
 		<mkdir dir="${jar.dir}"/>
 		<jar destfile="${jar.proto-tp03}" manifest="${manifest.proto-tp03}">
 			<zipfileset dir="${classes.proto-tp03}" prefix=""/>
+		</jar>
+	</target>
+	<target name="jar.proto-tp04" depends="compile.proto-tp04">
+		<mkdir dir="${jar.dir}"/>
+		<jar destfile="${jar.proto-tp04}" manifest="${manifest.proto-tp04}">
+			<zipfileset dir="${classes.proto-tp04}" prefix=""/>
 		</jar>
 	</target>
 	<target name="jar.generator" depends="compile.generator">
@@ -214,7 +243,7 @@
 			noindex="false"
 			nonavbar="false"
 			notree="false"
-			packagenames="net.thousandparsec.netlib,net.thousandparsec.netlib.tp03,net.thousandparsec.util,net.thousandparsec.netlib.generator"
+			packagenames="net.thousandparsec.netlib,net.thousandparsec.netlib.tp03,net.thousandparsec.netlib.tp04,net.thousandparsec.util,net.thousandparsec.netlib.generator"
 			source="1.5"
 			sourcepath="${src.core}:${src.generated}:${src.protohelpers}:${src.generator}"
 			splitindex="true"
@@ -224,7 +253,7 @@
 		</javadoc>
 	</target>
 
-	<target name="clean.all" depends="clean.core,clean.proto-tp03,clean.generator,clean.test">
+	<target name="clean.all" depends="clean.core,clean.proto-tp03,clean.proto-tp04,clean.generator,clean.test">
 		<delete dir="${classes.dir}"/>
 		<delete dir="${test-results.dir}"/>
 		<delete dir="${javadoc.dir}"/>
@@ -240,6 +269,10 @@
 	<target name="clean.proto-tp03">
 		<delete dir="${classes.proto-tp03}"/>
 		<delete file="${jar.proto-tp03}"/>
+	</target>
+	<target name="clean.proto-tp04">
+		<delete dir="${classes.proto-tp04}"/>
+		<delete file="${jar.proto-tp04}"/>
 	</target>
 	<target name="clean.generator">
 		<delete dir="${classes.generator}"/>
