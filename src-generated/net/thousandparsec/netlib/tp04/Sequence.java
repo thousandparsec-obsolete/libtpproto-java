@@ -1,0 +1,77 @@
+package net.thousandparsec.netlib.tp04;
+
+import net.thousandparsec.netlib.*;
+
+import java.io.IOException;
+
+public class Sequence extends Response
+{
+	public static final int FRAME_TYPE=2;
+
+	protected Sequence(int id)
+	{
+		super(id);
+	}
+
+	public Sequence()
+	{
+		super(FRAME_TYPE);
+	}
+
+	/**
+	 * Number of frames which will follow this one.
+	 */
+	private int number;
+
+	public int getNumber()
+	{
+		return this.number;
+	}
+
+	public void setNumber(int value)
+	{
+		this.number=value;
+	}
+
+	@Override
+	public void visit(TP04Visitor visitor) throws TPException
+	{
+		visitor.frame(this);
+	}
+
+	@Override
+	public int findByteLength()
+	{
+		return super.findByteLength()
+			 + 4;
+	}
+
+	@Override
+	public void write(TPDataOutput out, Connection<?> conn) throws IOException
+	{
+		super.write(out, conn);
+		out.writeInteger(this.number);
+	}
+
+	/**
+	 * A special "internal" constructor that reads contents from a stream.
+	 */
+	Sequence(int id, TPDataInput in) throws IOException
+	{
+		super(id, in);
+		this.number=in.readInteger32();
+	}
+
+	@Override
+	public String toString()
+	{
+		StringBuilder buf=new StringBuilder();
+		buf.append("{Sequence");
+		buf.append("; number: ");
+		buf.append(String.valueOf(this.number));
+		buf.append("; super:").append(super.toString());
+		buf.append("}");
+		return buf.toString();
+	}
+
+}
