@@ -649,6 +649,125 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 
 	}
 
+	/**
+	 * 
+				The Wormhole is a top level object that links to locations together.
+				It was added as a quick hack to make the Risk ruleset a little easier to play.
+	 * 
+				It has 3 int64 arguments which are the "other end" of the wormhole.
+			
+	 */
+	public static class Wormhole extends ObjectParams
+	{
+		public static final int PARAM_TYPE=5;
+
+		/**
+		 * A default constructor for subclasses, which initialises properties to their defaults.
+		 */
+		protected Wormhole(int id)
+		{
+			super(id);
+		}
+
+		/**
+		 * A default constructor for general public, which initialises properties to their defaults.
+		 */
+		public Wormhole()
+		{
+			super(PARAM_TYPE);
+		}
+
+		private long endx;
+
+		public long getEndx()
+		{
+			return this.endx;
+		}
+
+		@SuppressWarnings("unused")
+		private void setEndx(long value)
+		{
+			this.endx=value;
+		}
+
+		private long endy;
+
+		public long getEndy()
+		{
+			return this.endy;
+		}
+
+		@SuppressWarnings("unused")
+		private void setEndy(long value)
+		{
+			this.endy=value;
+		}
+
+		private long endz;
+
+		public long getEndz()
+		{
+			return this.endz;
+		}
+
+		@SuppressWarnings("unused")
+		private void setEndz(long value)
+		{
+			this.endz=value;
+		}
+
+		@Override
+		public int findByteLength()
+		{
+			return super.findByteLength()
+				 + 8
+				 + 8
+				 + 8;
+		}
+
+		@Override
+		public void write(TPDataOutput out, Connection<?> conn) throws IOException
+		{
+			super.write(out, conn);
+			out.writeInteger(this.endx);
+			out.writeInteger(this.endy);
+			out.writeInteger(this.endz);
+		}
+
+		/**
+		 * A special "internal" constructor that reads contents from a stream.
+		 */
+		Wormhole(int id, TPDataInput in) throws IOException
+		{
+			super(id, in);
+			this.endx=in.readInteger64();
+			this.endy=in.readInteger64();
+			this.endz=in.readInteger64();
+		}
+
+		@Override
+		public String toString()
+		{
+			StringBuilder buf=new StringBuilder();
+			buf.append("{Wormhole");
+			buf.append("; endx: ");
+			buf.append(String.valueOf(this.endx));
+			buf.append("; endy: ");
+			buf.append(String.valueOf(this.endy));
+			buf.append("; endz: ");
+			buf.append(String.valueOf(this.endz));
+			buf.append("}");
+			return buf.toString();
+		}
+
+		@Override
+		public void visit(TP03Visitor visitor) throws TPException
+		{
+			visitor.objectParams(this);
+		}
+
+	}
+
 	@Override
 	public String toString()
 	{
@@ -667,6 +786,7 @@ public class ObjectParams extends TPObject<TP03Visitor> implements Visitable<TP0
 			case ObjectParams.StarSystem.PARAM_TYPE: return new ObjectParams.StarSystem(id, in);
 			case ObjectParams.Planet.PARAM_TYPE: return new ObjectParams.Planet(id, in);
 			case ObjectParams.Fleet.PARAM_TYPE: return new ObjectParams.Fleet(id, in);
+			case ObjectParams.Wormhole.PARAM_TYPE: return new ObjectParams.Wormhole(id, in);
 			//this is necessary for marshall/unmarshall tests
 			case -1: return new ObjectParams(id, in);
 			default: throw new IllegalArgumentException("Invalid ObjectParams id: "+id);

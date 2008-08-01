@@ -371,6 +371,11 @@ public class TP03Visitor extends Visitor
 		unhandledObjectParams(objectParams);
 	}
 
+	public void objectParams(ObjectParams.Wormhole objectParams) throws TPException
+	{
+		unhandledObjectParams(objectParams);
+	}
+
 	public void unhandledOrderParams(OrderParams orderParams) throws TPException
 	{
 		if (errorOnUnhandled)
