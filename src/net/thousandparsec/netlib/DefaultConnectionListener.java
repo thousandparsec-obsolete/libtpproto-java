@@ -30,7 +30,7 @@ public class DefaultConnectionListener implements ConnectionListener
 		if (printSent)
 		{
 			Frame frame=ev.getFrame();
-			System.err.println(getClass().getName()+": Sent frame seq " + frame.getSequenceNumber() + ", type" + frame.getFrameType() + " " + frame.toString());
+			System.err.println(getClass().getName()+": Sent frame seq " + frame.getSequenceNumber() + ", type " + frame.getFrameType() + " " + frame.toString());
 		}
 	}
 
@@ -45,7 +45,7 @@ public class DefaultConnectionListener implements ConnectionListener
 		else
 		{
 			if (printReceived)
-                            System.err.println(getClass().getName()+": Received frame seq " + frame.getSequenceNumber() + ", type" + frame.getFrameType() + " " + frame.toString());
+                            System.err.println(getClass().getName()+": Received frame seq " + frame.getSequenceNumber() + ", type " + frame.getFrameType() + " " + frame.toString());
                             
 		}
 	}

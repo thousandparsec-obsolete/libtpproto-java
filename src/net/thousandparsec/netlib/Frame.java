@@ -46,7 +46,7 @@ public abstract class Frame extends TPObject implements Visitable
 				//payload length
 				out.writeInteger(findByteLength());
 				//(data should be written by subclass)
-				break;
+                                break;
 
 			case 4:
 				//magic
@@ -126,6 +126,10 @@ public abstract class Frame extends TPObject implements Visitable
 				//EOF on magic means that the connection was properly closed
 				return false;
 			}
+                        catch(Exception e){
+                            System.out.println("Generic Exception");
+                            return false;
+                        }
 		}
 
 		static Header readHeader(TPInputStream in, int compat) throws IOException

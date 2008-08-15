@@ -65,7 +65,7 @@ public class SimpleSequentialConnection implements SequentialConnection
 	public void sendFrame(Frame frame, Visitor responseVisitor) throws IOException, TPException
 	{
 		conn.sendFrame(frame);
-		lastSequence=frame.getSequenceNumber();
+                lastSequence=frame.getSequenceNumber();
 		Frame response=conn.receiveFrame();
 		if (response.getSequenceNumber() != frame.getSequenceNumber())
 			throw new TPException("Response frame sequence" + response.getSequenceNumber() + " does not match request frame sequence" + frame.getSequenceNumber());

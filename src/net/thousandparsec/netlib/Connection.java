@@ -185,6 +185,8 @@ public class Connection
                 System.out.println("Port is:" + port);
                 System.out.println("Method.valueOf(serverUri.getScheme()) is: " + Method.valueOf(serverUri.getScheme()));
                 System.out.println("serverURI.getScheme() is: " + serverUri.getScheme());
+                System.out.println("serverURI.getHost() is: " + serverUri.getHost());
+                
 		return port == -1 
 			? makeConnection(
 				frameDecoder,
@@ -217,6 +219,7 @@ public class Connection
 		//throws UnknownHostException, IOException
                 throws IOException
 	{
+            System.out.println("Layer3:" + host);
 		return makeConnection(
 			frameDecoder,
 			host,
@@ -243,6 +246,7 @@ public class Connection
 		//throws UnknownHostException, IOException
                 throws IOException
 	{
+            System.out.println("Layer 2:" + host);
 		if(method.equals(Method.tp)){
                     return makeTPConnection(frameDecoder, host, asyncVisitor);
                 }
@@ -281,6 +285,7 @@ public class Connection
 		//throws UnknownHostException, IOException
                 throws IOException
 	{
+            System.out.println("layer1: host is" + host);
 		return makeTPConnection(
 			frameDecoder,
 			host,
@@ -306,6 +311,8 @@ public class Connection
                 throws IOException
 	{
 		//return new Connection<V>(
+            System.out.println("host is: " +host);
+            System.out.println("port is: " + port);
                 return new Connection(
 			frameDecoder,
                         (SocketConnection)Connector.open("socket" + "://"+host+":"+port),
@@ -678,6 +685,7 @@ public class Connection
 				while (true)
 				{
 					Frame.Header h=Frame.Header.readHeader(getInputStream(), getCompatibility());
+                                        
 					if (h == null)
 						return null;
 					else

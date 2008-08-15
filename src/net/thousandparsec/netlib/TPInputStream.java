@@ -49,7 +49,9 @@ public class TPInputStream implements TPDataInput
 
 	public void readCharacter(byte[] b, int offset, int length) throws IOException
 	{
-		in.readFully(b, offset, length);
+
+                in.readFully(b, offset, length);
+
 	}
 
 	public String readString() throws IOException
