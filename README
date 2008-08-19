@@ -3,3 +3,12 @@ README
 
 Libtpproto-java is an implementation of Thousand Parsec protocol in Java.
 
+
+Building the MIDP client under Linux
+=========================================
+
+To build the MIDP client under Linux you will need the following tools:
+ * Netbeans with Wireless Toolkit support - 
+   http://download.netbeans.org/netbeans/6.1/final/start.html?bundles/netbeans-6.1-ml-mobility-linux.sh&platform=linux&option=mobility
+
+
