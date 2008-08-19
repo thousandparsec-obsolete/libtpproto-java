@@ -2,7 +2,6 @@ package net.thousandparsec.netlib;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.util.Arrays;
 
 /**
  * A base class for classes representing protocol's frames. This class also
@@ -18,7 +17,7 @@ import java.util.Arrays;
  * @see Connection
  * @author ksobolewski
  */
-public abstract class Frame<V extends Visitor> extends TPObject<V> implements Visitable<V>
+public abstract class Frame extends TPObject implements Visitable
 {
 	private final int id;
 	private int seq;
@@ -33,21 +32,21 @@ public abstract class Frame<V extends Visitor> extends TPObject<V> implements Vi
 		this(id);
 	}
 
-	public void write(TPDataOutput out, Connection<?> conn) throws IOException
+	public void write(TPDataOutput out, Connection conn) throws IOException
 	{
-		switch (conn.getCompatibility())
+            switch (conn.getCompatibility())
 		{
 			case 3:
-				//magic
-				out.writeCharacter(getStringBytes(String.format("TP%02d", conn.getCompatibility())));
-				//sequence
-				out.writeInteger(this.seq=conn.getNextFrameSequence());
+				//Write protocol version
+				out.writeCharacter(getStringBytes("TP0"+ conn.getCompatibility()));
+                                //sequence
+                                out.writeInteger(this.seq=conn.getNextFrameSequence());
 				//type
-				out.writeInteger(id);
+                                out.writeInteger(id);
 				//payload length
 				out.writeInteger(findByteLength());
 				//(data should be written by subclass)
-				break;
+                                break;
 
 			case 4:
 				//magic
@@ -76,7 +75,7 @@ public abstract class Frame<V extends Visitor> extends TPObject<V> implements Vi
 	 * 
 	 * @return byte length of this object
 	 */
-	@Override
+	
 	public int findByteLength()
 	{
 		//no payload here
@@ -116,8 +115,9 @@ public abstract class Frame<V extends Visitor> extends TPObject<V> implements Vi
 			try
 			{
 				in.readCharacter(buf, 0, template.length);
-				if (!Arrays.equals(buf, template))
-					throw new IOException("Not a start of a frame");
+				for (int i=0; i < template.length; i++)
+					if (buf[i] != template[i])
+						throw new IOException("Not a start of a frame");
 				return true;
 			}
 			catch (EOFException ex)
@@ -126,6 +126,10 @@ public abstract class Frame<V extends Visitor> extends TPObject<V> implements Vi
 				//EOF on magic means that the connection was properly closed
 				return false;
 			}
+                        catch(Exception e){
+                            System.out.println("Generic Exception");
+                            return false;
+                        }
 		}
 
 		static Header readHeader(TPInputStream in, int compat) throws IOException
@@ -157,7 +161,7 @@ public abstract class Frame<V extends Visitor> extends TPObject<V> implements Vi
 					if (!checkMagic(in, buf, MAGIC_TP04))
 						return null;
 					//frameversion (not in this compat)
-					framever=in.readInteger32();
+					framever=in.readInteger8();
 					//sequence
 					seq=in.readInteger32();
 					//type

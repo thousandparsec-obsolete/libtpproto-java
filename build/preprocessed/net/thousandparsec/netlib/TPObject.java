@@ -1,9 +1,9 @@
 package net.thousandparsec.netlib;
 
 import java.io.UnsupportedEncodingException;
-import java.util.List;
+import java.util.Vector;
 
-public abstract class TPObject<V extends Visitor> implements Writable
+public abstract class TPObject implements Writable
 {
 	/**
 	 * @param s
@@ -18,7 +18,7 @@ public abstract class TPObject<V extends Visitor> implements Writable
 		}
 		catch (UnsupportedEncodingException ex)
 		{
-			throw new Error(ex);
+			throw new Error(ex.getMessage());
 		}
 	}
 
@@ -37,11 +37,15 @@ public abstract class TPObject<V extends Visitor> implements Writable
 		return object.findByteLength();
 	}
 
-	protected static int findByteLength(List<? extends Writable> objects)
+	protected static int findByteLength(Vector objects)
 	{
 		int total=0;
-		for (Writable object : objects)
-			total += findByteLength(object);
+                Writable object;
+                for(int i = 0; i < objects.size(); i++){
+                    object = (Writable)objects.elementAt(i);
+                    total+= findByteLength(object);
+                }
+		
 		return total + 4;
 	}
 

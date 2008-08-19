@@ -6,34 +6,39 @@ package net.thousandparsec.netlib;
  * 
  * @author ksobolewski
  */
-public class ConnectionEvent<V extends Visitor>
+public class ConnectionEvent
 {
-	public static enum Type
+        
+	static class Type
 	{
-		FRAME_SENT,
-		FRAME_RECEIVED,
-		CONNECTION_ERROR;
+		public static final int FRAME_SENT = 1;
+		public static final int FRAME_RECEIVED = 2;
+		public static final int CONNECTION_ERROR = 3;
 	}
+        /*static class Type{
+            
+        }*/
 
-	private final Type type;
-	private final Frame<V> frame;
+	private final Type typeObject;
+        private final int type;
+	private final Frame frame;
 	private final boolean isAsync;
 	private final Exception exception;
 
-	ConnectionEvent(Type type, Frame<V> frame, boolean isAsync, Exception exception)
+        //ConnectionEvent(Type type, Frame frame, boolean isAsync, Exception exception)
+        ConnectionEvent(int type, Frame frame, boolean isAsync, Exception exception)
 	{
+                typeObject = new Type();
 		this.type=type;
 		this.frame=frame;
 		this.isAsync=isAsync;
 		this.exception=exception;
 	}
-
 	public Type getType()
 	{
-		return type;
+		return typeObject;
 	}
-
-	public Frame<V> getFrame()
+	public Frame getFrame()
 	{
 		return frame;
 	}

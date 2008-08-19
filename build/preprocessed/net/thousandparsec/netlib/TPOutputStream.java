@@ -26,7 +26,9 @@ class TPOutputStream implements TPDataOutput
 
 	public void writeInteger(int i) throws IOException
 	{
-		out.writeInt(i);
+                out.writeInt(i);
+                
+                
 	}
 
 	public void writeInteger(long l) throws IOException

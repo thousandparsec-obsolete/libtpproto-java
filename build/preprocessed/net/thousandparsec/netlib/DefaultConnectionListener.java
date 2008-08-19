@@ -5,7 +5,7 @@ package net.thousandparsec.netlib;
  * 
  * @author ksobolewski
  */
-public class DefaultConnectionListener<V extends Visitor> implements ConnectionListener<V>
+public class DefaultConnectionListener implements ConnectionListener
 {
 	private final boolean printSent;
 	private final boolean printReceived;
@@ -25,36 +25,38 @@ public class DefaultConnectionListener<V extends Visitor> implements ConnectionL
 		this(true, true, true, true);
 	}
 
-	public void frameSent(ConnectionEvent<V> ev)
+        public void frameSent(ConnectionEvent ev)
 	{
 		if (printSent)
 		{
-			Frame<V> frame=ev.getFrame();
-			System.err.printf("%s: Sent frame seq %d, type %d (%s)%n", getClass().getName(), frame.getSequenceNumber(), frame.getFrameType(), frame.toString());
+			Frame frame=ev.getFrame();
+			System.err.println(getClass().getName()+": Sent frame seq " + frame.getSequenceNumber() + ", type " + frame.getFrameType() + " " + frame.toString());
 		}
 	}
 
-	public void frameReceived(ConnectionEvent<V> ev)
+        public void frameReceived(ConnectionEvent ev)
 	{
-		Frame<V> frame=ev.getFrame();
+                Frame frame=ev.getFrame();
 		if (ev.isAsync())
 		{
 			if (printReceivedAsync)
-				System.err.printf("%s: Received asynchronous frame seq %d, type %d (%s)%n", getClass().getName(), frame.getSequenceNumber(), frame.getFrameType(), frame.toString());
+				System.err.println(getClass().getName() + ": Received asynchronous frame seq " + frame.getSequenceNumber() + ", type " + frame.getFrameType()+" "+frame.toString() );
 		}
 		else
 		{
 			if (printReceived)
-				System.err.printf("%s: Received frame seq %d, type %d (%s)%n", getClass().getName(), frame.getSequenceNumber(), frame.getFrameType(), frame.toString());
+                            System.err.println(getClass().getName()+": Received frame seq " + frame.getSequenceNumber() + ", type " + frame.getFrameType() + " " + frame.toString());
+                            
 		}
 	}
 
-	public void connectionError(ConnectionEvent<V> ev)
+	public void connectionError(ConnectionEvent ev)
 	{
 		if (printError)
 		{
 			System.err.println("Connection error:");
-			ev.getException().printStackTrace(System.err);
+                        ev.getException().printStackTrace();
+			
 		}
 	}
 }

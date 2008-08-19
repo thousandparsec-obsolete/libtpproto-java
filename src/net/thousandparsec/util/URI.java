@@ -437,6 +437,7 @@ public final class URI
                   }
               }
           }
+          System.out.println("URI HOST IS: " + host);
           /*
            *Get the port
            *First, check if we're not at the end of the string
@@ -502,6 +503,8 @@ public final class URI
            */
           if(index < rawString.length()-1){
               //Query starts at ? ends at #
+              System.out.println(index);
+              System.out.println(rawString.indexOf('?'));
               //Check if a query exists in the string
               if(rawString.indexOf('?', currentIndex) > 0){
                   //move the indices up
@@ -532,7 +535,6 @@ public final class URI
                   fragment=rawString.substring(currentIndex+1);
               }
           }
-          System.out.println("URI Object Completed");
           
       }
       catch(Exception e){
@@ -544,7 +546,7 @@ public final class URI
       schemeSpecificPart = unquote(rawSchemeSpecificPart);
       authority = unquote(rawAuthority);
       userInfo = unquote(rawUserInfo);
-      host = unquote(rawHost);
+      //host = unquote(rawHost);
       path = unquote(rawPath);
       query = unquote(rawQuery);
       fragment = unquote(rawFragment);

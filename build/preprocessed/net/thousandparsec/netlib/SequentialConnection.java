@@ -20,14 +20,14 @@ import java.io.IOException;
  * 
  * @author ksobolewski
  */
-public interface SequentialConnection<V extends Visitor>
+public interface SequentialConnection
 {
 	/**
 	 * Returns the underlying {@link Connection}.
 	 * 
 	 * @return the underlying {@link Connection}
 	 */
-	Connection<V> getConnection();
+	Connection getConnection();
 
 	/**
 	 * Synchronously reads (and returns) next {@link Frame} from this
@@ -47,7 +47,7 @@ public interface SequentialConnection<V extends Visitor>
 	 *             if an unexpected frame type is received or on other TP
 	 *             protocol error
 	 */
-	<F extends Frame<V>> F receiveFrame(Class<F> expectedClass) throws EOFException, IOException, TPException;
+	Frame receiveFrame(Class expectedClass) throws EOFException, IOException, TPException;
 
 	/**
 	 * Synchronously sends a {@link Frame} to the server via this connection and
@@ -67,7 +67,7 @@ public interface SequentialConnection<V extends Visitor>
 	 * @throws TPException
 	 *             thrown by the {@link Visitor}'s handler methods
 	 */
-	<F extends Frame<V>> F sendFrame(Frame<V> frame, Class<F> responseClass) throws IOException, TPException;
+	Frame sendFrame(Frame frame, Class responseClass) throws IOException, TPException;
 
 	/**
 	 * Synchronously sends a {@link Frame} to the server via this connection and
@@ -86,7 +86,7 @@ public interface SequentialConnection<V extends Visitor>
 	 * @throws TPException
 	 *             thrown by the {@link Visitor}'s handler methods
 	 */
-	void sendFrame(Frame<V> frame, V responseVisitor) throws IOException, TPException;
+	void sendFrame(Frame frame, Visitor responseVisitor) throws IOException, TPException;
 
 	/**
 	 * Closes this connection.
