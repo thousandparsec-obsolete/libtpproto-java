@@ -54,7 +54,7 @@ public class TestMidlet extends MIDlet {
                 System.out.println("TP03Decoder instantiated");
                 System.out.println("decoder.makeConnection");
 		Connection conn=decoder.makeConnection(
-                      new URI("tp://brendan:a@192.168.0.180"), true, new TP03Visitor(false));
+                      new URI("tp://guest:guest@localhost"), true, new TP03Visitor(false));
                       //new URI("tp://guest:guest@demo1.thousandparsec.net"),true, new TP03Visitor(false));
                       //new URI("tp://guest:guest@llnz.dyndns.org:6924/llnz-dev2"),true, new TP03Visitor(false));
                 System.out.println("Connection object made");
