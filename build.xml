@@ -1,252 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="libtpproto-java" default="compile.all">
-	<property name="version" value="0.1"/>
-	<property name="version.micro" value="0.1.0"/>
+<!-- You may freely edit this file. See commented blocks below for -->
+<!-- some examples of how to customize the build. -->
+<!-- (If you delete it and reopen the project it will be recreated.) -->
+<project name="libtpproto-midp" default="jar" basedir=".">
+    <description>Builds, tests, and runs the project .</description>
+    <import file="nbproject/build-impl.xml"/>
+    <!--
 
-	<property name="libs.dir" value="lib"/>
-	<property name="libs.testng" value="${libs.dir}/testng-5.6-jdk15.jar"/>
+            There exist several targets which are by default empty and which can be
+            used for execution of your tasks. These targets are usually executed
+            before and after some main targets. They are:
 
-	<property name="src.core" value="src"/>
-	<property name="src.generated" value="src-generated"/>
-	<property name="src.protohelpers" value="src-protohelpers"/>
-	<property name="src.generator" value="src-generator"/>
-	<property name="src.test" value="src-test"/>
+            pre-init:                 called before initialization of project properties
+            post-init:                called after initialization of project properties
+            pre-preprocess:           called before text preprocessing of sources
+            post-preprocess:          called after text preprocessing of sources
+            pre-compile:              called before source compilation
+            post-compile:             called after source compilation
+            pre-obfuscate:            called before obfuscation 
+            post-obfuscate:           called after obfuscation
+            pre-preverify:            called before preverification
+            post-preverify:           called after preverification
+            pre-jar:                  called before jar building
+            post-jar:                 called after jar building
+            pre-build:                called before final distribution building
+            post-build:               called after final distribution building
+            pre-clean:                called before cleaning build products
+            post-clean:               called after cleaning build products
 
-	<property name="classes.dir" value="classes"/>
-	<property name="classes.core" value="${classes.dir}/core"/>
-	<property name="classes.proto-tp03" value="${classes.dir}/proto-tp03"/>
-	<property name="classes.generator" value="${classes.dir}/generator"/>
-	<property name="classes.test" value="${classes.dir}/test"/>
+            Example of pluging a my-special-task after the compilation could look like
 
-	<property name="manifest.core" value="${classes.core}/META-INF/MANIFEST.MF"/>
-	<property name="manifest.proto-tp03" value="${classes.proto-tp03}/META-INF/MANIFEST.MF"/>
-	<property name="manifest.generator" value="${classes.generator}/META-INF/MANIFEST.MF"/>
+            <target name="post-compile">
+            <my-special-task>
+            <fileset dir="${build.classes.dir}"/>
+            </my-special-task>
+            </target>
 
-	<property name="test-results.dir" value="test-output"/>
-	<property name="test-results.core" value="${test-results.dir}/core"/>
-	<property name="test-results.proto-tp03" value="${test-results.dir}/proto-tp03"/>
+            For list of available properties check the imported
+            nbproject/build-impl.xml file.
 
-	<property name="jar.dir" value="jars"/>
-	<property name="jar.core.name" value="libtpproto-java-core_${version.micro}.jar"/>
-	<property name="jar.core" value="${jar.dir}/${jar.core.name}"/>
-	<property name="jar.proto-tp03.name" value="libtpproto-java-proto-tp03_${version.micro}.jar"/>
-	<property name="jar.proto-tp03" value="${jar.dir}/${jar.proto-tp03.name}"/>
-	<property name="jar.generator.name" value="libtpproto-java-generator_${version.micro}.jar"/>
-	<property name="jar.generator" value="${jar.dir}/${jar.generator.name}"/>
+            Other way how to customize the build is by overriding existing main targets.
+            The target of interest are:
 
-	<property name="javadoc.dir" value="doc"/>
+            preprocess:               preprocessing
+            extract-libs:             extraction of libraries and resources
+            compile:                  compilation
+            create-jad:               construction of jad and jar manifest source
+            obfuscate:                obfuscation
+            preverify:                preverification
+            jar:                      jar archive building
+            run:                      execution
+            debug:                    execution in debug mode
+            build:                    building of the final distribution
+            javadoc:                  javadoc generation
 
-	<taskdef resource="testngtasks" classpath="${libs.testng}"/>
+            Example of overriding the target for project execution could look like
 
-	<target name="compile.all" depends="compile.core,compile.proto-tp03,compile.generator"/>
-	<target name="compile.core">
-		<mkdir dir="${classes.core}"/>
-		<javac source="1.5" target="1.5" sourcepath="" destdir="${classes.core}" debug="true">
-			<src>
-				<path path="${src.core}"/>
-			</src>
-			<include name="**"/>
-		</javac>
-		<copy todir="${classes.core}">
-			<fileset dir="${src.core}">
-				<exclude name="**/*.java"/>
-			</fileset>
-		</copy>
-		<mkdir dir="${manifest.core}/.."/>
-		<manifest file="${manifest.core}">
-			<attribute name="Built-By" value="${user.name}"/>
-			<section name="net/thousandparsec/netlib/">
-				<attribute name="Specification-Title" value="Thousand Parsec Java protocol client core library"/>
-				<attribute name="Specification-Version" value="${version}"/>
-				<attribute name="Specification-Vendor" value="Thousand Parsec"/>
-				<attribute name="Implementation-Title" value="net.thousandparsec.netlib"/>
-				<attribute name="Implementation-Version" value="${version.core.micro}"/>
-				<attribute name="Implementation-Vendor" value="Krzysztof Sobolewski"/>
-			</section>
-			<section name="net/thousandparsec/netlib/objects/">
-				<attribute name="Specification-Title" value="Thousand Parsec Java protocol client core library objects"/>
-				<attribute name="Specification-Version" value="${version}"/>
-				<attribute name="Specification-Vendor" value="Thousand Parsec"/>
-				<attribute name="Implementation-Title" value="net.thousandparsec.netlib.objects"/>
-				<attribute name="Implementation-Version" value="${version.core.micro}"/>
-				<attribute name="Implementation-Vendor" value="Krzysztof Sobolewski"/>
-			</section>
-			<section name="net/thousandparsec/netlib/util/">
-				<attribute name="Specification-Title" value="Thousand Parsec Java protocol client core library utilities"/>
-				<attribute name="Specification-Version" value="${version}"/>
-				<attribute name="Specification-Vendor" value="Thousand Parsec"/>
-				<attribute name="Implementation-Title" value="net.thousandparsec.util"/>
-				<attribute name="Implementation-Version" value="${version.core.micro}"/>
-				<attribute name="Implementation-Vendor" value="Krzysztof Sobolewski"/>
-			</section>
-		</manifest>
-	</target>
-	<target name="compile.proto-tp03" depends="compile.core">
-		<mkdir dir="${classes.proto-tp03}"/>
-		<javac source="1.5" target="1.5" sourcepath="" destdir="${classes.proto-tp03}" debug="true">
-			<src>
-				<path path="${src.generated}"/>
-				<path path="${src.protohelpers}"/>
-			</src>
-			<classpath>
-				<path path="${classes.core}"/>
-			</classpath>
-			<include name="**"/>
-		</javac>
-		<copy todir="${classes.proto-tp03}">
-			<fileset dir="${src.generated}">
-				<exclude name="**/*.java"/>
-			</fileset>
-			<fileset dir="${src.protohelpers}">
-				<exclude name="**/*.java"/>
-			</fileset>
-		</copy>
-		<mkdir dir="${manifest.proto-tp03}/.."/>
-		<manifest file="${manifest.proto-tp03}">
-			<attribute name="Built-By" value="${user.name}"/>
-			<attribute name="Class-Path" value="${jar.core}"/>
-			<section name="net/thousandparsec/netlib/tp03/">
-				<attribute name="Specification-Title" value="Thousand Parsec Java protocol client core library for protocol version 3"/>
-				<attribute name="Specification-Version" value="${version}"/>
-				<attribute name="Specification-Vendor" value="Thousand Parsec"/>
-				<attribute name="Implementation-Title" value="net.thousandparsec.netlib.tp03"/>
-				<attribute name="Implementation-Version" value="${version.core.micro}"/>
-				<attribute name="Implementation-Vendor" value="Krzysztof Sobolewski"/>
-			</section>
-		</manifest>
-	</target>
-	<target name="compile.generator">
-		<mkdir dir="${classes.generator}"/>
-		<javac source="1.5" target="1.5" sourcepath="" srcdir="${src.generator}" destdir="${classes.generator}" debug="true">
-			<include name="**"/>
-		</javac>
-		<copy todir="${classes.generator}">
-			<fileset dir="${src.generator}">
-				<exclude name="**/*.java"/>
-			</fileset>
-		</copy>
-		<mkdir dir="${manifest.generator}/.."/>
-		<manifest file="${manifest.generator}">
-			<attribute name="Built-By" value="${user.name}"/>
-			<attribute name="Main-Class" value="net.thousandparsec.netlib.generator.Generator"/>
-			<section name="net/thousandparsec/netlib/tp03/">
-				<attribute name="Specification-Title" value="Classfile generator for Thousand Parsec Java protocol client core"/>
-				<attribute name="Specification-Version" value="${version}"/>
-				<attribute name="Specification-Vendor" value="Krzysztof Sobolewski"/>
-				<attribute name="Implementation-Title" value="net.thousandparsec.netlib.tp03"/>
-				<attribute name="Implementation-Version" value="${version.core.micro}"/>
-				<attribute name="Implementation-Vendor" value="Krzysztof Sobolewski"/>
-			</section>
-		</manifest>
-	</target>
+            <target name="run" depends="init,jar">
+            <my-special-exec jadfile="${dist.dir}/${dist.jad}"/>
+            </target>
 
-	<target name="compile.test" depends="compile.core,compile.proto-tp03">
-		<mkdir dir="${classes.test}"/>
-		<javac source="1.5" target="1.5" sourcepath="" destdir="${classes.test}" debug="true">
-			<src>
-				<path path="${src.test}"/>
-			</src>
-			<classpath>
-				<path path="${classes.core}"/>
-				<path path="${classes.proto-tp03}"/>
-				<path path="${libs.testng}"/>
-			</classpath>
-			<include name="**"/>
-		</javac>
-		<copy todir="${classes.test}">
-			<fileset dir="${src.test}">
-				<exclude name="**/*.java"/>
-			</fileset>
-		</copy>
-	</target>
+            Be careful about correct dependencies when overriding original target. 
+            Again, for list of available properties which you can use check the target 
+            you are overriding in nbproject/build-impl.xml file.
 
-	<target name="test.all" depends="test.core,test.proto-tp03"/>
-	<target name="test.core" depends="compile.core,compile.test">
-		<testng outputdir="${test-results.core}" groups="net.thousandparsec.netlib">
-			<classpath>
-				<path path="${classes.core}"/>
-				<path path="${classes.proto-tp03}"/>
-				<path path="${classes.test}"/>
-			</classpath>
-			<classfileset dir="${classes.test}" includes="**/*.class"/>
-		</testng>
-	</target>
-	<target name="test.proto-tp03" depends="compile.core,compile.proto-tp03,compile.test">
-		<testng outputdir="${test-results.proto-tp03}" groups="net.thousandparsec.netlib.tp03">
-			<classpath>
-				<path path="${classes.core}"/>
-				<path path="${classes.proto-tp03}"/>
-				<path path="${classes.test}"/>
-			</classpath>
-			<classfileset dir="${classes.test}" includes="**/*.class"/>
-		</testng>
-	</target>
+            A special target for-all-configs can be used to run some specific targets for
+            all project configurations in a sequence. File nbproject/build-impl.xml 
+            already contains some "for-all" targets:
+    
+            jar-all
+            javadoc-all
+            clean-all
+      
+            Example of definition of target iterating over all project configurations:
+    
+            <target name="jar-all">
+            <property name="target.to.call" value="jar"/>
+            <antcall target="for-all-configs"/>
+            </target>
 
-	<target name="jar.all" depends="jar.core,jar.proto-tp03,jar.generator"/>
-	<target name="jar.core" depends="compile.core">
-		<mkdir dir="${jar.dir}"/>
-		<jar destfile="${jar.core}" manifest="${manifest.core}">
-			<zipfileset dir="${classes.core}" prefix=""/>
-		</jar>
-	</target>
-	<target name="jar.proto-tp03" depends="compile.proto-tp03">
-		<mkdir dir="${jar.dir}"/>
-		<jar destfile="${jar.proto-tp03}" manifest="${manifest.proto-tp03}">
-			<zipfileset dir="${classes.proto-tp03}" prefix=""/>
-		</jar>
-	</target>
-	<target name="jar.generator" depends="compile.generator">
-		<mkdir dir="${jar.dir}"/>
-		<jar destfile="${jar.generator}" manifest="${manifest.generator}">
-			<zipfileset dir="${classes.generator}" prefix=""/>
-		</jar>
-	</target>
-
-	<target name="javadoc">
-		<mkdir dir="${javadoc.dir}"/>
-		<javadoc
-			access="protected"
-			author="true"
-			destdir="${javadoc.dir}"
-			doctitle="libtpproto-java"
-			nodeprecated="false"
-			nodeprecatedlist="false"
-			noindex="false"
-			nonavbar="false"
-			notree="false"
-			packagenames="net.thousandparsec.netlib,net.thousandparsec.netlib.tp03,net.thousandparsec.util,net.thousandparsec.netlib.generator"
-			source="1.5"
-			sourcepath="${src.core}:${src.generated}:${src.protohelpers}:${src.generator}"
-			splitindex="true"
-			use="true"
-			version="true">
-			<link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>
-		</javadoc>
-	</target>
-
-	<target name="clean.all" depends="clean.core,clean.proto-tp03,clean.generator,clean.test">
-		<delete dir="${classes.dir}"/>
-		<delete dir="${test-results.dir}"/>
-		<delete dir="${javadoc.dir}"/>
-		<delete dir="${jar.dir}"/>
-		<delete file="${dist.bin}"/>
-		<delete file="${dist.src}"/>
-		<delete dir="${dist.dir}"/>
-	</target>
-	<target name="clean.core">
-		<delete dir="${classes.core}"/>
-		<delete file="${jar.core}"/>
-	</target>
-	<target name="clean.proto-tp03">
-		<delete dir="${classes.proto-tp03}"/>
-		<delete file="${jar.proto-tp03}"/>
-	</target>
-	<target name="clean.generator">
-		<delete dir="${classes.generator}"/>
-		<delete file="${jar.generator}"/>
-	</target>
-	<target name="clean.test">
-		<delete dir="${classes.test}"/>
-		<delete file="${jar.test}"/>
-	</target>
+            -->
 </project>
