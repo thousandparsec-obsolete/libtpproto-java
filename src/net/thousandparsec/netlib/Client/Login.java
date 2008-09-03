@@ -8,6 +8,7 @@ import org.j4me.ui.*;
 import org.j4me.ui.components.*;
 import java.io.*;
 import javax.microedition.lcdui.Graphics;
+import javax.microedition.lcdui.TextField;
 
 /**
  *
@@ -75,6 +76,7 @@ public class Login extends Dialog {
         serverLoc = new TextBox();
         serverLoc.setLabel("Server URL");
         append(serverLoc);
+        
     }
     /**
      * The Back Button

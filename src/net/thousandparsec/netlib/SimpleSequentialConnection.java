@@ -41,7 +41,7 @@ public class SimpleSequentialConnection implements SequentialConnection
 
 	public Frame receiveFrame(Class expectedClass) throws EOFException, IOException, TPException
 	{
-		//Frame<V> frame=conn.receiveFrame();
+		
                 Frame frame=conn.receiveFrame();
 		if (frame == null)
 			throw new EOFException();
@@ -50,8 +50,10 @@ public class SimpleSequentialConnection implements SequentialConnection
 		else if (!expectedClass.isInstance(frame))
 			throw new TPException("Unexpected frame: type " + frame.getFrameType() +" (" + frame.toString() + ") while expecting" + expectedClass.getName());
 		else
-                    return null;//FIX THIS LATER
-			//return expectedClass.cast(frame);****
+
+                    //return null;
+                        return frame;
+                        //return expectedClass.cast(frame);
                         //return (expectedClass.getName())frame;
 	}
 

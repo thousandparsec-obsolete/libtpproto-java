@@ -1,0 +1,10 @@
+MIDlet-1: TestMidlet,,net.thousandparsec.netlib.test.TestMidlet
+MIDlet-2: HTTPMidlet, , net.thousandparsec.netlib.test.HTTPMidlet
+MIDlet-3: TPClientMIDP,,net.thousandparsec.netlib.Client.TPClientMIDP
+MIDlet-Jar-Size: 529361
+MIDlet-Jar-URL: libtpproto-midp.jar
+MIDlet-Name: libtpproto-midp
+MIDlet-Vendor: Vendor
+MIDlet-Version: 1.0
+MicroEdition-Configuration: CLDC-1.1
+MicroEdition-Profile: MIDP-2.0

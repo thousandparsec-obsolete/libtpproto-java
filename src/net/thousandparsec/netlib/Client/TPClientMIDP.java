@@ -6,9 +6,9 @@
 package net.thousandparsec.netlib.Client;
 
 import javax.microedition.midlet.*;
-import org.j4me.ui.*;
+import javax.microedition.lcdui.*;
 /**
- *
+ * The TPClient-MIDP midlet, this is the entry point of the mobile application.
  * @author Brendan
  */
 public class TPClientMIDP extends MIDlet{
@@ -16,7 +16,8 @@ public class TPClientMIDP extends MIDlet{
          * The one and only instance of this class.
          */
         private static TPClientMIDP instance;
-        
+
+        private Display display;        
         /**
          * Constructs the midlet.  This is called before <code>startApp</code>.
          */
@@ -37,23 +38,25 @@ public class TPClientMIDP extends MIDlet{
         }
 
         /**
+         * Gets the display object from the midlet to allow ease-of-navigation
+         * through TPClient-midp.
+         * @return
+         */
+        public Display getDisplay()
+        {
+            return Display.getDisplay(this); 
+        }
+        /**
          * Called when the application starts.  Shows the first screen.
          * 
          * @see javax.microedition.midlet.MIDlet#startApp()
          */
+
+
         protected void startApp () throws MIDletStateChangeException
         {
-                // Initialize the J4ME UI manager.
-                UIManager.init( this );
-                
-                // Change the theme.
-                //UIManager.setTheme( new org.j4me.examples.ui.themes.RedTheme() );
-                
-                // Show the first screen.
-                //HelloWorldScreen screen = new HelloWorldScreen();
-                //Login screen = new Login();
-                Login screen = new Login();
-                screen.show();
+                LoginView lv = new LoginView("Login",getDisplay());
+                getDisplay().setCurrent(lv);
         }
 
         /**
