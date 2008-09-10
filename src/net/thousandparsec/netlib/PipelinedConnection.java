@@ -19,7 +19,9 @@ import java.util.concurrent.ArrayBlockingQueue;
  * underlying connection into sequential "views" (pipelines) that are logically
  * sequential, but can coexist on a common "wire" (a low-level
  * {@link Connection}). In other words, this class makes
- * {@link SequentialConnection} thread safe.
+ * {@link SequentialConnection} thread safe. The entire connection is
+ * thread-safe, but the individual pipelines are supposed to be used each by a
+ * single thread.
  * <p>
  * The typical use case is that several threads use this class to sequentially
  * send and receive frames on a common connection. This class spawns a "receiver
@@ -168,8 +170,9 @@ public class PipelinedConnection<V extends Visitor>
 			{
 				queues.remove(lastSeq);
 				getConnection().sendFrame(frame);
-				lastSeq=frame.getSequenceNumber();
-				queues.put(lastSeq, incoming);
+				// (this assignment inside ensures that the same value is assigned and passed to put())
+				// (why? there is a small possibility that close() changes it, so...)
+				queues.put(lastSeq=frame.getSequenceNumber(), incoming);
 			}
 		}
 
