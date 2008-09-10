@@ -4,7 +4,7 @@ import java.io.EOFException;
 import java.io.IOException;
 
 /**
- * This is am interface for {@link Connection} wrappers that expose a sequential
+ * This is an interface for {@link Connection} wrappers that expose a sequential
  * mode of communication with the server: the client sends a request and
  * synchronously waits for a response, which is later returned to the client or
  * sent to a {@link Visitor}. The client can also specify the response frame's

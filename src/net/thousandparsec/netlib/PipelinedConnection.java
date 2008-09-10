@@ -22,9 +22,9 @@ import java.util.concurrent.LinkedBlockingQueue;
  * <p>
  * The typical use case is that several threads use this class to sequentially
  * send and receive frames on a common connection. This class spawns a "receiver
- * task", which reads incoming frames in inother thread and distributes them
+ * task", which reads incoming frames in another thread and distributes them
  * between pipelines. Those pipelines have incoming queues of their own; these
- * queues are blockin queues and have a limited capacity and if any of the
+ * queues are blocking queues and have a limited capacity and if any of the
  * threads stops processing its frames, the entire connection blocks after this
  * thread's queue fills up.
  * <p>
