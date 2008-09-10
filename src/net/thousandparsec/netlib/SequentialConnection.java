@@ -36,11 +36,12 @@ public interface SequentialConnection<V extends Visitor>
 	 * {@link EOFException} if there are no more frames to read. Will throw
 	 * {@link TPException} if the frame received is not of the expected type.
 	 * 
-	 * @return next {@link Frame} of {@literal null} on end of stream
+	 * @return next {@link Frame}
 	 * @param expectedClass
 	 *            the {@link Class} of the expected response frame
 	 * @throws EOFException
-	 *             if the connection is closed in the middle of frame
+	 *             if the connection is closed in the middle of frame or
+	 *             there are no more frames to read
 	 * @throws IOException
 	 *             on any other I/O error
 	 * @throws TPException
@@ -72,7 +73,7 @@ public interface SequentialConnection<V extends Visitor>
 	/**
 	 * Synchronously sends a {@link Frame} to the server via this connection and
 	 * sends a response to the specified {@link Visitor}. Note that what this
-	 * mthod does is very dumb: it simply waits for next frame from the server
+	 * method does is very dumb: it simply waits for next frame from the server
 	 * (in this sequence), so if the frame sent does not expect a response, you
 	 * get stuck, and if the response consists of more than one frame, this will
 	 * only handle the first one.

@@ -1,5 +1,6 @@
 package net.thousandparsec.netlib;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -93,7 +94,7 @@ public class PipelinedConnection<V extends Visitor>
 	/**
 	 * This is a sequential view of this {@link PipelinedConnection},
 	 * implementing the {@link SequentialConnection} interface. The pipeline
-	 * starts without a squential number assigned; each frame sent causes this
+	 * starts without a sequential number assigned; each frame sent causes this
 	 * {@link PipelinedConnection} to register this pipeline with a new
 	 * sequential number and all incoming frames with this number are routed to
 	 * this pipeline. Subsequent outgoing frames cause this (old) assignment to
@@ -125,7 +126,7 @@ public class PipelinedConnection<V extends Visitor>
 		finally
 		{
 			//check for errors in the receiver task
-			//(ignore interupt, as it's purpose is to stop waiting)
+			//(ignore interrupt, as it's purpose is to stop waiting)
 			try {receiverFuture.get();} catch (InterruptedException ignore) {}
 			//check if the pipelines were closed properly
 			if (!pipelines.keySet().isEmpty())
@@ -169,15 +170,15 @@ public class PipelinedConnection<V extends Visitor>
 			}
 		}
 
-		private Frame<V> receiveFrame() throws InterruptedException
+		private Frame<V> receiveFrame() throws InterruptedException, EOFException
 		{
 			if (lastSeq < 0)
-				return null;
+				throw new EOFException();
 
 			return incoming.take();
 		}
 
-		public <F extends Frame<V>> F receiveFrame(Class<F> expectedClass) throws TPException
+		public <F extends Frame<V>> F receiveFrame(Class<F> expectedClass) throws EOFException, TPException
 		{
 			try
 			{
@@ -271,7 +272,7 @@ public class PipelinedConnection<V extends Visitor>
 			{
 				//avoid deadlock:
 				//PipelinedConnection.close() tries to get the return status
-				//of the receiver, which is us, and wich is trying to return
+				//of the receiver, which is us, and which is trying to return
 				Thread.currentThread().interrupt();
 				try {close();} catch (IOException ignore) {}
 			}
