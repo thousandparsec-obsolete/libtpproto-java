@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * This wrapper around {@link Connection} implements a functionality exposing
@@ -43,6 +43,9 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class PipelinedConnection<V extends Visitor>
 {
+	/*
+	 * TODO: create a way to override this default.
+	 */
 	public static final int DEFAULT_QUEUE_DEPTH=32;
 
 	private final Connection<V> conn;
@@ -136,7 +139,7 @@ public class PipelinedConnection<V extends Visitor>
 
 	private class Pipeline implements SequentialConnection<V>
 	{
-		private final BlockingQueue<Frame<V>> incoming=new LinkedBlockingQueue<Frame<V>>();
+		private final BlockingQueue<Frame<V>> incoming=new ArrayBlockingQueue<Frame<V>>(DEFAULT_QUEUE_DEPTH);
 		private int lastSeq=0;
 
 		Pipeline()
