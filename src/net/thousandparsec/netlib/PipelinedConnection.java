@@ -12,6 +12,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;*/
 
+import java.util.Vector;
 import java.util.Hashtable;
 
 /**
@@ -49,7 +50,7 @@ public class PipelinedConnection
 	private final Connection conn;
 	//private final Map<Integer, BlockingQueue<Frame<V>>> pipelines;
         private final Hashtable pipelines;
-	private final Future<Void> receiverFuture;
+	//private final Future<Void> receiverFuture;
 
 	/**
 	 * Creates a new {@link PipelinedConnection} that wraps the given
@@ -64,10 +65,8 @@ public class PipelinedConnection
 		//we need something stronger that ConcurrentMap
 		//this.pipelines=Collections.synchronizedMap(new HashMap<Integer, BlockingQueue<Frame<V>>>());
                 this.pipelines = new Hashtable();
-		ExecutorService exec=Executors.newSingleThreadExecutor(); //*** What do i do here?
-		this.receiverFuture=exec.submit(new ReceiverTask());
 		//it is safe to do here, per shutdown() contract: it waits for tasks to finish, and then shuts down
-		exec.shutdown();
+		
 	}
 
 	/**
@@ -120,7 +119,7 @@ public class PipelinedConnection
 	 * @throws ExecutionException
 	 *             if the receiver task fails
 	 */
-	public void close() throws IOException, ExecutionException
+	public void close() throws IOException
 	{
 		try
 		{
@@ -131,20 +130,21 @@ public class PipelinedConnection
 		{
 			//check for errors in the receiver task
 			//(ignore interupt, as it's purpose is to stop waiting)
-			try {
+			/*try {
                             receiverFuture.get();
                         } catch (InterruptedException ignore) {
                         
-                        }
+                        }*/
 			//check if the pipelines were closed properly
-			if (!pipelines.isEmpty()) //***Check This!
+			if (!pipelines.isEmpty())
 				throw new IOException("Not all pipelines were closed properly");
 		}
 	}
 
 	private class Pipeline implements SequentialConnection
 	{
-		private final BlockingQueue<Frame<V>> incoming=new LinkedBlockingQueue<Frame<V>>();
+		//private final BlockingQueue<Frame<V>> incoming=new LinkedBlockingQueue<Frame<V>>();
+                private final Vector incoming = new Vector(); //?
 		private int lastSeq=0;
 
 		Pipeline()
@@ -176,6 +176,7 @@ public class PipelinedConnection
 				getConnection().sendFrame(frame);
 				lastSeq=frame.getSequenceNumber();
 				queues.put(new Integer(lastSeq), incoming);
+                                
 			}
 		}
 
@@ -183,8 +184,9 @@ public class PipelinedConnection
 		{
 			if (lastSeq < 0)
 				return null;
-
-			return incoming.take();
+                        Frame f = (Frame)incoming.elementAt(0);
+                        incoming.removeElementAt(0);
+			return f;
 		}
 
 		public Frame receiveFrame(Class expectedClass) throws TPException
@@ -193,11 +195,10 @@ public class PipelinedConnection
 			{
 				Frame frame=receiveFrame();
 				if (!expectedClass.isInstance(frame))
-                                        //throw new TPException(String.format("Unexpected frame: type %d (%s) while expecting %s", frame.getFrameType(), frame.toString(), expectedClass.getSimpleName()));
-					//throw new TPException("Unexpected frame: type "+frame.getFrameType()+" ("+frame.toString()+") while expecting "+expectedClass.getSimpleName());
                                     throw new TPException("Unexpected frame: type "+frame.getFrameType()+" ("+frame.toString()+") while expecting "+expectedClass.getName());
 				else
-					return expectedClass.cast(frame);
+                                    //cast it when it comes out
+					return frame;
 			}
 			catch (InterruptedException ex)
 			{
@@ -230,7 +231,8 @@ public class PipelinedConnection
 		 */
 		public void close()
 		{
-			getPipelineQueues().remove(lastSeq);
+
+			getPipelineQueues().remove(new Integer(lastSeq));
 			lastSeq=-1;
 		}
 
@@ -240,13 +242,13 @@ public class PipelinedConnection
 		}
 	}
 
-	private class ReceiverTask implements Callable<Void>	
+	private class ReceiverTask implements Runnable	
 	{
 		ReceiverTask()
 		{
 		}
 
-		public Void call() throws Exception
+		public void run()
 		{
 			try
 			{
@@ -259,11 +261,14 @@ public class PipelinedConnection
 							break;
 						else
 						{
-							BlockingQueue<Frame<V>> queue=getPipelineQueues().get(frame.getSequenceNumber());
+							//BlockingQueue<Frame<V>> queue=getPipelineQueues().get(frame.getSequenceNumber());
+                                                        Vector queue = new Vector();
+                                                        queue.addElement(getPipelineQueues().get(new Integer(frame.getSequenceNumber())));
+                                                        
 							if (queue == null)
-								getConnection().fireErrorEvent(frame, new TPException(String.format("Unexpected frame: seq %d, type %d (%s)", frame.getSequenceNumber(), frame.getFrameType(), frame.toString())));
+								getConnection().fireErrorEvent(frame, new TPException("Unexpected frame: seq " + frame.getSequenceNumber() + ", type " + frame.getFrameType() + "(" + frame.toString() + ")"));
 							else
-								queue.put(frame);
+								queue.addElement(frame);
 						}
 					}
 					//TPException is a protocol error - try to continue
@@ -272,12 +277,12 @@ public class PipelinedConnection
 						getConnection().fireErrorEvent(null, ex);
 					}
 					//IOException is fatal - quit
-				return null;
+				//return null;
 			}
 			catch (Exception ex)
 			{
 				getConnection().fireErrorEvent(null, ex);
-				throw ex;
+				System.out.println(ex.getMessage());
 			}
 			finally
 			{

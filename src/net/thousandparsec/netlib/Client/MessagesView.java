@@ -60,8 +60,8 @@ public class MessagesView extends Form implements CommandListener{
         addCommand(deleteCommand);
         
         
-
-        messageList = new Vector();
+        
+        messageList = DownloadView.getInstance().getMessages();
         messageList.addElement("Message1");
         messageList.addElement("Message2");
         messageList.addElement("Message3");
@@ -156,5 +156,6 @@ public class MessagesView extends Form implements CommandListener{
         
          
     }
+
     
 }

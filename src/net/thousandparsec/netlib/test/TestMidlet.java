@@ -72,7 +72,7 @@ public class TestMidlet extends MIDlet {
 			GetObjectsByID getObj=new GetObjectsByID();
 			//zero for top-level object is a typical magic number
 			//getObj.getIds().add(new IdsType(0));
-                        tc.sendFrame(getObj);
+                        //tc.sendFrame(getObj);
                         System.out.println("GetObj Reached in main");
 		}
         catch(Exception e){
@@ -87,7 +87,7 @@ public class TestMidlet extends MIDlet {
         public void sendAndReceive() throws IOException, TPException{
             conn.getConnection().receiveAllFramesAsync(this);
             try{
-                //asd
+                
                 //conn.receiveAllFramesAsync(this);
                 System.out.println("All frames received");
                 System.out.println("Sending ping");
@@ -105,21 +105,66 @@ public class TestMidlet extends MIDlet {
                 System.out.println("---Start of Object IDs---");
                 //Vector v = conn.s
                 //Frame f = conn.sendFrame(getObj, IDSequence.class);
-                Vector t = ((IDSequence) conn.sendFrame(getObj, IDSequence.class)).getModtimes();
-                System.out.println("SIZE OF VECTOR:" + t.size());
+                //Vector t = ((IDSequence) conn.sendFrame(getObj, IDSequence.class)).getModtimes();
+                //System.out.println("SIZE OF VECTOR:" + t.size());
                 GetObjectsByID gobjid = new GetObjectsByID();
-                for(int i = 0; i < t.size(); i++){
-                    gobjid.getIds().addElement(new IdsType(((IDSequence.ModtimesType)t.elementAt(i)).getId()));
-                }
+                //for(int i = 0; i < t.size(); i++){
+                   // gobjid.getIds().addElement(new IdsType(((IDSequence.ModtimesType)t.elementAt(i)).getId()));
+                //}
                 System.out.println("GOBJID SIZE IS: " + gobjid.getIds().size());
-                conn.getConnection().sendFrame(gobjid);
+                //conn.getConnection().sendFrame(gobjid);
                 
                 
                 
                 System.out.println("Sending singular object at id 0: " );
                 GetObjectsByID goobj = new GetObjectsByID();
                 goobj.getIds().addElement(new IdsType(0));
-                conn.getConnection().sendFrame(goobj);
+                //conn.getConnection().sendFrame(goobj);
+                
+                System.out.println("----Boards User Can See-------");
+                GetBoardIDs gbid = new GetBoardIDs();
+                gbid.setAmount(-1);
+                Vector v = ((IDSequence) conn.sendFrame(gbid, IDSequence.class)).getModtimes();
+                
+                System.out.println("V SIZE IS: " + v.size());
+                System.out.println("V ELEMENT INFO: " + v.elementAt(0).toString());
+                GetBoards gb = new GetBoards();
+                //Gets the board
+                gb.getIds().addElement(new IdsType(((IDSequence.ModtimesType)v.elementAt(0)).getId()));
+                System.out.println("GB INFO IS: " + gb.toString());
+                conn.getConnection().sendFrame(gb);
+                Board b = (Board) conn.sendFrame(gb, Board.class);
+                System.out.println("Board Successfully received - printing the contents");
+                //System.out.println(b.toString());
+                System.out.println("---Now for the Message---");
+                GetMessage gm = new GetMessage();
+                gm.getSlots().addElement(new GetWithIDSlot.SlotsType(0));
+                gm.getSlots().addElement(new GetWithIDSlot.SlotsType(1));
+                
+                Message m = (Message )conn.sendFrame(gm, Message.class);
+
+                //conn.sendFrame(gm, Message.class);
+                System.out.println("GOT PAST MESSAGE");
+                
+                System.out.println("THE MESSAGE IS:");
+                System.out.println(m.getSubject());
+                System.out.println(m.getBody());
+               
+                
+                    
+                    
+
+
+
+
+                
+                
+                
+                //System.out.println("------------------MESSAGES---------------------");
+                //Message m = new Message();
+                //m.setId(-1);
+                //conn.getConnection().sendFrame(m);
+                
                 
                 
                 

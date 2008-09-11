@@ -43,6 +43,8 @@ public class SimpleSequentialConnection implements SequentialConnection
 	{
 		
                 Frame frame=conn.receiveFrame();
+                System.out.println("DEBUG - EXPECTED FRAME TYPE" + expectedClass.getName());
+                System.out.println("DEBUG - FRAME TYPE RECEIVED" + frame.getFrameType());
 		if (frame == null)
 			throw new EOFException();
 		else if (lastSequence != 0 && frame.getSequenceNumber() != lastSequence)
