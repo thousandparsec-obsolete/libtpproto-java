@@ -1,0 +1,185 @@
+package net.thousandparsec.netlib.tp03;
+
+import java.io.IOException;
+
+import net.thousandparsec.util.URI;
+//import java.net.UnknownHostException;
+
+import net.thousandparsec.netlib.*;
+
+public class TP03Decoder implements FrameDecoder
+{
+	private static final TP03Visitor CHECK_LOGIN_VISITOR=new TP03Visitor()
+		{
+			
+			public void unhandledFrame(Frame frame) throws TPException
+			{
+				throw new TPException("Unexpected frame type " + frame.getFrameType());
+			}
+
+			
+			public void frame(Okay frame)
+			{
+				//all's good, capt'n!
+			}
+
+			
+			public void frame(Fail frame) throws TPException
+			{
+				throw new TPException("Server said 'Fail': " + frame.getCode().value +" ("+ frame.getResult()+")");
+			}
+		};
+        /*
+         * Overloaded Method to solve visitor inheritance error
+         */
+        public Connection makeConnection(URI serverUri, boolean autologin, Visitor asyncVisitor)
+		//throws UnknownHostException, IOException, TPException
+                throws IOException, TPException
+	{
+            Connection connection = makeConnection(serverUri, autologin, asyncVisitor);
+            return connection;
+        }
+	public Connection
+		makeConnection(URI serverUri, boolean autologin, TP03Visitor asyncVisitor)
+		//throws UnknownHostException, IOException, TPException
+                throws IOException, TPException
+	{
+		Connection connection=Connection.makeConnection(this, serverUri, asyncVisitor);
+		if (autologin)
+		{
+                    /*
+                     * Split the user info into username and password.
+                     * 
+                     */
+			String userInfo=serverUri.getUserInfo();
+			if (userInfo == null)
+				throw new TPException("Autologin enabled but no login info provided in the URI");
+			//index value to be set to the current ':'
+                        int counter=0;
+                        int index=0;
+                        //Set the size of the userInfo String Array
+                        while(index >-1){
+                            //if a : exists, increment a counter for another entry
+                            if(userInfo.indexOf(':', index) > 0)
+                                counter++;
+                            //Move the index up	
+                            index = userInfo.indexOf(':', index+1);
+			}
+                        //create the array
+                        String[] data = new String[counter];
+                        //reset the index and the counter for reuse
+                        index =0;
+                        counter=0;
+                        while(counter < data.length){
+                            //If no : exists, we go to end of the string
+                            if(userInfo.indexOf(":", index) < 0){
+				data[counter++] = userInfo.substring(index);
+                                break;
+                            }
+                            //else it does exist
+                            else{
+				data[counter++] = userInfo.substring(index, userInfo.indexOf(":", index));
+                            }
+                            //move the counter up
+                            index = userInfo.indexOf(":", index)+1;
+                        }
+			if (data.length != 2)
+				throw new TPException("Autologin enabled but login info provided in the URI is invalid");
+
+			SequentialConnection seqConnection=new SimpleSequentialConnection(connection);
+			Connect connect=new Connect();
+			connect.setString("libtpproto-java-test");
+			seqConnection.sendFrame(connect, CHECK_LOGIN_VISITOR);
+			Login login=new Login();
+			login.setUsername(data[0]);
+			login.setPassword(data[1]);
+			seqConnection.sendFrame(login, CHECK_LOGIN_VISITOR);
+			//if we're here, all's fine!
+		}
+		return connection;
+	}
+        /**
+         * Chercks the type of frame coming in, then creates a new object based upon the specified frame type.
+         * @param id the frame id
+         * @param in the data input stream(?)
+         * @return the corresponding object to the frame id.
+         * @throws java.io.IOException
+         */
+	public Frame decodeFrame(int id, TPDataInput in) throws IOException
+	{
+		switch (id)
+		{
+			case Okay.FRAME_TYPE: return new Okay(id, in);
+			case Fail.FRAME_TYPE: return new Fail(id, in);
+			case Sequence.FRAME_TYPE: return new Sequence(id, in);
+			case Redirect.FRAME_TYPE: return new Redirect(id, in);
+			case Connect.FRAME_TYPE: return new Connect(id, in);
+			case Login.FRAME_TYPE: return new Login(id, in);
+			case CreateAccount.FRAME_TYPE: return new CreateAccount(id, in);
+			case GetFeatures.FRAME_TYPE: return new GetFeatures(id, in);
+			case Features.FRAME_TYPE: return new Features(id, in);
+			case Ping.FRAME_TYPE: return new Ping(id, in);
+			case GetObjectsByID.FRAME_TYPE: return new GetObjectsByID(id, in);
+			case GetObjectsByPos.FRAME_TYPE: return new GetObjectsByPos(id, in);
+			case Object.FRAME_TYPE: return new Object(id, in);
+			case GetObjectIDs.FRAME_TYPE: return new GetObjectIDs(id, in);
+			case GetObjectIDsByPos.FRAME_TYPE: return new GetObjectIDsByPos(id, in);
+			case GetObjectIDsByContainer.FRAME_TYPE: return new GetObjectIDsByContainer(id, in);
+			case ObjectIDs.FRAME_TYPE: return new ObjectIDs(id, in);
+			case GetOrderDesc.FRAME_TYPE: return new GetOrderDesc(id, in);
+			case OrderDesc.FRAME_TYPE: return new OrderDesc(id, in);
+			case GetOrderDescIDs.FRAME_TYPE: return new GetOrderDescIDs(id, in);
+			case OrderDescIDs.FRAME_TYPE: return new OrderDescIDs(id, in);
+			case GetOrder.FRAME_TYPE: return new GetOrder(id, in);
+			case RemoveOrder.FRAME_TYPE: return new RemoveOrder(id, in);
+			case Order.FRAME_TYPE: return new Order(id, in);
+			case OrderInsert.FRAME_TYPE: return new OrderInsert(id, in);
+			case OrderProbe.FRAME_TYPE: return new OrderProbe(id, in);
+			case GetTimeRemaining.FRAME_TYPE: return new GetTimeRemaining(id, in);
+			case TimeRemaining.FRAME_TYPE: return new TimeRemaining(id, in);
+			case GetBoards.FRAME_TYPE: return new GetBoards(id, in);
+			case Board.FRAME_TYPE: return new Board(id, in);
+			case GetBoardIDs.FRAME_TYPE: return new GetBoardIDs(id, in);
+			case BoardIDs.FRAME_TYPE: return new BoardIDs(id, in);
+			case GetMessage.FRAME_TYPE: return new GetMessage(id, in);
+			case Message.FRAME_TYPE: return new Message(id, in);
+			case PostMessage.FRAME_TYPE: return new PostMessage(id, in);
+			case RemoveMessage.FRAME_TYPE: return new RemoveMessage(id, in);
+			case GetResource.FRAME_TYPE: return new GetResource(id, in);
+			case Resource.FRAME_TYPE: return new Resource(id, in);
+			case GetResourceIDs.FRAME_TYPE: return new GetResourceIDs(id, in);
+			case ResourceIDs.FRAME_TYPE: return new ResourceIDs(id, in);
+			case GetPlayer.FRAME_TYPE: return new GetPlayer(id, in);
+			case Player.FRAME_TYPE: return new Player(id, in);
+			case GetCategory.FRAME_TYPE: return new GetCategory(id, in);
+			case RemoveCategory.FRAME_TYPE: return new RemoveCategory(id, in);
+			case Category.FRAME_TYPE: return new Category(id, in);
+			case AddCategory.FRAME_TYPE: return new AddCategory(id, in);
+			case GetCategoryIDs.FRAME_TYPE: return new GetCategoryIDs(id, in);
+			case CategoryIDs.FRAME_TYPE: return new CategoryIDs(id, in);
+			case GetDesign.FRAME_TYPE: return new GetDesign(id, in);
+			case RemoveDesign.FRAME_TYPE: return new RemoveDesign(id, in);
+			case Design.FRAME_TYPE: return new Design(id, in);
+			case AddDesign.FRAME_TYPE: return new AddDesign(id, in);
+			case ModifyDesign.FRAME_TYPE: return new ModifyDesign(id, in);
+			case GetDesignIDs.FRAME_TYPE: return new GetDesignIDs(id, in);
+			case DesignIDs.FRAME_TYPE: return new DesignIDs(id, in);
+			case GetComponent.FRAME_TYPE: return new GetComponent(id, in);
+			case Component.FRAME_TYPE: return new Component(id, in);
+			case GetComponentIDs.FRAME_TYPE: return new GetComponentIDs(id, in);
+			case ComponentIDs.FRAME_TYPE: return new ComponentIDs(id, in);
+			case GetProperty.FRAME_TYPE: return new GetProperty(id, in);
+			case Property.FRAME_TYPE: return new Property(id, in);
+			case GetPropertyIDs.FRAME_TYPE: return new GetPropertyIDs(id, in);
+			case PropertyIDs.FRAME_TYPE: return new PropertyIDs(id, in);
+			case FinishedTurn.FRAME_TYPE: return new FinishedTurn(id, in);
+			default: throw new IllegalArgumentException("Invalid Frame id: "+id);
+		}
+	}
+
+      
+	public int getCompatibility()
+	{
+		return 3;
+	}
+}
