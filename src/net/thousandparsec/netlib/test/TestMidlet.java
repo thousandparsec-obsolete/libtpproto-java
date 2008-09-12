@@ -58,8 +58,10 @@ public class TestMidlet extends MIDlet {
                 System.out.println("Connection object made");
                 conn.addConnectionListener(new DefaultConnectionListener());
                 //tc=conn;
-                SequentialConnection sconn = new SimpleSequentialConnection(conn);
-                new FrameReceiver(sconn).sendAndReceive();
+                //SequentialConnection sconn = new SimpleSequentialConnection(conn);
+                PipelinedConnection pconn = new PipelinedConnection(conn);
+                new FrameReceiver(pconn).sendAndReceive();
+                
                 
         }
         catch(Exception e){
@@ -80,8 +82,8 @@ public class TestMidlet extends MIDlet {
         }*/
     }
     class FrameReceiver extends TP03Visitor {
-        SequentialConnection conn = null;
-        public FrameReceiver(SequentialConnection c){
+        PipelinedConnection conn = null;
+        public FrameReceiver(PipelinedConnection c){
             conn = c;
         }
         public void sendAndReceive() throws IOException, TPException{
@@ -89,42 +91,13 @@ public class TestMidlet extends MIDlet {
             try{
                 
                 //conn.receiveAllFramesAsync(this);
+                
                 System.out.println("All frames received");
-                System.out.println("Sending ping");
-                //conn.sendFrame(new Ping());
-                //System.out.println("Getting Objects by id");
-                //GetObjectsByID getObj = new GetObjectsByID();
-                GetObjectIDs getObj = new GetObjectIDs();
-                //start of frame from tp03 protocol
-                getObj.setKey(-1);
-                getObj.setStart(0);
-                //-1 for all
-                getObj.setAmount(-1);
-                //getObj.getIds().addElement(new IdsType(0));
-                //getObj.getIds().addElement(new IdsType(1));
-                System.out.println("---Start of Object IDs---");
-                //Vector v = conn.s
-                //Frame f = conn.sendFrame(getObj, IDSequence.class);
-                //Vector t = ((IDSequence) conn.sendFrame(getObj, IDSequence.class)).getModtimes();
-                //System.out.println("SIZE OF VECTOR:" + t.size());
-                GetObjectsByID gobjid = new GetObjectsByID();
-                //for(int i = 0; i < t.size(); i++){
-                   // gobjid.getIds().addElement(new IdsType(((IDSequence.ModtimesType)t.elementAt(i)).getId()));
-                //}
-                System.out.println("GOBJID SIZE IS: " + gobjid.getIds().size());
-                //conn.getConnection().sendFrame(gobjid);
-                
-                
-                
-                System.out.println("Sending singular object at id 0: " );
-                GetObjectsByID goobj = new GetObjectsByID();
-                goobj.getIds().addElement(new IdsType(0));
-                //conn.getConnection().sendFrame(goobj);
-                
+                              
                 System.out.println("----Boards User Can See-------");
                 GetBoardIDs gbid = new GetBoardIDs();
                 gbid.setAmount(-1);
-                Vector v = ((IDSequence) conn.sendFrame(gbid, IDSequence.class)).getModtimes();
+                Vector v = ((IDSequence) conn.createPipeline().sendFrame(gbid, IDSequence.class)).getModtimes();
                 
                 System.out.println("V SIZE IS: " + v.size());
                 System.out.println("V ELEMENT INFO: " + v.elementAt(0).toString());
@@ -132,8 +105,8 @@ public class TestMidlet extends MIDlet {
                 //Gets the board
                 gb.getIds().addElement(new IdsType(((IDSequence.ModtimesType)v.elementAt(0)).getId()));
                 System.out.println("GB INFO IS: " + gb.toString());
-                conn.getConnection().sendFrame(gb);
-                Board b = (Board) conn.sendFrame(gb, Board.class);
+                //conn.getConnection().sendFrame(gb);
+                Board b = (Board) conn.createPipeline().sendFrame(gb, Board.class);
                 System.out.println("Board Successfully received - printing the contents");
                 //System.out.println(b.toString());
                 System.out.println("---Now for the Message---");
@@ -141,14 +114,14 @@ public class TestMidlet extends MIDlet {
                 gm.getSlots().addElement(new GetWithIDSlot.SlotsType(0));
                 gm.getSlots().addElement(new GetWithIDSlot.SlotsType(1));
                 
-                Message m = (Message )conn.sendFrame(gm, Message.class);
+                //Message m = (Message )conn.createPipeline().sendFrame(gm, Message.class);
 
                 //conn.sendFrame(gm, Message.class);
                 System.out.println("GOT PAST MESSAGE");
                 
-                System.out.println("THE MESSAGE IS:");
-                System.out.println(m.getSubject());
-                System.out.println(m.getBody());
+                //System.out.println("THE MESSAGE IS:");
+                //System.out.println(m.getSubject());
+                //System.out.println(m.getBody());
                
                 
                     
