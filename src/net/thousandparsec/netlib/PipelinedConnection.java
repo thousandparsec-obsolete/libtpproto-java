@@ -66,6 +66,8 @@ public class PipelinedConnection
 		//this.pipelines=Collections.synchronizedMap(new HashMap<Integer, BlockingQueue<Frame<V>>>());
                 this.pipelines = new Hashtable();
 		//it is safe to do here, per shutdown() contract: it waits for tasks to finish, and then shuts down
+                new ReceiverTask().start();
+                
 		
 	}
 
@@ -184,7 +186,10 @@ public class PipelinedConnection
 		{
 			if (lastSeq < 0)
 				return null;
+                        System.out.println("VeCTOR SIZE OF INCOMING IS: " + incoming.size());
+                        wait(100);
                         Frame f = (Frame)incoming.elementAt(0);
+                        System.out.println("F is: " + f.toString());
                         incoming.removeElementAt(0);
 			return f;
 		}
@@ -242,7 +247,7 @@ public class PipelinedConnection
 		}
 	}
 
-	private class ReceiverTask implements Runnable	
+	private class ReceiverTask extends Thread	
 	{
 		ReceiverTask()
 		{
@@ -257,18 +262,21 @@ public class PipelinedConnection
 				while (true)
 					try
 					{
-						if ((frame=conn.receiveFrame()) == null)
-							break;
+						if ((frame=conn.receiveFrame()) == null){
+							//break;
+                                                }
 						else
 						{
 							//BlockingQueue<Frame<V>> queue=getPipelineQueues().get(frame.getSequenceNumber());
-                                                        Vector queue = new Vector();
-                                                        queue.addElement(getPipelineQueues().get(new Integer(frame.getSequenceNumber())));
+                                                        Vector queue = (Vector)(getPipelineQueues().get(new Integer(frame.getSequenceNumber())));
                                                         
 							if (queue == null)
 								getConnection().fireErrorEvent(frame, new TPException("Unexpected frame: seq " + frame.getSequenceNumber() + ", type " + frame.getFrameType() + "(" + frame.toString() + ")"));
-							else
-								queue.addElement(frame);
+							else{
+                                                        	queue.addElement(frame);
+                                                                
+                                                        }
+							
 						}
 					}
 					//TPException is a protocol error - try to continue
@@ -277,7 +285,7 @@ public class PipelinedConnection
 						getConnection().fireErrorEvent(null, ex);
 					}
 					//IOException is fatal - quit
-				//return null;
+				//return;
 			}
 			catch (Exception ex)
 			{
