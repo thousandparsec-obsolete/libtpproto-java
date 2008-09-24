@@ -18,7 +18,7 @@ public class BlockingQueueTest {
         public void run() {
             while(true){
                 try{
-                    System.out.println("Consuming: " + bq.dequeue());
+                    System.out.println("Consuming: " + bq.take());
                 }
                 catch(InterruptedException e){
                     
@@ -36,7 +36,7 @@ public class BlockingQueueTest {
         public void run() {
             while(true){
                 try{
-                    bq.enqueue("Produce: " + count);
+                    bq.put("Produce: " + count);
                     System.out.println("Producing" + count);
                 }
                 catch(InterruptedException e){

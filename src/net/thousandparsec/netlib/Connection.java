@@ -678,30 +678,39 @@ public class Connection
 	 */
 	public Frame receiveFrame() throws EOFException, IOException, TPException
 	{
+            
 		synchronized (lockRecv)
 		{
 			try
 			{
 				while (true)
 				{
+                                    
 					Frame.Header h=Frame.Header.readHeader(getInputStream(), getCompatibility());
                                         
-					if (h == null)
-						return null;
+					if (h == null){
+                                            return null;
+                                        }
 					else
 					{
-						//Frame<V> frame=frameDecoder.decodeFrame(h.id, getInputStream(h.length));
+						
                                                 Frame frame=frameDecoder.decodeFrame(h.id, getInputStream(h.length));
-						frame.setSequenceNumber(h.seq);
-
+                                                System.out.println("Seq Number is: " + h.seq);
+                                                frame.setSequenceNumber(h.seq);
+                                                System.out.println("Frames seq number is: " +frame.getSequenceNumber());
+                                            
 						boolean async=frame.getSequenceNumber() == 0;
-
+                                                
 						fireFrameReceivedEvent(frame, async);
-
-						if (async)
+                                                
+						if (async){
+                                                        System.out.println("Frame is Async");
 							frame.visit(asyncVisitor);
-						else
-							return frame;
+                                                }
+						else{
+                                                    System.out.println("Frame Returned: " + frame.toString());
+                                                    return frame;
+                                                }
 					}
 				}
 			}

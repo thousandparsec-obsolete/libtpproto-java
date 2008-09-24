@@ -38,12 +38,12 @@ public abstract class Frame extends TPObject implements Visitable
 		{
 			case 3:
 				//Write protocol version
-				out.writeCharacter(getStringBytes("TP0"+ conn.getCompatibility()));
-                                //sequence
+                                out.writeCharacter(getStringBytes("TP0"+ conn.getCompatibility()));
+                                //sequence                            
                                 out.writeInteger(this.seq=conn.getNextFrameSequence());
-				//type
+				//type                            
                                 out.writeInteger(id);
-				//payload length
+				//payload length                            
 				out.writeInteger(findByteLength());
 				//(data should be written by subclass)
                                 break;
@@ -127,31 +127,32 @@ public abstract class Frame extends TPObject implements Visitable
 				return false;
 			}
                         catch(Exception e){
-                            System.out.println("Generic Exception");
+                            System.out.println("Generic Exception in Frame: ");
                             return false;
                         }
 		}
 
 		static Header readHeader(TPInputStream in, int compat) throws IOException
 		{
+
 			int framever;
 			int seq;
 			int id;
 			int length;
-
+                        
 			byte[] buf=new byte[4];
 			switch (compat)
 			{
 				case 3:
 					//magic
-					if (!checkMagic(in, buf, MAGIC_TP03))
+                                        if (!checkMagic(in, buf, MAGIC_TP03))
 						return null;
 					//frameversion (not in this compat)
-					framever=-1;
+                                   	framever=-1;
 					//sequence
-					seq=in.readInteger32();
+                                        seq=in.readInteger32();
 					//type
-					id=in.readInteger32();
+                                        id=in.readInteger32();
 					//payload length
 					length=in.readInteger32();
 					break;

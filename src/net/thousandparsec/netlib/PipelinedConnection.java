@@ -12,8 +12,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;*/
 
-import java.util.Vector;
+
 import java.util.Hashtable;
+
+import net.thousandparsec.util.BlockingQueue;
 
 /**
  * This wrapper around {@link Connection} implements a functionality exposing
@@ -45,11 +47,8 @@ import java.util.Hashtable;
  */
 public class PipelinedConnection
 {
-	public static final int DEFAULT_QUEUE_DEPTH=32;
-
 	private final Connection conn;
-	//private final Map<Integer, BlockingQueue<Frame<V>>> pipelines;
-        private final Hashtable pipelines;
+	private final Hashtable pipelines;
 	//private final Future<Void> receiverFuture;
 
 	/**
@@ -62,26 +61,21 @@ public class PipelinedConnection
 	public PipelinedConnection(Connection conn)
 	{
 		this.conn=conn;
-		//we need something stronger that ConcurrentMap
-		//this.pipelines=Collections.synchronizedMap(new HashMap<Integer, BlockingQueue<Frame<V>>>());
-                this.pipelines = new Hashtable();
-		//it is safe to do here, per shutdown() contract: it waits for tasks to finish, and then shuts down
-                new ReceiverTask().start();
+		this.pipelines = new Hashtable();
+		new ReceiverTask().start();
                 
 		
 	}
 
 	/**
-	 * Returns a synchronized map, as in
-	 * {@link Collections#synchronizedMap(Map)}, that maps from a pipeline's
+	 * Returns a hashtable that maps from a pipeline's
 	 * sequence number to this pipeline's {@link BlockingQueue} of {@link Frame}s.
 	 * All methods of this map will be synchronized using the map itself as a
 	 * monitor; a larger critical section can use it too as a monitor.
 	 * 
 	 * @return a map from sequence number to a pipeline's {@link BlockingQueue}
 	 */
-	//Map<Integer, BlockingQueue<Frame<V>>> getPipelineQueues()
-        Hashtable getPipelineQueues()
+	Hashtable getPipelineQueues()
 	{
 		return pipelines;
 	}
@@ -145,8 +139,7 @@ public class PipelinedConnection
 
 	private class Pipeline implements SequentialConnection
 	{
-		//private final BlockingQueue<Frame<V>> incoming=new LinkedBlockingQueue<Frame<V>>();
-                private final Vector incoming = new Vector(); //?
+		private final BlockingQueue incoming = new BlockingQueue(20);//?
 		private int lastSeq=0;
 
 		Pipeline()
@@ -170,13 +163,15 @@ public class PipelinedConnection
 			 * the new sequence number into which a response might slip
 			 * and generate an "unexpected frame" error.
 			 */
-			//Map<Integer, BlockingQueue<Frame<V>>> queues=getPipelineQueues();
+			
                         Hashtable queues = getPipelineQueues();
 			synchronized (queues)
 			{
+                         
 				queues.remove(new Integer(lastSeq)); //*** Check This!
 				getConnection().sendFrame(frame);
 				lastSeq=frame.getSequenceNumber();
+                                
 				queues.put(new Integer(lastSeq), incoming);
                                 
 			}
@@ -186,12 +181,8 @@ public class PipelinedConnection
 		{
 			if (lastSeq < 0)
 				return null;
-                        System.out.println("VeCTOR SIZE OF INCOMING IS: " + incoming.size());
-                        wait(100);
-                        Frame f = (Frame)incoming.elementAt(0);
-                        System.out.println("F is: " + f.toString());
-                        incoming.removeElementAt(0);
-			return f;
+                        System.out.println("INCOMING IS OF SIZE: " + incoming.getCurrentSize());
+                        return (Frame)incoming.take();
 		}
 
 		public Frame receiveFrame(Class expectedClass) throws TPException
@@ -246,60 +237,66 @@ public class PipelinedConnection
 			return PipelinedConnection.this.getConnection();
 		}
 	}
+        /**
+         * Runs concurrently to the pipelined connection this class:
+         * 1. Reveices the incoming frame
+         * 2. Checks if the frame is null
+         * 3. Gets the BlockingQueue Required based upon the sequence number
+         * 4. puts the frame in to the required queue
+         */
+	private class ReceiverTask extends Thread{
+            Connection conn;
+            Frame frame;
+            ReceiverTask()
+            {
+                conn = getConnection();
+            }
 
-	private class ReceiverTask extends Thread	
-	{
-		ReceiverTask()
-		{
-		}
-
-		public void run()
-		{
-			try
-			{
-				Connection conn=getConnection();
-				Frame frame;
-				while (true)
-					try
-					{
-						if ((frame=conn.receiveFrame()) == null){
-							//break;
-                                                }
-						else
-						{
-							//BlockingQueue<Frame<V>> queue=getPipelineQueues().get(frame.getSequenceNumber());
-                                                        Vector queue = (Vector)(getPipelineQueues().get(new Integer(frame.getSequenceNumber())));
-                                                        
-							if (queue == null)
-								getConnection().fireErrorEvent(frame, new TPException("Unexpected frame: seq " + frame.getSequenceNumber() + ", type " + frame.getFrameType() + "(" + frame.toString() + ")"));
-							else{
-                                                        	queue.addElement(frame);
-                                                                
-                                                        }
-							
-						}
-					}
-					//TPException is a protocol error - try to continue
-					catch (TPException ex)
-					{
-						getConnection().fireErrorEvent(null, ex);
-					}
-					//IOException is fatal - quit
-				//return;
-			}
-			catch (Exception ex)
-			{
-				getConnection().fireErrorEvent(null, ex);
-				System.out.println(ex.getMessage());
-			}
-			finally
-			{
-				//avoid deadlock:
-				//PipelinedConnection.close() tries to get the return status
-				//of the receiver, which is us, and wich is trying to return
-				Thread.currentThread().interrupt();
-				try {close();} catch (IOException ignore) {}
-			}
-		}
+            public void run()
+            {
+                while(true){
+                    try{
+                        try{
+                            frame=conn.receiveFrame();
+                            
+                            System.out.println("Frame Received: " + frame.toString());
+                            if (frame == null){
+                                //break;
+                                //System.out.println("Frame is Null in FrameReceiver");
+                            }
+                            else{
+                                
+                                BlockingQueue queue = (BlockingQueue)getPipelineQueues().get(new Integer(frame.getSequenceNumber()));
+                                if (queue == null)
+                                    getConnection().fireErrorEvent(frame, new TPException("Unexpected frame: seq " + frame.getSequenceNumber() + ", type " + frame.getFrameType() + "(" + frame.toString() + ")"));
+                                else{
+                                    queue.put(frame);
+                                    
+                                    
+                                }
+                            }
+                        }
+                        //TPException is a protocol error - try to continue
+                        catch (TPException ex){
+                            getConnection().fireErrorEvent(null, ex);
+                        }
+                        //IOException is fatal - quit
+                        //return;
+                    }
+                    catch (Exception ex){
+                        getConnection().fireErrorEvent(null, ex);
+                        System.out.println(ex.getMessage());
+                    }
+                    finally{
+                        //System.out.println("FINALLY");
+                        //avoid deadlock:
+                        //PipelinedConnection.close() tries to get the return status
+                        //of the receiver, which is us, and wich is trying to return
+                        //Thread.currentThread().interrupt();
+                        //try {close();} catch (IOException ignore) {}
+                    }
+                }
+            }
 	}
+
 }
