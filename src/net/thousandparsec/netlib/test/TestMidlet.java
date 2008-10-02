@@ -56,7 +56,7 @@ public class TestMidlet extends MIDlet {
                       //new URI("tp://guest:guest@demo1.thousandparsec.net"),true, new TP03Visitor(false));
                       //new URI("tp://guest:guest@llnz.dyndns.org:6924/llnz-dev2"),true, new TP03Visitor(false));
                 System.out.println("Connection object made");
-                //conn.addConnectionListener(new DefaultConnectionListener());
+                conn.addConnectionListener(new DefaultConnectionListener());
                 //tc=conn;
                 //SequentialConnection sconn = new SimpleSequentialConnection(conn);
                 PipelinedConnection pconn = new PipelinedConnection(conn);
@@ -83,7 +83,9 @@ public class TestMidlet extends MIDlet {
     }
     class FrameReceiver extends TP03Visitor {
         PipelinedConnection conn = null;
+        //SequentialConnection conn=null;
         public FrameReceiver(PipelinedConnection c){
+        //public FrameReceiver(SequentialConnection c){
             conn = c;
         }
         public void sendAndReceive() throws IOException, TPException{
@@ -92,25 +94,27 @@ public class TestMidlet extends MIDlet {
                 SequentialConnection sq = conn.createPipeline();
                 //conn.receiveAllFramesAsync(this);
                 
-                System.out.println("All frames received");
-                              
+                /*
+                 * PipelinedConnection
+                 */
+                
                 System.out.println("----Boards User Can See-------");
                 GetBoardIDs gbid = new GetBoardIDs();
                 gbid.setAmount(-1);
                 Vector v = ((IDSequence) sq.sendFrame(gbid, IDSequence.class)).getModtimes();
-
                 GetBoards gb = new GetBoards();
                 //Gets the board
                 System.out.println("SETTING UP GET BOARD");
                 //gb.getIds().addElement(new IdsType(((IDSequence.ModtimesType)v.elementAt(0)).getId()));
                 
-                gb.getIds().addElement(new IdsType(0));
+                //gb.getIds().addElement(new IdsType(0));
                 //gb.getIds().addElement(new IdsType(-1));
-                System.out.println("GB SETUP: " + gb.toString());
-                System.out.println("SENDING GET BOARD");
-                Board b = (Board) sq.sendFrame(gb, Board.class);
-                System.out.println("Board Successfully received - printing the contents");
-                System.out.println(b.toString());
+                //System.out.println("GB SETUP: " + gb.toString());
+                //System.out.println("SENDING GET BOARD");
+                //Board b = (Board) sq.sendFrame(gb, Board.class);
+                //System.out.println("Board Successfully received - printing the contents");
+                //System.out.println(b.toString());
+                
                 System.out.println("---Now for the Message---");
                 GetMessage gm = new GetMessage();
                 gm.getSlots().addElement(new GetWithIDSlot.SlotsType(0));
@@ -122,6 +126,48 @@ public class TestMidlet extends MIDlet {
                 
                 Message m = (Message )sq.sendFrame(gm, Message.class);
                 System.out.println("Message m is: " + m.getSubject());
+                
+                
+                
+                
+                /*
+                 * SimpleSequentialConnection
+                 */
+                /*
+                System.out.println("----Boards User Can See-------");
+                GetBoardIDs gbid = new GetBoardIDs();
+                gbid.setAmount(-1);
+                Vector v = ((IDSequence) conn.sendFrame(gbid, IDSequence.class)).getModtimes();
+
+                GetBoards gb = new GetBoards();
+                //Gets the board
+                System.out.println("SETTING UP GET BOARD");
+                //gb.getIds().addElement(new IdsType(((IDSequence.ModtimesType)v.elementAt(0)).getId()));
+                
+                gb.getIds().addElement(new IdsType(0));
+                gb.getIds().addElement(new IdsType(-1));
+                System.out.println("GB SETUP: " + gb.toString());
+                System.out.println("SENDING GET BOARD");
+                //Board b = (Board) conn.sendFrame(gb, Board.class);
+                //conn.getConnection().sendFrame(gb);
+                //Board b = (Board) conn.getConnection().receiveFrame();
+                
+                //System.out.println("Board Successfully received - printing the contents");
+                //System.out.println(b.toString());
+                System.out.println("---Now for the Message---");
+                
+                GetMessage gm = new GetMessage();
+                gm.getSlots().addElement(new GetWithIDSlot.SlotsType(0));
+                gm.getSlots().addElement(new GetWithIDSlot.SlotsType(1));
+                gm.getSlots().addElement(new GetWithIDSlot.SlotsType(2));
+                                
+                Message m = (Message )conn.sendFrame(gm, Message.class);
+                System.out.println("Message m is: " + m.getSubject());
+                
+                */
+                
+                
+                System.out.println("End of Execution");
 
             }
             /*catch(EOFException eof){

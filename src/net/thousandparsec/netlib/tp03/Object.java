@@ -532,7 +532,7 @@ public class Object extends Response
 
 	public byte[] getPadding()
 	{
-		return (byte [])this.padding.clone(); // check this later
+                return (byte [])this.padding.clone(); 
 	}
 
 	public void setPadding(byte[] value)

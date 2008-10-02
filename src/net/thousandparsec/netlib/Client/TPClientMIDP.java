@@ -55,7 +55,8 @@ public class TPClientMIDP extends MIDlet{
 
         protected void startApp () throws MIDletStateChangeException
         {
-                LoginView lv = new LoginView("Login",getDisplay());
+                //LoginView lv = new LoginView("Login",getDisplay());
+                StarMapView lv = new StarMapView("", getDisplay());
                 getDisplay().setCurrent(lv);
         }
 
