@@ -167,12 +167,10 @@ public class PipelinedConnection
                         Hashtable queues = getPipelineQueues();
 			synchronized (queues)
 			{
-                         
-				queues.remove(new Integer(lastSeq)); //*** Check This!
+                                queues.remove(new Integer(lastSeq)); //*** Check This!
 				getConnection().sendFrame(frame);
 				lastSeq=frame.getSequenceNumber();
-                                
-				queues.put(new Integer(lastSeq), incoming);
+                                queues.put(new Integer(lastSeq), incoming);
                                 
 			}
 		}
@@ -257,10 +255,10 @@ public class PipelinedConnection
                 while(true){
                     try{
                         try{
-                            frame=conn.receiveFrame();
+                            //frame=conn.receiveFrame();
                             
-                            System.out.println("Frame Received: " + frame.toString());
-                            if (frame == null){
+                            //System.out.println("Frame Received: " + frame.toString());
+                            if ((frame=conn.receiveFrame())== null){
                                 //break;
                                 //System.out.println("Frame is Null in FrameReceiver");
                             }
@@ -269,8 +267,13 @@ public class PipelinedConnection
                                 BlockingQueue queue = (BlockingQueue)getPipelineQueues().get(new Integer(frame.getSequenceNumber()));
                                 if (queue == null)
                                     getConnection().fireErrorEvent(frame, new TPException("Unexpected frame: seq " + frame.getSequenceNumber() + ", type " + frame.getFrameType() + "(" + frame.toString() + ")"));
+                                
                                 else{
-                                    queue.put(frame);
+                                    //quick fix
+                                    if(frame.getFrameType() !=2){
+                                        queue.put(frame);
+                                    }
+                                    
                                     
                                     
                                 }

@@ -685,8 +685,7 @@ public class Connection
 			{
 				while (true)
 				{
-                                    
-					Frame.Header h=Frame.Header.readHeader(getInputStream(), getCompatibility());
+                                        Frame.Header h=Frame.Header.readHeader(getInputStream(), getCompatibility());
                                         
 					if (h == null){
                                             return null;

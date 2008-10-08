@@ -11,31 +11,47 @@ import java.util.Vector;
  * @author Brendan
  */
 public class StarMapView extends Canvas implements CommandListener{
-    Display display;
-    Vector list;
     /*
-     * The viewport values x1,y1,x2,y2
+     * LCD Display Object
+     */
+    Display display;
+    
+    /*
+     * A List of Space Objects
+     */
+    Vector list;
+    
+    /*
+     * The viewport values x0,y0,x1,y1
+     * 
+     * Y1 the starmap ends at 15 pixels off of the whole screen height, so that
+     * a menu bar can be drawn.
      */
     int x0 = 0;
     int y0 = 0;
     int x1 = getWidth();
-    int y1 = getHeight();
+    int y1 = getHeight()-15;
+    
     /*
      * The offset from our original position
      */
     int xOffset=0;
     int yOffset=0;
+    
     /*
      * The Zoom Level: -5 is max zoom out +5 is max zoom in
      */
     int zoomLevel=0;
     
-    int zoomX1=x1;
-    int zoomY1=y1;
+    /*
+     * Toggles the map scrolling
+     */
+    boolean scroll = true;
     
-    //some constants to work the zoom level off.
-    final int viewPort_x1=x1;
-    final int viewPort_y1=y1;
+    /*
+     * A Reference to the currently selected object
+     */
+    net.thousandparsec.netlib.tp03.Object current_object;
     
 
     public StarMapView(String title, Display d){
@@ -53,6 +69,7 @@ public class StarMapView extends Canvas implements CommandListener{
          */
 
         list = new FakeObjects().getList();
+        current_object = (net.thousandparsec.netlib.tp03.Object)list.elementAt(0);
         
         repaint();
     }
@@ -65,55 +82,76 @@ public class StarMapView extends Canvas implements CommandListener{
     protected void paint(Graphics g){
         g.setColor(0,0,0);
         g.fillRect(0, 0, getWidth(), getHeight());
+        
         drawPlanets(g);
+        paintBottomBar(g);
+        //drawHighlighter(g);
 
 
     }
     /**
      * Draws the planets on to the starmap.
-     * @param g
+     * @param g the graphics object
      */
     protected void drawPlanets(Graphics g){
         //White Planets!
-        g.setColor(255,255,255);
-        System.out.println("Drawing Planets - Viewport Conditions: x0:" +(x0-xOffset) + " x1: " +(x1-xOffset) + " y0: " + (y0-yOffset) + " y1: " + (y1-yOffset) + " xoffset: " + xOffset + " yoffset: " + yOffset);
+        //g.setColor(255,255,255);
+        //System.out.println("Drawing Planets - Viewport Conditions: x0:" +(x0-xOffset) + " x1: " +(x1-xOffset) + " y0: " + (y0-yOffset) + " y1: " + (y1-yOffset) + " xoffset: " + xOffset + " yoffset: " + yOffset);
         for(int i = 0; i < list.size(); i++){
             Planet p = (Planet)list.elementAt(i);
+            if(p.equals(current_object)){
+                g.setColor(56,255,0);
+            }
+            else{
+                g.setColor(255,255,255);
+            }
             if(p.getPos().getX()/10 > x0-xOffset && p.getPos().getX()/10 < x1-xOffset){
                 if(p.getPos().getY()/10 > y0-yOffset && p.getPos().getY()/10 < y1-yOffset){
-                    
                     int x = (int)p.getPos().getX()/10;
                     int y = (int)p.getPos().getY()/10;
                     /*
                      * Zoomed Out
                      */
                     if(zoomLevel <0){
-                        
-                        
-                        
                         g.fillArc((x +xOffset)/(-1 * zoomLevel),(y + yOffset)/(-1 * zoomLevel), 5, 5, 360, 360);
-                        g.drawString("("+x+","+y+")", (x +xOffset)/(-1 * zoomLevel), (y + yOffset)/(-1 * zoomLevel), Graphics.TOP|Graphics.LEFT);
+                        //g.drawString("("+x+","+y+")", (x +xOffset)/(-1 * zoomLevel), (y + yOffset)/(-1 * zoomLevel), Graphics.TOP|Graphics.LEFT);
+                        g.drawString(p.getName(), (x +xOffset)/(-1 * zoomLevel), (y + yOffset)/(-1 * zoomLevel), Graphics.TOP|Graphics.LEFT);
                     }
                     /*
                      * Zoomed In
                      */
                     else if(zoomLevel > 0){
-                        
-                        
-                        g.drawString("("+x+","+y+")", (x +xOffset)* zoomLevel, (y + yOffset)*zoomLevel, Graphics.TOP|Graphics.LEFT);
+                        //g.drawString("("+x+","+y+")", (x +xOffset)* zoomLevel, (y + yOffset)*zoomLevel, Graphics.TOP|Graphics.LEFT);
+                        g.drawString(p.getName(), (x +xOffset)* zoomLevel, (y + yOffset)*zoomLevel, Graphics.TOP|Graphics.LEFT);
                         g.fillArc((x +xOffset)* zoomLevel,(y + yOffset)*zoomLevel, 5, 5, 360, 360);
                     }
                     /*
                      * No Zoom
                      */
                     else {
-                         g.drawString("("+x+","+y+")", (x +xOffset), (y + yOffset), Graphics.TOP|Graphics.LEFT);
+                        //g.drawString("("+x+","+y+")", (x +xOffset), (y + yOffset), Graphics.TOP|Graphics.LEFT);
+                        g.drawString(p.getName(), (x +xOffset), (y + yOffset), Graphics.TOP|Graphics.LEFT);
                         g.fillArc(x +xOffset,y + yOffset, 5, 5, 360, 360);
                     }
                 }
             }
         }
         //g.fillArc(100,100,5,5,45,360);
+    }
+    /*
+     * A bar at the bottom of the screen, contains the menus and the current selected Object's name.
+     */
+    protected void paintBottomBar(Graphics g){
+        //White Bottom Bar
+        g.setColor(255,255,255);
+        g.fillRect(0, getHeight()-15, getWidth(), getHeight());
+        //Black is back! (For the text)
+        g.setColor(0,0,0);
+        g.drawString(current_object.getName(),getWidth()/2,getHeight()-1,Graphics.BOTTOM|Graphics.HCENTER);
+        //On the Motorola V3x, the menu is bound to the left soft button, but on other phones, such as a Nokia, the menu button may be the right one.
+        //I have no solution for this yet.
+        //g.drawString("Menu",0, getHeight()-1, Graphics.BOTTOM|Graphics.LEFT);
+     
     }
     /**
      * This method draws the ships on to the starmap
@@ -127,6 +165,10 @@ public class StarMapView extends Canvas implements CommandListener{
      * @param g the Graphics object from paint()
      */
     protected void drawHighlighter(Graphics g){
+        g.setColor(56, 255, 0);
+        int pos_x = (int)current_object.getPos().getX()/10;
+        int pos_y = (int)current_object.getPos().getY()/10;
+        g.drawRect(pos_x-5,pos_y-5,pos_x+10,pos_y +10);
         
     }
     /**
@@ -150,95 +192,67 @@ public class StarMapView extends Canvas implements CommandListener{
      * 
      */
     private void scrollDown(){
-        //if(y1 < 1000){
-            //y0+=50;
-            //y1+=50;
-            yOffset -=50;
-            repaint();
-        //}
+        yOffset -=50;
+        repaint();
+        
     }
     /**
      * Scrolls Up
      */
     private void scrollUp(){
-        //if(y0 > 0){
-                //y0-=50;
-                //y1-=50;
-                yOffset +=50;
-                repaint();
-        //}
+        yOffset +=50;
+        repaint();
+
     }
     /**
      * Scrolls Left
      */
     private void scrollLeft(){
-        //if(x0 > 0){
-            //x0-=50;
-            //x1-=50;
-            xOffset +=50;
-            repaint();            
-        //}
+        xOffset +=50;
+        repaint();            
+
     }
     /**
      * Scrolls Right
      */
     private void scrollRight(){
-        //if(x1 < 1000){
-            //x0+=50;
-            //x1+=50;
-            xOffset -=50;
-            repaint();
-        //}
+        xOffset -=50;
+        repaint();
+        
     }
     /**
-     * Zooms the Map out; the space between objects becomes smaller
-     * by half.
-     * This method has to account for 2 things.
-     * if the zoomlevel is 0, it needs to jump to -1 and then zoom out
-     *  otherwise, the zoom button will seemingly do nothing (the same thing) for
-     *  0 and -1
-     * if the zoom level is more than 0
-     *  multiply x1 and y1 by the zoomlevel
-     * if the zoom level is less than 0, check if the zoom level is still more than -5
-     *  if this is all true, then it multiplies x1 and y1 by -1(zoomLevel) to make it positive.
+     * Zooms the Map out; the space between objects becomes smaller by half.
+     * Has to check for one thing; if the zoom level is greater than -4, it zooms out.
      */
     private void zoomOut(){
         if(zoomLevel > -4){
             zoomLevel--;
-            //x1=viewPort_x1 *2;
-            //y1=viewPort_y1 * 2;
             x1*=2;
             y1*=2;
             repaint();
         }
-        System.out.println("Zoom Level: " + zoomLevel);
+        //System.out.println("Zoom Level: " + zoomLevel);
     }
     /**
      * Zooms the Map in; the space between things becomes bigger.
-     * This method has to account for three things
-     * if the zoomLevel is 0, it needs to jump to 1 and then zoom out, otherwise the zoom button
-     *  will seemingly do nothing (the same thing) for 0 and 1.
-     * if the zoom level is less than 0
-     *  divide x1 and y1 by -1(zoomLevel)
-     * if the zoom level is more than 0 and less than 5
-     *  divide x1 and y1 by zoomLevel
+     * Has to check for one thing. If the zoom level is less than 4
      */
     private void zoomIn(){
         if(zoomLevel < 4){
             zoomLevel++;
-            //x1=viewPort_x1 / 2;
-            //y1=viewPort_y1 / 2;
             x1/=2;
             y1/=2;
             repaint();
         }
-        System.out.println("Zoom Level: " + zoomLevel);
+        //System.out.println("Zoom Level: " + zoomLevel);
         
     }
 
     /**
      * Key is pressed, something happens.
      * Design of this:
+     * A key is pressed that toggles between scrolling the map and navigating by
+     * each object in the game. This
      * KEY_NUM2 Scrolls Up
      * KEY_NUM4 Scrolls Left
      * KEY_NUM6 Scrolls Right
@@ -276,7 +290,7 @@ public class StarMapView extends Canvas implements CommandListener{
      * Creates the menu commands accessed by the soft menu buttons
      */
     private void createMenuCommands(){
-        Command exitCommand = new Command("EXIT", Command.EXIT,1);
+        Command exitCommand = new Command("Exit", Command.EXIT,4);
         addCommand(exitCommand);
         
         Command selectCommand = new Command("Select", Command.OK,1);

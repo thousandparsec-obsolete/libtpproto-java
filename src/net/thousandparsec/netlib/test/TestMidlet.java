@@ -89,7 +89,7 @@ public class TestMidlet extends MIDlet {
             conn = c;
         }
         public void sendAndReceive() throws IOException, TPException{
-            conn.getConnection().receiveAllFramesAsync(this);
+            //conn.getConnection().receiveAllFramesAsync(this);
             try{
                 SequentialConnection sq = conn.createPipeline();
                 //conn.receiveAllFramesAsync(this);
@@ -105,9 +105,9 @@ public class TestMidlet extends MIDlet {
                 GetBoards gb = new GetBoards();
                 //Gets the board
                 System.out.println("SETTING UP GET BOARD");
-                //gb.getIds().addElement(new IdsType(((IDSequence.ModtimesType)v.elementAt(0)).getId()));
+                gb.getIds().addElement(new IdsType(((IDSequence.ModtimesType)v.elementAt(0)).getId()));
                 
-                //gb.getIds().addElement(new IdsType(0));
+                gb.getIds().addElement(new IdsType(0));
                 //gb.getIds().addElement(new IdsType(-1));
                 //System.out.println("GB SETUP: " + gb.toString());
                 //System.out.println("SENDING GET BOARD");
@@ -125,9 +125,26 @@ public class TestMidlet extends MIDlet {
                 //gm.getSlots().addElement(new GetWithIDSlot.SlotsType(-1));
                 
                 Message m = (Message )sq.sendFrame(gm, Message.class);
-                System.out.println("Message m is: " + m.getSubject());
+                //System.out.println("Message m is: " + m.getSubject());
+
+                Message n = (Message )sq.receiveFrame(Message.class);
+                    
+                //System.out.println("Message n is: " + n.getSubject());
                 
+                Message p = (Message )sq.receiveFrame(Message.class);
+                //System.out.println("Message p is: " + p.getSubject());
                 
+                sq.close();
+                System.out.println("--------------- MESSAGES RETURNED ---------------");
+                System.out.println("---MESSAGE M---");
+                System.out.println(m.getSubject());
+                System.out.println(m.getBody());
+                System.out.println("---MESSAGE N---");
+                System.out.println(n.getSubject());
+                System.out.println(n.getBody());
+                System.out.println("---MESSAGE P---");
+                System.out.println(p.getSubject());
+                System.out.println(p.getBody());                
                 
                 
                 /*
