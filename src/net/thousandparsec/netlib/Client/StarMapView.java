@@ -53,6 +53,15 @@ public class StarMapView extends Canvas implements CommandListener{
      */
     net.thousandparsec.netlib.tp03.Object current_object;
     
+    /*
+     * The Previous Object, for object navigation
+     */
+    net.thousandparsec.netlib.tp03.Object previous_object;
+    /*
+     * The Previous Key pressed for selection
+     */
+    int prev;
+    
 
     public StarMapView(String title, Display d){
         setTitle(title);
@@ -247,7 +256,452 @@ public class StarMapView extends Canvas implements CommandListener{
         //System.out.println("Zoom Level: " + zoomLevel);
         
     }
+    
+    private void selectUp(){
+        net.thousandparsec.netlib.tp03.Object temp;
+        /*
+         * The closest object found so far
+         */
+        net.thousandparsec.netlib.tp03.Object closest_object = null;
+        /*
+         * The distance from the current object
+         */
+        long distance=-1;
+        /*
+         * First check if we're just going backwards
+         */  
+        if(prev == KEY_NUM8 && previous_object !=null){
+            temp = previous_object;
+            previous_object = current_object;
+            current_object = temp;
 
+        }
+        /*
+         * Check if the Y value is <= the current object's Y value.
+         * 
+         * If the current object and the new object have the same x values
+         * We check the y values. if they are different, the distance between
+         * them is the y difference, 
+         * 
+         * If the y values are the same and the
+         * x values are different, then the distance is the x difference.
+         * 
+         * If the x values and y values are different, pythagora helps us
+         * 
+         * If x values and y values are the same, check that the objects are
+         * different. if they are, switch between them.
+         */
+        else{
+            for(int i = 0; i < list.size(); i++){
+                if((temp = (net.thousandparsec.netlib.tp03.Object)list.elementAt(i)).getPos().getY() <= current_object.getPos().getY()){
+                    //If the objects are not at the same position
+                    if(temp.getPos().getX() != current_object.getPos().getX() && temp.getPos().getY() != current_object.getPos().getY()){
+                        //If the x values are the same, then the Y values are not.
+                        if(temp.getPos().getX()== current_object.getPos().getX()){
+                            //If this is the first iteration, distance should be -1
+                            if(distance==-1){
+                                distance = temp.getPos().getY() - current_object.getPos().getY();
+                                closest_object = temp;
+                            }
+                            //else this isn't the first iteration, distance should not be -1
+                            else{
+                                if(temp.getPos().getY() - current_object.getPos().getY() < distance){
+                                    distance = temp.getPos().getY() - current_object.getPos().getY();
+                                    closest_object = temp;
+                                }
+                                //else do nothing
+                            }
+                        }
+                        //If the y values are the same, then the X values are not.
+                        else if(temp.getPos().getY() == current_object.getPos().getY()){
+                            //If this is the first iteration, then distance should be -1
+                            if(distance == -1){
+                                distance = temp.getPos().getX() - current_object.getPos().getX();
+                                closest_object = temp;
+                            }
+                            //else this isn't the first iteration, distance should not be -1
+                            else{
+                                if(temp.getPos().getX() - current_object.getPos().getX() < distance){
+                                    distance = temp.getPos().getX() - current_object.getPos().getX();
+                                    closest_object = temp;
+                                }
+                                //else do nothing.
+                            }
+                        }
+                        //the y and x values should be different use pythagora's 
+                        else{
+                            long tempX = temp.getPos().getX() - current_object.getPos().getX();
+                            long tempY = temp.getPos().getY() - current_object.getPos().getY();
+                            int pyDist =(int)Math.sqrt((tempX*tempX)+(tempY*tempY));
+                            System.out.println(temp.getName()+ " d:" + pyDist);
+                            if(distance==-1){
+                                distance = pyDist;
+                                closest_object = temp;
+                            }
+                            else{
+                                if(pyDist < distance){
+                                    closest_object = temp;
+                                    distance=pyDist;
+                                }
+                            }
+                        }
+                
+                    }
+                    //Objects are at same position
+                    else{
+                        //Objects are not the same
+                        if(!temp.equals(current_object)){
+                            closest_object = temp;
+                            distance = 0;
+                            
+                        }
+                        //Objects are the same, do nothing
+                    }
+                    
+                }
+
+            }
+                previous_object = current_object;
+                current_object = closest_object;
+        }
+        prev = KEY_NUM2;
+        repaint();            
+       
+    
+        
+        
+    }
+    private void selectDown(){
+        net.thousandparsec.netlib.tp03.Object temp;
+        /*
+         * The closest object found so far
+         */
+        net.thousandparsec.netlib.tp03.Object closest_object = null;
+        /*
+         * The distance from the current object
+         */
+        long distance=-1;
+        /*
+         * First check if we're just going backwards
+         */  
+        if(prev == KEY_NUM2 && previous_object !=null){
+            temp = previous_object;
+            previous_object = current_object;
+            current_object = temp;
+
+        }  
+        /*
+         * Check if the Y value is >= the current object's Y value.
+         * 
+         * If the current object and the new object have the same x values
+         * We check the y values. if they are different, the distance between
+         * them is the y difference, 
+         * 
+         * If the y values are the same and the
+         * x values are different, then the distance is the x difference.
+         * 
+         * If the x values and y values are different, pythagora helps us
+         * 
+         * If x values and y values are the same, check that the objects are
+         * different. if they are, switch between them.
+         */
+        else{
+            for(int i = 0; i < list.size(); i++){
+                if((temp = (net.thousandparsec.netlib.tp03.Object)list.elementAt(i)).getPos().getY() >= current_object.getPos().getY()){
+                    //If the objects are not at the same position
+                    if(temp.getPos().getX() != current_object.getPos().getX() && temp.getPos().getY() != current_object.getPos().getY()){
+                        //If the x values are the same, then the Y values are not.
+                        if(temp.getPos().getX()== current_object.getPos().getX()){
+                            //If this is the first iteration, distance should be -1
+                            if(distance==-1){
+                                distance = temp.getPos().getY() - current_object.getPos().getY();
+                                closest_object = temp;
+                            }
+                            //else this isn't the first iteration, distance should not be -1
+                            else{
+                                if(temp.getPos().getY() - current_object.getPos().getY() < distance){
+                                    distance = temp.getPos().getY() - current_object.getPos().getY();
+                                    closest_object = temp;
+                                }
+                                //else do nothing
+                            }
+                        }
+                        //If the y values are the same, then the X values are not.
+                        else if(temp.getPos().getY() == current_object.getPos().getY()){
+                            //If this is the first iteration, then distance should be -1
+                            if(distance == -1){
+                                distance = temp.getPos().getX() - current_object.getPos().getX();
+                                closest_object = temp;
+                            }
+                            //else this isn't the first iteration, distance should not be -1
+                            else{
+                                if(temp.getPos().getX() - current_object.getPos().getX() < distance){
+                                    distance = temp.getPos().getX() - current_object.getPos().getX();
+                                    closest_object = temp;
+                                }
+                                //else do nothing.
+                            }
+                        }
+                        //the y and x values should be different use pythagora's 
+                        else{
+                            long tempX = temp.getPos().getX() - current_object.getPos().getX();
+                            long tempY = temp.getPos().getY() - current_object.getPos().getY();
+                            int pyDist =(int)Math.sqrt((tempX*tempX)+(tempY*tempY));
+                            System.out.println(temp.getName()+ " d:" + pyDist);
+                            if(distance==-1){
+                                distance = pyDist;
+                                closest_object = temp;
+                            }
+                            else{
+                                if(pyDist < distance){
+                                    closest_object = temp;
+                                    distance=pyDist;
+                                }
+                            }
+                        }
+                
+                    }
+                    //Objects are at same position
+                    else{
+                        //Objects are not the same
+                        if(!temp.equals(current_object)){
+                            closest_object = temp;
+                            distance = 0;
+                            
+                        }
+                        //Objects are the same, do nothing
+                    }
+                    
+                }
+
+            }
+                previous_object = current_object;
+                current_object = closest_object;
+        }
+        prev = KEY_NUM8;
+        repaint();
+    }    
+    private void selectLeft(){
+        net.thousandparsec.netlib.tp03.Object temp;
+        /*
+         * The closest object found so far
+         */
+        net.thousandparsec.netlib.tp03.Object closest_object = null;
+        /*
+         * The distance from the current object
+         */
+        long distance=-1;
+        /*
+         * First check if we're just going backwards
+         */  
+        if(prev == KEY_NUM6 && previous_object !=null){
+            temp = previous_object;
+            previous_object = current_object;
+            current_object = temp;
+
+        }        
+        /*
+         * Check if the X value is <= the current object's X value.
+         * 
+         * If the current object and the new object have the same x values
+         * We check the y values. if they are different, the distance between
+         * them is the y difference, 
+         * 
+         * If the y values are the same and the
+         * x values are different, then the distance is the x difference.
+         * 
+         * If the x values and y values are different, pythagora helps us
+         * 
+         * If x values and y values are the same, check that the objects are
+         * different. if they are, switch between them.
+         */
+        else{
+            for(int i = 0; i < list.size(); i++){
+                if((temp = (net.thousandparsec.netlib.tp03.Object)list.elementAt(i)).getPos().getX() <= current_object.getPos().getX()){
+                    //If the objects are not at the same position
+                    if(temp.getPos().getX() != current_object.getPos().getX() && temp.getPos().getY() != current_object.getPos().getY()){
+                        //If the x values are the same, then the Y values are not.
+                        if(temp.getPos().getX()== current_object.getPos().getX()){
+                            //If this is the first iteration, distance should be -1
+                            if(distance==-1){
+                                distance = temp.getPos().getY() - current_object.getPos().getY();
+                                closest_object = temp;
+                            }
+                            //else this isn't the first iteration, distance should not be -1
+                            else{
+                                if(temp.getPos().getY() - current_object.getPos().getY() < distance){
+                                    distance = temp.getPos().getY() - current_object.getPos().getY();
+                                    closest_object = temp;
+                                }
+                                //else do nothing
+                            }
+                        }
+                        //If the y values are the same, then the X values are not.
+                        else if(temp.getPos().getY() == current_object.getPos().getY()){
+                            //If this is the first iteration, then distance should be -1
+                            if(distance == -1){
+                                distance = temp.getPos().getX() - current_object.getPos().getX();
+                                closest_object = temp;
+                            }
+                            //else this isn't the first iteration, distance should not be -1
+                            else{
+                                if(temp.getPos().getX() - current_object.getPos().getX() < distance){
+                                    distance = temp.getPos().getX() - current_object.getPos().getX();
+                                    closest_object = temp;
+                                }
+                                //else do nothing.
+                            }
+                        }
+                        //the y and x values should be different use pythagora's 
+                        else{
+                            long tempX = temp.getPos().getX() - current_object.getPos().getX();
+                            long tempY = temp.getPos().getY() - current_object.getPos().getY();
+                            int pyDist =(int)Math.sqrt((tempX*tempX)+(tempY*tempY));
+                            System.out.println(temp.getName()+ " d:" + pyDist);
+                            if(distance==-1){
+                                distance = pyDist;
+                                closest_object = temp;
+                            }
+                            else{
+                                if(pyDist < distance){
+                                    closest_object = temp;
+                                    distance=pyDist;
+                                }
+                            }
+                        }
+                
+                    }
+                    //Objects are at same position
+                    else{
+                        //Objects are not the same
+                        if(!temp.equals(current_object)){
+                            closest_object = temp;
+                            distance = 0;
+                            
+                        }
+                        //Objects are the same, do nothing
+                    }
+                    
+                }
+
+            }
+                previous_object = current_object;
+                current_object = closest_object;
+        }
+        prev = KEY_NUM4;
+        repaint();
+    
+    }
+    private void selectRight(){
+        net.thousandparsec.netlib.tp03.Object temp;
+        /*
+         * The closest object found so far
+         */
+        net.thousandparsec.netlib.tp03.Object closest_object = null;
+        /*
+         * The distance from the current object
+         */
+        long distance=-1;
+        /*
+         * First check if we're just going backwards
+         */  
+        if(prev == KEY_NUM4 && previous_object !=null){
+            temp = previous_object;
+            previous_object = current_object;
+            current_object = temp;
+
+        }        
+        /*
+         * Check if the X value is >= the current object's X value.
+         * 
+         * If the current object and the new object have the same x values
+         * We check the y values. if they are different, the distance between
+         * them is the y difference, 
+         * 
+         * If the y values are the same and the
+         * x values are different, then the distance is the x difference.
+         * 
+         * If the x values and y values are different...
+         * 
+         * If x values and y values are the same, check that the objects are
+         * different. if they are, switch between them.
+         */
+        else{
+            for(int i = 0; i < list.size(); i++){
+                if((temp = (net.thousandparsec.netlib.tp03.Object)list.elementAt(i)).getPos().getX() >= current_object.getPos().getX()){
+                    //If the objects are not at the same position
+                    if(temp.getPos().getX() != current_object.getPos().getX() && temp.getPos().getY() != current_object.getPos().getY()){
+                        //If the x values are the same, then the Y values are not.
+                        if(temp.getPos().getX()== current_object.getPos().getX()){
+                            //If this is the first iteration, distance should be -1
+                            if(distance==-1){
+                                distance = temp.getPos().getY() - current_object.getPos().getY();
+                                closest_object = temp;
+                            }
+                            //else this isn't the first iteration, distance should not be -1
+                            else{
+                                if(temp.getPos().getY() - current_object.getPos().getY() < distance){
+                                    distance = temp.getPos().getY() - current_object.getPos().getY();
+                                    closest_object = temp;
+                                }
+                                //else do nothing
+                            }
+                        }
+                        //If the y values are the same, then the X values are not.
+                        else if(temp.getPos().getY() == current_object.getPos().getY()){
+                            //If this is the first iteration, then distance should be -1
+                            if(distance == -1){
+                                distance = temp.getPos().getX() - current_object.getPos().getX();
+                                closest_object = temp;
+                            }
+                            //else this isn't the first iteration, distance should not be -1
+                            else{
+                                if(temp.getPos().getX() - current_object.getPos().getX() < distance){
+                                    distance = temp.getPos().getX() - current_object.getPos().getX();
+                                    closest_object = temp;
+                                }
+                                //else do nothing.
+                            }
+                        }
+                        //the y and x values should be different use pythagora's 
+                        else{
+                            long tempX = temp.getPos().getX() - current_object.getPos().getX();
+                            long tempY = temp.getPos().getY() - current_object.getPos().getY();
+                            int pyDist =(int)Math.sqrt((tempX*tempX)+(tempY*tempY));
+                            System.out.println(temp.getName()+ " d:" + pyDist);
+                            if(distance==-1){
+                                distance = pyDist;
+                                closest_object = temp;
+                            }
+                            else{
+                                if(pyDist < distance){
+                                    closest_object = temp;
+                                    distance=pyDist;
+                                }
+                            }
+                        }
+                
+                    }
+                    //Objects are at same position
+                    else{
+                        //Objects are not the same
+                        if(!temp.equals(current_object)){
+                            closest_object = temp;
+                            distance = 0;
+                            
+                        }
+                        //Objects are the same, do nothing
+                    }
+                    
+                }
+
+            }
+                previous_object = current_object;
+                current_object = closest_object;
+        }
+        prev = KEY_NUM6;
+        repaint();
+    }
     /**
      * Key is pressed, something happens.
      * Design of this:
@@ -260,31 +714,56 @@ public class StarMapView extends Canvas implements CommandListener{
      * 
      * KEY_NUM1 Zooms In
      * KEY_NUM7 Zooms Out
+     * Key_NUM0 toggles scrolling mode on/off
      * @param keycode the code of the key pressed.
      */
     protected void keyPressed(int keycode){
-        if(keycode == KEY_NUM6){
-            scrollRight();
-        }
-        if(keycode == KEY_NUM4){
-            scrollLeft();
-            
-        }
-        if(keycode == KEY_NUM8){
-            scrollDown();
-            
-        }
-        if(keycode == KEY_NUM2){
-            scrollUp();
-            
-        }
         if(keycode== KEY_NUM1){
             zoomIn();
         }
         if(keycode==KEY_NUM7){
             zoomOut();
         }
-        
+        if(keycode == KEY_NUM0){
+            if(scroll)
+                scroll = false;
+            else
+                scroll = true;
+            
+        }
+        if(scroll){
+            if(keycode == KEY_NUM6){
+                scrollRight();
+            }
+            if(keycode == KEY_NUM4){
+                scrollLeft();
+
+            }
+            if(keycode == KEY_NUM8){
+                scrollDown();
+
+            }
+            if(keycode == KEY_NUM2){
+                scrollUp();
+
+            }
+
+        }
+        else{
+            if(keycode==KEY_NUM6){
+                selectRight();
+            }
+            if(keycode==KEY_NUM4){
+                selectLeft();
+            }
+            if(keycode==KEY_NUM8){
+                selectDown();
+            }
+            if(keycode==KEY_NUM2){
+                selectUp();
+            }
+        }
+
     }
     /**
      * Creates the menu commands accessed by the soft menu buttons
