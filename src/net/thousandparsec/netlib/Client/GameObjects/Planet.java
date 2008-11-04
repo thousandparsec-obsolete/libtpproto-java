@@ -5,6 +5,7 @@ import java.util.Vector;
  * @author Brendan
  */
 public class Planet extends net.thousandparsec.netlib.tp03.Object{
+
     /**
      * The ID of the owner of the planet, or -1 if not known or owned by
      * nobody.
@@ -25,6 +26,7 @@ public class Planet extends net.thousandparsec.netlib.tp03.Object{
      * @param z the Z Coordinate of the Planet
      */
     public Planet(int owner){
+        super.setOtype(3);
         owner_id = owner;
         planet_resource_list = new Vector();
     }
@@ -48,7 +50,7 @@ public class Planet extends net.thousandparsec.netlib.tp03.Object{
      * A Planet may have numerous different resources. A PlanetResource object
      * represents a single resource on the planet.
      */
-    private class PlanetResource{
+    public class PlanetResource{
         private int resource_id;
         private int surface_resource_units;
         private int maximum_minable_units;

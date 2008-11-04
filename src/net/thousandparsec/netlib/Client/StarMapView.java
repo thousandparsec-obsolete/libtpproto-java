@@ -107,43 +107,133 @@ public class StarMapView extends Canvas implements CommandListener{
         //g.setColor(255,255,255);
         //System.out.println("Drawing Planets - Viewport Conditions: x0:" +(x0-xOffset) + " x1: " +(x1-xOffset) + " y0: " + (y0-yOffset) + " y1: " + (y1-yOffset) + " xoffset: " + xOffset + " yoffset: " + yOffset);
         for(int i = 0; i < list.size(); i++){
-            Planet p = (Planet)list.elementAt(i);
-            if(p.equals(current_object)){
-                g.setColor(56,255,0);
-            }
-            else{
-                g.setColor(255,255,255);
-            }
-            if(p.getPos().getX()/10 > x0-xOffset && p.getPos().getX()/10 < x1-xOffset){
-                if(p.getPos().getY()/10 > y0-yOffset && p.getPos().getY()/10 < y1-yOffset){
-                    int x = (int)p.getPos().getX()/10;
-                    int y = (int)p.getPos().getY()/10;
-                    /*
-                     * Zoomed Out
-                     */
-                    if(zoomLevel <0){
-                        g.fillArc((x +xOffset)/(-1 * zoomLevel),(y + yOffset)/(-1 * zoomLevel), 5, 5, 360, 360);
-                        //g.drawString("("+x+","+y+")", (x +xOffset)/(-1 * zoomLevel), (y + yOffset)/(-1 * zoomLevel), Graphics.TOP|Graphics.LEFT);
-                        g.drawString(p.getName(), (x +xOffset)/(-1 * zoomLevel), (y + yOffset)/(-1 * zoomLevel), Graphics.TOP|Graphics.LEFT);
-                    }
-                    /*
-                     * Zoomed In
-                     */
-                    else if(zoomLevel > 0){
-                        //g.drawString("("+x+","+y+")", (x +xOffset)* zoomLevel, (y + yOffset)*zoomLevel, Graphics.TOP|Graphics.LEFT);
-                        g.drawString(p.getName(), (x +xOffset)* zoomLevel, (y + yOffset)*zoomLevel, Graphics.TOP|Graphics.LEFT);
-                        g.fillArc((x +xOffset)* zoomLevel,(y + yOffset)*zoomLevel, 5, 5, 360, 360);
-                    }
-                    /*
-                     * No Zoom
-                     */
-                    else {
-                        //g.drawString("("+x+","+y+")", (x +xOffset), (y + yOffset), Graphics.TOP|Graphics.LEFT);
-                        g.drawString(p.getName(), (x +xOffset), (y + yOffset), Graphics.TOP|Graphics.LEFT);
-                        g.fillArc(x +xOffset,y + yOffset, 5, 5, 360, 360);
+            net.thousandparsec.netlib.tp03.Object p = (net.thousandparsec.netlib.tp03.Object) list.elementAt(i);
+            /*First, we need to check if it is a planet, or a fleet.
+             * To do this, we can check the object type's value.
+             * For a planet, this will be 3, for a fleet, it is 4.
+             * Planets are drawn as circles, fleets as triangles.
+             */
+            if(p.getOtype() == 3){
+                /*
+                 * Paint the current object green
+                 */
+                if(p.equals(current_object)){
+                    g.setColor(56,255,0);
+                }
+                else{
+                    g.setColor(255,255,255);
+                }
+                if(p.getPos().getX()/10 > x0-xOffset && p.getPos().getX()/10 < x1-xOffset){
+                    if(p.getPos().getY()/10 > y0-yOffset && p.getPos().getY()/10 < y1-yOffset){
+                        int x = (int)p.getPos().getX()/10;
+                        int y = (int)p.getPos().getY()/10;
+                        /*
+                        * Zoomed Out
+                        */
+                        if(zoomLevel <0){
+                            g.fillArc((x +xOffset)/(-1 * zoomLevel),(y + yOffset)/(-1 * zoomLevel), 8, 8, 360, 360);
+                            g.drawString(p.getName(), (x +xOffset)/(-1 * zoomLevel), (y + yOffset)/(-1 * zoomLevel)+3, Graphics.TOP|Graphics.LEFT);
+                        }
+                        /*
+                        * Zoomed In
+                        */
+                        else if(zoomLevel > 0){
+                            g.drawString(p.getName(), (x +xOffset)* zoomLevel, (y + yOffset)*zoomLevel+3, Graphics.TOP|Graphics.LEFT);
+                            g.fillArc((x +xOffset)* zoomLevel,(y + yOffset)*zoomLevel, 8, 8, 360, 360);
+                        }
+                        /*
+                        * No Zoom
+                        */
+                        else{
+                            g.drawString(p.getName(), (x +xOffset), (y + yOffset)+3, Graphics.TOP|Graphics.LEFT);
+                            g.fillArc(x +xOffset,y + yOffset, 8, 8, 360, 360);
+                        }
                     }
                 }
             }
+            /*
+             * Draw the fleets!
+             */
+            else if(p.getOtype() == 4){
+                /*
+                 * Paint the current object green
+                 */
+                if (p.equals(current_object)){
+                    g.setColor(56,255,0);
+                }
+                else{
+                    g.setColor(255,255,255);
+                }
+                if(p.getPos().getX()/10 > x0-xOffset && p.getPos().getX()/10 < x1-xOffset){
+                    if(p.getPos().getY()/10 > y0-yOffset && p.getPos().getY()/10 < y1-yOffset){
+                        int x = (int)p.getPos().getX()/10;
+                        int y = (int)p.getPos().getY()/10;
+                        /*
+                        * Zoomed Out
+                        */
+                        if(zoomLevel <0){
+                            g.fillTriangle(
+                                //x1
+                                (x+xOffset)/(-1 * zoomLevel),
+                                //y1
+                                ((y + yOffset)/(-1 * zoomLevel))-8,
+                                //x2
+                                ((x + xOffset)/(-1*zoomLevel))-4,
+                                //y2
+                                (y + yOffset)/(-1*zoomLevel),
+                                //x3
+                                ((x+xOffset)/(-1*zoomLevel))+4,
+                                //y3
+                                (y + yOffset)/(-1*zoomLevel));
+                            g.drawString(p.getName(), (x +xOffset)/(-1 * zoomLevel), (y + yOffset)/(-1 * zoomLevel), Graphics.TOP|Graphics.LEFT);
+                        }
+                        /*
+                        * Zoomed In
+                        */
+                        else if(zoomLevel > 0){
+                                g.fillTriangle(
+                                //x1
+                                (x+xOffset)* zoomLevel,
+                                //y1
+                                ((y + yOffset)* zoomLevel) -8,
+                                //x2
+                                ((x + xOffset)*zoomLevel) -4,
+                                //y2
+                                (y + yOffset)*zoomLevel,
+                                //x3
+                                ((x+xOffset)*zoomLevel) +4,
+                                //y3
+                                (y + yOffset)*zoomLevel );
+                            g.drawString(p.getName(), (x +xOffset)* zoomLevel, (y + yOffset)*zoomLevel, Graphics.TOP|Graphics.LEFT);
+                            
+                        }
+                        /*
+                        * No Zoom
+                        */
+                        else{
+                            g.fillTriangle(
+                                //x1
+                                (x+xOffset),
+                                //y1
+                                (y-8 + yOffset),
+                                //x2
+                                (x-4 + xOffset),
+                                //y2
+                                (y + yOffset),
+                                //x3
+                                (x+4+xOffset),
+                                //y3
+                                (y + yOffset) );
+                            g.drawString(p.getName(), (x +xOffset), (y + yOffset), Graphics.TOP|Graphics.LEFT);
+                            g.fillArc(x +xOffset,y + yOffset, 5, 5, 360, 360);
+                        }
+                    }
+                }
+                                   
+            }
+            
+            
+            
         }
         //g.fillArc(100,100,5,5,45,360);
     }
@@ -153,7 +243,7 @@ public class StarMapView extends Canvas implements CommandListener{
     protected void paintBottomBar(Graphics g){
         //White Bottom Bar
         g.setColor(255,255,255);
-        g.fillRect(0, getHeight()-15, getWidth(), getHeight());
+        g.fillRect(0, getHeight()-18, getWidth(), getHeight());
         //Black is back! (For the text)
         g.setColor(0,0,0);
         g.drawString(current_object.getName(),getWidth()/2,getHeight()-1,Graphics.BOTTOM|Graphics.HCENTER);
@@ -162,13 +252,7 @@ public class StarMapView extends Canvas implements CommandListener{
         //g.drawString("Menu",0, getHeight()-1, Graphics.BOTTOM|Graphics.LEFT);
      
     }
-    /**
-     * This method draws the ships on to the starmap
-     * @param g
-     */
-    protected void drawShips(Graphics g){
-        
-    }
+
     /**
      * This method draws the square around the currently selected object.
      * @param g the Graphics object from paint()
@@ -186,7 +270,7 @@ public class StarMapView extends Canvas implements CommandListener{
     public void commandAction(Command command, Displayable displayable) {
         String label = command.getLabel();
         if(label.equals("Select")){
-            //display.setCurrent(new ObjectInformationScreen("Object Information", display, this));
+            display.setCurrent(new ObjectInformation(current_object, display, this));
         }
         if(label.equals("Messages")){
             display.setCurrent(new MessagesView("System Messages", display, this));
@@ -474,6 +558,7 @@ public class StarMapView extends Canvas implements CommandListener{
      * @param keycode the code of the key pressed.
      */
     protected void keyPressed(int keycode){
+        System.out.println(keycode);
         if(keycode== KEY_NUM1){
             zoomIn();
         }

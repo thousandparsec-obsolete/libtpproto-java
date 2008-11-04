@@ -415,7 +415,9 @@ public class Connection
 		//throws UnknownHostException, IOException
                 throws IOException
 	{
-		throw new UnsupportedOperationException("Not yet implemented");
+		//throw new UnsupportedOperationException("Not yet implemented");
+                return null;
+                
 	}
 
 	/**
